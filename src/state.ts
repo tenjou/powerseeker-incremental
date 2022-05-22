@@ -41,22 +41,24 @@ const state: State = {
     },
     skills: {
         woodcutting: {
-            exp: 0,
-            expMax: 100,
+            xp: 0,
+            xpMax: 100,
             level: 1,
         },
         mining: {
-            exp: 0,
-            expMax: 100,
+            xp: 0,
+            xpMax: 100,
             level: 1,
         },
         fishing: {
-            exp: 0,
-            expMax: 100,
+            xp: 0,
+            xpMax: 100,
             level: 1,
         },
     },
     status: {
+        xp: 0,
+        xpMax: 100,
         stamina: 10,
         staminaMax: 10,
         gold: 0,

@@ -5,6 +5,7 @@ export function updateStatus() {
     const { status, stats } = getState()
 
     setText(`stats-level`, `Level: ${stats.level}`)
+    setText(`stats-xp`, `Experience: ${status.xp}/${status.xpMax}`)
     setText(`stats-hp`, `HP: ${stats.hp}/${stats.hpMax}`)
     setText(`stats-power`, `Power: ${stats.power}`)
     setText(`stats-defense`, `Defense: ${stats.defense}`)

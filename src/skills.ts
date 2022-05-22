@@ -7,19 +7,16 @@ export function updateSkills() {
 
     for (const skillId in skills) {
         const skill = skills[skillId as SkillId]
-        setText(
-            `value-${skillId}`,
-            `${skillId} (Level ${skill.level}): ${skill.exp} / ${skill.expMax}`
-        )
+        setText(`value-${skillId}`, `${skillId} (Level ${skill.level}): ${skill.xp} / ${skill.xpMax}`)
     }
 }
 
-export function addSkillExp(skillId: SkillId, exp: number) {
+export function addSkillExp(skillId: SkillId, xp: number) {
     const skill = getState().skills[skillId]
-    skill.exp += exp
+    skill.xp += xp
 
-    while (skill.exp >= skill.expMax) {
-        skill.exp -= skill.expMax
+    while (skill.xp >= skill.xpMax) {
+        skill.xp -= skill.xpMax
         skill.level += 1
     }
 

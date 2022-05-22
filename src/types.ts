@@ -4,8 +4,8 @@ export type SkillId = "woodcutting" | "mining" | "fishing"
 
 export interface Skill {
     level: number
-    exp: number
-    expMax: number
+    xp: number
+    xpMax: number
 }
 
 export interface Item {
@@ -19,6 +19,8 @@ export interface Card {
 }
 
 export interface Status {
+    xp: number
+    xpMax: number
     stamina: number
     staminaMax: number
     gold: number
