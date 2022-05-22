@@ -6,6 +6,7 @@ interface TownStatus {
 
 interface DungeonStatus {
     id: string
+    parentCardId: number
     stage: number
     progress: number
     cards: Card[]
@@ -66,6 +67,7 @@ const state: State = {
     },
     dungeon: {
         id: "",
+        parentCardId: -1,
         stage: -1,
         progress: -1,
         cards: [],

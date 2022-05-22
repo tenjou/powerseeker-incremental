@@ -8,7 +8,7 @@ import { addSkillExp } from "./skills"
 import { advanceDungeonStage, enterDungeon } from "./dungeon"
 import { addChild, removeElement, setText, toggleClassName } from "./dom"
 
-let lastCardIndex = 0
+let lastCardIndex = 1
 
 function updateCards() {
     const { town, dungeon } = getState()
@@ -158,7 +158,7 @@ function applyCardActions(card: Card) {
                 break
 
             case "enter_dungeon":
-                enterDungeon(action.dungeonId)
+                enterDungeon(action.dungeonId, card.id)
                 break
 
             case "next_stage":

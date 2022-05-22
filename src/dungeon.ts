@@ -1,14 +1,14 @@
 import { DungeonConfigs } from "./config/DungeonConfigs"
 import { removeAllChildren, setOnClick, setShow, setText } from "./dom"
 import { getState } from "./state"
-import { addCard } from "./cards"
+import { addCard, removeCard } from "./cards"
 import { Card } from "./types"
 
 export function setupDungeonSystem() {
     setOnClick("dungeon-exit", exitDungeon)
 }
 
-export function enterDungeon(dungeonId: string) {
+export function enterDungeon(dungeonId: string, cardId: number) {
     const { dungeon } = getState()
 
     const dungeonConfig = DungeonConfigs[dungeonId]
@@ -18,6 +18,7 @@ export function enterDungeon(dungeonId: string) {
     }
 
     dungeon.id = dungeonId
+    dungeon.parentCardId = cardId
     dungeon.progress = 0
     dungeon.stage = 0
 
@@ -96,8 +97,11 @@ function updateDungeonStatus() {
 function exitDungeon() {
     const state = getState()
 
+    const parentToRemove = state.dungeon.reachedEnd ? state.dungeon.parentCardId : 0
+
     state.dungeon = {
         id: "",
+        parentCardId: -1,
         cards: [],
         progress: -1,
         stage: -1,
@@ -109,4 +113,8 @@ function exitDungeon() {
     setShow("area-dungeon", false)
 
     removeAllChildren("dungeon-cards")
+
+    if (parentToRemove) {
+        removeCard(parentToRemove)
+    }
 }
