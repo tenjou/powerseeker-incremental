@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "noFallthroughCasesInSwitch": true,
+        "resolveJsonModule": true,
+        "noEmit": true,
+        "lib": ["dom", "ES7"]
+    },
+    "include": ["src"]
+}

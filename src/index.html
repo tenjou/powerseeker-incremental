@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>PowerSeeker</title>
+        <link rel="stylesheet" href="styles.css" />
+        <script type="module" src="app.ts"></script>
+    </head>
+    <body>
+        <container>
+            <sidebar>
+                <column>
+                    <text class="header">STATS</text>
+                    <column id="stats-level"></column>
+                    <column id="stats-hp"></column>
+                    <column id="stats-power"></column>
+                    <column id="stats-defense"></column>
+                </column>
+
+                <column>
+                    <text class="header">STATUS</text>
+                    <column>
+                        <span>Stamina: <span id="value-stamina">0</span></span>
+                        <span>Gold: <span id="value-gold">0</span></span>
+                    </column>
+                </column>
+
+                <column>
+                    <text class="header">INVENTORY</text>
+                    <column id="list-inventory"></column>
+                </column>
+
+                <column>
+                    <text class="header">SKILLS</text>
+                    <column>
+                        <div id="value-woodcutting"></div>
+                        <div id="value-mining"></div>
+                        <div id="value-fishing"></div>
+                    </column>
+                </column>
+            </sidebar>
+
+            <content>
+                <column id="area-town">
+                    <text class="header">Town</text>
+                    <column id="town-cards"></column>
+                </column>
+
+                <column id="area-dungeon" class="hide">
+                    <text id="dungeon-name" class="header"></text>
+                    <text id="dungeon-stage"></text>
+                    <text id="dungeon-progress"></text>
+                    <column id="dungeon-cards"></column>
+                    <button id="dungeon-exit">Exit</button>
+                </column>
+            </content>
+        </container>
+    </body>
+</html>
