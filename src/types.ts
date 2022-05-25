@@ -18,10 +18,15 @@ export interface Card {
     type: CardType
 }
 
-export interface Status {
-    xp: number
-    xpMax: number
-    stamina: number
-    staminaMax: number
-    gold: number
+export interface Battler {
+    id: number
+    name: string
+    isTeamA: boolean
+    level: number
+    hp: number
+    hpMax: number
+    power: number
+    defense: number
+    speed: number
+    tNextAttack: number
 }

@@ -7,6 +7,7 @@ import { addItem } from "./inventory"
 import { addSkillExp } from "./skills"
 import { advanceDungeonStage, enterDungeon } from "./dungeon"
 import { addChild, removeElement, setText, toggleClassName } from "./dom"
+import { startBattle } from "./battle"
 
 let lastCardIndex = 1
 
@@ -83,7 +84,7 @@ export function removeCard(id: number) {
 }
 
 function isCardDisabled(card: Card) {
-    const { status, stats } = getState()
+    const { player, battler } = getState()
 
     const cardConfig = CardConfigs[card.type]
 
@@ -99,13 +100,13 @@ function isCardDisabled(card: Card) {
 
         switch (action.resource) {
             case "hp":
-                statusValue = stats.hp
+                statusValue = battler.hp
                 break
             case "stamina":
-                statusValue = status.stamina
+                statusValue = player.stamina
                 break
             case "gold":
-                statusValue = status.gold
+                statusValue = player.gold
                 break
         }
 
@@ -163,6 +164,10 @@ function applyCardActions(card: Card) {
 
             case "next_stage":
                 advanceDungeonStage()
+                break
+
+            case "start_battle":
+                startBattle(card.id, action)
                 break
         }
     }

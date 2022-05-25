@@ -24,8 +24,11 @@ text.header {
 }
 
 column {
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
+}
+column.center-v {
+    justify-content: center;
 }
 
 container {
@@ -54,4 +57,25 @@ sidebar {
 }
 sidebar > * {
     margin-bottom: 20px;
+}
+
+content {
+    width: 400px;
+}
+
+battle-arena {
+    display: flex;
+    height: 200px;
+}
+battle-space {
+    flex: 1;
+}
+
+battler {
+    display: flex;
+    flex-direction: column;
+    width: 80px;
+    padding: 6px;
+    border: 1px solid black;
+    border-radius: 3px;
 }

@@ -1,34 +1,35 @@
 import { setText } from "./dom"
 import { getState } from "./state"
 
-export function updateStatus() {
-    const { status, stats } = getState()
+export function updatePlayerStatus() {
+    const { player, battler } = getState()
 
-    setText(`stats-level`, `Level: ${stats.level}`)
-    setText(`stats-xp`, `Experience: ${status.xp}/${status.xpMax}`)
-    setText(`stats-hp`, `HP: ${stats.hp}/${stats.hpMax}`)
-    setText(`stats-power`, `Power: ${stats.power}`)
-    setText(`stats-defense`, `Defense: ${stats.defense}`)
+    setText(`stats-level`, `Level: ${battler.level}`)
+    setText(`stats-xp`, `Experience: ${player.xp}/${player.xpMax}`)
+    setText(`stats-hp`, `HP: ${battler.hp}/${battler.hpMax}`)
+    setText(`stats-power`, `Power: ${battler.power}`)
+    setText(`stats-defense`, `Defense: ${battler.defense}`)
+    setText(`stats-speed`, `Speed: ${battler.speed}`)
 
-    setText(`value-stamina`, `${status.stamina}/${status.staminaMax}`)
-    setText(`value-gold`, `${status.gold}`)
+    setText(`value-stamina`, `${player.stamina}/${player.staminaMax}`)
+    setText(`value-gold`, `${player.gold}`)
 }
 
 export function addHp(value: number) {
-    const { stats } = getState()
+    const { battler } = getState()
 
-    stats.hp += value
-    if (stats.hp > stats.hpMax) {
-        stats.hp = stats.hpMax
-    } else if (stats.hp < 0) {
-        stats.hp = 0
+    battler.hp += value
+    if (battler.hp > battler.hpMax) {
+        battler.hp = battler.hpMax
+    } else if (battler.hp < 0) {
+        battler.hp = 0
     }
 
-    updateStatus()
+    updatePlayerStatus()
 }
 
 export function addStamina(value: number) {
-    const { status } = getState()
+    const { player: status } = getState()
 
     status.stamina += value
     if (status.stamina > status.staminaMax) {
@@ -37,23 +38,22 @@ export function addStamina(value: number) {
         status.stamina = 0
     }
 
-    updateStatus()
+    updatePlayerStatus()
 }
 
 export function addGold(value: number) {
-    const { status } = getState()
+    const { player: status } = getState()
 
     status.gold += value
 
-    updateStatus()
+    updatePlayerStatus()
 }
 
 export function restoreStatus() {
-    const { status, stats } = getState()
+    const { player, battler } = getState()
 
-    stats.hp = stats.hpMax
+    battler.hp = battler.hpMax
+    player.stamina = player.staminaMax
 
-    status.stamina = status.staminaMax
-
-    updateStatus()
+    updatePlayerStatus()
 }

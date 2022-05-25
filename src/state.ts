@@ -1,7 +1,15 @@
-import { Card, Item, Skill, SkillId, Status } from "./types"
+import { Battler, Card, Item, Skill, SkillId } from "./types"
 
 interface TownStatus {
     cards: Card[]
+}
+
+interface PlayerStatus {
+    xp: number
+    xpMax: number
+    stamina: number
+    staminaMax: number
+    gold: number
 }
 
 interface DungeonStatus {
@@ -14,30 +22,44 @@ interface DungeonStatus {
     reachedEnd: boolean
 }
 
-interface CharacterStats {
-    level: number
-    hp: number
-    hpMax: number
-    power: number
-    defense: number
+interface BattleStatus {
+    id: number
+    cardId: number
+    battlers: Battler[]
+    battlersA: Battler[]
+    battlersB: Battler[]
+    tBattle: number
 }
 
 interface State {
-    status: Status
-    stats: CharacterStats
+    player: PlayerStatus
+    battler: Battler
     skills: Record<SkillId, Skill>
     inventory: Record<string, Item>
     town: TownStatus
     dungeon: DungeonStatus
+    battle: BattleStatus
 }
 
 const state: State = {
-    stats: {
+    player: {
+        xp: 0,
+        xpMax: 100,
+        stamina: 10,
+        staminaMax: 10,
+        gold: 0,
+    },
+    battler: {
+        id: 0,
+        name: "Player",
         level: 1,
         hp: 40,
         hpMax: 40,
         power: 4,
         defense: 1,
+        speed: 2,
+        isTeamA: true,
+        tNextAttack: 0,
     },
     skills: {
         woodcutting: {
@@ -56,13 +78,6 @@ const state: State = {
             level: 1,
         },
     },
-    status: {
-        xp: 0,
-        xpMax: 100,
-        stamina: 10,
-        staminaMax: 10,
-        gold: 0,
-    },
     inventory: {},
     town: {
         cards: [],
@@ -75,6 +90,14 @@ const state: State = {
         cards: [],
         stageCompleted: false,
         reachedEnd: false,
+    },
+    battle: {
+        id: -1,
+        cardId: -1,
+        battlers: [],
+        battlersA: [],
+        battlersB: [],
+        tBattle: 0,
     },
 }
 

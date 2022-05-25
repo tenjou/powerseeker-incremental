@@ -1,4 +1,5 @@
 import { SkillId } from "../types"
+import { MonsterId } from "./MonsterConfigs"
 
 type ResourceType = "hp" | "stamina" | "gold"
 
@@ -14,6 +15,7 @@ export type CardType =
     | "dungeon"
     | "door"
     | "reward_chest_1"
+    | "encounter_boar"
 
 interface ResourceAction {
     type: "resource"
@@ -52,6 +54,11 @@ interface NextStageAction {
     type: "next_stage"
 }
 
+export interface StartBattleAction {
+    type: "start_battle"
+    monsters: MonsterId[]
+}
+
 type Action =
     | ResourceAction
     | AddCardAction
@@ -60,6 +67,7 @@ type Action =
     | AddSkillExpAction
     | EnterDungeonAction
     | NextStageAction
+    | StartBattleAction
 
 interface CardConfig {
     actions: Action[]
@@ -225,6 +233,15 @@ export const CardConfigs: Record<CardType, CardConfig> = {
                 type: "add_item",
                 itemType: "mapple_log",
                 amount: 10,
+            },
+        ],
+        destroy: true,
+    },
+    encounter_boar: {
+        actions: [
+            {
+                type: "start_battle",
+                monsters: ["boar"],
             },
         ],
         destroy: true,
