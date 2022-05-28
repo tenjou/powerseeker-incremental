@@ -6,13 +6,10 @@ import { Battler } from "./types"
 import { randomItem } from "./utils"
 import { updatePlayerStatus } from "./status"
 
-let lastBattleId = 1
-let lastBattlerId = 1
-
 export function startBattle(cardId: number, action: StartBattleAction) {
-    const { battle, battler } = getState()
+    const { battle, battler, cache } = getState()
 
-    battle.id = lastBattleId++
+    battle.id = cache.lastBattleId++
     battle.cardId = cardId
 
     addBattler(battler)
@@ -31,8 +28,8 @@ export function startBattle(cardId: number, action: StartBattleAction) {
 function endBattle() {
     const { battle, battler } = getState()
 
-    battle.id = -1
-    battle.cardId - 1
+    battle.id = 0
+    battle.cardId = -1
     battle.battlers.length = 0
     battle.battlersA.length = 0
     battle.battlersB.length = 0
@@ -46,9 +43,9 @@ function endBattle() {
 }
 
 function addBattler(battler: Battler) {
-    const { battle } = getState()
+    const { battle, cache } = getState()
 
-    battler.id = lastBattlerId++
+    battler.id = cache.lastBattlerId++
 
     calcNextTurn(battler)
 

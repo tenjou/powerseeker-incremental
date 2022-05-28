@@ -5,11 +5,38 @@ import { Card } from "./types"
 import { randomItem } from "./utils"
 import { addItem } from "./inventory"
 import { addSkillExp } from "./skills"
-import { advanceDungeonStage, enterDungeon } from "./dungeon"
+import { advanceDungeonStage, enterDungeon, handleDungeonCardClick } from "./dungeon"
 import { addChild, removeElement, setText, toggleClassName } from "./dom"
 import { startBattle } from "./battle"
 
-let lastCardIndex = 1
+function loadCard(card: Card, isDungeon: boolean) {
+    const cardElement = document.createElement("card")
+    cardElement.id = `card-${card.id}`
+    cardElement.onclick = () => {
+        if (isDungeon) {
+            handleDungeonCardClick(card)
+        }
+        handleCardClick(card)
+    }
+
+    addChild(isDungeon ? "dungeon-cards" : "town-cards", cardElement)
+
+    updateCard(card)
+}
+
+export function loadCards(cards: Card[], isDungeon: boolean) {
+    for (const card of cards) {
+        loadCard(card, isDungeon)
+    }
+}
+
+function updateCard(card: Card) {
+    const cardElementId = `card-${card.id}`
+    const cardText = `${card.id} | ${card.type}`
+
+    setText(cardElementId, cardText)
+    toggleClassName(cardElementId, "disabled", isCardDisabled(card))
+}
 
 function updateCards() {
     const { town, dungeon } = getState()
@@ -17,11 +44,7 @@ function updateCards() {
     const cards = dungeon.id ? dungeon.cards : town.cards
 
     for (const card of cards) {
-        const cardElementId = `card-${card.id}`
-        const cardText = `${card.id} | ${card.type}`
-
-        setText(cardElementId, cardText)
-        toggleClassName(cardElementId, "disabled", isCardDisabled(card))
+        updateCard(card)
     }
 }
 
@@ -39,11 +62,11 @@ function handleCardClick(card: Card) {
     updateCards()
 }
 
-export function addCard(cardType: CardType, onCardClick?: (card: Card) => void) {
-    const { town, dungeon } = getState()
+export function addCard(cardType: CardType) {
+    const { town, dungeon, cache } = getState()
 
     const card: Card = {
-        id: lastCardIndex++,
+        id: cache.lastCardIndex++,
         type: cardType,
     }
 
@@ -53,18 +76,7 @@ export function addCard(cardType: CardType, onCardClick?: (card: Card) => void) 
         town.cards.push(card)
     }
 
-    const cardElement = document.createElement("card")
-    cardElement.id = `card-${card.id}`
-    cardElement.onclick = () => {
-        if (onCardClick) {
-            onCardClick(card)
-        }
-        handleCardClick(card)
-    }
-
-    addChild(dungeon.id ? "dungeon-cards" : "town-cards", cardElement)
-
-    updateCards()
+    loadCard(card, !!dungeon.id)
 }
 
 export function removeCard(id: number) {

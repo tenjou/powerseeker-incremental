@@ -1,15 +1,43 @@
-import { addCard } from "./cards"
+import { addCard, loadCards } from "./cards"
 import { updateSkills } from "./skills"
 import { updatePlayerStatus } from "./status"
-import { setupDungeonSystem } from "./dungeon"
+import { loadDungeonStage, setupDungeonSystem } from "./dungeon"
 import { updateBattle } from "./battle"
+import { getState, loadState } from "./state"
+import { setShow } from "./dom"
 
 let tLast = 0
 
-function setup() {
+function createEmptyProfile() {
     addCard("unknown_location")
     addCard("dungeon")
     addCard("encounter_boar")
+}
+
+function load() {
+    const state = getState()
+
+    if (state.battle.id) {
+        console.log("battle")
+    } else if (state.dungeon.id) {
+        loadDungeonStage()
+    } else {
+        setShow("area-town", true)
+    }
+}
+
+function loadSave() {
+    const state = getState()
+
+    loadCards(state.town.cards, false)
+
+    if (state.battle.id) {
+        console.log("battle")
+    } else if (state.dungeon.id) {
+        loadDungeonStage()
+    } else {
+        setShow("area-town", true)
+    }
 }
 
 function update() {
@@ -30,6 +58,22 @@ function update() {
 }
 
 document.body.onload = () => {
-    setup()
+    const json = localStorage.getItem("profile")
+    if (json) {
+        const state = JSON.parse(json)
+        console.log(state)
+        loadState(state)
+        loadSave()
+    } else {
+        createEmptyProfile()
+    }
+
     update()
+    load()
+}
+
+window.onbeforeunload = () => {
+    const state = getState()
+
+    localStorage.setItem("profile", JSON.stringify(state))
 }

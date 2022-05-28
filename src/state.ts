@@ -31,6 +31,12 @@ interface BattleStatus {
     tBattle: number
 }
 
+interface Cache {
+    lastCardIndex: number
+    lastBattleId: number
+    lastBattlerId: number
+}
+
 interface State {
     player: PlayerStatus
     battler: Battler
@@ -39,9 +45,10 @@ interface State {
     town: TownStatus
     dungeon: DungeonStatus
     battle: BattleStatus
+    cache: Cache
 }
 
-const state: State = {
+let state: State = {
     player: {
         xp: 0,
         xpMax: 100,
@@ -92,13 +99,22 @@ const state: State = {
         reachedEnd: false,
     },
     battle: {
-        id: -1,
-        cardId: -1,
+        id: 0,
+        cardId: 0,
         battlers: [],
         battlersA: [],
         battlersB: [],
         tBattle: 0,
     },
+    cache: {
+        lastCardIndex: 1,
+        lastBattleId: 1,
+        lastBattlerId: 1,
+    },
+}
+
+export function loadState(newState: State) {
+    state = newState
 }
 
 export function getState() {

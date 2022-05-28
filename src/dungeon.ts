@@ -1,11 +1,40 @@
 import { DungeonConfigs } from "./config/DungeonConfigs"
 import { removeAllChildren, setOnClick, setShow, setText } from "./dom"
 import { getState } from "./state"
-import { addCard, removeCard } from "./cards"
+import { addCard, loadCards, removeCard } from "./cards"
 import { Card } from "./types"
 
 export function setupDungeonSystem() {
     setOnClick("dungeon-exit", exitDungeon)
+}
+
+export function loadDungeonStage() {
+    const { dungeon } = getState()
+
+    const dungeonConfig = DungeonConfigs[dungeon.id]
+    const dungeonStageConfig = dungeonConfig.stages[dungeon.stage]
+
+    loadCards(dungeon.cards, true)
+
+    // for (const cardId of dungeonStageConfig.cards) {
+    //     addCard(cardId)
+    // }
+
+    updateDungeonStatus()
+
+    setShow("area-dungeon", true)
+}
+
+function updateDungeonStatus() {
+    const { dungeon } = getState()
+
+    const dungeonConfig = DungeonConfigs[dungeon.id]
+    const dungeonStageConfig = dungeonConfig.stages[dungeon.stage]
+    const progress = Math.min(dungeonStageConfig.progressRequired, dungeon.progress)
+
+    setText("dungeon-name", dungeonConfig.name)
+    setText("dungeon-stage", `Stage: ${dungeon.stage + 1}/${dungeonConfig.stages.length}`)
+    setText("dungeon-progress", `Progress: ${progress}/${dungeonStageConfig.progressRequired}`)
 }
 
 export function enterDungeon(dungeonId: string, cardId: number) {
@@ -24,11 +53,8 @@ export function enterDungeon(dungeonId: string, cardId: number) {
 
     setShow("area-town", false)
 
-    setText("dungeon-name", dungeonConfig.name)
     setShow("area-dungeon", true)
-    populateDungeonStage()
-
-    updateDungeonStatus()
+    loadDungeonStage()
 }
 
 export function advanceDungeonStage() {
@@ -40,23 +66,10 @@ export function advanceDungeonStage() {
     dungeon.cards.length = 0
 
     removeAllChildren("dungeon-cards")
-    populateDungeonStage()
-
-    updateDungeonStatus()
+    loadDungeonStage()
 }
 
-function populateDungeonStage() {
-    const { dungeon } = getState()
-
-    const dungeonConfig = DungeonConfigs[dungeon.id]
-    const dungeonStageConfig = dungeonConfig.stages[dungeon.stage]
-
-    for (const cardId of dungeonStageConfig.cards) {
-        addCard(cardId, handleDungeonCardClick)
-    }
-}
-
-function handleDungeonCardClick(card: Card) {
+export function handleDungeonCardClick(card: Card) {
     const { dungeon } = getState()
 
     dungeon.progress++
@@ -80,18 +93,6 @@ function handleDungeonCardClick(card: Card) {
     }
 
     updateDungeonStatus()
-}
-
-function updateDungeonStatus() {
-    const { dungeon } = getState()
-
-    const dungeonConfig = DungeonConfigs[dungeon.id]
-
-    const dungeonStageConfig = dungeonConfig.stages[dungeon.stage]
-    const progress = Math.min(dungeonStageConfig.progressRequired, dungeon.progress)
-
-    setText("dungeon-stage", `Stage: ${dungeon.stage + 1}/${dungeonConfig.stages.length}`)
-    setText("dungeon-progress", `Progress: ${progress}/${dungeonStageConfig.progressRequired}`)
 }
 
 function exitDungeon() {
