@@ -1,12 +1,13 @@
 import { getState } from "./state"
 import { Item } from "./types"
 import { setText } from "./dom"
+import { ItemId } from "./config/ItemConfigs"
 
 function updateItem(item: Item) {
     setText(`item-${item.id}`, `${item.id} | ${item.amount}`)
 }
 
-export function addItem(itemId: string, amount: number = 1) {
+export function addItem(itemId: ItemId, amount: number = 1) {
     const inventory = getState().inventory
 
     let item = inventory[itemId]

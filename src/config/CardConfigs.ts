@@ -1,4 +1,5 @@
 import { SkillId } from "../types"
+import { ItemId } from "./ItemConfigs"
 import { MonsterId } from "./MonsterConfigs"
 
 type ResourceType = "hp" | "stamina" | "gold"
@@ -35,7 +36,7 @@ interface AddRandomCardAction {
 
 interface AddItemAction {
     type: "add_item"
-    itemType: string
+    itemId: ItemId
     amount: number
 }
 
@@ -159,7 +160,7 @@ export const CardConfigs: Record<CardType, CardConfig> = {
             },
             {
                 type: "add_item",
-                itemType: "carp",
+                itemId: "carp",
                 amount: 1,
             },
             {
@@ -179,7 +180,7 @@ export const CardConfigs: Record<CardType, CardConfig> = {
             },
             {
                 type: "add_item",
-                itemType: "copper_ore",
+                itemId: "copper_ore",
                 amount: 1,
             },
             {
@@ -199,7 +200,7 @@ export const CardConfigs: Record<CardType, CardConfig> = {
             },
             {
                 type: "add_item",
-                itemType: "mapple_log",
+                itemId: "mapple_log",
                 amount: 1,
             },
             {
@@ -231,7 +232,7 @@ export const CardConfigs: Record<CardType, CardConfig> = {
         actions: [
             {
                 type: "add_item",
-                itemType: "mapple_log",
+                itemId: "mapple_log",
                 amount: 10,
             },
         ],

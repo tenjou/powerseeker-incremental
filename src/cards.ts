@@ -163,7 +163,7 @@ function applyCardActions(card: Card) {
             }
 
             case "add_item":
-                addItem(action.itemType, action.amount)
+                addItem(action.itemId, action.amount)
                 break
 
             case "add_skill_exp":

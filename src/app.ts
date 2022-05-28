@@ -75,5 +75,5 @@ document.body.onload = () => {
 window.onbeforeunload = () => {
     const state = getState()
 
-    localStorage.setItem("profile", JSON.stringify(state))
+    // localStorage.setItem("profile", JSON.stringify(state))
 }

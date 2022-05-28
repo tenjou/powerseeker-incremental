@@ -1,4 +1,5 @@
 import { CardType } from "./config/CardConfigs"
+import { ItemId } from "./config/ItemConfigs"
 
 export type SkillId = "woodcutting" | "mining" | "fishing"
 
@@ -9,7 +10,7 @@ export interface Skill {
 }
 
 export interface Item {
-    id: string
+    id: ItemId
     amount: number
 }
 

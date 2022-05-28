@@ -31,6 +31,10 @@ interface BattleStatus {
     tBattle: number
 }
 
+interface Equipment {
+    // body:
+}
+
 interface Cache {
     lastCardIndex: number
     lastBattleId: number
