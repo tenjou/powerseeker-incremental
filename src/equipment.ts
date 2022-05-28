@@ -1,33 +1,70 @@
 import { ItemConfigs } from "./config/ItemConfigs"
-import { addChild } from "./dom"
+import { addChild, setText, toggleClassName } from "./dom"
+import { addItem } from "./inventory"
 import { getState } from "./state"
-import { Item } from "./types"
+import { Item, SlotType } from "./types"
 
-function createEquipmentSlot(item: Item | null, slotName: string) {
+function createEquipmentSlot(slotType: SlotType) {
     const element = document.createElement("equipment-slot")
-    if (item) {
-        const itemConfig = ItemConfigs[item.id]
-        element.innerText = itemConfig.name
-    } else {
-        element.innerText = slotName
-    }
-
-    element.onclick = () => handleUnequip()
-
-    if (!item) {
-        element.classList.add("empty")
-    }
+    element.id = `equipment-slot-${slotType}`
+    element.onclick = () => unequipItem(slotType)
 
     addChild("equipment", element)
+    updateEquipment(slotType)
 }
 
 export function loadEquipmentWidget() {
-    const { equipment } = getState()
-
-    createEquipmentSlot(equipment.hand1, "Hand_1")
-    createEquipmentSlot(equipment.body, "Body")
+    createEquipmentSlot("hand_1")
+    createEquipmentSlot("body")
 }
 
-function handleUnequip() {
-    console.log("unequip")
+function updateEquipment(slotType: SlotType) {
+    const { equipment } = getState()
+
+    const item = equipment[slotType]
+    const elementId = `equipment-slot-${slotType}`
+
+    if (item) {
+        const itemConfig = ItemConfigs[item.id]
+        setText(elementId, itemConfig.name)
+    } else {
+        setText(elementId, slotType)
+    }
+
+    toggleClassName(elementId, "empty", !item)
+}
+
+export function equipItem(item: Item) {
+    const { equipment } = getState()
+
+    const itemConfig = ItemConfigs[item.id]
+    if (itemConfig.type !== "armor") {
+        console.error(`Could not equip item: ${item.id}`)
+        return false
+    }
+
+    const prevItem = equipment[itemConfig.slot]
+    if (prevItem) {
+        unequipItem(itemConfig.slot)
+    }
+
+    equipment[itemConfig.slot] = item
+    updateEquipment(itemConfig.slot)
+
+    return true
+}
+
+function unequipItem(slotType: SlotType) {
+    const { equipment } = getState()
+
+    const item = equipment[slotType]
+    if (!item) {
+        console.error(`There are not unequipable items in slot: ${slotType}`)
+        return
+    }
+
+    equipment[slotType] = null
+    updateEquipment(slotType)
+
+    addItem(item.id, 1)
 }

@@ -6,6 +6,7 @@ import { updateBattle } from "./battle"
 import { getState, loadState } from "./state"
 import { setShow } from "./dom"
 import { loadEquipmentWidget } from "./equipment"
+import { addItem, loadInventoryWidget } from "./inventory"
 
 let tLast = 0
 
@@ -13,6 +14,8 @@ function createEmptyProfile() {
     addCard("unknown_location")
     addCard("dungeon")
     addCard("encounter_boar")
+
+    addItem("leather_clothing", 2)
 }
 
 function load() {
@@ -45,7 +48,9 @@ function update() {
     updatePlayerStatus()
     updateSkills()
     setupDungeonSystem()
+
     loadEquipmentWidget()
+    loadInventoryWidget()
 
     tLast = Date.now()
 
@@ -66,11 +71,12 @@ document.body.onload = () => {
         console.log(state)
         loadState(state)
         loadSave()
+        update()
     } else {
+        update()
         createEmptyProfile()
     }
 
-    update()
     load()
 }
 

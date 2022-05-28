@@ -10,6 +10,7 @@ export interface Skill {
 }
 
 export interface Item {
+    uid: number
     id: ItemId
     amount: number
 }
@@ -31,3 +32,5 @@ export interface Battler {
     speed: number
     tNextAttack: number
 }
+
+export type SlotType = "body" | "hand_1"

@@ -1,4 +1,4 @@
-import { Battler, Card, Item, Skill, SkillId } from "./types"
+import { Battler, Card, Item, Skill, SkillId, SlotType } from "./types"
 
 interface TownStatus {
     cards: Card[]
@@ -31,12 +31,8 @@ interface BattleStatus {
     tBattle: number
 }
 
-interface Equipment {
-    hand1: Item | null
-    body: Item | null
-}
-
 interface Cache {
+    lastItemIndex: number
     lastCardIndex: number
     lastBattleId: number
     lastBattlerId: number
@@ -44,10 +40,10 @@ interface Cache {
 
 interface State {
     player: PlayerStatus
-    equipment: Equipment
+    equipment: Record<SlotType, Item | null>
     battler: Battler
     skills: Record<SkillId, Skill>
-    inventory: Record<string, Item>
+    inventory: Item[]
     town: TownStatus
     dungeon: DungeonStatus
     battle: BattleStatus
@@ -64,7 +60,7 @@ let state: State = {
     },
     equipment: {
         body: null,
-        hand1: null,
+        hand_1: null,
     },
     battler: {
         id: 0,
@@ -95,7 +91,7 @@ let state: State = {
             level: 1,
         },
     },
-    inventory: {},
+    inventory: [],
     town: {
         cards: [],
     },
@@ -117,6 +113,7 @@ let state: State = {
         tBattle: 0,
     },
     cache: {
+        lastItemIndex: 1,
         lastCardIndex: 1,
         lastBattleId: 1,
         lastBattlerId: 1,
