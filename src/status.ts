@@ -1,5 +1,7 @@
+import { ItemConfigs } from "./config/ItemConfigs"
 import { setText } from "./dom"
 import { getState } from "./state"
+import { SlotType } from "./types"
 
 export function updatePlayerStatus() {
     const { player, battler } = getState()
@@ -54,6 +56,28 @@ export function restoreStatus() {
 
     battler.hp = battler.hpMax
     player.stamina = player.staminaMax
+
+    updatePlayerStatus()
+}
+
+export function recalculateStats() {
+    const { battler, equipment } = getState()
+
+    battler.defense = 0
+
+    for (const slotType in equipment) {
+        const item = equipment[slotType as SlotType]
+        if (!item) {
+            continue
+        }
+
+        const itemConfig = ItemConfigs[item.id]
+        switch (itemConfig.type) {
+            case "armor":
+                battler.defense += itemConfig.defense
+                break
+        }
+    }
 
     updatePlayerStatus()
 }

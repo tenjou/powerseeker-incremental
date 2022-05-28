@@ -69,7 +69,7 @@ let state: State = {
         hp: 40,
         hpMax: 40,
         power: 4,
-        defense: 1,
+        defense: 0,
         speed: 2,
         isTeamA: true,
         tNextAttack: 0,

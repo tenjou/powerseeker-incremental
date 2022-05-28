@@ -2,6 +2,7 @@ import { ItemConfigs } from "./config/ItemConfigs"
 import { addChild, setText, toggleClassName } from "./dom"
 import { addItem } from "./inventory"
 import { getState } from "./state"
+import { recalculateStats } from "./status"
 import { Item, SlotType } from "./types"
 
 function createEquipmentSlot(slotType: SlotType) {
@@ -50,6 +51,7 @@ export function equipItem(item: Item) {
 
     equipment[itemConfig.slot] = item
     updateEquipment(itemConfig.slot)
+    recalculateStats()
 
     return true
 }
@@ -65,6 +67,7 @@ function unequipItem(slotType: SlotType) {
 
     equipment[slotType] = null
     updateEquipment(slotType)
+    recalculateStats()
 
     addItem(item.id, 1)
 }
