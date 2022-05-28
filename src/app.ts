@@ -5,6 +5,7 @@ import { loadDungeonStage, setupDungeonSystem } from "./dungeon"
 import { updateBattle } from "./battle"
 import { getState, loadState } from "./state"
 import { setShow } from "./dom"
+import { loadEquipmentWidget } from "./equipment"
 
 let tLast = 0
 
@@ -44,6 +45,7 @@ function update() {
     updatePlayerStatus()
     updateSkills()
     setupDungeonSystem()
+    loadEquipmentWidget()
 
     tLast = Date.now()
 

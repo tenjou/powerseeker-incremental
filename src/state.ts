@@ -32,7 +32,8 @@ interface BattleStatus {
 }
 
 interface Equipment {
-    // body:
+    hand1: Item | null
+    body: Item | null
 }
 
 interface Cache {
@@ -43,6 +44,7 @@ interface Cache {
 
 interface State {
     player: PlayerStatus
+    equipment: Equipment
     battler: Battler
     skills: Record<SkillId, Skill>
     inventory: Record<string, Item>
@@ -59,6 +61,10 @@ let state: State = {
         stamina: 10,
         staminaMax: 10,
         gold: 0,
+    },
+    equipment: {
+        body: null,
+        hand1: null,
     },
     battler: {
         id: 0,
