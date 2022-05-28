@@ -66,7 +66,7 @@ let state: State = {
         id: 0,
         name: "Player",
         level: 1,
-        hp: 40,
+        hp: 10,
         hpMax: 40,
         power: 4,
         defense: 0,

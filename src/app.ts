@@ -16,6 +16,7 @@ function createEmptyProfile() {
     addCard("encounter_boar")
 
     addItem("leather_clothing", 2)
+    addItem("health_potion", 5)
 }
 
 function load() {

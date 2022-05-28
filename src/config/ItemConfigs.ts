@@ -1,6 +1,13 @@
-export type ItemId = "carp" | "copper_ore" | "mapple_log" | "leather_clothing"
+export type ItemId = "carp" | "copper_ore" | "mapple_log" | "leather_clothing" | "health_potion"
 
 export type ArmorSlot = "body"
+
+export type EffectType = "restore_hp"
+
+export interface ItemEffect {
+    type: EffectType
+    value: number
+}
 
 interface ItemConfigBasic {
     id: ItemId
@@ -21,7 +28,14 @@ interface ItemConfigArmor extends ItemConfigBasic {
     defense: number
 }
 
-type ItemConfig = ItemConfigResource | ItemConfigArmor
+interface ItemConfigConsumable extends ItemConfigBasic {
+    id: ItemId
+    name: string
+    type: "consumable"
+    effects: ItemEffect[]
+}
+
+type ItemConfig = ItemConfigResource | ItemConfigArmor | ItemConfigConsumable
 
 export type ItemType = ItemConfig["type"]
 
@@ -47,5 +61,16 @@ export const ItemConfigs: Record<ItemId, ItemConfig> = {
         type: "armor",
         slot: "body",
         defense: 1,
+    },
+    health_potion: {
+        id: "health_potion",
+        name: "Health Potion",
+        type: "consumable",
+        effects: [
+            {
+                type: "restore_hp",
+                value: 5,
+            },
+        ],
     },
 }

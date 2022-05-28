@@ -1,8 +1,9 @@
 import { getState } from "./state"
 import { Item } from "./types"
 import { addChild, removeElement, setText } from "./dom"
-import { ItemConfigs, ItemId } from "./config/ItemConfigs"
+import { ItemConfigs, ItemEffect, ItemId } from "./config/ItemConfigs"
 import { equipItem } from "./equipment"
+import { addHp } from "./status"
 
 function createInventoryItem(item: Item) {
     const element = document.createElement("inventory-item")
@@ -86,5 +87,20 @@ function handleItemUse(item: Item) {
                 removeItem(item.id)
             }
             break
+
+        case "consumable":
+            resolveItemEffects(itemConfig.effects)
+            removeItem(item.id)
+            break
+    }
+}
+
+function resolveItemEffects(effects: ItemEffect[]) {
+    for (const effect of effects) {
+        switch (effect.type) {
+            case "restore_hp":
+                addHp(effect.value)
+                break
+        }
     }
 }
