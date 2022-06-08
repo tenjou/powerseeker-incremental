@@ -7,7 +7,7 @@ import { addItem } from "./inventory"
 import { addSkillExp } from "./skills"
 import { advanceDungeonStage, enterDungeon, handleDungeonCardClick } from "./dungeon"
 import { addChild, removeElement, setText, toggleClassName } from "./dom"
-import { startBattle } from "./battle"
+import { startBattle } from "./battle/battle"
 
 function loadCard(card: Card, isDungeon: boolean) {
     const cardElement = document.createElement("card")

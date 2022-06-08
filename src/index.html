@@ -11,20 +11,12 @@
             <sidebar>
                 <column>
                     <text class="header">STATS</text>
-                    <column id="stats-level"></column>
-                    <column id="stats-xp"></column>
-                    <column id="stats-hp"></column>
-                    <column id="stats-power"></column>
-                    <column id="stats-defense"></column>
-                    <column id="stats-speed"></column>
+                    <div id="stats"></div>
                 </column>
 
                 <column>
                     <text class="header">STATUS</text>
-                    <column>
-                        <span>Stamina: <span id="value-stamina">0</span></span>
-                        <span>Gold: <span id="value-gold">0</span></span>
-                    </column>
+                    <div id="status"></div>
                 </column>
 
                 <column>
@@ -63,11 +55,13 @@
 
                 <column id="area-battle" class="hide">
                     <text class="header">Battle</text>
+                    <text id="battle-turn"></text>
                     <battle-arena>
                         <column id="battle-column-a" class="center-v"></column>
                         <battle-space></battle-space>
                         <column id="battle-column-b" class="center-v"></column>
                     </battle-arena>
+                    <battle-abilities id="battle-abilities"></battle-abilities>
                 </column>
             </content>
         </container>

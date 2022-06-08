@@ -22,20 +22,30 @@ interface DungeonStatus {
     reachedEnd: boolean
 }
 
-interface BattleStatus {
+export interface BattleAction {
+    battler: Battler
+    ability: Ability
+}
+
+interface Battle {
     id: number
     cardId: number
-    battlers: Battler[]
     battlersA: Battler[]
     battlersB: Battler[]
+    actions: BattleAction[]
     tBattle: number
+    turn: number
+}
+
+export interface Ability {
+    id: string
+    rank: number
 }
 
 interface Cache {
     lastItemIndex: number
     lastCardIndex: number
     lastBattleId: number
-    lastBattlerId: number
 }
 
 interface State {
@@ -44,9 +54,10 @@ interface State {
     battler: Battler
     skills: Record<SkillId, Skill>
     inventory: Item[]
+    abilities: Ability[]
     town: TownStatus
     dungeon: DungeonStatus
-    battle: BattleStatus
+    battle: Battle
     cache: Cache
 }
 
@@ -72,7 +83,7 @@ let state: State = {
         defense: 0,
         speed: 2,
         isTeamA: true,
-        tNextAttack: 0,
+        isAI: false,
     },
     skills: {
         woodcutting: {
@@ -107,16 +118,26 @@ let state: State = {
     battle: {
         id: 0,
         cardId: 0,
-        battlers: [],
         battlersA: [],
         battlersB: [],
+        actions: [],
         tBattle: 0,
+        turn: 1,
     },
+    abilities: [
+        {
+            id: "attack",
+            rank: 1,
+        },
+        {
+            id: "bash",
+            rank: 1,
+        },
+    ],
     cache: {
         lastItemIndex: 1,
         lastCardIndex: 1,
         lastBattleId: 1,
-        lastBattlerId: 1,
     },
 }
 

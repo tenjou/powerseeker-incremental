@@ -23,14 +23,14 @@ export interface Card {
 export interface Battler {
     id: number
     name: string
-    isTeamA: boolean
     level: number
     hp: number
     hpMax: number
     power: number
     defense: number
     speed: number
-    tNextAttack: number
+    isTeamA: boolean
+    isAI: boolean
 }
 
 export type SlotType = "body" | "hand_1"

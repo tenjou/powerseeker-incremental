@@ -1,20 +1,21 @@
 import { ItemConfigs } from "./config/ItemConfigs"
-import { setText } from "./dom"
+import { render, renderParentId } from "./dom"
 import { getState } from "./state"
 import { SlotType } from "./types"
 
 export function updatePlayerStatus() {
     const { player, battler } = getState()
 
-    setText(`stats-level`, `Level: ${battler.level}`)
-    setText(`stats-xp`, `Experience: ${player.xp}/${player.xpMax}`)
-    setText(`stats-hp`, `HP: ${battler.hp}/${battler.hpMax}`)
-    setText(`stats-power`, `Power: ${battler.power}`)
-    setText(`stats-defense`, `Defense: ${battler.defense}`)
-    setText(`stats-speed`, `Speed: ${battler.speed}`)
+    renderParentId("stats", [
+        render("div", `Level: ${battler.level}`),
+        render("div", `Experience: ${player.xp}/${player.xpMax}`),
+        render("div", `HP: ${battler.hp}/${battler.hpMax}`),
+        render("div", `Power: ${battler.power}`),
+        render("div", `Defense: ${battler.defense}`),
+        render("div", `Speed: ${battler.speed}`),
+    ])
 
-    setText(`value-stamina`, `${player.stamina}/${player.staminaMax}`)
-    setText(`value-gold`, `${player.gold}`)
+    renderParentId("status", [render("div", `Stamina: ${player.stamina}/${player.staminaMax}`), render("div", `Gold: ${player.gold}`)])
 }
 
 export function addHp(value: number) {

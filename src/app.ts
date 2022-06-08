@@ -2,7 +2,7 @@ import { addCard, loadCards } from "./cards"
 import { updateSkills } from "./skills"
 import { updatePlayerStatus } from "./status"
 import { loadDungeonStage, setupDungeonSystem } from "./dungeon"
-import { updateBattle } from "./battle"
+import { loadBattle, updateBattle } from "./battle/battle"
 import { getState, loadState } from "./state"
 import { setShow } from "./dom"
 import { loadEquipmentWidget } from "./equipment"
@@ -23,7 +23,7 @@ function load() {
     const state = getState()
 
     if (state.battle.id) {
-        console.log("battle")
+        loadBattle()
     } else if (state.dungeon.id) {
         loadDungeonStage()
     } else {

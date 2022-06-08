@@ -245,6 +245,6 @@ export const CardConfigs: Record<CardType, CardConfig> = {
                 monsters: ["boar"],
             },
         ],
-        destroy: true,
+        destroy: false,
     },
 }
