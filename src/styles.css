@@ -92,9 +92,9 @@ battler {
     display: flex;
     flex-direction: column;
     width: 80px;
-    padding: 6px;
-    border: 1px solid black;
     border-radius: 3px;
+    /* background: black;
+    color: white; */
 }
 
 equipment-slot {
@@ -127,4 +127,37 @@ inventory-item:hover {
 inventory-item.empty {
     opacity: 0.5;
     pointer-events: none;
+}
+
+progress-bar {
+    position: relative;
+    height: 16px;
+    background: black;
+    border-radius: 3px;
+    border: 2px solid black;
+}
+progress-bar bar {
+    position: absolute;
+    width: 0%;
+    height: 100%;
+    left: 0;
+    transition: width 0.2s;
+    background: linear-gradient(#e0313d, #bb232d);
+    border-radius: 2px;
+}
+progress-bar bar.shadow {
+    width: 100%;
+    opacity: 0.35;
+}
+progress-bar value {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    color: #fff;
+    text-shadow: 0 0 2px #000;
+    font-size: 11px;
 }

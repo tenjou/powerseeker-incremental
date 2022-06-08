@@ -1,4 +1,4 @@
-import { createProgressBar } from "../components/progress-bar"
+import { createProgressBar, ProgressBarComponent } from "../components/progress-bar"
 import { MonsterConfigs, MonsterId } from "../config/MonsterConfigs"
 import { getState } from "../state"
 import { addChild, removeAllChildren } from "./../dom"
@@ -8,7 +8,7 @@ import { updateProgessBar } from "./../components/progress-bar"
 interface BattlerComponent {
     element: HTMLElement
     name: HTMLElement
-    hpBar: HTMLElement
+    hpBar: ProgressBarComponent
 }
 
 const maxSlots = 4
@@ -52,7 +52,7 @@ function loadBattler(battler: Battler) {
     element.appendChild(name)
 
     const hpBar = createProgressBar()
-    element.appendChild(hpBar)
+    element.appendChild(hpBar.element)
 
     if (battler.isTeamA) {
         addChild("battle-column-a", element)
