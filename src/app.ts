@@ -7,6 +7,8 @@ import { getState, loadState } from "./state"
 import { setShow } from "./dom"
 import { loadEquipmentWidget } from "./equipment"
 import { addItem, loadInventoryWidget } from "./inventory"
+import "./components/area-transition"
+import "./components/progress-bar"
 
 let tLast = 0
 
@@ -85,4 +87,8 @@ window.onbeforeunload = () => {
     const state = getState()
 
     localStorage.setItem("profile", JSON.stringify(state))
+}
+
+declare global {
+    function html(str: TemplateStringsArray): string
 }

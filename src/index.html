@@ -4,6 +4,12 @@
         <meta charset="utf-8" />
         <title>PowerSeeker</title>
         <link rel="stylesheet" href="styles.css" />
+
+        <script>
+            function html(str) {
+                return str
+            }
+        </script>
         <script type="module" src="app.ts"></script>
     </head>
     <body>
@@ -43,6 +49,7 @@
                 <column id="area-town" class="hide">
                     <text class="header">Town</text>
                     <column id="town-cards"></column>
+                    <area-transition></area-transition>
                 </column>
 
                 <column id="area-dungeon" class="hide">
@@ -54,15 +61,28 @@
                 </column>
 
                 <column id="area-battle" class="hide">
-                    <text class="header">Battle</text>
-                    <text id="battle-turn"></text>
+                    <battle-status>
+                        <row class="flex">
+                            <column class="flex">
+                                <text id="battle-name">Dungeon encounter</text>
+                                <text id="battle-round" class="tertiary size10 uppercase">Round 4</text>
+                            </column>
+                        </row>
+                        <row>
+                            <text id="battle-level" class="tertiary size10 uppercase">Level 3</text>
+                        </row>
+                    </battle-status>
+
                     <battle-arena>
                         <column id="battle-column-a" class="center-v"></column>
                         <battle-space></battle-space>
                         <column id="battle-column-b" class="center-v"></column>
                     </battle-arena>
                     <battle-abilities id="battle-abilities"></battle-abilities>
+                    <area-transition></area-transition>
                 </column>
+
+                <scrolling-text>544</scrolling-text>
             </content>
         </container>
     </body>

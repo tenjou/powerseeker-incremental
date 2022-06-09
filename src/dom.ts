@@ -172,3 +172,29 @@ export function render(tagName: string, nodes: Node | string | (Node | string)[]
         props,
     }
 }
+
+const emptyElement = document.createElement("div")
+
+export class HTMLComponent extends HTMLElement {
+    constructor(template: HTMLTemplateElement) {
+        super()
+
+        const shadowRoot = this.attachShadow({ mode: "open" })
+        shadowRoot.append(template.content.cloneNode(true))
+    }
+
+    getElement(query: string): HTMLElement {
+        if (!this.shadowRoot) {
+            console.error(`Missing shadowRoot`)
+            return emptyElement
+        }
+
+        const element = this.shadowRoot.querySelector(query) as HTMLElement
+        if (!element) {
+            console.error(`Could not find child element with query: ${query}`)
+            return emptyElement
+        }
+
+        return element
+    }
+}

@@ -1,37 +1,77 @@
-export interface ProgressBarComponent {
-    element: HTMLElement
-    bar: HTMLElement
-    value: HTMLElement
-}
+import { HTMLComponent } from "./../dom"
 
-export function createProgressBar(): ProgressBarComponent {
-    const element = document.createElement("progress-bar")
+const template = document.createElement("template")
+template.innerHTML = html`<style>
+        :host {
+            position: relative;
+            display: flex;
+            width: 100%;
+            height: 16px;
+            background: black;
+            border-radius: 3px;
+            border: 2px solid black;
+        }
 
-    const shadow = document.createElement("bar")
-    shadow.classList.add("shadow")
-    element.appendChild(shadow)
+        .bar {
+            position: absolute;
+            width: 0%;
+            height: 100%;
+            left: 0;
+            transition: width 0.2s;
+            background: linear-gradient(#e0313d, #bb232d);
+            border-radius: 2px;
+        }
 
-    const bar = document.createElement("bar")
-    element.appendChild(bar)
+        .shadow {
+            width: 100%;
+            opacity: 0.35;
+        }
 
-    const value = document.createElement("value")
-    element.appendChild(value)
+        .value {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            color: #fff;
+            text-shadow: 0 0 2px #000;
+            font-size: 11px;
+        }
+    </style>
 
-    return {
-        element,
-        bar,
-        value,
+    <div class="bar shadow"></div>
+    <div id="progress" class="bar"></div>
+    <div id="value" class="value"></div>`
+
+class ProgressBar extends HTMLComponent {
+    constructor() {
+        super(template)
+    }
+
+    attributeChangedCallback() {
+        this.update()
+    }
+
+    update() {
+        const value = Number(this.getAttribute("value"))
+        const valueMax = Number(this.getAttribute("value-max"))
+
+        let percents = ((100 / valueMax) * value) | 0
+        if (percents > 100) {
+            percents = 100
+        } else if (percents < 0) {
+            percents = 0
+        }
+
+        this.getElement("#value").innerText = `${value}`
+        this.getElement("#progress").style.width = `${percents}%`
+    }
+
+    static get observedAttributes() {
+        return ["value", "value-max"]
     }
 }
 
-export function updateProgessBar(progressBar: ProgressBarComponent, value: number, valueMax: number) {
-    let percents = ((100 / valueMax) * value) | 0
-    if (percents > 100) {
-        percents = 100
-    } else if (percents < 0) {
-        percents = 0
-    }
-
-    progressBar.bar.style.width = `${percents}%`
-    progressBar.value.innerText = `${value}/${valueMax}`
-}
+customElements.define("progress-bar", ProgressBar)

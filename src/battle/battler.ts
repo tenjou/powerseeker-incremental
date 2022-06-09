@@ -1,27 +1,31 @@
-import { createProgressBar, ProgressBarComponent } from "../components/progress-bar"
 import { MonsterConfigs, MonsterId } from "../config/MonsterConfigs"
 import { getState } from "../state"
-import { addChild, removeAllChildren } from "./../dom"
 import { Battler } from "./../types"
-import { updateProgessBar } from "./../components/progress-bar"
+import { loadBattler } from "./components/battler-item"
 
-interface BattlerComponent {
-    element: HTMLElement
-    name: HTMLElement
-    hpBar: ProgressBarComponent
+let lastBattlerId = 0
+
+export function addBattler(battler: Battler) {
+    const { battle } = getState()
+
+    battler.id = lastBattlerId++
+
+    if (battler.isTeamA) {
+        battle.battlersA.push(battler)
+    } else {
+        battle.battlersB.push(battler)
+    }
 }
 
-const maxSlots = 4
-const components: BattlerComponent[] = []
+export function loadBattlers() {
+    const { battle } = getState()
 
-export function updateBattler(battler: Battler) {
-    const component = components[battler.id]
-
-    updateProgessBar(component.hpBar, battler.hp, battler.hpMax)
-}
-
-function selectBattler(battler: Battler) {
-    console.log("select", battler)
+    for (const battler of battle.battlersA) {
+        loadBattler(battler)
+    }
+    for (const battler of battle.battlersB) {
+        loadBattler(battler)
+    }
 }
 
 export function createMonsterBattler(monsterId: MonsterId): Battler {
@@ -39,51 +43,4 @@ export function createMonsterBattler(monsterId: MonsterId): Battler {
         isTeamA: false,
         isAI: true,
     }
-}
-
-function loadBattler(battler: Battler) {
-    const element = document.createElement("battler")
-    element.onclick = () => {
-        selectBattler(battler)
-    }
-
-    const name = document.createElement("battler-name")
-    name.innerText = battler.name
-    element.appendChild(name)
-
-    const hpBar = createProgressBar()
-    element.appendChild(hpBar.element)
-
-    if (battler.isTeamA) {
-        addChild("battle-column-a", element)
-    } else {
-        addChild("battle-column-b", element)
-    }
-
-    battler.id = components.length
-
-    components.push({
-        element,
-        name,
-        hpBar,
-    })
-
-    updateBattler(battler)
-}
-
-export function loadBattlers() {
-    const { battle } = getState()
-
-    for (const battler of battle.battlersA) {
-        loadBattler(battler)
-    }
-    for (const battler of battle.battlersB) {
-        loadBattler(battler)
-    }
-}
-
-export function unloadBattlers() {
-    removeAllChildren("battle-column-a")
-    removeAllChildren("battle-column-b")
-    components.length = 0
 }

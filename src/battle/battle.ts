@@ -6,7 +6,8 @@ import { updatePlayerStatus } from "../status"
 import { Battler } from "../types"
 import { randomItem } from "../utils"
 import { BattleAction } from "./../state"
-import { createMonsterBattler, loadBattlers, unloadBattlers, updateBattler } from "./battler"
+import { addBattler, createMonsterBattler, loadBattlers } from "./battler"
+import { updateBattler } from "./components/battler-item"
 
 const AttackAbility: Ability = {
     id: "attack",
@@ -25,11 +26,11 @@ function createBattle(cardId: number, action: StartBattleAction) {
     battle.cardId = cardId
     battle.turn = 1
 
-    battle.battlersA.push(battler)
+    addBattler(battler)
 
     for (const monsterId of action.monsters) {
         const monsterBattler = createMonsterBattler(monsterId)
-        battle.battlersB.push(monsterBattler)
+        addBattler(monsterBattler)
     }
 }
 
@@ -62,7 +63,8 @@ function endBattle() {
     updatePlayerStatus()
     setShow("area-town", true)
 
-    unloadBattlers()
+    removeAllChildren("battle-column-a")
+    removeAllChildren("battle-column-b")
     removeAllChildren("battle-abilities")
 }
 
