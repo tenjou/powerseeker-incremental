@@ -1,6 +1,6 @@
 import { AbilityConfigs } from "../config/AbilityConfigs"
 import { StartBattleAction } from "../config/CardConfigs"
-import { addChild, removeAllChildren, setShow, setText } from "../dom"
+import { addChild, removeAllChildren, setShow, setText, toggleClassName } from "../dom"
 import { Ability, getState } from "../state"
 import { updatePlayerStatus } from "../status"
 import { Battler } from "../types"
@@ -8,6 +8,10 @@ import { randomItem } from "../utils"
 import { BattleAction } from "./../state"
 import { addBattler, createMonsterBattler, loadBattlers } from "./battler"
 import { updateBattler } from "./components/battler-item"
+import { updateBattleStatus } from "./components/battle-status"
+import { loadAbilities } from "./components/battle-ability"
+import { getActionSpeed } from "./battle-utils"
+import { updateBattleAnimation } from "./battle-animation"
 
 const AttackAbility: Ability = {
     id: "attack",
@@ -37,10 +41,9 @@ function createBattle(cardId: number, action: StartBattleAction) {
 export function loadBattle() {
     setShow("area-town", false)
 
-    renderBattle()
-
     loadBattlers()
     loadAbilities()
+    updateBattleStatus()
 
     setShow("area-battle", true)
 }
@@ -52,9 +55,11 @@ function endBattle() {
         battlersA: [],
         battlersB: [],
         actions: [],
+        animations: [],
+        animationsActive: [],
         cardId: -1,
         id: 0,
-        tBattle: 0,
+        tCurrent: 0,
         turn: 0,
     }
 
@@ -68,42 +73,17 @@ function endBattle() {
     removeAllChildren("battle-abilities")
 }
 
-function renderBattle() {
-    const { battle } = getState()
-
-    setText("battle-turn", `Turn: ${battle.turn}`)
-}
-
-function loadAbility(ability: Ability) {
-    const abilityConfig = AbilityConfigs[ability.id]
-
-    const abilityElement = document.createElement("battle-ability")
-    abilityElement.innerText = abilityConfig.name
-    abilityElement.onclick = () => {
-        handleAbilityUse(ability)
-    }
-
-    addChild("battle-abilities", abilityElement)
-}
-
-function loadAbilities() {
-    const { abilities } = getState()
-
-    for (const ability of abilities) {
-        loadAbility(ability)
-    }
-}
-
-function handleAbilityUse(ability: Ability) {
+export function useAbility(ability: Ability) {
     const { battle, battler } = getState()
 
     battle.actions.push({
         battler,
         ability,
+        speed: getActionSpeed(100),
     })
 
     updateAI()
-    executeTurn()
+    startExecutingTurn()
 }
 
 function updateAI() {
@@ -117,23 +97,59 @@ function updateAI() {
         battle.actions.push({
             battler,
             ability: AttackAbility,
+            speed: getActionSpeed(100),
         })
     }
 }
 
-function executeTurn() {
+function startExecutingTurn() {
     const { battle } = getState()
 
-    for (const action of battle.actions) {
-        if (handleAction(action)) {
-            endBattle()
-            break
-        }
-    }
+    battle.actions.sort((a, b) => b.speed - a.speed)
+
+    handleNextAction()
+}
+
+function endTurn() {
+    const { battle } = getState()
 
     battle.turn += 1
 
-    renderBattle()
+    updateBattleStatus()
+}
+
+function handleNextAction() {
+    const { battle } = getState()
+
+    if (battle.actions.length <= 0) {
+        endTurn()
+        return
+    }
+
+    let offset = 0
+
+    for (const action of battle.actions) {
+        const tStart = battle.tCurrent + offset
+
+        battle.animations.push({
+            type: "forward",
+            battlerId: action.battler.id,
+            tStart,
+            tEnd: tStart + 1600,
+        })
+
+        battle.animations.push({
+            type: "skill-use",
+            battlerId: action.battler.id,
+            tStart: tStart + 100,
+            tEnd: tStart + 900,
+            abilityId: action.ability.id,
+        })
+
+        offset += 1000
+    }
+
+    battle.animations.sort((a, b) => b.tStart - a.tStart)
 }
 
 function handleAction(action: BattleAction) {
@@ -173,5 +189,11 @@ export function updateBattle(tDelta: number) {
         return
     }
 
-    battle.tBattle += tDelta
+    battle.tCurrent += tDelta
+
+    updateBattleAnimation()
+
+    // if (battle.animations.length > 0) {
+    //     return
+    // }
 }

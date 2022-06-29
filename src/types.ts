@@ -34,3 +34,11 @@ export interface Battler {
 }
 
 export type SlotType = "body" | "hand_1"
+
+export type Brand<T, FlavorT> = T & {
+    _type?: FlavorT
+}
+
+export type BattleId = Brand<number, "BattleId">
+export type BattlerId = Brand<number, "BattlerId">
+export type AbilityId = Brand<string, "AbilityId">

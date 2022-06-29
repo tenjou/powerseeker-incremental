@@ -29,6 +29,10 @@ container {
     box-sizing: border-box;
 }
 
+.white {
+    color: #fff;
+}
+
 .hide,
 .hidden {
     display: none;
@@ -64,6 +68,9 @@ row.center-v {
 column {
     display: flex;
     flex-direction: column;
+}
+column.center-h {
+    align-items: center;
 }
 column.center-v {
     justify-content: center;
@@ -101,16 +108,40 @@ content {
 
 battle-arena {
     display: flex;
-    height: 200px;
+    flex-direction: column;
+    height: 500px;
 }
 battle-space {
     flex: 1;
 }
+
+battle-abilities {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    height: 100px;
+}
 battle-ability {
-    padding: 10px;
-    margin: 10px;
-    background: gray;
+    padding: 4px;
+    border: 2px solid #000;
+    border-radius: 3px;
     cursor: pointer;
+    background: linear-gradient(#dad8d8, #c3c2c2);
+    box-shadow: 0 0 2px #696969;
+    margin: 0 3px;
+}
+battle-ability > img {
+    display: block;
+    zoom: 2;
+    image-rendering: pixelated;
+}
+battle-ability:hover,
+battle-ability.selected {
+    border: 2px solid #fff;
+}
+battle-ability:active {
+    transform: translateY(1px);
 }
 
 @keyframes battler-shake {
@@ -213,7 +244,7 @@ battle-status {
     display: flex;
     align-items: center;
     height: 34px;
-    margin: 4px 4px 100px 4px;
+    margin: 4px;
     padding: 0 8px;
     background: #0000008c;
     box-shadow: 0 3px #bdbdbd;

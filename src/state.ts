@@ -1,4 +1,5 @@
-import { Battler, Card, Item, Skill, SkillId, SlotType } from "./types"
+import { BattleAnimation } from "./battle/battle-animation"
+import { Battler, BattlerId, Card, Item, Skill, SkillId, SlotType } from "./types"
 
 interface TownStatus {
     cards: Card[]
@@ -25,6 +26,7 @@ interface DungeonStatus {
 export interface BattleAction {
     battler: Battler
     ability: Ability
+    speed: number
 }
 
 interface Battle {
@@ -33,7 +35,9 @@ interface Battle {
     battlersA: Battler[]
     battlersB: Battler[]
     actions: BattleAction[]
-    tBattle: number
+    animations: BattleAnimation[]
+    animationsActive: BattleAnimation[]
+    tCurrent: number
     turn: number
 }
 
@@ -121,7 +125,9 @@ let state: State = {
         battlersA: [],
         battlersB: [],
         actions: [],
-        tBattle: 0,
+        animations: [],
+        animationsActive: [],
+        tCurrent: 0,
         turn: 1,
     },
     abilities: [
@@ -131,6 +137,10 @@ let state: State = {
         },
         {
             id: "bash",
+            rank: 1,
+        },
+        {
+            id: "heal",
             rank: 1,
         },
     ],

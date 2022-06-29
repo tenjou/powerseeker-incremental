@@ -9,7 +9,6 @@ template.innerHTML = html`<style>
             height: 16px;
             background: black;
             border-radius: 3px;
-            border: 2px solid black;
         }
 
         .bar {
