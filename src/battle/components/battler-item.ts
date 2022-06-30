@@ -1,3 +1,4 @@
+import { ScrollingText } from "../../components/scrolling-text"
 import { AbilityConfigs } from "../../config/AbilityConfigs"
 import { HTMLComponent, toggleClassName } from "../../dom"
 import { getState } from "../../state"
@@ -27,16 +28,19 @@ export function toggleBattlerForward(battlerId: BattlerId, enable: boolean) {
     toggleClassName(`battler:${battlerId}`, battler.isTeamA ? "forward_bottom" : "forward_top", enable)
 }
 
+export function toggleBattlerShake(battlerId: BattlerId, enable: boolean) {
+    toggleClassName(`battler:${battlerId}`, "shake", enable)
+}
+
 export function showBattlerAbility(battlerId: BattlerId, abilityId?: AbilityId) {
-    const battlerElement = document.getElementById(`battler:${battlerId}`) as BattlerItem | null
-    if (!battlerElement) {
-        console.error(`Could not find battler with id: ${battlerId}`)
-        return
-    }
-
     const battler = findBattler(battlerId)
+    const element = findBattlerElement(battlerId)
+    element.update(battler, abilityId)
+}
 
-    battlerElement.update(battler, abilityId)
+export function addBattlerScrollingText(battlerId: BattlerId, text: string) {
+    const element = findBattlerElement(battlerId)
+    element.addScrollingText(text)
 }
 
 function findBattler(battlerId: BattlerId) {
@@ -53,9 +57,24 @@ function findBattler(battlerId: BattlerId) {
     return battler
 }
 
+function findBattlerElement(battlerId: BattlerId): BattlerItem {
+    const element = document.getElementById(`battler:${battlerId}`) as BattlerItem | null
+    if (!element) {
+        throw `Could not find battler with id: ${battlerId}`
+    }
+
+    return element
+}
+
 class BattlerItem extends HTMLComponent {
     constructor() {
         super(template)
+    }
+
+    addScrollingText(text: string) {
+        const scrollingText = new ScrollingText()
+        scrollingText.innerText = text
+        this.shadowRoot?.appendChild(scrollingText)
     }
 
     update(battler: Battler, abilityId?: AbilityId) {
@@ -80,16 +99,11 @@ customElements.define("battler-item", BattlerItem)
 const template = document.createElement("template")
 template.innerHTML = html`<style>
         :host {
-            display: flex;
-            flex-direction: row;
-            width: 110px;
-            border-radius: 3px;
-            transition: transform 0.2s ease;
-
             position: relative;
             display: flex;
             flex-direction: column;
             flex: 1;
+            width: 110px;
             margin: 2px 2px;
             background-color: #000;
             border: 2px solid #000;

@@ -139,11 +139,28 @@ function handleNextAction() {
         })
 
         battle.animations.push({
-            type: "skill-use",
+            type: "ability-use",
             battlerId: action.battler.id,
             tStart: tStart + 100,
             tEnd: tStart + 900,
             abilityId: action.ability.id,
+        })
+
+        battle.animations.push({
+            type: "shake",
+            battlerId: action.battler.id,
+            tStart: tStart + 500,
+            tEnd: tStart + 1600,
+        })
+
+        battle.animations.push({
+            type: "scrolling-text",
+            battlerId: action.battler.id,
+            tStart: tStart + 500,
+            tEnd: 0,
+            value: 100,
+            isCritical: true,
+            isMiss: false,
         })
 
         offset += 1000

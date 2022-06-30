@@ -1,14 +1,15 @@
-import { addCard, loadCards } from "./cards"
-import { updateSkills } from "./skills"
-import { updatePlayerStatus } from "./status"
-import { loadDungeonStage, setupDungeonSystem } from "./dungeon"
 import { loadBattle, updateBattle } from "./battle/battle"
-import { getState, loadState } from "./state"
-import { setShow } from "./dom"
-import { loadEquipmentWidget } from "./equipment"
-import { addItem, loadInventoryWidget } from "./inventory"
+import { addCard, loadCards } from "./cards"
 import "./components/area-transition"
 import "./components/progress-bar"
+import "./components/scrolling-text"
+import { setShow } from "./dom"
+import { loadDungeonStage, setupDungeonSystem } from "./dungeon"
+import { loadEquipmentWidget } from "./equipment"
+import { addItem, loadInventoryWidget } from "./inventory"
+import { updateSkills } from "./skills"
+import { getState, loadState } from "./state"
+import { updatePlayerStatus } from "./status"
 
 let tLast = 0
 
@@ -86,7 +87,7 @@ document.body.onload = () => {
 window.onbeforeunload = () => {
     const state = getState()
 
-    localStorage.setItem("profile", JSON.stringify(state))
+    // localStorage.setItem("profile", JSON.stringify(state))
 }
 
 declare global {

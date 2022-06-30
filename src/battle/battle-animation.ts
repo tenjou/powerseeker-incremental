@@ -1,6 +1,6 @@
 import { getState } from "../state"
-import { BattlerId } from "../types"
-import { showBattlerAbility, toggleBattlerForward } from "./components/battler-item"
+import { AbilityId, BattlerId } from "../types"
+import { addBattlerScrollingText, showBattlerAbility, toggleBattlerForward, toggleBattlerShake } from "./components/battler-item"
 
 export interface BattleAnimationBasic {
     battlerId: BattlerId
@@ -12,14 +12,23 @@ interface BattleAnimationForward extends BattleAnimationBasic {
     type: "forward"
 }
 
-interface BattleAnimationShake {}
-
-interface BattleAnimationSkillUse extends BattleAnimationBasic {
-    type: "skill-use"
-    abilityId: string
+interface BattleAnimationShake extends BattleAnimationBasic {
+    type: "shake"
 }
 
-export type BattleAnimation = BattleAnimationForward | BattleAnimationSkillUse
+interface BattleAnimationSkillUse extends BattleAnimationBasic {
+    type: "ability-use"
+    abilityId: AbilityId
+}
+
+interface BattleAnimationScrollingText extends BattleAnimationBasic {
+    type: "scrolling-text"
+    value: number
+    isCritical: boolean
+    isMiss: boolean
+}
+
+export type BattleAnimation = BattleAnimationForward | BattleAnimationSkillUse | BattleAnimationShake | BattleAnimationScrollingText
 
 function activateAnimation(animation: BattleAnimation) {
     switch (animation.type) {
@@ -27,8 +36,16 @@ function activateAnimation(animation: BattleAnimation) {
             toggleBattlerForward(animation.battlerId, true)
             break
 
-        case "skill-use":
+        case "ability-use":
             showBattlerAbility(animation.battlerId, animation.abilityId)
+            break
+
+        case "shake":
+            toggleBattlerShake(animation.battlerId, true)
+            break
+
+        case "scrolling-text":
+            addBattlerScrollingText(animation.battlerId, "1234!")
             break
     }
 }
@@ -39,8 +56,15 @@ function deactivateAnimation(animation: BattleAnimation) {
             toggleBattlerForward(animation.battlerId, false)
             break
 
-        case "skill-use":
+        case "ability-use":
             showBattlerAbility(animation.battlerId)
+            break
+
+        case "shake":
+            toggleBattlerShake(animation.battlerId, false)
+            break
+
+        case "scrolling-text":
             break
     }
 }
