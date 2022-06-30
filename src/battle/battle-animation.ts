@@ -46,7 +46,15 @@ function activateAnimation(animation: BattleAnimation) {
 
         case "scrolling-text": {
             const color = animation.value >= 0 ? "#8bc34a" : "#f44336"
-            addBattlerScrollingText(animation.battlerId, "1234!", color)
+
+            let text = `${Math.abs(animation.value)}`
+            if (animation.isMiss) {
+                text = "miss"
+            } else {
+                text += "!"
+            }
+
+            addBattlerScrollingText(animation.battlerId, text, color)
             break
         }
     }
