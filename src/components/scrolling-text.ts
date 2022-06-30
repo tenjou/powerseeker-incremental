@@ -19,7 +19,7 @@ template.innerHTML = html`<style>
         :host {
             position: absolute;
             left: 50%;
-            top: 100px;
+            top: -15px;
             z-index: 999;
             padding: 4px;
             display: flex;
@@ -36,8 +36,6 @@ template.innerHTML = html`<style>
             animation-duration: 1.1s;
             animation-iteration-count: 1;
             animation-fill-mode: forwards;
-
-            color: #f44336;
         }
 
         @keyframes scrolling-text {
