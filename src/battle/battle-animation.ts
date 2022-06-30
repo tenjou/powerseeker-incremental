@@ -44,9 +44,11 @@ function activateAnimation(animation: BattleAnimation) {
             toggleBattlerShake(animation.battlerId, true)
             break
 
-        case "scrolling-text":
-            addBattlerScrollingText(animation.battlerId, "1234!")
+        case "scrolling-text": {
+            const color = animation.value >= 0 ? "#8bc34a" : "#f44336"
+            addBattlerScrollingText(animation.battlerId, "1234!", color)
             break
+        }
     }
 }
 

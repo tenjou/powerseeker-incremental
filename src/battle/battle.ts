@@ -158,7 +158,7 @@ function handleNextAction() {
             battlerId: action.battler.id,
             tStart: tStart + 500,
             tEnd: 0,
-            value: 100,
+            value: -100,
             isCritical: true,
             isMiss: false,
         })

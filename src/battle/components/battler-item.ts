@@ -38,9 +38,9 @@ export function showBattlerAbility(battlerId: BattlerId, abilityId?: AbilityId) 
     element.update(battler, abilityId)
 }
 
-export function addBattlerScrollingText(battlerId: BattlerId, text: string) {
+export function addBattlerScrollingText(battlerId: BattlerId, text: string, color: string) {
     const element = findBattlerElement(battlerId)
-    element.addScrollingText(text)
+    element.addScrollingText(text, color)
 }
 
 function findBattler(battlerId: BattlerId) {
@@ -71,8 +71,9 @@ class BattlerItem extends HTMLComponent {
         super(template)
     }
 
-    addScrollingText(text: string) {
+    addScrollingText(text: string, color: string) {
         const scrollingText = new ScrollingText()
+        scrollingText.style.color = color
         scrollingText.innerText = text
         this.shadowRoot?.appendChild(scrollingText)
     }
