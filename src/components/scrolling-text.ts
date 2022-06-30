@@ -18,15 +18,12 @@ const template = document.createElement("template")
 template.innerHTML = html`<style>
         :host {
             position: absolute;
-            left: 50%;
-            top: -15px;
-            z-index: 999;
-            padding: 4px;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: rgba(0, 0, 0, 0.05);
-            border-radius: 3px;
+            left: 50%;
+            top: -15px;
+            padding: 4px;
             z-index: 999;
             font-size: 19px;
             font-family: fantasy;

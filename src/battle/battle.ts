@@ -61,6 +61,8 @@ function endBattle() {
         id: 0,
         tCurrent: 0,
         turn: 0,
+        selectedAbilityId: "",
+        selectedBattlerId: -1,
     }
 
     setShow("area-battle", false)
