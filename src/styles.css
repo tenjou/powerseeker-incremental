@@ -20,6 +20,10 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+semibold {
+    font-weight: 600;
+}
+
 container {
     padding: 20px;
     display: flex;
@@ -29,13 +33,22 @@ container {
     box-sizing: border-box;
 }
 
+red {
+    color: #ff0000;
+    font-weight: bold;
+}
+green {
+    color: #4caf50;
+    font-weight: bold;
+}
+
 .white {
     color: #fff;
 }
 
 .hide,
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 text.header {
@@ -47,11 +60,20 @@ text.tertiary {
     color: #bbb;
     text-shadow: #333 0px 0px 2px;
 }
+text.bold {
+    font-weight: bold;
+}
 text.size10 {
     font-size: 10px;
 }
+text.size13 {
+    font-size: 13px;
+}
 text.uppercase {
     text-transform: uppercase;
+}
+text.space-2 {
+    margin-bottom: 2px;
 }
 
 row {
@@ -60,6 +82,9 @@ row {
 }
 row.flex {
     flex: 1;
+}
+row.center-h {
+    justify-content: center;
 }
 row.center-v {
     align-items: center;
@@ -111,9 +136,6 @@ battle-arena {
     flex-direction: column;
     height: 500px;
 }
-battle-space {
-    flex: 1;
-}
 
 battle-abilities {
     display: flex;
@@ -142,6 +164,18 @@ battle-ability.selected {
 }
 battle-ability:active {
     transform: translateY(1px);
+}
+
+#battle-tooltip {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 200px;
+    padding: 6px 6px 12px;
+    border-radius: 3px;
+    background: #f1f1f1;
+    box-shadow: 0 0 8px #dcdcdc;
+    color: #444;
+    text-align: center;
 }
 
 @keyframes battler-shake {

@@ -40,6 +40,16 @@ export function setText(id: string, text: string) {
     element.innerText = text
 }
 
+export function setHTML(id: string, text: string) {
+    const element = document.getElementById(id)
+    if (!element) {
+        console.error(`Could set element: "${id}" text to: ${text}`)
+        return
+    }
+
+    element.innerHTML = text
+}
+
 export function setOnClick(id: string, func: () => void) {
     const element = document.getElementById(id)
     if (!element) {

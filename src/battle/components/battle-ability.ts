@@ -1,7 +1,8 @@
 import { Ability, getState } from "../../state"
 import { AbilityId } from "../../types"
-import { addChild, toggleClassName } from "./../../dom"
+import { addChild, setHTML, toggleClassName } from "./../../dom"
 import { useAbility } from "./../battle"
+import { AbilityConfigs, AbilityEffect } from "./../../config/AbilityConfigs"
 
 export function loadAbilities() {
     const { abilities } = getState()
@@ -45,6 +46,39 @@ function updateAbilities() {
     }
 
     if (battle.selectedAbilityId) {
+        const abilityConfig = AbilityConfigs[battle.selectedAbilityId]
+        let abilityTooltip = abilityConfig.tooltip
+
+        const regex = /%[0-9]/gm
+        const regexBuff = regex.exec(abilityConfig.tooltip)
+        if (regexBuff) {
+            const effects = abilityConfig.effects
+            for (const entry of regexBuff) {
+                const effectId = Number(entry.slice(1))
+                const effect = effects[effectId]
+                const color = getEffectColor(effect)
+
+                abilityTooltip = abilityTooltip.replace(entry, `<${color}>${effect.power}</${color}>`)
+            }
+        }
+
         toggleClassName(`ability:${battle.selectedAbilityId}`, "selected", true)
+
+        toggleClassName("battle-tooltip", "hide", false)
+        setHTML("battle-tooltip-title", abilityConfig.name)
+        setHTML("battle-tooltip-text", abilityTooltip)
+    } else {
+        toggleClassName("battle-tooltip", "hide", true)
     }
+}
+
+function getEffectColor(effect: AbilityEffect) {
+    switch (effect.type) {
+        case "hp-minus":
+            return "red"
+        case "hp-plus":
+            return "green"
+    }
+
+    return "black"
 }

@@ -1,6 +1,6 @@
 import { CharacterStatType } from "../stats"
 
-interface AbilityEffect {
+export interface AbilityEffect {
     type: "hp-minus" | "hp-plus"
     power: number
     stat: CharacterStatType
@@ -9,6 +9,7 @@ interface AbilityEffect {
 interface AbilityConfig {
     id: string
     name: string
+    tooltip: string
     effects: AbilityEffect[]
 }
 
@@ -16,6 +17,7 @@ export const AbilityConfigs: Record<string, AbilityConfig> = {
     attack: {
         id: "attack",
         name: "Attack",
+        tooltip: "Attack an opponent, causing %0 <semibold>physical</semibold> damage.",
         effects: [
             {
                 type: "hp-minus",
@@ -27,6 +29,7 @@ export const AbilityConfigs: Record<string, AbilityConfig> = {
     bash: {
         id: "bash",
         name: "Bash",
+        tooltip: "Attack an opponent, causing %0 <semibold>physical</semibold> damage.",
         effects: [
             {
                 type: "hp-minus",
@@ -38,6 +41,7 @@ export const AbilityConfigs: Record<string, AbilityConfig> = {
     heal: {
         id: "heal",
         name: "Heal",
+        tooltip: "Restore %0 health to an ally.",
         effects: [
             {
                 type: "hp-plus",

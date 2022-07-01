@@ -75,7 +75,11 @@
 
                     <battle-arena>
                         <column id="battle-column-b" class="center-h"></column>
-                        <battle-space></battle-space>
+                        <row class="flex center-h center-v"
+                            ><column id="battle-tooltip" class="hide"
+                                ><text id="battle-tooltip-title" class="bold space-2"></text>
+                                <div id="battle-tooltip-text"></div></column
+                        ></row>
                         <column id="battle-column-a" class="center-h"></column>
                     </battle-arena>
                     <battle-abilities id="battle-abilities"></battle-abilities>
