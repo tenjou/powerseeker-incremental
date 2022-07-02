@@ -1,3 +1,4 @@
+import { AbilityConfigs } from "../config/AbilityConfigs"
 import { MonsterConfigs, MonsterId } from "../config/MonsterConfigs"
 import { getState } from "../state"
 import { Battler } from "./../types"

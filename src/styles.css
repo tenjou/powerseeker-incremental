@@ -51,6 +51,11 @@ green {
     display: none !important;
 }
 
+.inactive {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
 text.header {
     font-weight: bold;
     text-transform: uppercase;

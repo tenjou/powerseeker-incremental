@@ -41,6 +41,7 @@ interface Battle {
     turn: number
     selectedAbilityId: AbilityId
     selectedBattlerId: BattlerId
+    isTeamA: boolean
 }
 
 export interface Ability {
@@ -133,6 +134,7 @@ let state: State = {
         turn: 1,
         selectedAbilityId: "",
         selectedBattlerId: -1,
+        isTeamA: true,
     },
     abilities: [
         {

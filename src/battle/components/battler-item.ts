@@ -32,6 +32,12 @@ export function toggleBattlerShake(battlerId: BattlerId, enable: boolean) {
     toggleClassName(`battler:${battlerId}`, "shake", enable)
 }
 
+export function toggleTeamInactive(isTeamA: boolean, inactive: boolean) {
+    const teamElementId = `battle-column-${isTeamA ? "a" : "b"}`
+
+    toggleClassName(teamElementId, "inactive", inactive)
+}
+
 export function showBattlerAbility(battlerId: BattlerId, abilityId?: AbilityId) {
     const battler = findBattler(battlerId)
     const element = findBattlerElement(battlerId)
@@ -117,11 +123,6 @@ template.innerHTML = html`<style>
             background-color: #fff;
             color: #000;
             border: 2px solid #333;
-        }
-
-        &.inactive {
-            opacity: 0.5;
-            pointer-events: none;
         }
         :host(.forward_top) {
             background-color: white;

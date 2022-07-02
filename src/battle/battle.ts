@@ -63,6 +63,7 @@ function endBattle() {
         turn: 0,
         selectedAbilityId: "",
         selectedBattlerId: -1,
+        isTeamA: true,
     }
 
     setShow("area-battle", false)
