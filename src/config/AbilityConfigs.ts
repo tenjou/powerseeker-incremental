@@ -6,7 +6,7 @@ export interface AbilityEffect {
     stat: CharacterStatType
 }
 
-interface AbilityConfig {
+export interface AbilityConfig {
     id: string
     name: string
     isOffensive: boolean

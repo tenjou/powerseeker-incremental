@@ -1,6 +1,6 @@
 import { getState } from "../state"
 import { AbilityId, BattlerId } from "../types"
-import { addBattlerScrollingText, showBattlerAbility, toggleBattlerForward, toggleBattlerShake } from "./components/battler-item"
+import { addBattlerScrollingText, showBattlerAbility, toggleBattlerForward, toggleBattlerShake } from "./battler-item"
 
 export interface BattleAnimationBasic {
     battlerId: BattlerId

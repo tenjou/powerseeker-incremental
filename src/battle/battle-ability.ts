@@ -1,7 +1,7 @@
-import { Ability, getState } from "../../state"
-import { AbilityId } from "../../types"
-import { AbilityConfigs, AbilityEffect } from "./../../config/AbilityConfigs"
-import { addChild, setHTML, toggleClassName } from "./../../dom"
+import { Ability, getState } from "../state"
+import { AbilityId } from "../types"
+import { AbilityConfig, AbilityConfigs, AbilityEffect } from "../config/AbilityConfigs"
+import { addChild, setHTML, toggleClassName } from "../dom"
 import { toggleTeamInactive } from "./battler-item"
 
 export function loadAbilities() {
@@ -45,8 +45,6 @@ function updateAbilities() {
         child.className = ""
     }
 
-    let inactiveTeamA = true
-
     if (battle.selectedAbilityId) {
         const abilityConfig = AbilityConfigs[battle.selectedAbilityId]
         let abilityTooltip = abilityConfig.tooltip
@@ -70,13 +68,14 @@ function updateAbilities() {
         setHTML("battle-tooltip-title", abilityConfig.name)
         setHTML("battle-tooltip-text", abilityTooltip)
 
-        inactiveTeamA = abilityConfig.isOffensive
+        const abilityUsable = canTargetTeamA(abilityConfig, battle.isTeamA)
+        toggleTeamInactive(!battle.isTeamA, abilityUsable)
+        toggleTeamInactive(battle.isTeamA, !abilityUsable)
     } else {
         toggleClassName("battle-tooltip", "hide", true)
+        toggleTeamInactive(true, false)
+        toggleTeamInactive(false, false)
     }
-
-    toggleTeamInactive(inactiveTeamA, true)
-    toggleTeamInactive(!inactiveTeamA, false)
 }
 
 function getEffectColor(effect: AbilityEffect) {
@@ -86,4 +85,12 @@ function getEffectColor(effect: AbilityEffect) {
         case "hp-plus":
             return "green"
     }
+}
+
+function canTargetTeamA(abilityConfig: AbilityConfig, isTeamA: boolean) {
+    if (abilityConfig.isOffensive) {
+        return !isTeamA
+    }
+
+    return isTeamA
 }

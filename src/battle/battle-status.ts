@@ -1,5 +1,5 @@
-import { setText } from "../../dom"
-import { getState } from "../../state"
+import { setText } from "../dom"
+import { getState } from "../state"
 
 export function updateBattleStatus() {
     const { battle } = getState()

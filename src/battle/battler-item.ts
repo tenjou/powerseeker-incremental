@@ -1,9 +1,9 @@
-import { ScrollingText } from "../../components/scrolling-text"
-import { AbilityConfigs } from "../../config/AbilityConfigs"
-import { HTMLComponent, toggleClassName } from "../../dom"
-import { getState } from "../../state"
-import { AbilityId, Battler, BattlerId } from "../../types"
-import { addChild } from "./../../dom"
+import { ScrollingText } from "../components/scrolling-text"
+import { AbilityConfigs } from "../config/AbilityConfigs"
+import { HTMLComponent, toggleClassName } from "../dom"
+import { getState } from "../state"
+import { AbilityId, Battler, BattlerId } from "../types"
+import { addChild } from "../dom"
 
 export function updateBattler(battler: Battler) {
     const element = document.getElementById(`battler:${battler.id}`) as BattlerItem
