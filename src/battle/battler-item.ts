@@ -23,7 +23,7 @@ export function loadBattler(battler: Battler) {
 }
 
 export function toggleBattlerForward(battlerId: BattlerId, enable: boolean) {
-    const battler = findBattler(battlerId)
+    const battler = getBattler(battlerId)
 
     toggleClassName(`battler:${battlerId}`, battler.isTeamA ? "forward_bottom" : "forward_top", enable)
 }
@@ -39,7 +39,7 @@ export function toggleTeamInactive(isTeamA: boolean, inactive: boolean) {
 }
 
 export function showBattlerAbility(battlerId: BattlerId, abilityId?: AbilityId) {
-    const battler = findBattler(battlerId)
+    const battler = getBattler(battlerId)
     const element = findBattlerElement(battlerId)
     element.update(battler, abilityId)
 }
@@ -49,18 +49,10 @@ export function addBattlerScrollingText(battlerId: BattlerId, text: string, colo
     element.addScrollingText(text, color)
 }
 
-function findBattler(battlerId: BattlerId) {
+function getBattler(battlerId: BattlerId) {
     const { battle } = getState()
 
-    let battler = battle.battlersA.find((entry) => entry.id === battlerId)
-    if (!battler) {
-        battler = battle.battlersB.find((entry) => entry.id === battlerId)
-    }
-    if (!battler) {
-        throw `Could not find battler: ${battlerId}`
-    }
-
-    return battler
+    return battle.battlers[battlerId]
 }
 
 function findBattlerElement(battlerId: BattlerId): BattlerItem {

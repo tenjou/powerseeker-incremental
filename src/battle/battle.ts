@@ -3,7 +3,7 @@ import { StartBattleAction } from "../config/CardConfigs"
 import { addChild, removeAllChildren, setShow, setText, toggleClassName } from "../dom"
 import { Ability, getState } from "../state"
 import { updatePlayerStatus } from "../status"
-import { Battler } from "../types"
+import { Battler, BattlerId } from "../types"
 import { randomItem } from "../utils"
 import { BattleAction } from "./../state"
 import { addBattler, createMonsterBattler, loadBattlers } from "./battler"
@@ -52,6 +52,7 @@ function endBattle() {
     const state = getState()
 
     state.battle = {
+        battlers: [],
         battlersA: [],
         battlersB: [],
         actions: [],
@@ -76,7 +77,7 @@ function endBattle() {
     removeAllChildren("battle-abilities")
 }
 
-export function useAbility(ability: Ability) {
+export function useAbility(ability: Ability, targetId: BattlerId) {
     const { battle, battler } = getState()
 
     battle.actions.push({
@@ -92,7 +93,8 @@ export function useAbility(ability: Ability) {
 function updateAI() {
     const { battle } = getState()
 
-    for (const battler of battle.battlersB) {
+    for (const battlerId of battle.battlersB) {
+        const battler = battle.battlers[battlerId]
         if (!battler.isAI) {
             continue
         }
@@ -175,14 +177,15 @@ function handleNextAction() {
 function handleAction(action: BattleAction) {
     const { battle } = getState()
 
-    const enemyBattlers = action.battler.isTeamA ? battle.battlersB : battle.battlersA
-    const target = randomItem(enemyBattlers)
+    const enemyBattlerIds = action.battler.isTeamA ? battle.battlersB : battle.battlersA
+    const targetId = randomItem(enemyBattlerIds)
+    const target = battle.battlers[targetId]
 
     target.hp -= action.battler.power - target.defense
     if (target.hp <= 0) {
         target.hp = 0
 
-        if (isTeamDead(enemyBattlers)) {
+        if (isTeamDead(enemyBattlerIds)) {
             return true
         }
     }
@@ -192,8 +195,11 @@ function handleAction(action: BattleAction) {
     return false
 }
 
-function isTeamDead(battlers: Battler[]) {
-    for (const battler of battlers) {
+function isTeamDead(battlerIds: BattlerId[]) {
+    const { battle } = getState()
+
+    for (const battlerId of battlerIds) {
+        const battler = battle.battlers[battlerId]
         if (battler.hp > 0) {
             return false
         }

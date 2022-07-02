@@ -1,30 +1,24 @@
-import { AbilityConfigs } from "../config/AbilityConfigs"
 import { MonsterConfigs, MonsterId } from "../config/MonsterConfigs"
 import { getState } from "../state"
 import { Battler } from "./../types"
 import { loadBattler } from "./battler-item"
 
-let lastBattlerId = 0
-
 export function addBattler(battler: Battler) {
     const { battle } = getState()
 
-    battler.id = lastBattlerId++
+    battler.id = battle.battlers.push(battler) - 1
 
     if (battler.isTeamA) {
-        battle.battlersA.push(battler)
+        battle.battlersA.push(battler.id)
     } else {
-        battle.battlersB.push(battler)
+        battle.battlersB.push(battler.id)
     }
 }
 
 export function loadBattlers() {
     const { battle } = getState()
 
-    for (const battler of battle.battlersA) {
-        loadBattler(battler)
-    }
-    for (const battler of battle.battlersB) {
+    for (const battler of battle.battlers) {
         loadBattler(battler)
     }
 }

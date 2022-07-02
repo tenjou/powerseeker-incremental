@@ -32,8 +32,9 @@ export interface BattleAction {
 interface Battle {
     id: number
     cardId: number
-    battlersA: Battler[]
-    battlersB: Battler[]
+    battlers: Battler[]
+    battlersA: BattlerId[]
+    battlersB: BattlerId[]
     actions: BattleAction[]
     animations: BattleAnimation[]
     animationsActive: BattleAnimation[]
@@ -125,6 +126,7 @@ let state: State = {
     battle: {
         id: 0,
         cardId: 0,
+        battlers: [],
         battlersA: [],
         battlersB: [],
         actions: [],
