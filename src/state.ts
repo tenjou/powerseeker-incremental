@@ -1,12 +1,14 @@
 import { BattleAnimation } from "./battle/battle-animation"
-import { BattleActionLog } from "./battle/battle-types"
-import { Battler, BattlerId, Card, Item, Skill, SkillId, SlotType } from "./types"
+import { BattleActionLog, Battler, BattlerView } from "./battle/battle-types"
+import { BattlerId, Card, Item, Skill, SkillId, SlotType } from "./types"
 
 interface TownStatus {
     cards: Card[]
 }
 
 interface PlayerStatus {
+    level: number
+    name: string
     xp: number
     xpMax: number
     stamina: number
@@ -35,6 +37,7 @@ interface Battle {
     id: number
     cardId: number
     battlers: Battler[]
+    battlersView: BattlerView[]
     teamA: BattlerId[]
     teamB: BattlerId[]
     actions: BattleAction[]
@@ -75,6 +78,8 @@ interface State {
 
 let state: State = {
     player: {
+        level: 1,
+        name: "Player",
         xp: 0,
         xpMax: 100,
         stamina: 10,
@@ -87,8 +92,8 @@ let state: State = {
     },
     battler: {
         id: 0,
-        name: "Player",
         level: 1,
+        name: "Player",
         hp: 10,
         hpMax: 40,
         stats: {
@@ -137,6 +142,7 @@ let state: State = {
         id: 0,
         cardId: 0,
         battlers: [],
+        battlersView: [],
         teamA: [],
         teamB: [],
         actions: [],

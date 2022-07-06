@@ -7,7 +7,7 @@ export function updatePlayerStatus() {
     const { player, battler } = getState()
 
     renderParentId("stats", [
-        render("div", `Level: ${battler.level}`),
+        render("div", `Level: ${player.level}`),
         render("div", `Experience: ${player.xp}/${player.xpMax}`),
         render("div", `HP: ${battler.hp}/${battler.hpMax}`),
         render("div", `Attack: ${battler.stats.attack}`),

@@ -1,20 +1,20 @@
 import { ScrollingText } from "../components/scrolling-text"
 import { AbilityConfigs } from "../config/ability-configs"
-import { HTMLComponent, toggleClassName } from "../dom"
+import { addChild, HTMLComponent, toggleClassName } from "../dom"
 import { getState } from "../state"
-import { AbilityId, Battler, BattlerId } from "../types"
-import { addChild } from "../dom"
+import { AbilityId, BattlerId } from "../types"
 import { useSelectedAbility } from "./battle"
+import { Battler } from "./battle-types"
 
 export function updateBattler(battler: Battler) {
     const element = document.getElementById(`battler:${battler.id}`) as BattlerItem
-    element.update(battler)
+    element.update(battler.id)
 }
 
 export function loadBattler(battler: Battler) {
     const element = document.createElement("battler-item") as BattlerItem
     element.id = `battler:${battler.id}`
-    element.update(battler)
+    element.update(battler.id)
     element.onclick = () => useSelectedAbility(battler.id)
 
     if (battler.isTeamA) {
@@ -25,7 +25,9 @@ export function loadBattler(battler: Battler) {
 }
 
 export function toggleBattlerForward(battlerId: BattlerId, enable: boolean) {
-    const battler = getBattler(battlerId)
+    const { battle } = getState()
+
+    const battler = battle.battlers[battlerId]
 
     toggleClassName(`battler:${battlerId}`, battler.isTeamA ? "forward_bottom" : "forward_top", enable)
 }
@@ -41,20 +43,13 @@ export function toggleTeamInactive(isTeamA: boolean, inactive: boolean) {
 }
 
 export function showBattlerAbility(battlerId: BattlerId, abilityId?: AbilityId) {
-    const battler = getBattler(battlerId)
     const element = findBattlerElement(battlerId)
-    element.update(battler, abilityId)
+    element.update(battlerId, abilityId)
 }
 
 export function addBattlerScrollingText(battlerId: BattlerId, text: string, color: string) {
     const element = findBattlerElement(battlerId)
     element.addScrollingText(text, color)
-}
-
-function getBattler(battlerId: BattlerId) {
-    const { battle } = getState()
-
-    return battle.battlers[battlerId]
 }
 
 function findBattlerElement(battlerId: BattlerId): BattlerItem {
@@ -78,11 +73,16 @@ class BattlerItem extends HTMLComponent {
         this.shadowRoot?.appendChild(scrollingText)
     }
 
-    update(battler: Battler, abilityId?: AbilityId) {
+    update(battlerId: BattlerId, abilityId?: AbilityId) {
+        const { battle } = getState()
+
+        const battler = battle.battlers[battlerId]
+        const battlerView = battle.battlersView[battlerId]
+
         this.getElement("#name").innerText = battler.name
         this.getElement("#level").innerText = String(battler.level)
-        this.getElement("progress-bar").setAttribute("value", `${battler.hp}`)
-        this.getElement("progress-bar").setAttribute("value-max", `${battler.hpMax}`)
+        this.getElement("progress-bar").setAttribute("value", `${battlerView.hp}`)
+        this.getElement("progress-bar").setAttribute("value-max", `${battlerView.hpMax}`)
 
         toggleClassName("cast-bar", "hide", !abilityId, this)
 

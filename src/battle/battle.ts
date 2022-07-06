@@ -3,14 +3,14 @@ import { StartBattleAction } from "../config/CardConfigs"
 import { removeAllChildren, setShow } from "../dom"
 import { Ability, getState } from "../state"
 import { updatePlayerStatus } from "../status"
-import { Battler, BattlerId } from "../types"
+import { BattlerId } from "../types"
 import { randomItem, roll } from "../utils"
 import { BattleAction } from "./../state"
 import { shuffle } from "./../utils"
 import { loadAbilities, updateAbilities } from "./battle-ability"
 import { updateBattleStatus } from "./battle-status"
-import { BattleActionTarget } from "./battle-types"
-import { getActionSpeed } from "./battle-utils"
+import { BattleActionLog, BattleActionTarget, Battler } from "./battle-types"
+import { calculatePower, getActionSpeed } from "./battle-utils"
 import { addBattler, createMonsterBattler, loadBattlers } from "./battler"
 
 const AttackAbility: Ability = {
@@ -29,6 +29,7 @@ function createBattle(cardId: number, action: StartBattleAction) {
     battle.id = cache.lastBattleId++
     battle.cardId = cardId
     battle.turn = 1
+    battle.log.push([])
 
     addBattler(battler)
     battle.playerBattlerId = battler.id
@@ -54,6 +55,7 @@ function endBattle() {
 
     state.battle = {
         battlers: [],
+        battlersView: [],
         teamA: [],
         teamB: [],
         actions: [],
@@ -266,6 +268,7 @@ function updateTurn() {
 
     const targets = targetOpponent(caster, action.targetId)
 
+    let targetHasDied = false
     const actionTargets: BattleActionTarget[] = new Array(targets.length)
 
     for (let n = 0; n < targets.length; n += 1) {
@@ -284,10 +287,37 @@ function updateTurn() {
                         power = -1
                         break
                     }
+
+                    power = calculatePower(caster.stats, effect) * -1
+
+                    const criticalChance = caster.stats.critical - target.stats.critical
+                    if (roll(criticalChance)) {
+                        isCritical = true
+                        power *= 1.25 | 0
+                    }
+
+                    target.hp += power
+                    if (target.hp <= 0) {
+                        target.hp = 0
+                        targetHasDied = true
+                        removeBattlerFromTeam(target)
+                    }
                     break
                 }
 
                 case "hp-plus": {
+                    power = calculatePower(caster.stats, effect)
+
+                    const criticalChance = 100 + caster.stats.critical
+                    if (roll(criticalChance)) {
+                        isCritical = true
+                        power *= 1.25 | 0
+                    }
+
+                    target.hp += power
+                    if (target.hp > target.hpMax) {
+                        target.hp = target.hpMax
+                    }
                     break
                 }
             }
@@ -300,9 +330,21 @@ function updateTurn() {
             }
         }
     }
+
+    const logEntry: BattleActionLog = {
+        abilityId: action.ability.id,
+        casterId: action.casterId,
+        targets: actionTargets,
+    }
+    // const turnLog = battle.log[battle.turn - 1]
+    // turnLog.push(logEntry)
+
+    console.log(battle.actions)
+    console.log(battle.battlers)
+    console.log(logEntry)
 }
 
-const targetOpponent = (caster: Battler, targetId: BattlerId) => {
+function targetOpponent(caster: Battler, targetId: BattlerId) {
     const { battle } = getState()
 
     const targetBattler = battle.battlers[targetId]
@@ -319,6 +361,19 @@ const targetOpponent = (caster: Battler, targetId: BattlerId) => {
     }
 
     return []
+}
+
+function removeBattlerFromTeam(battlerToRemove: Battler) {
+    const { battle } = getState()
+
+    const team = battlerToRemove.isTeamA ? battle.teamA : battle.teamB
+    const index = team.findIndex((battlerId) => battlerId === battlerToRemove.id)
+    if (index === -1) {
+        console.error(`Could not remove battler from the team: ${battlerToRemove}`)
+        return
+    }
+
+    team.splice(index, 1)
 }
 
 export function updateBattle(tDelta: number) {
