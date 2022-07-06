@@ -4,7 +4,7 @@ interface MonsterConfig {
     name: string
     level: number
     hp: number
-    power: number
+    attack: number
     defense: number
     speed: number
     loot: {
@@ -18,7 +18,7 @@ export const MonsterConfigs: Record<MonsterId, MonsterConfig> = {
         name: "Boar",
         level: 1,
         hp: 10,
-        power: 2,
+        attack: 2,
         defense: 1,
         speed: 1,
         loot: {

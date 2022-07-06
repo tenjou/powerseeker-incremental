@@ -1,5 +1,6 @@
 import { BattleAnimation } from "./battle/battle-animation"
-import { AbilityId, Battler, BattlerId, Card, Item, Skill, SkillId, SlotType } from "./types"
+import { BattleActionLog } from "./battle/battle-types"
+import { Battler, BattlerId, Card, Item, Skill, SkillId, SlotType } from "./types"
 
 interface TownStatus {
     cards: Card[]
@@ -24,7 +25,8 @@ interface DungeonStatus {
 }
 
 export interface BattleAction {
-    battler: Battler
+    casterId: BattlerId
+    targetId: BattlerId
     ability: Ability
     speed: number
 }
@@ -33,16 +35,18 @@ interface Battle {
     id: number
     cardId: number
     battlers: Battler[]
-    battlersA: BattlerId[]
-    battlersB: BattlerId[]
+    teamA: BattlerId[]
+    teamB: BattlerId[]
     actions: BattleAction[]
     animations: BattleAnimation[]
     animationsActive: BattleAnimation[]
     tCurrent: number
     turn: number
-    selectedAbilityId: AbilityId
+    selectedAbility: Ability | null
     selectedBattlerId: BattlerId
     isTeamA: boolean
+    playerBattlerId: BattlerId
+    log: BattleActionLog[][]
 }
 
 export interface Ability {
@@ -87,9 +91,15 @@ let state: State = {
         level: 1,
         hp: 10,
         hpMax: 40,
-        power: 4,
-        defense: 0,
-        speed: 2,
+        stats: {
+            accuracy: 0,
+            attack: 4,
+            critical: 0,
+            defense: 0,
+            evasion: 0,
+            healing: 1,
+            speed: 2,
+        },
         isTeamA: true,
         isAI: false,
     },
@@ -127,16 +137,18 @@ let state: State = {
         id: 0,
         cardId: 0,
         battlers: [],
-        battlersA: [],
-        battlersB: [],
+        teamA: [],
+        teamB: [],
         actions: [],
         animations: [],
         animationsActive: [],
         tCurrent: 0,
         turn: 1,
-        selectedAbilityId: "",
+        selectedAbility: null,
         selectedBattlerId: -1,
         isTeamA: true,
+        playerBattlerId: -1,
+        log: [],
     },
     abilities: [
         {

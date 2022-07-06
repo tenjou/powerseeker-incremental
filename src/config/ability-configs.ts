@@ -1,4 +1,4 @@
-import { CharacterStatType } from "../stats"
+import { CharacterStatType } from "../battle/battle-types"
 
 export interface AbilityEffect {
     type: "hp-minus" | "hp-plus"
@@ -36,7 +36,7 @@ export const AbilityConfigs: Record<string, AbilityConfig> = {
         effects: [
             {
                 type: "hp-minus",
-                power: 4,
+                power: 2,
                 stat: "attack",
             },
         ],

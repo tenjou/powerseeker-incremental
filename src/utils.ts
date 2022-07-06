@@ -5,3 +5,16 @@ export const randomNumber = (min: number, max: number) => {
 export const randomItem = <T>(array: T[]) => {
     return array[randomNumber(0, array.length - 1)]
 }
+
+export const shuffle = <T>(array: T[]) => {
+    for (let n = array.length - 1; n > 0; n -= 1) {
+        let m = Math.floor(Math.random() * (n + 1))
+        let temp = array[n]
+        array[n] = array[m]
+        array[m] = temp
+    }
+}
+
+export const roll = (chance: number) => {
+    return randomNumber(1, 100) <= chance
+}

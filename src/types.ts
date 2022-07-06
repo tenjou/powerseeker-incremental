@@ -1,3 +1,4 @@
+import { CharacterStats } from "./battle/battle-types"
 import { CardType } from "./config/CardConfigs"
 import { ItemId } from "./config/ItemConfigs"
 
@@ -26,9 +27,7 @@ export interface Battler {
     level: number
     hp: number
     hpMax: number
-    power: number
-    defense: number
-    speed: number
+    stats: CharacterStats
     isTeamA: boolean
     isAI: boolean
 }

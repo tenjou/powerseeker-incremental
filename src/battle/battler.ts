@@ -1,4 +1,4 @@
-import { MonsterConfigs, MonsterId } from "../config/MonsterConfigs"
+import { MonsterConfigs, MonsterId } from "../config/monster-configs"
 import { getState } from "../state"
 import { Battler } from "./../types"
 import { loadBattler } from "./battler-item"
@@ -9,9 +9,9 @@ export function addBattler(battler: Battler) {
     battler.id = battle.battlers.push(battler) - 1
 
     if (battler.isTeamA) {
-        battle.battlersA.push(battler.id)
+        battle.teamA.push(battler.id)
     } else {
-        battle.battlersB.push(battler.id)
+        battle.teamB.push(battler.id)
     }
 }
 
@@ -32,9 +32,15 @@ export function createMonsterBattler(monsterId: MonsterId): Battler {
         level: monsterConfig.level,
         hp: monsterConfig.hp,
         hpMax: monsterConfig.hp,
-        power: monsterConfig.power,
-        defense: monsterConfig.defense,
-        speed: monsterConfig.speed,
+        stats: {
+            accuracy: 0,
+            attack: monsterConfig.attack,
+            critical: 0,
+            defense: monsterConfig.defense,
+            evasion: 0,
+            healing: 0,
+            speed: monsterConfig.speed,
+        },
         isTeamA: false,
         isAI: true,
     }

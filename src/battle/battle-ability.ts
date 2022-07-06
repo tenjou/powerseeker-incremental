@@ -1,8 +1,8 @@
-import { Ability, getState } from "../state"
-import { AbilityId } from "../types"
-import { AbilityConfig, AbilityConfigs, AbilityEffect } from "../config/AbilityConfigs"
+import { AbilityConfig, AbilityConfigs, AbilityEffect } from "../config/ability-configs"
 import { addChild, setHTML, toggleClassName } from "../dom"
+import { Ability, getState } from "../state"
 import { toggleTeamInactive } from "./battler-item"
+import { getMaxPower } from "./battle-utils"
 
 export function loadAbilities() {
     const { abilities } = getState()
@@ -15,7 +15,7 @@ export function loadAbilities() {
 function loadAbility(ability: Ability) {
     const element = document.createElement("battle-ability")
     element.id = `ability:${ability.id}`
-    element.onclick = () => selectAbility(ability.id)
+    element.onclick = () => selectAbility(ability)
 
     const img = document.createElement("img")
     img.setAttribute("src", `assets/icon/skill/${ability.id}.png`)
@@ -24,15 +24,15 @@ function loadAbility(ability: Ability) {
     addChild("battle-abilities", element)
 }
 
-function selectAbility(abilityId: AbilityId) {
+function selectAbility(ability: Ability) {
     const { battle } = getState()
 
-    battle.selectedAbilityId = abilityId
+    battle.selectedAbility = ability
 
     updateAbilities()
 }
 
-function updateAbilities() {
+export function updateAbilities() {
     const { battle } = getState()
 
     const element = document.getElementById("battle-abilities")
@@ -45,8 +45,9 @@ function updateAbilities() {
         child.className = ""
     }
 
-    if (battle.selectedAbilityId) {
-        const abilityConfig = AbilityConfigs[battle.selectedAbilityId]
+    if (battle.selectedAbility) {
+        const battler = battle.battlers[battle.playerBattlerId]
+        const abilityConfig = AbilityConfigs[battle.selectedAbility.id]
         let abilityTooltip = abilityConfig.tooltip
 
         const regex = /%[0-9]/gm
@@ -57,12 +58,13 @@ function updateAbilities() {
                 const effectId = Number(entry.slice(1))
                 const effect = effects[effectId]
                 const color = getEffectColor(effect)
+                const power = getMaxPower(battler.stats, effect)
 
-                abilityTooltip = abilityTooltip.replace(entry, `<${color}>${effect.power}</${color}>`)
+                abilityTooltip = abilityTooltip.replace(entry, `<${color}>${power}</${color}>`)
             }
         }
 
-        toggleClassName(`ability:${battle.selectedAbilityId}`, "selected", true)
+        toggleClassName(`ability:${battle.selectedAbility.id}`, "selected", true)
 
         toggleClassName("battle-tooltip", "hide", false)
         setHTML("battle-tooltip-title", abilityConfig.name)

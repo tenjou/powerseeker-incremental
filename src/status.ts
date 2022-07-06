@@ -10,9 +10,9 @@ export function updatePlayerStatus() {
         render("div", `Level: ${battler.level}`),
         render("div", `Experience: ${player.xp}/${player.xpMax}`),
         render("div", `HP: ${battler.hp}/${battler.hpMax}`),
-        render("div", `Power: ${battler.power}`),
-        render("div", `Defense: ${battler.defense}`),
-        render("div", `Speed: ${battler.speed}`),
+        render("div", `Attack: ${battler.stats.attack}`),
+        render("div", `Defense: ${battler.stats.defense}`),
+        render("div", `Speed: ${battler.stats.speed}`),
     ])
 
     renderParentId("status", [render("div", `Stamina: ${player.stamina}/${player.staminaMax}`), render("div", `Gold: ${player.gold}`)])
@@ -64,7 +64,7 @@ export function restoreStatus() {
 export function recalculateStats() {
     const { battler, equipment } = getState()
 
-    battler.defense = 0
+    battler.stats.defense = 0
 
     for (const slotType in equipment) {
         const item = equipment[slotType as SlotType]
@@ -75,7 +75,7 @@ export function recalculateStats() {
         const itemConfig = ItemConfigs[item.id]
         switch (itemConfig.type) {
             case "armor":
-                battler.defense += itemConfig.defense
+                battler.stats.defense += itemConfig.defense
                 break
         }
     }
