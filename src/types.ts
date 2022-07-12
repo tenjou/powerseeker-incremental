@@ -1,4 +1,3 @@
-import { CharacterStats } from "./battle/battle-types"
 import { CardType } from "./config/CardConfigs"
 import { ItemId } from "./config/ItemConfigs"
 
@@ -19,17 +18,6 @@ export interface Item {
 export interface Card {
     id: number
     type: CardType
-}
-
-export interface Battler {
-    id: number
-    name: string
-    level: number
-    hp: number
-    hpMax: number
-    stats: CharacterStats
-    isTeamA: boolean
-    isAI: boolean
 }
 
 export type SlotType = "body" | "hand_1"

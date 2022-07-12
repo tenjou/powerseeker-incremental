@@ -8,6 +8,7 @@ import { randomItem, roll } from "../utils"
 import { BattleAction } from "./../state"
 import { shuffle } from "./../utils"
 import { loadAbilities, updateAbilities } from "./battle-ability"
+import { addAnimationsFromLog, updateBattleAnimation } from "./battle-animation"
 import { updateBattleStatus } from "./battle-status"
 import { BattleActionLog, BattleActionTarget, Battler } from "./battle-types"
 import { calculatePower, getActionSpeed } from "./battle-utils"
@@ -59,8 +60,6 @@ function endBattle() {
         teamA: [],
         teamB: [],
         actions: [],
-        animations: [],
-        animationsActive: [],
         cardId: -1,
         id: 0,
         tCurrent: 0,
@@ -130,62 +129,6 @@ function startExecutingTurn() {
     battle.actions.sort((a, b) => b.speed - a.speed)
 
     updateTurn()
-}
-
-function handleNextAction() {
-    const { battle } = getState()
-
-    if (battle.actions.length <= 0) {
-        endTurn()
-        return
-    }
-
-    let offset = 0
-
-    for (const action of battle.actions) {
-        const abilityConfig = AbilityConfigs[action.ability.id]
-        const tStart = battle.tCurrent + offset
-
-        battle.animations.push({
-            type: "forward",
-            battlerId: action.casterId,
-            tStart,
-            tEnd: tStart + 1600,
-        })
-
-        battle.animations.push({
-            type: "ability-use",
-            battlerId: action.casterId,
-            tStart: tStart + 100,
-            tEnd: tStart + 900,
-            abilityId: action.ability.id,
-        })
-
-        if (abilityConfig.isOffensive) {
-            battle.animations.push({
-                type: "shake",
-                battlerId: action.targetId,
-                tStart: tStart + 500,
-                tEnd: tStart + 1600,
-            })
-        }
-
-        for (const effect of abilityConfig.effects) {
-            battle.animations.push({
-                type: "scrolling-text",
-                battlerId: action.targetId,
-                tStart: tStart + 500,
-                tEnd: 0,
-                value: effect.power,
-                isCritical: true,
-                isMiss: false,
-            })
-        }
-
-        offset += 1000
-    }
-
-    battle.animations.sort((a, b) => b.tStart - a.tStart)
 }
 
 // function handleAction(action: BattleAction) {
@@ -336,12 +279,10 @@ function updateTurn() {
         casterId: action.casterId,
         targets: actionTargets,
     }
-    // const turnLog = battle.log[battle.turn - 1]
-    // turnLog.push(logEntry)
+    const turnLog = battle.log[battle.turn - 1]
+    turnLog.push(logEntry)
 
-    console.log(battle.actions)
-    console.log(battle.battlers)
-    console.log(logEntry)
+    addAnimationsFromLog(logEntry)
 }
 
 function targetOpponent(caster: Battler, targetId: BattlerId) {
@@ -385,7 +326,7 @@ export function updateBattle(tDelta: number) {
 
     battle.tCurrent += tDelta
 
-    // updateBattleAnimation()
+    updateBattleAnimation(tDelta)
 
     // if (battle.animations.length > 0) {
     //     return

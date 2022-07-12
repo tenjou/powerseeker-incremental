@@ -1,4 +1,4 @@
-import { BattleAnimation } from "./battle/battle-animation"
+import { Animation } from "./battle/battle-animation"
 import { BattleActionLog, Battler, BattlerView } from "./battle/battle-types"
 import { BattlerId, Card, Item, Skill, SkillId, SlotType } from "./types"
 
@@ -41,8 +41,6 @@ interface Battle {
     teamA: BattlerId[]
     teamB: BattlerId[]
     actions: BattleAction[]
-    animations: BattleAnimation[]
-    animationsActive: BattleAnimation[]
     tCurrent: number
     turn: number
     selectedAbility: Ability | null
@@ -146,8 +144,6 @@ let state: State = {
         teamA: [],
         teamB: [],
         actions: [],
-        animations: [],
-        animationsActive: [],
         tCurrent: 0,
         turn: 1,
         selectedAbility: null,

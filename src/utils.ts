@@ -18,3 +18,13 @@ export const shuffle = <T>(array: T[]) => {
 export const roll = (chance: number) => {
     return randomNumber(1, 100) <= chance
 }
+
+export function clamp(value: number, min: number, max: number) {
+    if (value > max) {
+        return max
+    } else if (value < min) {
+        return min
+    }
+
+    return value
+}

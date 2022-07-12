@@ -5,6 +5,7 @@ import { getState } from "../state"
 import { AbilityId, BattlerId } from "../types"
 import { useSelectedAbility } from "./battle"
 import { Battler } from "./battle-types"
+import { clamp } from "./../utils"
 
 export function updateBattler(battler: Battler) {
     const element = document.getElementById(`battler:${battler.id}`) as BattlerItem
@@ -50,6 +51,17 @@ export function showBattlerAbility(battlerId: BattlerId, abilityId?: AbilityId) 
 export function addBattlerScrollingText(battlerId: BattlerId, text: string, color: string) {
     const element = findBattlerElement(battlerId)
     element.addScrollingText(text, color)
+}
+
+export function addBattlerHp(battlerId: BattlerId, value: number) {
+    const { battle } = getState()
+
+    const battlerView = battle.battlersView[battlerId]
+    battlerView.hp += value
+    battlerView.hp = clamp(battlerView.hp, 0, battlerView.hpMax)
+
+    const element = findBattlerElement(battlerId)
+    element.update(battlerId)
 }
 
 function findBattlerElement(battlerId: BattlerId): BattlerItem {
