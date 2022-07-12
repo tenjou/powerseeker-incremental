@@ -41,13 +41,14 @@ interface Battle {
     teamA: BattlerId[]
     teamB: BattlerId[]
     actions: BattleAction[]
-    tCurrent: number
     turn: number
     selectedAbility: Ability | null
     selectedBattlerId: BattlerId
     isTeamA: boolean
     playerBattlerId: BattlerId
     log: BattleActionLog[][]
+    tCurrent: number
+    tNextAction: number
 }
 
 export interface Ability {
@@ -144,13 +145,14 @@ let state: State = {
         teamA: [],
         teamB: [],
         actions: [],
-        tCurrent: 0,
         turn: 1,
         selectedAbility: null,
         selectedBattlerId: -1,
         isTeamA: true,
         playerBattlerId: -1,
         log: [],
+        tCurrent: 0,
+        tNextAction: 0,
     },
     abilities: [
         {

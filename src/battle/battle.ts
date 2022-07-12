@@ -62,13 +62,14 @@ function endBattle() {
         actions: [],
         cardId: -1,
         id: 0,
-        tCurrent: 0,
         turn: 0,
         selectedAbility: null,
         selectedBattlerId: -1,
         isTeamA: true,
         playerBattlerId: -1,
         log: [],
+        tCurrent: 0,
+        tNextAction: 0,
     }
 
     setShow("area-battle", false)
@@ -128,29 +129,8 @@ function startExecutingTurn() {
     shuffle(battle.actions)
     battle.actions.sort((a, b) => b.speed - a.speed)
 
-    updateTurn()
+    nextAction()
 }
-
-// function handleAction(action: BattleAction) {
-//     const { battle } = getState()
-
-//     const enemyBattlerIds = action.battler.isTeamA ? battle.battlersB : battle.battlersA
-//     const targetId = randomItem(enemyBattlerIds)
-//     const target = battle.battlers[targetId]
-
-//     target.hp -= action.battler.power - target.defense
-//     if (target.hp <= 0) {
-//         target.hp = 0
-
-//         if (isTeamDead(enemyBattlerIds)) {
-//             return true
-//         }
-//     }
-
-//     updateBattler(target)
-
-//     return false
-// }
 
 function endTurn() {
     const { battle } = getState()
@@ -180,7 +160,7 @@ function nextTurn() {
     console.log("next-turn")
 }
 
-function updateTurn() {
+function nextAction() {
     const { battle } = getState()
 
     let action: BattleAction | undefined
@@ -283,6 +263,8 @@ function updateTurn() {
     turnLog.push(logEntry)
 
     addAnimationsFromLog(logEntry)
+
+    battle.tNextAction = battle.tCurrent + 2000
 }
 
 function targetOpponent(caster: Battler, targetId: BattlerId) {
@@ -328,7 +310,7 @@ export function updateBattle(tDelta: number) {
 
     updateBattleAnimation(tDelta)
 
-    // if (battle.animations.length > 0) {
-    //     return
-    // }
+    if (battle.tNextAction <= battle.tCurrent) {
+        nextAction()
+    }
 }
