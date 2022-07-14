@@ -3,6 +3,7 @@ import { addChild, setHTML, toggleClassName } from "../dom"
 import { Ability, getState } from "../state"
 import { toggleTeamInactive } from "./battler-item"
 import { getMaxPower } from "./battle-utils"
+import { selectAbility } from "./battle"
 
 export function loadAbilities() {
     const { abilities } = getState()
@@ -24,15 +25,7 @@ function loadAbility(ability: Ability) {
     addChild("battle-abilities", element)
 }
 
-function selectAbility(ability: Ability) {
-    const { battle } = getState()
-
-    battle.selectedAbility = ability
-
-    updateAbilities()
-}
-
-export function updateAbilities() {
+export function renderAbilities() {
     const { battle } = getState()
 
     const element = document.getElementById("battle-abilities")

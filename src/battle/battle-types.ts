@@ -1,4 +1,31 @@
+import { Ability } from "../state"
 import { AbilityId, BattlerId } from "../types"
+
+export interface BattleAction {
+    casterId: BattlerId
+    targetId: BattlerId
+    ability: Ability
+    speed: number
+}
+
+export interface Battle {
+    id: number
+    cardId: number
+    status: "preparing" | "waiting" | "executing" | "ended"
+    battlers: Battler[]
+    battlersView: BattlerView[]
+    teamA: BattlerId[]
+    teamB: BattlerId[]
+    actions: BattleAction[]
+    turn: number
+    selectedAbility: Ability | null
+    selectedBattlerId: BattlerId
+    isTeamA: boolean
+    playerBattlerId: BattlerId
+    log: BattleActionLog[][]
+    tCurrent: number
+    tNextAction: number
+}
 
 export interface CharacterStats {
     attack: number

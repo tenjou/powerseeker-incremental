@@ -1,16 +1,14 @@
 import { AbilityConfigs } from "../config/ability-configs"
 import { StartBattleAction } from "../config/CardConfigs"
-import { removeAllChildren, setShow } from "../dom"
+import { removeAllChildren, setShow, setText } from "../dom"
 import { Ability, getState } from "../state"
 import { updatePlayerStatus } from "../status"
 import { BattlerId } from "../types"
 import { randomItem, roll } from "../utils"
-import { BattleAction } from "./../state"
 import { shuffle } from "./../utils"
-import { loadAbilities, updateAbilities } from "./battle-ability"
+import { loadAbilities, renderAbilities } from "./battle-ability"
 import { addAnimationsFromLog, updateBattleAnimation } from "./battle-animation"
-import { updateBattleStatus } from "./battle-status"
-import { BattleActionLog, BattleActionTarget, Battler } from "./battle-types"
+import { Battle, BattleAction, BattleActionLog, BattleActionTarget, Battler } from "./battle-types"
 import { calculatePower, getActionSpeed } from "./battle-utils"
 import { addBattler, createMonsterBattler, loadBattlers } from "./battler"
 
@@ -20,17 +18,20 @@ const AttackAbility: Ability = {
 }
 
 export function startBattle(cardId: number, action: StartBattleAction) {
-    createBattle(cardId, action)
+    createBattleInstance(cardId, action)
     loadBattle()
 }
 
-function createBattle(cardId: number, action: StartBattleAction) {
-    const { battle, battler, cache } = getState()
+function createBattleInstance(cardId: number, action: StartBattleAction) {
+    const state = getState()
+    const { battler, cache } = state
 
+    const battle = createBattle()
     battle.id = cache.lastBattleId++
     battle.cardId = cardId
-    battle.turn = 1
-    battle.log.push([])
+    state.battle = battle
+
+    nextTurn()
 
     addBattler(battler)
     battle.playerBattlerId = battler.id
@@ -46,31 +47,30 @@ export function loadBattle() {
 
     loadBattlers()
     loadAbilities()
-    updateBattleStatus()
+
+    renderBattleStatus()
 
     setShow("area-battle", true)
+}
+
+function renderBattleStatus() {
+    const { battle } = getState()
+
+    setText("battle-name", "Dungeon Encounter")
+    setText("battle-round", `Round ${battle.turn}`)
+    setText("battle-level", "Level 1")
+
+    if (!battle.selectedAbility && battle.status === "waiting") {
+        setText("battle-hint", "Select your action")
+    } else {
+        setText("battle-hint", "")
+    }
 }
 
 function endBattle() {
     const state = getState()
 
-    state.battle = {
-        battlers: [],
-        battlersView: [],
-        teamA: [],
-        teamB: [],
-        actions: [],
-        cardId: -1,
-        id: 0,
-        turn: 0,
-        selectedAbility: null,
-        selectedBattlerId: -1,
-        isTeamA: true,
-        playerBattlerId: -1,
-        log: [],
-        tCurrent: 0,
-        tNextAction: 0,
-    }
+    state.battle = createBattle()
 
     setShow("area-battle", false)
 
@@ -80,6 +80,15 @@ function endBattle() {
     removeAllChildren("battle-column-a")
     removeAllChildren("battle-column-b")
     removeAllChildren("battle-abilities")
+}
+
+export function selectAbility(ability: Ability | null) {
+    const { battle } = getState()
+
+    battle.selectedAbility = ability
+
+    renderBattleStatus()
+    renderAbilities()
 }
 
 export function useSelectedAbility(targetId: BattlerId) {
@@ -95,9 +104,6 @@ export function useSelectedAbility(targetId: BattlerId) {
         ability: battle.selectedAbility,
         speed: getActionSpeed(100),
     })
-
-    battle.selectedAbility = null
-    updateAbilities()
 
     updateAI()
     startExecutingTurn()
@@ -126,19 +132,14 @@ function updateAI() {
 function startExecutingTurn() {
     const { battle } = getState()
 
+    battle.status = "executing"
+
+    selectAbility(null)
+
     shuffle(battle.actions)
     battle.actions.sort((a, b) => b.speed - a.speed)
 
     nextAction()
-}
-
-function endTurn() {
-    const { battle } = getState()
-
-    battle.turn += 1
-    battle.actions.length = 0
-
-    updateBattleStatus()
 }
 
 function isTeamDead(battlerIds: BattlerId[]) {
@@ -157,7 +158,12 @@ function isTeamDead(battlerIds: BattlerId[]) {
 function nextTurn() {
     const { battle } = getState()
 
-    console.log("next-turn")
+    battle.status = "waiting"
+    battle.turn += 1
+    battle.actions.length = 0
+    battle.log.push([])
+
+    renderBattleStatus()
 }
 
 function nextAction() {
@@ -310,7 +316,28 @@ export function updateBattle(tDelta: number) {
 
     updateBattleAnimation(tDelta)
 
-    if (battle.tNextAction <= battle.tCurrent) {
+    if (battle.status === "executing" && battle.tNextAction <= battle.tCurrent) {
         nextAction()
+    }
+}
+
+function createBattle(): Battle {
+    return {
+        status: "preparing",
+        battlers: [],
+        battlersView: [],
+        teamA: [],
+        teamB: [],
+        actions: [],
+        cardId: -1,
+        id: 0,
+        turn: 0,
+        selectedAbility: null,
+        selectedBattlerId: -1,
+        isTeamA: true,
+        playerBattlerId: -1,
+        log: [],
+        tCurrent: 0,
+        tNextAction: 0,
     }
 }

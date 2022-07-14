@@ -1,5 +1,5 @@
 import { Animation } from "./battle/battle-animation"
-import { BattleActionLog, Battler, BattlerView } from "./battle/battle-types"
+import { Battle, BattleActionLog, Battler, BattlerView } from "./battle/battle-types"
 import { BattlerId, Card, Item, Skill, SkillId, SlotType } from "./types"
 
 interface TownStatus {
@@ -24,31 +24,6 @@ interface DungeonStatus {
     cards: Card[]
     stageCompleted: boolean
     reachedEnd: boolean
-}
-
-export interface BattleAction {
-    casterId: BattlerId
-    targetId: BattlerId
-    ability: Ability
-    speed: number
-}
-
-interface Battle {
-    id: number
-    cardId: number
-    battlers: Battler[]
-    battlersView: BattlerView[]
-    teamA: BattlerId[]
-    teamB: BattlerId[]
-    actions: BattleAction[]
-    turn: number
-    selectedAbility: Ability | null
-    selectedBattlerId: BattlerId
-    isTeamA: boolean
-    playerBattlerId: BattlerId
-    log: BattleActionLog[][]
-    tCurrent: number
-    tNextAction: number
 }
 
 export interface Ability {
@@ -140,6 +115,7 @@ let state: State = {
     battle: {
         id: 0,
         cardId: 0,
+        status: "preparing",
         battlers: [],
         battlersView: [],
         teamA: [],

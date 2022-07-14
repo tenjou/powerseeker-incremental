@@ -20,12 +20,11 @@ template.innerHTML = html`<style>
         left: 0%;
         width: 100%;
         height: 100%;
-        background: #444;
-        opacity: 0;
+        background: #666;
         pointer-events: none;
 
         animation-name: anim;
-        animation-duration: 0.8s;
+        animation-duration: 0.7s;
         animation-iteration-count: 1;
         animation-timing-function: ease-out;
         animation-fill-mode: forwards;

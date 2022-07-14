@@ -171,6 +171,13 @@ battle-ability:active {
     transform: translateY(1px);
 }
 
+battle-hint {
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #9f9e9e;
+}
+
 #battle-tooltip {
     display: flex;
     flex-direction: column;
@@ -240,7 +247,7 @@ battle-status {
     display: flex;
     align-items: center;
     height: 34px;
-    margin: 4px;
+    margin: 4px 4px 100px;
     padding: 0 8px;
     background: #0000008c;
     box-shadow: 0 3px #bdbdbd;
