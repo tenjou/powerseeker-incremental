@@ -43,6 +43,10 @@ export function toggleTeamInactive(isTeamA: boolean, inactive: boolean) {
     toggleClassName(teamElementId, "inactive", inactive)
 }
 
+export function toggleBattlerInactive(battlerId: BattlerId, inactive: boolean) {
+    toggleClassName(`battler:${battlerId}`, "inactive", inactive)
+}
+
 export function showBattlerAbility(battlerId: BattlerId, abilityId?: AbilityId) {
     const element = findBattlerElement(battlerId)
     element.update(battlerId, abilityId)
@@ -96,6 +100,8 @@ class BattlerItem extends HTMLComponent {
         this.getElement("progress-bar").setAttribute("value", `${battlerView.hp}`)
         this.getElement("progress-bar").setAttribute("value-max", `${battlerView.hpMax}`)
 
+        this.toggleClassName("inactive", battlerView.hp <= 0)
+
         toggleClassName("cast-bar", "hide", !abilityId, this)
 
         if (abilityId) {
@@ -144,6 +150,10 @@ template.innerHTML = html`<style>
             animation-name: battler-shake;
             animation-duration: 0.2s;
             animation-iteration-count: 1;
+        }
+        :host(.inactive) {
+            opacity: 0.5;
+            pointer-events: none;
         }
 
         .container {

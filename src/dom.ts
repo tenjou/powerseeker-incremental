@@ -207,4 +207,12 @@ export class HTMLComponent extends HTMLElement {
 
         return element
     }
+
+    toggleClassName(className: string, add: boolean) {
+        if (add) {
+            this.classList.add(className)
+        } else {
+            this.classList.remove(className)
+        }
+    }
 }
