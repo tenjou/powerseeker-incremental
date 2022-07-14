@@ -178,7 +178,7 @@ function nextAction() {
         }
 
         caster = battle.battlers[action.casterId]
-        if (caster && caster.hp > 0) {
+        if (caster && caster.hp <= 0) {
             break
         }
     }
