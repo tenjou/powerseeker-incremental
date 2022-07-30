@@ -1,13 +1,13 @@
+import { startBattle } from "./battle/battle"
 import { CardConfigs, CardType } from "./config/CardConfigs"
+import { addChild, removeElement, setText, toggleClassName } from "./dom"
+import { advanceDungeonStage, enterDungeon, handleDungeonCardClick } from "./dungeon"
+import { addItem } from "./inventory"
+import { addSkillExp } from "./skills"
 import { getState } from "./state"
 import { addGold, addHp, addStamina } from "./status"
 import { Card } from "./types"
 import { randomItem } from "./utils"
-import { addItem } from "./inventory"
-import { addSkillExp } from "./skills"
-import { advanceDungeonStage, enterDungeon, handleDungeonCardClick } from "./dungeon"
-import { addChild, removeElement, setText, toggleClassName } from "./dom"
-import { startBattle } from "./battle/battle"
 
 function loadCard(card: Card, isDungeon: boolean) {
     const cardElement = document.createElement("card")

@@ -124,11 +124,12 @@ let state: State = {
         turn: 1,
         selectedAbility: null,
         selectedBattlerId: -1,
-        isTeamA: true,
         playerBattlerId: -1,
         log: [],
         tCurrent: 0,
         tNextAction: 0,
+        isTeamA: true,
+        isEnding: false,
     },
     abilities: [
         {

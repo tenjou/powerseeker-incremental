@@ -20,11 +20,12 @@ export interface Battle {
     turn: number
     selectedAbility: Ability | null
     selectedBattlerId: BattlerId
-    isTeamA: boolean
     playerBattlerId: BattlerId
     log: BattleActionLog[][]
     tCurrent: number
     tNextAction: number
+    isTeamA: boolean
+    isEnding: boolean
 }
 
 export interface CharacterStats {

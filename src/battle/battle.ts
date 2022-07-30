@@ -11,6 +11,7 @@ import { addAnimationsFromLog, updateBattleAnimation } from "./battle-animation"
 import { Battle, BattleAction, BattleActionLog, BattleActionTarget, Battler } from "./battle-types"
 import { calculatePower, getActionSpeed } from "./battle-utils"
 import { addBattler, createMonsterBattler, loadBattlers } from "./battler"
+import { addPopup } from "./../components/popup"
 
 const AttackAbility: Ability = {
     id: "attack",
@@ -50,7 +51,29 @@ export function loadBattle() {
 
     renderBattleStatus()
 
-    setShow("area-battle", true)
+    setShow("ui-battle", true)
+}
+
+function unloadBattle() {
+    const state = getState()
+
+    state.battle = createBattle()
+
+    updatePlayerStatus()
+}
+
+function endBattle() {
+    const { battle } = getState()
+
+    const isVictory = isTeamDead(battle.isTeamA ? battle.teamB : battle.teamA)
+    setText("battle-result-text", isVictory ? "Victory!" : "Defeat!")
+
+    setShow("ui-battle", false)
+    setShow("ui-battle-result", true)
+
+    removeAllChildren("battle-column-a")
+    removeAllChildren("battle-column-b")
+    removeAllChildren("battle-abilities")
 }
 
 function renderBattleStatus() {
@@ -65,21 +88,6 @@ function renderBattleStatus() {
     } else {
         setText("battle-hint", "")
     }
-}
-
-function endBattle() {
-    const state = getState()
-
-    state.battle = createBattle()
-
-    setShow("area-battle", false)
-
-    updatePlayerStatus()
-    setShow("area-town", true)
-
-    removeAllChildren("battle-column-a")
-    removeAllChildren("battle-column-b")
-    removeAllChildren("battle-abilities")
 }
 
 export function selectAbility(ability: Ability | null) {
@@ -102,7 +110,7 @@ export function useSelectedAbility(targetId: BattlerId) {
         casterId: battler.id,
         targetId,
         ability: battle.selectedAbility,
-        speed: getActionSpeed(100),
+        speed: getActionSpeed(battler.stats.speed),
     })
 
     updateAI()
@@ -124,7 +132,7 @@ function updateAI() {
             casterId: battler.id,
             targetId,
             ability: AttackAbility,
-            speed: getActionSpeed(100),
+            speed: getActionSpeed(battler.stats.speed),
         })
     }
 }
@@ -137,7 +145,7 @@ function startExecutingTurn() {
     selectAbility(null)
 
     shuffle(battle.actions)
-    battle.actions.sort((a, b) => b.speed - a.speed)
+    battle.actions.sort((a, b) => a.speed - b.speed)
 
     nextAction()
 }
@@ -158,6 +166,11 @@ function isTeamDead(battlerIds: BattlerId[]) {
 function nextTurn() {
     const { battle } = getState()
 
+    if (battle.isEnding) {
+        endBattle()
+        return
+    }
+
     battle.status = "waiting"
     battle.turn += 1
     battle.actions.length = 0
@@ -169,7 +182,7 @@ function nextTurn() {
 function nextAction() {
     const { battle } = getState()
 
-    let action: BattleAction | undefined
+    let action: BattleAction | null | undefined
     let caster: Battler | null = null
     while (battle.actions.length > 0) {
         action = battle.actions.pop()
@@ -178,7 +191,11 @@ function nextAction() {
         }
 
         caster = battle.battlers[action.casterId]
-        if (caster && caster.hp <= 0) {
+        if (caster) {
+            if (caster.hp <= 0) {
+                action = null
+                continue
+            }
             break
         }
     }
@@ -187,7 +204,6 @@ function nextAction() {
         nextTurn()
         return
     }
-
     if (!caster) {
         console.error(`Could not find caster BattlerId. {casterId: ${action.casterId}}`)
         return
@@ -271,6 +287,10 @@ function nextAction() {
     addAnimationsFromLog(logEntry)
 
     battle.tNextAction = battle.tCurrent + 2000
+
+    if (targetHasDied) {
+        battle.isEnding = isTeamDead(battle.teamA) || isTeamDead(battle.teamB)
+    }
 }
 
 function targetOpponent(caster: Battler, targetId: BattlerId) {
@@ -334,10 +354,11 @@ function createBattle(): Battle {
         turn: 0,
         selectedAbility: null,
         selectedBattlerId: -1,
-        isTeamA: true,
         playerBattlerId: -1,
         log: [],
         tCurrent: 0,
         tNextAction: 0,
+        isTeamA: true,
+        isEnding: false,
     }
 }

@@ -35,7 +35,7 @@ export function createMonsterBattler(monsterId: MonsterId): Battler {
         id: 0,
         level: monsterConfig.level,
         name: monsterConfig.name,
-        hp: monsterConfig.hp,
+        hp: 1,
         hpMax: monsterConfig.hp,
         stats: {
             accuracy: 0,

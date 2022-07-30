@@ -4,6 +4,7 @@
         <meta charset="utf-8" />
         <title>PowerSeeker</title>
         <link rel="stylesheet" href="styles.css" />
+        <link rel="stylesheet" href="../dist/ext/font-awesome/all.min.css" />
 
         <script>
             function html(str) {
@@ -47,11 +48,12 @@
             </sidebar>
 
             <content>
-                <column id="area-town" class="hide">
-                    <text class="header">Town</text>
-                    <column id="town-cards"></column>
+                <x-column id="area-town" class="hide">
+                    <x-text class="header">Town</x-text>
+                    <x-column id="town-cards"></x-column>
                     <area-transition></area-transition>
-                </column>
+                    <close-button></close-button>
+                </x-column>
 
                 <column id="area-dungeon" class="hide">
                     <text id="dungeon-name" class="header"></text>
@@ -61,7 +63,7 @@
                     <button id="dungeon-exit">Exit</button>
                 </column>
 
-                <column id="area-battle" class="hide">
+                <column id="ui-battle" class="hide">
                     <battle-status>
                         <row class="flex">
                             <column class="flex">
@@ -88,7 +90,13 @@
                     <battle-abilities id="battle-abilities"></battle-abilities>
                     <area-transition></area-transition>
                 </column>
+
+                <column id="ui-battle-result" class="hide flex">
+                    <column class="center-h center-v flex"><text id="battle-result-text" class="bold size30 uppercase"></text></column>
+                </column>
             </content>
         </container>
+
+        <popups id="popups"></popups>
     </body>
 </html>
