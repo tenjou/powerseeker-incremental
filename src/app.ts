@@ -2,10 +2,10 @@ import { loadBattle, updateBattle } from "./battle/battle"
 import { addCard, loadCards } from "./cards"
 import "./components/area-transition"
 import "./components/close-button"
-import { addPopup } from "./components/popup"
+import "./components/column"
+import "./components/popup-container"
 import "./components/progress-bar"
 import "./components/row"
-import "./components/column"
 import "./components/scrolling-text"
 import "./components/text"
 import { setShow } from "./dom"
@@ -37,8 +37,6 @@ function load() {
     } else {
         setShow("area-town", true)
     }
-
-    addPopup()
 }
 
 function loadSave() {

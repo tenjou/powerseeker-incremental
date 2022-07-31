@@ -8,10 +8,11 @@ import { randomItem, roll } from "../utils"
 import { shuffle } from "./../utils"
 import { loadAbilities, renderAbilities } from "./battle-ability"
 import { addAnimationsFromLog, updateBattleAnimation } from "./battle-animation"
+import "./battle-result-popup"
 import { Battle, BattleAction, BattleActionLog, BattleActionTarget, Battler } from "./battle-types"
 import { calculatePower, getActionSpeed } from "./battle-utils"
 import { addBattler, createMonsterBattler, loadBattlers } from "./battler"
-import { addPopup } from "./../components/popup"
+import { openPopup } from "./../popup"
 
 const AttackAbility: Ability = {
     id: "attack",
@@ -54,26 +55,23 @@ export function loadBattle() {
     setShow("ui-battle", true)
 }
 
-function unloadBattle() {
+export function unloadBattle() {
     const state = getState()
 
     state.battle = createBattle()
 
     updatePlayerStatus()
+
+    setShow("area-town", true)
+    setShow("ui-battle", false)
 }
 
 function endBattle() {
     const { battle } = getState()
 
-    const isVictory = isTeamDead(battle.isTeamA ? battle.teamB : battle.teamA)
-    setText("battle-result-text", isVictory ? "Victory!" : "Defeat!")
+    battle.status = "ended"
 
-    setShow("ui-battle", false)
-    setShow("ui-battle-result", true)
-
-    removeAllChildren("battle-column-a")
-    removeAllChildren("battle-column-b")
-    removeAllChildren("battle-abilities")
+    openPopup("battle-result-popup")
 }
 
 function renderBattleStatus() {

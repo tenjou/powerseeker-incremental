@@ -208,6 +208,10 @@ export class HTMLComponent extends HTMLElement {
         return element
     }
 
+    setText(query: string, text: string) {
+        this.getElement(query).innerText = text
+    }
+
     toggleClassName(className: string, add: boolean) {
         if (add) {
             this.classList.add(className)
