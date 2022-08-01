@@ -130,6 +130,7 @@ let state: State = {
         tNextAction: 0,
         isTeamA: true,
         isEnding: false,
+        isAuto: false
     },
     battleResult: null,
     abilities: [

@@ -6,8 +6,13 @@
         "strict": true,
         "noFallthroughCasesInSwitch": true,
         "noEmit": true,
-        "target": "ES2022",
-        "lib": ["dom", "ES7"]
+        "target": "esnext",
+        "lib": [
+            "dom",
+            "ES7"
+        ]
     },
-    "include": ["src"]
+    "include": [
+        "src"
+    ]
 }

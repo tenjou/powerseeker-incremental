@@ -26,6 +26,7 @@ export interface Battle {
     tNextAction: number
     isTeamA: boolean
     isEnding: boolean
+    isAuto: boolean
 }
 
 export interface BattleResult {

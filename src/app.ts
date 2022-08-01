@@ -1,6 +1,7 @@
 import { loadBattle, updateBattle } from "./battle/battle"
 import { addCard, loadCards } from "./cards"
 import "./components/area-transition"
+import "./components/button"
 import "./components/close-button"
 import "./components/column"
 import "./components/popup-container"

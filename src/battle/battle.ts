@@ -1,22 +1,22 @@
-import { AbilityConfigs } from "../config/ability-configs"
-import { StartBattleAction } from "../config/CardConfigs"
-import { removeAllChildren, setShow, setText } from "../dom"
-import { Ability, getState } from "../state"
-import { updatePlayerStatus } from "../status"
-import { BattlerId } from "../types"
-import { randomItem, roll } from "../utils"
-import { shuffle } from "./../utils"
-import { loadAbilities, renderAbilities } from "./battle-ability"
-import { addAnimationsFromLog, updateBattleAnimation } from "./battle-animation"
-import "./battle-result-popup"
-import { Battle, BattleAction, BattleActionLog, BattleActionTarget, Battler } from "./battle-types"
-import { calculatePower, getActionSpeed } from "./battle-utils"
-import { addBattler, createMonsterBattler, loadBattlers } from "./battler"
-import { openPopup } from "./../popup"
+import { AbilityConfigs } from '../config/ability-configs'
+import { StartBattleAction } from '../config/CardConfigs'
+import { removeAllChildren, setShow, setText, setOnClick } from '../dom'
+import { Ability, getState } from '../state'
+import { updatePlayerStatus } from '../status'
+import { BattlerId } from '../types'
+import { randomItem, roll } from '../utils'
+import { shuffle } from './../utils'
+import { loadAbilities, renderAbilities } from './battle-ability'
+import { addAnimationsFromLog, updateBattleAnimation } from './battle-animation'
+import './battle-result-popup'
+import { Battle, BattleAction, BattleActionLog, BattleActionTarget, Battler } from './battle-types'
+import { calculatePower, getActionSpeed } from './battle-utils'
+import { addBattler, createMonsterBattler, loadBattlers } from './battler'
+import { openPopup } from './../popup'
 
 const AttackAbility: Ability = {
-    id: "attack",
-    rank: 1,
+    id: 'attack',
+    rank: 1
 }
 
 export function startBattle(cardId: number, action: StartBattleAction) {
@@ -44,15 +44,20 @@ function createBattleInstance(cardId: number, action: StartBattleAction) {
     }
 }
 
+
+
 export function loadBattle() {
-    setShow("area-town", false)
+    setShow('area-town', false)
+
+    updateBattleAuto()
+    setOnClick('battle-auto', toggleBattleAuto)
 
     loadBattlers()
     loadAbilities()
 
     renderBattleStatus()
 
-    setShow("ui-battle", true)
+    setShow('ui-battle', true)
 }
 
 export function unloadBattle() {
@@ -61,42 +66,42 @@ export function unloadBattle() {
     state.battle = createBattle()
     state.battleResult = null
 
-    removeAllChildren("battle-column-a")
-    removeAllChildren("battle-column-b")
-    removeAllChildren("battle-abilities")
+    removeAllChildren('battle-column-a')
+    removeAllChildren('battle-column-b')
+    removeAllChildren('battle-abilities')
 
     updatePlayerStatus()
 
-    setShow("area-town", true)
-    setShow("ui-battle", false)
+    setShow('area-town', true)
+    setShow('ui-battle', false)
 }
 
 function endBattle() {
     const state = getState()
     const { battle } = state
 
-    battle.status = "ended"
+    battle.status = 'ended'
 
     const isVictory = isTeamDead(battle.isTeamA ? battle.teamB : battle.teamA)
 
     state.battleResult = {
-        isVictory,
+        isVictory
     }
 
-    openPopup("battle-result-popup")
+    openPopup('battle-result-popup')
 }
 
 function renderBattleStatus() {
     const { battle } = getState()
 
-    setText("battle-name", "Dungeon Encounter")
-    setText("battle-round", `Round ${battle.turn}`)
-    setText("battle-level", "Level 1")
+    setText('battle-name', 'Dungeon Encounter')
+    setText('battle-round', `Round ${battle.turn}`)
+    setText('battle-level', 'Level 1')
 
-    if (!battle.selectedAbility && battle.status === "waiting") {
-        setText("battle-hint", "Select your action")
+    if (!battle.selectedAbility && battle.status === 'waiting') {
+        setText('battle-hint', 'Select your action')
     } else {
-        setText("battle-hint", "")
+        setText('battle-hint', '')
     }
 }
 
@@ -120,11 +125,22 @@ export function useSelectedAbility(targetId: BattlerId) {
         casterId: battler.id,
         targetId,
         ability: battle.selectedAbility,
-        speed: getActionSpeed(battler.stats.speed),
+        speed: getActionSpeed(battler.stats.speed)
     })
 
     updateAI()
     startExecutingTurn()
+}
+
+function executeAutoBattle() {
+    const { abilities, battle } = getState()
+
+    const firstAbility = abilities[0]
+    const team = battle.isTeamA ? battle.teamB : battle.teamA
+    const targetId = randomItem(team)
+
+    selectAbility(firstAbility)
+    useSelectedAbility(targetId)
 }
 
 function updateAI() {
@@ -142,7 +158,7 @@ function updateAI() {
             casterId: battler.id,
             targetId,
             ability: AttackAbility,
-            speed: getActionSpeed(battler.stats.speed),
+            speed: getActionSpeed(battler.stats.speed)
         })
     }
 }
@@ -150,7 +166,7 @@ function updateAI() {
 function startExecutingTurn() {
     const { battle } = getState()
 
-    battle.status = "executing"
+    battle.status = 'executing'
 
     selectAbility(null)
 
@@ -181,7 +197,7 @@ function nextTurn() {
         return
     }
 
-    battle.status = "waiting"
+    battle.status = 'waiting'
     battle.turn += 1
     battle.actions.length = 0
     battle.log.push([])
@@ -235,7 +251,7 @@ function nextAction() {
             let isMiss = false
 
             switch (effect.type) {
-                case "hp-minus": {
+                case 'hp-minus': {
                     const hitChance = 100 + caster.stats.accuracy - target.stats.evasion
                     if (!roll(hitChance)) {
                         isMiss = true
@@ -260,7 +276,7 @@ function nextAction() {
                     break
                 }
 
-                case "hp-plus": {
+                case 'hp-plus': {
                     power = calculatePower(caster.stats, effect)
 
                     const criticalChance = 100 + caster.stats.critical
@@ -281,7 +297,7 @@ function nextAction() {
                 battlerId: target.id,
                 isCritical,
                 isMiss,
-                power,
+                power
             }
         }
     }
@@ -289,7 +305,7 @@ function nextAction() {
     const logEntry: BattleActionLog = {
         abilityId: action.ability.id,
         casterId: action.casterId,
-        targets: actionTargets,
+        targets: actionTargets
     }
     const turnLog = battle.log[battle.turn - 1]
     turnLog.push(logEntry)
@@ -346,14 +362,19 @@ export function updateBattle(tDelta: number) {
 
     updateBattleAnimation(tDelta)
 
-    if (battle.status === "executing" && battle.tNextAction <= battle.tCurrent) {
+    if (battle.status === "waiting" && battle.isAuto) {
+        executeAutoBattle()
+    }
+    if (battle.status === 'executing' && battle.tNextAction <= battle.tCurrent) {
         nextAction()
     }
 }
 
+
+
 function createBattle(): Battle {
     return {
-        status: "preparing",
+        status: 'preparing',
         battlers: [],
         battlersView: [],
         teamA: [],
@@ -370,5 +391,20 @@ function createBattle(): Battle {
         tNextAction: 0,
         isTeamA: true,
         isEnding: false,
+        isAuto: false
     }
+}
+
+function toggleBattleAuto() {
+    const { battle } = getState()
+
+    battle.isAuto = !battle.isAuto
+
+    updateBattleAuto()
+}
+
+function updateBattleAuto() {
+    const { battle } = getState()
+
+    setText('battle-auto', battle.isAuto ? 'Auto' : 'Manual')
 }
