@@ -1,11 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap");
 /* @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&display=swap"); */
 
+@font-face {
+    font-family: JupiterProBold;
+    src: url(../dist/assets/font/JupiterProBold.otf);
+}
+
 * {
     user-select: none;
 }
 
 body {
+    display: flex;
+    flex-direction: column;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -16,6 +23,31 @@ body {
     font-family: "Open Sans", sans-serif;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
+    background: linear-gradient(#d6d6d6, #ececec);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+navbar {
+    background: #ffffff54;
+    border-bottom: 1px solid #cbcbcb;
+}
+
+navbar > logo {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 180px;
+    height: 40px;
+    font-family: "JupiterProBold", sans-serif;
+    font-size: 14px;
+    text-shadow: 0 0 16px #a5a5a5;
+    color: #000;
+    border-right: 1px solid #cbcbcb;
+}
+navbar > logo > cap {
+    font-size: 22px;
 }
 
 .button {
@@ -31,10 +63,8 @@ semibold {
 }
 
 container {
-    padding: 20px;
     display: flex;
     flex-direction: row;
-    background: linear-gradient(#d6d6d6, #ececec);
     height: 100%;
     box-sizing: border-box;
 }
@@ -135,7 +165,8 @@ card.disabled {
 sidebar {
     display: flex;
     flex-direction: column;
-    flex: 0 0 250px;
+    flex: 0 0 180px;
+    border-right: 1px solid #cbcbcb;
 }
 sidebar > * {
     margin-bottom: 20px;
@@ -145,6 +176,7 @@ content {
     display: flex;
     flex-direction: column;
     width: 400px;
+    padding: 20px;
 }
 
 battle-arena {
@@ -282,17 +314,17 @@ popups {
 popups:empty {
     display: none;
 }
-/* popup-container {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    padding: 8px;
-    width: 400px;
-    max-height: 96%;
-    box-sizing: border-box;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.83);
-    background: linear-gradient(#d6d6d6, #efefef);
-    border-radius: 3px;
-    border-left: 2px solid #fff;
-    border-right: 2px solid #fff;
-} */
+
+url {
+    padding: 5px 10px;
+    cursor: pointer;
+    color: #444;
+    font-weight: 600;
+    border-left: 2px solid #0000;
+}
+url:hover {
+    color: #000;
+
+    background: #ffffff47;
+    border-left: 2px solid black;
+}
