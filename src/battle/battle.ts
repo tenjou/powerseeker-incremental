@@ -59,6 +59,11 @@ export function unloadBattle() {
     const state = getState()
 
     state.battle = createBattle()
+    state.battleResult = null
+
+    removeAllChildren("battle-column-a")
+    removeAllChildren("battle-column-b")
+    removeAllChildren("battle-abilities")
 
     updatePlayerStatus()
 
@@ -67,9 +72,16 @@ export function unloadBattle() {
 }
 
 function endBattle() {
-    const { battle } = getState()
+    const state = getState()
+    const { battle } = state
 
     battle.status = "ended"
+
+    const isVictory = isTeamDead(battle.isTeamA ? battle.teamB : battle.teamA)
+
+    state.battleResult = {
+        isVictory,
+    }
 
     openPopup("battle-result-popup")
 }

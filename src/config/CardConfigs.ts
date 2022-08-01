@@ -242,7 +242,7 @@ export const CardConfigs: Record<CardType, CardConfig> = {
         actions: [
             {
                 type: "start_battle",
-                monsters: ["boar"],
+                monsters: ["boar", "boar"],
             },
         ],
         destroy: false,

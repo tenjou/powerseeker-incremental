@@ -28,6 +28,10 @@ export interface Battle {
     isEnding: boolean
 }
 
+export interface BattleResult {
+    isVictory: boolean
+}
+
 export interface CharacterStats {
     attack: number
     defense: number

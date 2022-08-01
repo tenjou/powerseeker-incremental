@@ -76,7 +76,10 @@
                     </battle-status>
 
                     <battle-arena>
-                        <column id="battle-column-b" class="center-h"></column>
+                        <x-row class="center-h">
+                            <x-row id="battle-column-b"></x-row>
+                        </x-row>
+
                         <row class="flex center-h center-v">
                             <battle-hint id="battle-hint"></battle-hint>
                             <column id="battle-tooltip" class="hide">
@@ -84,7 +87,10 @@
                                 <div id="battle-tooltip-text"></div>
                             </column>
                         </row>
-                        <column id="battle-column-a" class="center-h"></column>
+
+                        <x-row class="center-h">
+                            <x-row id="battle-column-a"></x-row>
+                        </x-row>
                     </battle-arena>
                     <battle-abilities id="battle-abilities"></battle-abilities>
                     <area-transition></area-transition>

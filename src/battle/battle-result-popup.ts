@@ -18,16 +18,18 @@ export class BattleResultPopup extends HTMLComponent {
     constructor() {
         super(template)
 
-        const { battle } = getState()
+        const { battleResult } = getState()
 
         this.getElement("close-button").onclick = () => {
             unloadBattle()
             closePopup()
         }
-        this.setText("#result", "Defeat!")
 
-        // const isVictory = isTeamDead(battle.isTeamA ? battle.teamB : battle.teamA)
-        // se("battle-result-text", isVictory ? "Victory!" : "Defeat!")
+        if (!battleResult) {
+            return
+        }
+
+        this.setText("#result", battleResult.isVictory ? "Victory!" : "Defeat!")
     }
 }
 

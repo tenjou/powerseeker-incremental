@@ -1,6 +1,5 @@
-import { Animation } from "./battle/battle-animation"
-import { Battle, BattleActionLog, Battler, BattlerView } from "./battle/battle-types"
-import { BattlerId, Card, Item, Skill, SkillId, SlotType } from "./types"
+import { Battle, BattleResult, Battler } from "./battle/battle-types"
+import { Card, Item, Skill, SkillId, SlotType } from "./types"
 
 interface TownStatus {
     cards: Card[]
@@ -47,6 +46,7 @@ interface State {
     town: TownStatus
     dungeon: DungeonStatus
     battle: Battle
+    battleResult: BattleResult | null
     cache: Cache
 }
 
@@ -131,6 +131,7 @@ let state: State = {
         isTeamA: true,
         isEnding: false,
     },
+    battleResult: null,
     abilities: [
         {
             id: "attack",

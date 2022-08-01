@@ -123,7 +123,7 @@ template.innerHTML = html`<style>
             flex-direction: column;
             flex: 1;
             width: 110px;
-            margin: 2px 2px;
+            margin: 2px;
             background-color: #000;
             border: 2px solid #000;
             border-radius: 3px;
