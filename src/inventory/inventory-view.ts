@@ -1,6 +1,6 @@
-import { getElement, removeAllChildren } from "../dom"
+import { getElement, removeAllChildren, removeElement } from "../dom"
 import { getState } from "../state"
-import { getView } from "../view"
+import { subscribe, unsubscribe } from "./../events"
 import { Item } from "./../types"
 import { handleItemUse } from "./inventory"
 
@@ -8,19 +8,23 @@ export function loadInventoryView() {
     const { inventory } = getState()
 
     for (const item of inventory) {
-        addInventoryViewItem(item)
+        addItem(item)
     }
+
+    subscribe("item-add", addItem)
+    subscribe("item-remove", removeItem)
+    subscribe("item-update", updateItem)
 }
 
 export function unloadInventoryView() {
     removeAllChildren("inventory-container")
+
+    unsubscribe("item-add", addItem)
+    unsubscribe("item-remove", removeItem)
+    unsubscribe("item-update", updateItem)
 }
 
-export function addInventoryViewItem(item: Item) {
-    if (getView() !== "inventory") {
-        return
-    }
-
+function addItem(item: Item) {
     const parent = document.querySelector("inventory-container")
     if (!parent) {
         console.error(`Could not find inventory-container`)
@@ -35,7 +39,11 @@ export function addInventoryViewItem(item: Item) {
     parent.appendChild(itemSlot)
 }
 
-export function updateItemView(item: Item) {
+function removeItem(item: Item) {
+    removeElement(`item-${item.uid}`)
+}
+
+function updateItem(item: Item) {
     const element = getElement(`item-${item.uid}`)
     element.setAttribute("amount", String(item.amount))
 }

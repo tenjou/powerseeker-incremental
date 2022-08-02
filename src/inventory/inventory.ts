@@ -1,10 +1,9 @@
 import { ItemConfigs, ItemEffect, ItemId } from "../config/ItemConfigs"
-import { removeElement } from "../dom"
 import { equipItem } from "../equipment"
 import { getState } from "../state"
 import { addHp } from "../status"
 import { Item } from "../types"
-import { addInventoryViewItem, updateItemView } from "./inventory-view"
+import { emit } from "./../events"
 
 export function addItem(itemId: ItemId, amount: number = 1) {
     const { inventory, cache } = getState()
@@ -12,7 +11,7 @@ export function addItem(itemId: ItemId, amount: number = 1) {
     const item = inventory.find((entry) => entry.id === itemId)
     if (item) {
         item.amount += amount
-        updateItemView(item)
+        emit("item-update", item)
     } else {
         const newItem: Item = {
             uid: cache.lastItemIndex++,
@@ -21,8 +20,7 @@ export function addItem(itemId: ItemId, amount: number = 1) {
         }
 
         inventory.push(newItem)
-
-        addInventoryViewItem(newItem)
+        emit("item-add", item)
     }
 }
 
@@ -49,9 +47,9 @@ export function removeItem(itemId: ItemId, amount: number = 1) {
         }
 
         inventory.splice(itemIndex, 1)
-        removeElement(`item-${item.uid}`)
+        emit("item-remove", item)
     } else {
-        updateItemView(item)
+        emit("item-update", item)
     }
 }
 

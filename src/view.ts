@@ -55,7 +55,3 @@ export function updateView() {
 
     toggleClassName(`view-${nextView}`, "hide", false)
 }
-
-export function getView(): ViewType | "" {
-    return currView
-}
