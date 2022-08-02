@@ -1,3 +1,15 @@
+const emptyElement = document.createElement("div")
+
+export function getElement(id: string) {
+    const element = document.getElementById(id)
+    if (!element) {
+        console.error(`Could get element with Id: "${id}"`)
+        return emptyElement
+    }
+
+    return element
+}
+
 export function removeElement(id: string) {
     const element = document.getElementById(id)
     if (!element) {
@@ -183,8 +195,6 @@ export function render(tagName: string, nodes: Node | string | (Node | string)[]
     }
 }
 
-const emptyElement = document.createElement("div")
-
 export class HTMLComponent extends HTMLElement {
     constructor(template: HTMLTemplateElement) {
         super()
@@ -208,15 +218,18 @@ export class HTMLComponent extends HTMLElement {
         return element
     }
 
-    setText(query: string, text: string) {
-        this.getElement(query).innerText = text
+    setText(query: string, text: string | number | null) {
+        if (!text) {
+            return
+        }
+        this.getElement(query).innerText = String(text)
     }
 
-    toggleClassName(className: string, add: boolean) {
+    toggleClassName(className: string, add: boolean, query: string = "") {
         if (add) {
-            this.classList.add(className)
+            this.getElement(query).classList.add(className)
         } else {
-            this.classList.remove(className)
+            this.getElement(query).classList.remove(className)
         }
     }
 }

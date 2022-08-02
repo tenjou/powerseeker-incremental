@@ -1,33 +1,10 @@
-import { getState } from "./state"
-import { Item } from "./types"
-import { addChild, removeElement, setText } from "./dom"
-import { ItemConfigs, ItemEffect, ItemId } from "./config/ItemConfigs"
-import { equipItem } from "./equipment"
-import { addHp } from "./status"
-
-function createInventoryItem(item: Item) {
-    const element = document.createElement("inventory-item")
-    element.id = `item-${item.uid}`
-    element.onclick = () => handleItemUse(item)
-
-    addChild("inventory", element)
-
-    updateItem(item)
-}
-
-export function loadInventoryWidget() {
-    const { inventory } = getState()
-
-    for (const item of inventory) {
-        createInventoryItem(item)
-    }
-}
-
-function updateItem(item: Item) {
-    const itemConfig = ItemConfigs[item.id]
-
-    setText(`item-${item.uid}`, `${itemConfig.name} | ${item.amount}`)
-}
+import { ItemConfigs, ItemEffect, ItemId } from "../config/ItemConfigs"
+import { removeElement } from "../dom"
+import { equipItem } from "../equipment"
+import { getState } from "../state"
+import { addHp } from "../status"
+import { Item } from "../types"
+import { addInventoryViewItem, updateItemView } from "./inventory-view"
 
 export function addItem(itemId: ItemId, amount: number = 1) {
     const { inventory, cache } = getState()
@@ -35,7 +12,7 @@ export function addItem(itemId: ItemId, amount: number = 1) {
     const item = inventory.find((entry) => entry.id === itemId)
     if (item) {
         item.amount += amount
-        updateItem(item)
+        updateItemView(item)
     } else {
         const newItem: Item = {
             uid: cache.lastItemIndex++,
@@ -45,7 +22,7 @@ export function addItem(itemId: ItemId, amount: number = 1) {
 
         inventory.push(newItem)
 
-        createInventoryItem(newItem)
+        addInventoryViewItem(newItem)
     }
 }
 
@@ -74,11 +51,11 @@ export function removeItem(itemId: ItemId, amount: number = 1) {
         inventory.splice(itemIndex, 1)
         removeElement(`item-${item.uid}`)
     } else {
-        updateItem(item)
+        updateItemView(item)
     }
 }
 
-function handleItemUse(item: Item) {
+export function handleItemUse(item: Item) {
     const itemConfig = ItemConfigs[item.id]
 
     switch (itemConfig.type) {

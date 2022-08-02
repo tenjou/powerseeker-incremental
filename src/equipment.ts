@@ -1,6 +1,6 @@
 import { ItemConfigs } from "./config/ItemConfigs"
 import { addChild, setText, toggleClassName } from "./dom"
-import { addItem } from "./inventory"
+import { addItem } from "./inventory/inventory"
 import { getState } from "./state"
 import { recalculateStats } from "./status"
 import { Item, SlotType } from "./types"

@@ -4,18 +4,21 @@ import "./components/area-transition"
 import "./components/button"
 import "./components/close-button"
 import "./components/column"
+import "./components/header"
+import "./components/item-slot"
 import "./components/popup-container"
 import "./components/progress-bar"
 import "./components/row"
 import "./components/scrolling-text"
 import "./components/text"
+import "./components/url"
 import { setShow } from "./dom"
 import { loadDungeonStage, setupDungeonSystem } from "./dungeon"
 import { loadEquipmentWidget } from "./equipment"
-import { addItem, loadInventoryWidget } from "./inventory"
+import { addItem } from "./inventory/inventory"
 import { updateSkills } from "./skills"
 import { getState, loadState } from "./state"
-import { updatePlayerStatus } from "./status"
+import { updateView } from "./view"
 
 let tLast = 0
 
@@ -29,6 +32,8 @@ function createEmptyProfile() {
 }
 
 function load() {
+    updateView()
+
     const state = getState()
 
     if (state.battle.id) {
@@ -55,12 +60,10 @@ function loadSave() {
 }
 
 function update() {
-    updatePlayerStatus()
     updateSkills()
     setupDungeonSystem()
 
     loadEquipmentWidget()
-    loadInventoryWidget()
 
     tLast = Date.now()
 
@@ -95,6 +98,9 @@ window.onbeforeunload = () => {
 
     // localStorage.setItem("profile", JSON.stringify(state))
 }
+
+window.addEventListener("onpopstate", updateView)
+window.addEventListener("onpushstate", updateView)
 
 declare global {
     function html(str: TemplateStringsArray): string

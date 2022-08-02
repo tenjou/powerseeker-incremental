@@ -2,6 +2,8 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
         <title>PowerSeeker</title>
         <link rel="stylesheet" href="styles.css" />
         <link rel="stylesheet" href="../dist/ext/font-awesome/all.min.css" />
@@ -16,25 +18,21 @@
 
     <body>
         <navbar>
-            <logo><cap>P</cap>ower<cap>S</cap>eeker</logo>
+            <x-column>
+                <logo><cap>P</cap>ower<cap>S</cap>eeker</logo>
+            </x-column>
         </navbar>
 
         <container>
             <sidebar>
                 <x-column>
-                    <url>Area</url>
-                    <url>Inventory</url>
+                    <segment>Main</segment>
+                    <x-url>Town</x-url>
+                    <x-url>Character</x-url>
+                    <x-url>Equipment</x-url>
+                    <x-url>Inventory</x-url>
+                    <x-url>Skills</x-url>
                 </x-column>
-
-                <column>
-                    <text class="header">STATS</text>
-                    <div id="stats"></div>
-                </column>
-
-                <column>
-                    <text class="header">STATUS</text>
-                    <div id="status"></div>
-                </column>
 
                 <column>
                     <text class="header">Equipment</text>
@@ -56,60 +54,81 @@
                 </column>
             </sidebar>
 
-            <content>
-                <x-column id="area-town" class="hide">
-                    <x-text class="header">Town</x-text>
-                    <x-column id="town-cards"></x-column>
-                    <area-transition></area-transition>
-                </x-column>
+            <content-holder>
+                <content>
+                    <x-column id="view-town" class="hide">
+                        <x-header>Town</x-header>
+                    </x-column>
 
-                <column id="area-dungeon" class="hide">
-                    <text id="dungeon-name" class="header"></text>
-                    <text id="dungeon-stage"></text>
-                    <text id="dungeon-progress"></text>
-                    <column id="dungeon-cards"></column>
-                    <button id="dungeon-exit">Exit</button>
-                </column>
+                    <x-column id="view-character" class="hide">
+                        <x-header>Character</x-header>
+                        <x-text id="character-level"></x-text>
+                        <x-text id="character-exp"></x-text>
+                        <x-text id="character-hp"></x-text>
+                        <x-text id="character-attack"></x-text>
+                        <x-text id="character-defense"></x-text>
+                        <x-text id="character-speed"></x-text>
+                        <x-text id="character-stamina"></x-text>
+                        <x-text id="character-gold"></x-text>
+                    </x-column>
 
-                <column id="ui-battle" class="hide">
-                    <battle-status>
-                        <row class="flex">
-                            <column class="flex">
-                                <text id="battle-name">Dungeon encounter</text>
-                                <text id="battle-round" class="tertiary size10 uppercase">Round 4</text>
-                            </column>
-                        </row>
-                        <row>
-                            <text id="battle-level" class="tertiary size10 uppercase">Level 3</text>
-                        </row>
-                    </battle-status>
+                    <x-column id="view-inventory" class="hide">
+                        <x-header>Inventory</x-header>
+                        <inventory-container id="inventory-container"></inventory-container>
+                    </x-column>
 
-                    <battle-arena>
+                    <!-- <x-column id="area-town" class="hide">
+                        <x-text class="header">Town</x-text>
+                        <x-column id="town-cards"></x-column>
+                        <area-transition></area-transition>
+                    </x-column> -->
+
+                    <column id="area-dungeon" class="hide">
+                        <text id="dungeon-name" class="header"></text>
+                        <text id="dungeon-stage"></text>
+                        <text id="dungeon-progress"></text>
+                        <column id="dungeon-cards"></column>
+                        <button id="dungeon-exit">Exit</button>
+                    </column>
+
+                    <column id="ui-battle" class="hide">
+                        <battle-status>
+                            <row class="flex">
+                                <column class="flex">
+                                    <text id="battle-name">Dungeon encounter</text>
+                                    <text id="battle-round" class="tertiary size10 uppercase">Round 4</text>
+                                </column>
+                            </row>
+                            <row>
+                                <text id="battle-level" class="tertiary size10 uppercase">Level 3</text>
+                            </row>
+                        </battle-status>
+
+                        <battle-arena>
+                            <x-row class="center-h">
+                                <x-row id="battle-column-b"></x-row>
+                            </x-row>
+
+                            <row class="flex center-h center-v">
+                                <battle-hint id="battle-hint"></battle-hint>
+                                <column id="battle-tooltip" class="hide">
+                                    <text id="battle-tooltip-title" class="bold space-2"></text>
+                                    <div id="battle-tooltip-text"></div>
+                                </column>
+                            </row>
+
+                            <x-row class="center-h">
+                                <x-row id="battle-column-a"></x-row>
+                            </x-row>
+                        </battle-arena>
+
                         <x-row class="center-h">
-                            <x-row id="battle-column-b"></x-row>
+                            <battle-abilities id="battle-abilities"></battle-abilities>
+                            <x-column class="center-v"><x-button id="battle-auto" class="black size50"></x-button></x-column>
                         </x-row>
-
-                        <row class="flex center-h center-v">
-                            <battle-hint id="battle-hint"></battle-hint>
-                            <column id="battle-tooltip" class="hide">
-                                <text id="battle-tooltip-title" class="bold space-2"></text>
-                                <div id="battle-tooltip-text"></div>
-                            </column>
-                        </row>
-
-                        <x-row class="center-h">
-                            <x-row id="battle-column-a"></x-row>
-                        </x-row>
-                    </battle-arena>
-
-                    <x-row class="center-h">
-                        <battle-abilities id="battle-abilities"></battle-abilities>
-                        <x-column class="center-v"><x-button id="battle-auto" class="black size50"></x-button></x-column>
-                    </x-row>
-
-                    <area-transition></area-transition>
-                </column>
-            </content>
+                    </column>
+                </content>
+            </content-holder>
         </container>
 
         <popups id="popups"></popups>

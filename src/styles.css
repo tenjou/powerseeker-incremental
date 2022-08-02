@@ -32,8 +32,7 @@ navbar {
     background: #ffffff54;
     border-bottom: 1px solid #cbcbcb;
 }
-
-navbar > logo {
+navbar logo {
     position: relative;
     display: flex;
     justify-content: center;
@@ -46,7 +45,7 @@ navbar > logo {
     color: #000;
     border-right: 1px solid #cbcbcb;
 }
-navbar > logo > cap {
+navbar logo > cap {
     font-size: 22px;
 }
 
@@ -172,11 +171,18 @@ sidebar > * {
     margin-bottom: 20px;
 }
 
+content-holder {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    width: 100%;
+}
 content {
     display: flex;
     flex-direction: column;
-    width: 400px;
-    padding: 20px;
+    width: 100%;
+    max-width: 800px;
 }
 
 battle-arena {
@@ -315,16 +321,16 @@ popups:empty {
     display: none;
 }
 
-url {
-    padding: 5px 10px;
-    cursor: pointer;
-    color: #444;
-    font-weight: 600;
-    border-left: 2px solid #0000;
+segment {
+    color: #999;
+    font-weight: 500;
+    font-size: 10px;
 }
-url:hover {
-    color: #000;
 
-    background: #ffffff47;
-    border-left: 2px solid black;
+inventory-container {
+    display: flex;
+    flex-direction: row;
+}
+inventory-container > * {
+    margin: 3px;
 }

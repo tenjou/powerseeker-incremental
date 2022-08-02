@@ -1,22 +1,6 @@
 import { ItemConfigs } from "./config/ItemConfigs"
-import { render, renderParentId } from "./dom"
 import { getState } from "./state"
 import { SlotType } from "./types"
-
-export function updatePlayerStatus() {
-    const { player, battler } = getState()
-
-    renderParentId("stats", [
-        render("div", `Level: ${player.level}`),
-        render("div", `Experience: ${player.xp}/${player.xpMax}`),
-        render("div", `HP: ${battler.hp}/${battler.hpMax}`),
-        render("div", `Attack: ${battler.stats.attack}`),
-        render("div", `Defense: ${battler.stats.defense}`),
-        render("div", `Speed: ${battler.stats.speed}`),
-    ])
-
-    renderParentId("status", [render("div", `Stamina: ${player.stamina}/${player.staminaMax}`), render("div", `Gold: ${player.gold}`)])
-}
 
 export function addHp(value: number) {
     const { battler } = getState()
@@ -27,8 +11,6 @@ export function addHp(value: number) {
     } else if (battler.hp < 0) {
         battler.hp = 0
     }
-
-    updatePlayerStatus()
 }
 
 export function addStamina(value: number) {
@@ -40,16 +22,12 @@ export function addStamina(value: number) {
     } else if (status.stamina < 0) {
         status.stamina = 0
     }
-
-    updatePlayerStatus()
 }
 
 export function addGold(value: number) {
     const { player: status } = getState()
 
     status.gold += value
-
-    updatePlayerStatus()
 }
 
 export function restoreStatus() {
@@ -57,8 +35,6 @@ export function restoreStatus() {
 
     battler.hp = battler.hpMax
     player.stamina = player.staminaMax
-
-    updatePlayerStatus()
 }
 
 export function recalculateStats() {
@@ -79,6 +55,4 @@ export function recalculateStats() {
                 break
         }
     }
-
-    updatePlayerStatus()
 }
