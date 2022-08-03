@@ -67,7 +67,7 @@
                         <span>
                             <x-column class="inline">
                                 <equipment-slot slot-type="body"></equipment-slot>
-                                <equipment-slot slot-type="hand_1"></equipment-slot>
+                                <equipment-slot slot-type="main_hand"></equipment-slot>
                             </x-column>
                         </span>
                     </x-column>
@@ -77,8 +77,17 @@
                         <inventory-container id="inventory-container"></inventory-container>
                     </x-column>
 
-                    <x-column id="view-equipment" class="hide">
+                    <x-column id="view-equipment" class="hide flex">
                         <x-header>Equipment</x-header>
+                        <x-column class="flex">
+                            <span>
+                                <equipment-slot></equipment-slot>
+                            </span>
+                        </x-column>
+
+                        <x-row class="center-h">
+                            <close-button id="close-equipment"></close-button>
+                        </x-row>
                     </x-column>
 
                     <x-column id="view-skills" class="hide">
@@ -145,5 +154,7 @@
         </container>
 
         <popups id="popups"></popups>
+
+        <tooltip-container><tooltip>Leather Clothing</tooltip></tooltip-container>
     </body>
 </html>

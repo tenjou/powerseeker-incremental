@@ -1,7 +1,7 @@
 import { HTMLComponent } from "../dom"
 
 const template = document.createElement("template")
-template.innerHTML = html`<link rel="stylesheet" href="./ext/font-awesome/all.min.css" />
+template.innerHTML = html`<link rel="stylesheet" href="/ext/font-awesome/all.min.css" />
     <style>
         :host {
             cursor: pointer;

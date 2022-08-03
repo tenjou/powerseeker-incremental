@@ -75,7 +75,6 @@ export function setOnClick(id: string, func: () => void) {
 export function toggleClassName(id: string, className: string, add: boolean, parent: HTMLElement | null = null) {
     const element = parent && parent.shadowRoot ? parent.shadowRoot.querySelector(`#${id}`) : document.getElementById(id)
     if (!element) {
-        console.error(`Could set element: "${id}" class to: ${className}`)
         return
     }
 

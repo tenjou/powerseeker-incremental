@@ -46,6 +46,8 @@ export class EquipmentSlot extends HTMLComponent {
             // unequipItem(this.slotType())
             goTo(`/equipment/${this.slotType()}`)
         }
+
+        this.update()
     }
 
     update() {
@@ -66,7 +68,7 @@ export class EquipmentSlot extends HTMLComponent {
     slotType(): SlotType {
         const slotType = this.getAttribute("slot-type")
         if (!slotType) {
-            console.error(`EquipmentSlot is missing a slot type attribute`)
+            return "none" as SlotType
         }
 
         return slotType as SlotType

@@ -21,7 +21,7 @@ export interface Card {
     type: CardType
 }
 
-export type SlotType = "body" | "hand_1"
+export type SlotType = "body" | "main_hand"
 
 export type Brand<T, FlavorT> = T & {
     _type?: FlavorT

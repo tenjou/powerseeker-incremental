@@ -19,11 +19,10 @@ template.innerHTML = html`<style>
 
     <slot></slot>`
 
-customElements.define(
-    "x-row",
-    class extends HTMLComponent {
-        constructor() {
-            super(template)
-        }
+class Row extends HTMLComponent {
+    constructor() {
+        super(template)
     }
-)
+}
+
+customElements.define("x-row", Row)

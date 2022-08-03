@@ -17,6 +17,7 @@ import { loadDungeonStage, setupDungeonSystem } from "./dungeon"
 import { addItem } from "./inventory/inventory"
 import { getState, loadState } from "./state"
 import { updateView } from "./view"
+import { loadTooltip } from "./tooltip"
 
 let tLast = 0
 
@@ -31,6 +32,7 @@ function createEmptyProfile() {
 
 function load() {
     updateView()
+    loadTooltip()
 
     const state = getState()
 

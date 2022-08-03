@@ -62,7 +62,7 @@ let state: State = {
     },
     equipment: {
         body: null,
-        hand_1: null,
+        main_hand: null,
     },
     battler: {
         id: 0,

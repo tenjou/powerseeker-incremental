@@ -10,7 +10,7 @@ const local: Record<string, LocalEntry> = {
     body: {
         en: "Body",
     },
-    hand_1: {
+    main_hand: {
         en: "Main Hand",
     },
     copper_ore: {
@@ -28,8 +28,15 @@ const local: Record<string, LocalEntry> = {
     health_potion: {
         en: "Health Potion",
     },
+    none: {
+        en: "None",
+    },
 }
 
 export function i18n(key: string) {
-    return local[key][lang] || `__${key}__`
+    const entry = local[key]
+    if (!entry) {
+        return `__${key}__`
+    }
+    return entry[lang]
 }

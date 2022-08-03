@@ -1,5 +1,6 @@
 import { ItemConfigs, ItemId } from "../config/ItemConfigs"
 import { HTMLComponent } from "../dom"
+import { emit } from "./../events"
 
 const template = document.createElement("template")
 template.innerHTML = html`<style>
@@ -49,6 +50,13 @@ class ItemSlot extends HTMLComponent {
         this.onclick = () => {
             history.pushState({}, "", this.innerText.toLocaleLowerCase())
             window.dispatchEvent(new Event("onpushstate"))
+        }
+        this.onmouseover = () => {
+            const itemId = this.getAttribute("item-id")
+            if (itemId) {
+                const itemConfig = ItemConfigs[itemId as ItemId]
+                emit("item-hover", itemConfig)
+            }
         }
     }
 

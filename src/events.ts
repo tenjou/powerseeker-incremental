@@ -1,4 +1,4 @@
-type EventType = "item-add" | "item-remove" | "item-update" | "equip" | "unequip" | "skill-update"
+type EventType = "item-add" | "item-remove" | "item-update" | "item-hover" | "equip" | "unequip" | "skill-update"
 
 type CallbackFunc = (payload: unknown) => void
 
