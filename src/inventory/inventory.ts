@@ -1,7 +1,7 @@
+import { equipItem } from "../character/equipment"
+import { addHp } from "../character/status"
 import { ItemConfigs, ItemEffect, ItemId } from "../config/ItemConfigs"
-import { equipItem } from "../equipment"
 import { getState } from "../state"
-import { addHp } from "../status"
 import { Item } from "../types"
 import { emit } from "./../events"
 

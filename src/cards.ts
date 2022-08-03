@@ -1,11 +1,11 @@
 import { startBattle } from "./battle/battle"
+import { addGold, addHp, addStamina } from "./character/status"
 import { CardConfigs, CardType } from "./config/CardConfigs"
 import { addChild, removeElement, setText, toggleClassName } from "./dom"
 import { advanceDungeonStage, enterDungeon, handleDungeonCardClick } from "./dungeon"
 import { addItem } from "./inventory/inventory"
 import { addSkillExp } from "./skills"
 import { getState } from "./state"
-import { addGold, addHp, addStamina } from "./status"
 import { Card } from "./types"
 import { randomItem } from "./utils"
 

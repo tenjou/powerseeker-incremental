@@ -39,7 +39,7 @@ template.innerHTML = html`<style>
         }
     </style>
 
-    <img src="./assets/icon/shards.png" />
+    <img src="" />
     <amount>4</amount>`
 
 class ItemSlot extends HTMLComponent {
@@ -57,11 +57,17 @@ class ItemSlot extends HTMLComponent {
     }
 
     update() {
-        const itemId = this.getAttribute("item-id") as ItemId
+        const itemId = this.getAttribute("item-id")
         const amount = Number(this.getAttribute("amount"))
 
-        const itemConfig = ItemConfigs[itemId]
-        this.getElement("img").setAttribute("src", `./assets/icon/${itemConfig.type}/${itemId}.png`)
+        if (itemId) {
+            const itemConfig = ItemConfigs[itemId as ItemId]
+            const imgElement = this.getElement("img")
+            imgElement.setAttribute("src", `./assets/icon/${itemConfig.type}/${itemId}.png`)
+            imgElement.classList.remove("hide")
+        } else {
+            this.getElement("img").classList.add("hide")
+        }
 
         this.setText("amount", amount)
         this.toggleClassName("hide", amount <= 1, "amount")
@@ -72,7 +78,7 @@ class ItemSlot extends HTMLComponent {
     }
 
     static get observedAttributes() {
-        return ["amount"]
+        return ["item-id", "amount"]
     }
 }
 

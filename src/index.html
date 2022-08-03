@@ -29,15 +29,9 @@
                     <segment>Main</segment>
                     <x-url>Town</x-url>
                     <x-url>Character</x-url>
-                    <x-url>Equipment</x-url>
                     <x-url>Inventory</x-url>
                     <x-url>Skills</x-url>
                 </x-column>
-
-                <column>
-                    <text class="header">Equipment</text>
-                    <column id="equipment"></column>
-                </column>
 
                 <column>
                     <text class="header">Inventory</text>
@@ -62,14 +56,30 @@
 
                     <x-column id="view-character" class="hide">
                         <x-header>Character</x-header>
-                        <x-text id="character-level"></x-text>
-                        <x-text id="character-exp"></x-text>
-                        <x-text id="character-hp"></x-text>
-                        <x-text id="character-attack"></x-text>
-                        <x-text id="character-defense"></x-text>
-                        <x-text id="character-speed"></x-text>
-                        <x-text id="character-stamina"></x-text>
-                        <x-text id="character-gold"></x-text>
+
+                        <p>
+                            <x-text class="bold size10 uppercase">Stats</x-text>
+                        </p>
+                        <x-column>
+                            <x-text id="character-level"></x-text>
+                            <x-text id="character-exp"></x-text>
+                            <x-text id="character-hp"></x-text>
+                            <x-text id="character-attack"></x-text>
+                            <x-text id="character-defense"></x-text>
+                            <x-text id="character-speed"></x-text>
+                            <x-text id="character-stamina"></x-text>
+                            <x-text id="character-gold"></x-text>
+                        </x-column>
+
+                        <p>
+                            <x-text class="bold size10 uppercase">Equipment</x-text>
+                        </p>
+                        <span>
+                            <x-column class="inline">
+                                <equipment-slot slot-type="body"></equipment-slot>
+                                <equipment-slot slot-type="hand_1"></equipment-slot>
+                            </x-column>
+                        </span>
                     </x-column>
 
                     <x-column id="view-inventory" class="hide">

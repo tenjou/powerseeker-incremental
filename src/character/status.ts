@@ -1,6 +1,6 @@
-import { ItemConfigs } from "./config/ItemConfigs"
-import { getState } from "./state"
-import { SlotType } from "./types"
+import { ItemConfigs } from "../config/ItemConfigs"
+import { getState } from "../state"
+import { SlotType } from "../types"
 
 export function addHp(value: number) {
     const { battler } = getState()
