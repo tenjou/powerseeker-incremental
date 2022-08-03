@@ -2,13 +2,14 @@ import { loadCharacterView, unloadCharacterView } from "./character/character-vi
 import { toggleClassName } from "./dom"
 import { loadInventoryView, unloadInventoryView } from "./inventory/inventory-view"
 import { loadSkillsView, unloadSkillsView } from "./skills/skills-view"
+import { loadEquipmentView, unloadEquipmentView } from "./equipment/equipment-view"
 
 interface View {
     onLoad: () => void
     onUnload: () => void
 }
 
-type ViewType = "town" | "character" | "inventory" | "skills"
+type ViewType = "town" | "character" | "inventory" | "skills" | "equipment"
 
 const views: Record<ViewType, View> = {
     town: {
@@ -27,13 +28,18 @@ const views: Record<ViewType, View> = {
         onLoad: loadSkillsView,
         onUnload: unloadSkillsView,
     },
+    equipment: {
+        onLoad: loadEquipmentView,
+        onUnload: unloadEquipmentView,
+    },
 }
 
 let currView: ViewType | "" = ""
 
 export function updateView() {
     const url = location.pathname
-    const nextView = url.slice(1) as ViewType
+    const segments = url.split("/")
+    const nextView = segments[1] as ViewType
     if (currView === nextView) {
         return
     }
@@ -62,4 +68,13 @@ export function updateView() {
 
     toggleClassName(`view-${nextView}`, "hide", false)
     toggleClassName(`nav-${nextView}`, "active", true)
+}
+
+export function goTo(url: string | null) {
+    if (!url) {
+        return
+    }
+
+    history.pushState({}, "", url)
+    window.dispatchEvent(new Event("onpushstate"))
 }

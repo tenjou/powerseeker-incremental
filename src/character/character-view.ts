@@ -2,8 +2,8 @@ import { setText } from "../dom"
 import { getState } from "../state"
 import { SlotType } from "../types"
 import { subscribe, unsubscribe } from "./../events"
-import "./equipment-slot"
-import { EquipmentSlot } from "./equipment-slot"
+import "../equipment/equipment-slot"
+import { EquipmentSlot } from "../equipment/equipment-slot"
 
 export function loadCharacterView() {
     updateCharacterView()

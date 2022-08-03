@@ -1,4 +1,5 @@
 import { HTMLComponent } from "../dom"
+import { goTo } from "../view"
 
 const template = document.createElement("template")
 template.innerHTML = html`<style>
@@ -25,8 +26,7 @@ class Url extends HTMLComponent {
         super(template)
 
         this.onclick = () => {
-            history.pushState({}, "", this.getAttribute("href"))
-            window.dispatchEvent(new Event("onpushstate"))
+            goTo(this.getAttribute("href"))
         }
     }
 }

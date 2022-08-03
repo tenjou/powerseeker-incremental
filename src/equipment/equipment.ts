@@ -1,9 +1,9 @@
 import { ItemConfigs } from "../config/ItemConfigs"
-import { emit } from "./../events"
-import { getState } from "./../state"
-import { Item, SlotType } from "./../types"
-import { recalculateStats } from "./status"
-import { addItem } from "./../inventory/inventory"
+import { emit } from "../events"
+import { getState } from "../state"
+import { Item, SlotType } from "../types"
+import { recalculateStats } from "../character/status"
+import { addItem } from "../inventory/inventory"
 
 export function equipItem(item: Item) {
     const { equipment } = getState()

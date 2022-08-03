@@ -1,4 +1,4 @@
-import { equipItem } from "../character/equipment"
+import { equipItem } from "../equipment/equipment"
 import { addHp } from "../character/status"
 import { ItemConfigs, ItemEffect, ItemId } from "../config/ItemConfigs"
 import { getState } from "../state"
