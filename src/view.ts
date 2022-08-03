@@ -32,7 +32,8 @@ const views: Record<ViewType, View> = {
 let currView: ViewType | "" = ""
 
 export function updateView() {
-    const nextView = location.pathname.slice(1) as ViewType
+    const url = location.pathname
+    const nextView = url.slice(1) as ViewType
     if (currView === nextView) {
         return
     }
@@ -51,6 +52,7 @@ export function updateView() {
         }
 
         toggleClassName(`view-${currView}`, "hide", true)
+        toggleClassName(`nav-${currView}`, "active", false)
 
         unloadView.onUnload()
     }
@@ -59,4 +61,5 @@ export function updateView() {
     view.onLoad()
 
     toggleClassName(`view-${nextView}`, "hide", false)
+    toggleClassName(`nav-${nextView}`, "active", true)
 }

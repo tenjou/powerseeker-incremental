@@ -26,11 +26,15 @@
         <container>
             <sidebar>
                 <x-column>
-                    <segment>Main</segment>
-                    <x-url>Town</x-url>
-                    <x-url>Character</x-url>
-                    <x-url>Inventory</x-url>
-                    <x-url>Skills</x-url>
+                    <segment>Areas</segment>
+                    <x-url id="nav-town" href="/town">Town</x-url>
+                </x-column>
+
+                <x-column>
+                    <segment>Player</segment>
+                    <x-url id="nav-character" href="/character">Character</x-url>
+                    <x-url id="nav-inventory" href="/inventory">Inventory</x-url>
+                    <x-url id="nav-skills" href="/skills">Skills</x-url>
                 </x-column>
             </sidebar>
 

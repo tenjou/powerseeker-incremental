@@ -165,10 +165,11 @@ sidebar {
     display: flex;
     flex-direction: column;
     flex: 0 0 180px;
+    padding: 10px 0;
     border-right: 1px solid #cbcbcb;
 }
 sidebar > * {
-    margin-bottom: 20px;
+    margin-bottom: 8px;
 }
 
 content-holder {
@@ -306,9 +307,11 @@ popups:empty {
 }
 
 segment {
+    padding: 5px 14px;
+    font-weight: 600;
+    font-size: 9px;
     color: #999;
-    font-weight: 500;
-    font-size: 10px;
+    text-transform: uppercase;
 }
 
 inventory-container {

@@ -3,29 +3,33 @@ import { HTMLComponent } from "../dom"
 const template = document.createElement("template")
 template.innerHTML = html`<style>
         :host {
-            padding: 5px 10px;
-            cursor: pointer;
-            color: #444;
+            padding: 4px 8px;
+            margin: 1px 5px;
+            border-radius: 4px;
             font-weight: 600;
-            border-left: 2px solid #0000;
+            cursor: pointer;
         }
         :host(:hover) {
-            color: #000;
-            background: #ffffff47;
-            border-left: 2px solid black;
+            background: #ccc;
+        }
+        :host(.active) {
+            background: #000;
+            color: #fff;
         }
     </style>
 
     <slot></slot>`
 
-customElements.define("x-url", class extends HTMLComponent {
-    constructor() {
-        super(template)
+customElements.define(
+    "x-url",
+    class extends HTMLComponent {
+        constructor() {
+            super(template)
 
-        this.onclick = () => {
-            history.pushState({}, "", this.innerText.toLocaleLowerCase())
-            window.dispatchEvent(new Event("onpushstate"))
+            this.onclick = () => {
+                history.pushState({}, "", this.getAttribute("href"))
+                window.dispatchEvent(new Event("onpushstate"))
+            }
         }
-
     }
-})
+)
