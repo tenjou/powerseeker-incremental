@@ -32,15 +32,6 @@
                     <x-url>Inventory</x-url>
                     <x-url>Skills</x-url>
                 </x-column>
-
-                <column>
-                    <text class="header">SKILLS</text>
-                    <column>
-                        <div id="value-woodcutting"></div>
-                        <div id="value-mining"></div>
-                        <div id="value-fishing"></div>
-                    </column>
-                </column>
             </sidebar>
 
             <content-holder>
@@ -80,6 +71,15 @@
                     <x-column id="view-inventory" class="hide">
                         <x-header>Inventory</x-header>
                         <inventory-container id="inventory-container"></inventory-container>
+                    </x-column>
+
+                    <x-column id="view-skills" class="hide">
+                        <x-header>Skills</x-header>
+                        <x-column>
+                            <div id="skill-woodcutting"></div>
+                            <div id="skill-mining"></div>
+                            <div id="skill-fishing"></div>
+                        </x-column>
                     </x-column>
 
                     <!-- <x-column id="area-town" class="hide">

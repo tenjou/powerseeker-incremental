@@ -15,7 +15,6 @@ import "./components/url"
 import { setShow } from "./dom"
 import { loadDungeonStage, setupDungeonSystem } from "./dungeon"
 import { addItem } from "./inventory/inventory"
-import { updateSkills } from "./skills"
 import { getState, loadState } from "./state"
 import { updateView } from "./view"
 
@@ -59,7 +58,6 @@ function loadSave() {
 }
 
 function update() {
-    updateSkills()
     setupDungeonSystem()
 
     tLast = Date.now()

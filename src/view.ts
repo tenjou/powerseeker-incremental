@@ -1,13 +1,14 @@
 import { loadCharacterView, unloadCharacterView } from "./character/character-view"
 import { toggleClassName } from "./dom"
 import { loadInventoryView, unloadInventoryView } from "./inventory/inventory-view"
+import { loadSkillsView, unloadSkillsView } from "./skills/skills-view"
 
 interface View {
     onLoad: () => void
     onUnload: () => void
 }
 
-type ViewType = "town" | "character" | "inventory"
+type ViewType = "town" | "character" | "inventory" | "skills"
 
 const views: Record<ViewType, View> = {
     town: {
@@ -21,6 +22,10 @@ const views: Record<ViewType, View> = {
     inventory: {
         onLoad: loadInventoryView,
         onUnload: unloadInventoryView,
+    },
+    skills: {
+        onLoad: loadSkillsView,
+        onUnload: unloadSkillsView,
     },
 }
 

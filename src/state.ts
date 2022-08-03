@@ -40,7 +40,7 @@ interface State {
     player: PlayerStatus
     equipment: Record<SlotType, Item | null>
     battler: Battler
-    skills: Record<SkillId, Skill>
+    skills: Skill[]
     inventory: Item[]
     abilities: Ability[]
     town: TownStatus
@@ -82,23 +82,26 @@ let state: State = {
         isTeamA: true,
         isAI: false,
     },
-    skills: {
-        woodcutting: {
+    skills: [
+        {
+            id: "woodcutting",
             xp: 0,
             xpMax: 100,
             level: 1,
         },
-        mining: {
+        {
+            id: "mining",
             xp: 0,
             xpMax: 100,
             level: 1,
         },
-        fishing: {
+        {
+            id: "fishing",
             xp: 0,
             xpMax: 100,
             level: 1,
         },
-    },
+    ],
     inventory: [],
     town: {
         cards: [],
@@ -130,7 +133,7 @@ let state: State = {
         tNextAction: 0,
         isTeamA: true,
         isEnding: false,
-        isAuto: false
+        isAuto: false,
     },
     battleResult: null,
     abilities: [

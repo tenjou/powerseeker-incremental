@@ -4,6 +4,7 @@ import { ItemId } from "./config/ItemConfigs"
 export type SkillId = "woodcutting" | "mining" | "fishing"
 
 export interface Skill {
+    id: SkillId
     level: number
     xp: number
     xpMax: number
