@@ -20,16 +20,15 @@ template.innerHTML = html`<style>
 
     <slot></slot>`
 
-customElements.define(
-    "x-url",
-    class extends HTMLComponent {
-        constructor() {
-            super(template)
+class Url extends HTMLComponent {
+    constructor() {
+        super(template)
 
-            this.onclick = () => {
-                history.pushState({}, "", this.getAttribute("href"))
-                window.dispatchEvent(new Event("onpushstate"))
-            }
+        this.onclick = () => {
+            history.pushState({}, "", this.getAttribute("href"))
+            window.dispatchEvent(new Event("onpushstate"))
         }
     }
-)
+}
+
+customElements.define("x-url", Url)

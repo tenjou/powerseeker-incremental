@@ -22,11 +22,10 @@ template.innerHTML = html`<style>
 
     <slot></slot>`
 
-customElements.define(
-    "x-column",
-    class extends HTMLComponent {
-        constructor() {
-            super(template)
-        }
+class Column extends HTMLComponent {
+    constructor() {
+        super(template)
     }
-)
+}
+
+customElements.define("x-column", Column)

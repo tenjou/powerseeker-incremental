@@ -100,101 +100,6 @@ export function setShow(id: string, show: boolean) {
     }
 }
 
-interface NodeProps {
-    id?: string
-    onclick?: () => void
-}
-
-interface Node {
-    tagName: string
-    nodes: (Node | string)[]
-    props?: NodeProps
-}
-
-export function renderParentId(parentId: string, nodes: (Node | string)[]) {
-    const parent = document.getElementById(parentId)
-    if (!parent) {
-        console.error(`Could not find parent element with Id: ${parentId}`)
-        return
-    }
-
-    renderParent(parent, nodes)
-}
-
-export function renderParent(parent: HTMLElement, nodes: (Node | string)[]) {
-    const children = parent.childNodes
-    const numChecks = Math.min(children.length, nodes.length)
-
-    for (let n = 0; n < numChecks; n++) {
-        const child = children[n] as HTMLElement
-        const node = nodes[n]
-        if (typeof node === "string") {
-            if (child.nodeType === 3) {
-                child.nodeValue = node
-            } else {
-                const textElement = document.createTextNode(node)
-                parent.replaceChild(textElement, child)
-            }
-        } else {
-            if (child.nodeType === 3 || child.localName !== node.tagName) {
-                const element = document.createElement(node.tagName)
-                renderParent(element, node.nodes)
-                parent.replaceChild(element, child)
-
-                if (node.props) {
-                    applyProps(element, node.props)
-                }
-            } else {
-                renderParent(child, node.nodes)
-
-                if (node.props) {
-                    applyProps(child, node.props)
-                }
-            }
-        }
-    }
-
-    for (let n = numChecks; n < nodes.length; n++) {
-        const node = nodes[n]
-        if (typeof node === "string") {
-            const textElement = document.createTextNode(node)
-            parent.appendChild(textElement)
-        } else {
-            const element = document.createElement(node.tagName)
-            renderParent(element, node.nodes)
-            parent.appendChild(element)
-
-            if (node.props) {
-                applyProps(element, node.props)
-            }
-        }
-    }
-
-    if (children.length > nodes.length) {
-        for (let n = children.length - 1; n >= numChecks; n--) {
-            const child = children[n]
-            child.remove()
-        }
-    }
-}
-
-function applyProps(element: HTMLElement, props: NodeProps) {
-    if (props.id) {
-        element.id = props.id
-    }
-    if (props.onclick) {
-        element.onclick = props.onclick
-    }
-}
-
-export function render(tagName: string, nodes: Node | string | (Node | string)[], props?: NodeProps): Node {
-    return {
-        tagName,
-        nodes: !Array.isArray(nodes) ? [nodes] : nodes,
-        props,
-    }
-}
-
 export class HTMLComponent extends HTMLElement {
     constructor(template: HTMLTemplateElement) {
         super()
@@ -207,6 +112,10 @@ export class HTMLComponent extends HTMLElement {
         if (!this.shadowRoot) {
             console.error(`Missing shadowRoot`)
             return emptyElement
+        }
+
+        if (!query) {
+            return this
         }
 
         const element = this.shadowRoot.querySelector(query) as HTMLElement
