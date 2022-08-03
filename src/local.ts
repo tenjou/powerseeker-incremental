@@ -31,5 +31,5 @@ const local: Record<string, LocalEntry> = {
 }
 
 export function i18n(key: string) {
-    return local[key].en || `__${key}__`
+    return local[key][lang] || `__${key}__`
 }

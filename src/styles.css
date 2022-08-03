@@ -260,22 +260,6 @@ battle-hint {
     }
 }
 
-equipment-slot {
-    display: inline-flex;
-    padding: 2px;
-    margin: 2px;
-    cursor: pointer;
-    border-radius: 3px;
-}
-equipment-slot:hover {
-    background: black;
-    color: white;
-}
-equipment-slot.empty {
-    opacity: 0.5;
-    pointer-events: none;
-}
-
 inventory-item {
     display: inline-flex;
     padding: 2px;

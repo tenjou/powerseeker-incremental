@@ -6,7 +6,17 @@ import { unequipItem } from "./equipment"
 import { i18n } from "./../local"
 
 const template = document.createElement("template")
-template.innerHTML = html`<style></style>
+template.innerHTML = html`<style>
+        :host {
+            flex: 1;
+            background: #ccc;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        :host(:hover) {
+            background: #f5f5f5;
+        }
+    </style>
 
     <item-slot></item-slot>
     <x-column class="center-v"><x-text></x-text></x-column>`
