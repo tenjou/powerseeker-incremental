@@ -1,7 +1,9 @@
+import { ItemConfigs } from "../config/ItemConfigs"
 import { HTMLComponent } from "../dom"
 import { SlotType } from "../types"
 import { getState } from "./../state"
 import { unequipItem } from "./equipment"
+import { i18n } from "./../local"
 
 const template = document.createElement("template")
 template.innerHTML = html`<style></style>
@@ -22,10 +24,12 @@ export class EquipmentSlot extends HTMLComponent {
         const { equipment } = getState()
 
         const slotType = this.slotType()
-        this.setText("x-text", slotType)
+        const item = equipment[slotType]
+        const itemConfig = item ? ItemConfigs[item.id] : null
+
+        this.setText("x-text", i18n(itemConfig ? itemConfig.id : slotType))
 
         const itemSlot = this.getElement("item-slot")
-        const item = equipment[slotType]
         itemSlot.setAttribute("item-id", item ? item.id : "")
     }
 
