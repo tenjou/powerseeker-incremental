@@ -1,7 +1,7 @@
 import { ItemConfigs, ItemId } from "./config/ItemConfigs"
 import { i18n } from "./local"
 
-export function loadTooltip() {
+export function loadTooltipSystem() {
     const tooltipElement = document.querySelector("tooltip")
     if (!tooltipElement) {
         console.error(`Could not find tooltip element`)
@@ -10,9 +10,10 @@ export function loadTooltip() {
 
     window.onmousemove = (event) => {
         const element = event.target as HTMLElement
+
         const itemId = element.getAttribute("item-id")
 
-        if (itemId) {
+        if (itemId && element.tagName === "ITEM-SLOT") {
             const itemConfig = ItemConfigs[itemId as ItemId]
 
             tooltipElement.classList.remove("hide")
@@ -21,5 +22,9 @@ export function loadTooltip() {
         } else {
             tooltipElement.classList.add("hide")
         }
+    }
+
+    window.onclick = (event) => {
+        tooltipElement.classList.add("hide")
     }
 }

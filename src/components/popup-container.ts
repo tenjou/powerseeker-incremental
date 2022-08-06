@@ -5,7 +5,7 @@ popupContainerTemplate.innerHTML = html`<style>
         :host {
             display: flex;
             flex-direction: column;
-            padding: 8px;
+            padding: 8px 6px;
             width: 400px;
             max-height: 96%;
             box-sizing: border-box;
@@ -14,6 +14,7 @@ popupContainerTemplate.innerHTML = html`<style>
             border-radius: 3px;
             border-left: 2px solid #fff;
             border-right: 2px solid #fff;
+            cursor: initial;
         }
     </style>
     <slot></slot>`

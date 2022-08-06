@@ -7,12 +7,13 @@ template.innerHTML = html`<style>
             text-transform: uppercase;
         }
         :host(.tertiary) {
+            color: #787878;
+        }
+        :host(.semibold) {
             font-weight: 600;
-            color: #bbb;
-            text-shadow: #333 0px 0px 2px;
         }
         :host(.bold) {
-            font-weight: bold;
+            font-weight: 700;
         }
         :host(.size10) {
             font-size: 10px;

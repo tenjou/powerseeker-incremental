@@ -1,9 +1,28 @@
-type PopupType = "battle-result-popup"
+import { getElement } from "./dom"
+
+type PopupType = "item-popup" | "battle-result-popup"
 
 const popups: HTMLElement[] = []
 
-export function openPopup(type: PopupType) {
+export function loadPopupSystem() {
+    const popupElement = getElement("popups")
+
+    popupElement.addEventListener("click", tryClosePopup)
+
+    window.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            closePopup()
+        }
+    })
+}
+
+export function openPopup(type: PopupType, attributes: Record<string, string | number> = {}) {
     const popup = document.createElement(type)
+
+    for (let attributeId in attributes) {
+        popup.setAttribute(attributeId, String(attributes[attributeId]))
+    }
+
     document.getElementById("popups")?.appendChild(popup)
 
     if (popups.length > 0) {
@@ -12,6 +31,14 @@ export function openPopup(type: PopupType) {
     }
 
     popups.push(popup)
+}
+
+function tryClosePopup(event: MouseEvent) {
+    const popupElement = getElement("popups")
+
+    if (event.target === popupElement) {
+        closePopup()
+    }
 }
 
 export function closePopup() {

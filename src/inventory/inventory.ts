@@ -1,14 +1,15 @@
-import { equipItem } from "../equipment/equipment"
 import { addHp } from "../character/status"
 import { ItemConfigs, ItemEffect, ItemId } from "../config/ItemConfigs"
+import { equipItem } from "../equipment/equipment"
 import { getState } from "../state"
 import { Item } from "../types"
 import { emit } from "./../events"
+import "./item-popup"
 
-export function addItem(itemId: ItemId, amount: number = 1) {
+export function addItem(itemId: ItemId, power: number, amount: number = 1) {
     const { inventory, cache } = getState()
 
-    const item = inventory.find((entry) => entry.id === itemId)
+    const item = inventory.find((entry) => entry.id === itemId && entry.power === power)
     if (item) {
         item.amount += amount
         emit("item-update", item)
@@ -16,6 +17,7 @@ export function addItem(itemId: ItemId, amount: number = 1) {
         const newItem: Item = {
             uid: cache.lastItemIndex++,
             id: itemId,
+            power,
             amount,
         }
 

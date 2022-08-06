@@ -13,6 +13,7 @@ export interface Skill {
 export interface Item {
     uid: number
     id: ItemId
+    power: number
     amount: number
 }
 

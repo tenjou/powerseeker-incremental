@@ -17,7 +17,8 @@ import { loadDungeonStage, setupDungeonSystem } from "./dungeon"
 import { addItem } from "./inventory/inventory"
 import { getState, loadState } from "./state"
 import { updateView } from "./view"
-import { loadTooltip } from "./tooltip"
+import { loadTooltipSystem } from "./tooltip"
+import { loadPopupSystem } from "./popup"
 
 let tLast = 0
 
@@ -26,13 +27,15 @@ function createEmptyProfile() {
     addCard("dungeon")
     addCard("encounter_boar")
 
-    addItem("leather_clothing", 2)
-    addItem("health_potion", 5)
+    addItem("leather_clothing", 1, 1)
+    addItem("leather_clothing", 4, 2)
+    addItem("health_potion", 3, 5)
 }
 
 function load() {
     updateView()
-    loadTooltip()
+    loadTooltipSystem()
+    loadPopupSystem()
 
     const state = getState()
 

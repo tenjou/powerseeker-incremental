@@ -3,6 +3,8 @@ import { getState } from "../state"
 import { subscribe, unsubscribe } from "./../events"
 import { Item } from "./../types"
 import { handleItemUse } from "./inventory"
+import { openPopup } from "./../popup"
+import { getCache } from "./../cache"
 
 export function loadInventoryView() {
     const { inventory } = getState()
@@ -33,10 +35,17 @@ function addItem(item: Item) {
 
     const itemSlot = document.createElement("item-slot")
     itemSlot.id = `item-${item.uid}`
-    itemSlot.setAttribute("item-id", item.id)
-    itemSlot.setAttribute("amount", String(item.amount))
-    itemSlot.onclick = () => handleItemUse(item)
+    itemSlot.setAttribute("uid", String(item.uid))
+    itemSlot.onclick = () => openItemPopup(item)
+    // itemSlot.onclick = () => handleItemUse(item)
     parent.appendChild(itemSlot)
+}
+
+function openItemPopup(item: Item) {
+    openPopup("item-popup", {
+        uid: item.uid,
+        "item-id": item.id,
+    })
 }
 
 function removeItem(item: Item) {

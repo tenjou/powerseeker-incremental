@@ -31,6 +31,12 @@ const local: Record<string, LocalEntry> = {
     none: {
         en: "None",
     },
+    armor: {
+        en: "Armor",
+    },
+    consumable: {
+        en: "Consumable",
+    },
 }
 
 export function i18n(key: string) {
