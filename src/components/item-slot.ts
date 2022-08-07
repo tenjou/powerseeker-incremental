@@ -66,7 +66,7 @@ template.innerHTML = html`<style>
     <power></power>
     <amount></amount>`
 
-class ItemSlot extends HTMLComponent {
+export class ItemSlot extends HTMLComponent {
     constructor() {
         super(template)
 
@@ -114,8 +114,9 @@ class ItemSlot extends HTMLComponent {
         this.setText("amount", amount)
         this.toggleClassName("hide", amount <= 1, "amount")
 
+        const hidePower = !!this.getAttribute("hide-power")
         this.setText("power", power)
-        this.toggleClassName("hide", power <= 0, "power")
+        this.toggleClassName("hide", hidePower || power <= 0, "power")
     }
 
     attributeChangedCallback() {

@@ -11,6 +11,7 @@ export interface ItemEffect {
 
 interface ItemConfigBasic {
     id: ItemId
+    description: string
 }
 
 interface ItemConfigResource extends ItemConfigBasic {
@@ -31,7 +32,7 @@ interface ItemConfigConsumable extends ItemConfigBasic {
     effects: ItemEffect[]
 }
 
-type ItemConfig = ItemConfigResource | ItemConfigArmor | ItemConfigConsumable
+export type ItemConfig = ItemConfigResource | ItemConfigArmor | ItemConfigConsumable
 
 export type ItemType = ItemConfig["type"]
 
@@ -39,24 +40,29 @@ export const ItemConfigs: Record<ItemId, ItemConfig> = {
     copper_ore: {
         id: "copper_ore",
         type: "resource",
+        description: "",
     },
     carp: {
         id: "carp",
         type: "resource",
+        description: "",
     },
     mapple_log: {
         id: "mapple_log",
         type: "resource",
+        description: "",
     },
     leather_clothing: {
         id: "leather_clothing",
         type: "armor",
+        description: "",
         slot: "body",
         defense: 1,
     },
     health_potion: {
         id: "health_potion",
         type: "consumable",
+        description: "Restore %0 <semibold>health</semibold>.",
         effects: [
             {
                 type: "restore_hp",

@@ -26,25 +26,19 @@ export function addItem(itemId: ItemId, power: number, amount: number = 1) {
     }
 }
 
-export function removeItem(itemId: ItemId, amount: number = 1) {
+export function removeItem(item: Item, amount: number = 1) {
     const { inventory } = getState()
 
-    const item = inventory.find((entry) => entry.id === itemId)
-    if (!item) {
-        console.error(`Could not find any item with id: ${itemId}`)
-        return
-    }
-
     if (item.amount < amount) {
-        console.error(`There are not enough items: ${itemId}, have: ${item.amount}, but need: ${amount}`)
+        console.error(`There are not enough items: ${item.id}, have: ${item.amount}, but need: ${amount}`)
         return
     }
 
     item.amount -= amount
     if (item.amount <= 0) {
-        const itemIndex = inventory.findIndex((entry) => entry.id === itemId)
+        const itemIndex = inventory.findIndex((entry) => entry.id === item.id)
         if (itemIndex === -1) {
-            console.error(`Could not find index for item with id: ${itemId}`)
+            console.error(`Could not find index for item with id: ${item.id}`)
             return
         }
 
@@ -61,13 +55,13 @@ export function handleItemUse(item: Item) {
     switch (itemConfig.type) {
         case "armor":
             if (equipItem(item)) {
-                removeItem(item.id)
+                removeItem(item)
             }
             break
 
         case "consumable":
             resolveItemEffects(itemConfig.effects)
-            removeItem(item.id)
+            removeItem(item)
             break
     }
 }

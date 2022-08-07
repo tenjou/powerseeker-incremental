@@ -5,6 +5,7 @@ import { Item } from "./../types"
 import { handleItemUse } from "./inventory"
 import { openPopup } from "./../popup"
 import { getCache } from "./../cache"
+import { ItemSlot } from "../components/item-slot"
 
 export function loadInventoryView() {
     const { inventory } = getState()
@@ -36,6 +37,7 @@ function addItem(item: Item) {
     const itemSlot = document.createElement("item-slot")
     itemSlot.id = `item-${item.uid}`
     itemSlot.setAttribute("uid", String(item.uid))
+    itemSlot.setAttribute("item-id", item.id)
     itemSlot.onclick = () => openItemPopup(item)
     // itemSlot.onclick = () => handleItemUse(item)
     parent.appendChild(itemSlot)
@@ -53,6 +55,6 @@ function removeItem(item: Item) {
 }
 
 function updateItem(item: Item) {
-    const element = getElement(`item-${item.uid}`)
-    element.setAttribute("amount", String(item.amount))
+    const element = getElement(`item-${item.uid}`) as ItemSlot
+    element.update()
 }

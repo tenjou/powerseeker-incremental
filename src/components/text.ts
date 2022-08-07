@@ -21,6 +21,9 @@ template.innerHTML = html`<style>
         :host(.size13) {
             font-size: 13px;
         }
+        :host(.size22) {
+            font-size: 22px;
+        }
         :host(.size30) {
             font-size: 30px;
         }

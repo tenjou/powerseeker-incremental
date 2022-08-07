@@ -133,6 +133,13 @@ export class HTMLComponent extends HTMLElement {
         this.getElement(query).innerText = String(text)
     }
 
+    setHTML(query: string, text: string | number | null) {
+        if (!text) {
+            return
+        }
+        this.getElement(query).innerHTML = String(text)
+    }
+
     toggleClassName(className: string, add: boolean, query: string = "") {
         if (add) {
             this.getElement(query).classList.add(className)
