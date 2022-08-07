@@ -18,7 +18,9 @@ template.innerHTML = html`<style>
         }
 
         #description {
-            margin: 4px 0;
+            margin: 8px 0 12px 0;
+            border-top: 1px solid #d5d5d5;
+            padding-top: 6px;
         }
 
         blue {
@@ -64,7 +66,7 @@ export class ItemPopup extends HTMLComponent {
 
             const item = inventory.find((entry) => entry.uid === uid)
             if (!item) {
-                console.error("Could not find the item: ${uid}")
+                console.error(`Could not find the item: ${uid}`)
                 return
             }
 
@@ -118,7 +120,9 @@ export class ItemPopup extends HTMLComponent {
         this.setText("#name", i18n(itemId))
         this.setText("#type", i18n(itemConfig.type))
         this.setText("#power", itemPower)
-        this.setHTML("#description", getDescription(itemConfig, itemPower))
+
+        const description = getDescription(itemConfig, itemPower)
+        this.setHTML("#description", description)
     }
 
     addAction(name: string, func: () => void) {

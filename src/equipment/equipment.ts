@@ -3,7 +3,7 @@ import { emit } from "../events"
 import { getState } from "../state"
 import { Item, SlotType } from "../types"
 import { recalculateStats } from "../character/status"
-import { addItem } from "../inventory/inventory"
+import { addItem, removeItem } from "../inventory/inventory"
 
 export function equipItem(item: Item) {
     const { equipment } = getState()
@@ -11,7 +11,7 @@ export function equipItem(item: Item) {
     const itemConfig = ItemConfigs[item.id]
     if (itemConfig.type !== "armor") {
         console.error(`Could not equip item: ${item.id}`)
-        return false
+        return
     }
 
     const prevItem = equipment[itemConfig.slot]
@@ -23,7 +23,7 @@ export function equipItem(item: Item) {
     emit("equip", itemConfig.slot)
     recalculateStats()
 
-    return true
+    removeItem(item)
 }
 
 export function unequipItem(slotType: SlotType) {
@@ -38,5 +38,5 @@ export function unequipItem(slotType: SlotType) {
     emit("unequip", slotType)
     recalculateStats()
 
-    addItem(item.id, 1)
+    addItem(item.id, item.power, 1)
 }

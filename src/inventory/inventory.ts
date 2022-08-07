@@ -22,7 +22,7 @@ export function addItem(itemId: ItemId, power: number, amount: number = 1) {
         }
 
         inventory.push(newItem)
-        emit("item-add", item)
+        emit("item-add", newItem)
     }
 }
 
@@ -36,7 +36,7 @@ export function removeItem(item: Item, amount: number = 1) {
 
     item.amount -= amount
     if (item.amount <= 0) {
-        const itemIndex = inventory.findIndex((entry) => entry.id === item.id)
+        const itemIndex = inventory.findIndex((entry) => entry.uid === item.uid)
         if (itemIndex === -1) {
             console.error(`Could not find index for item with id: ${item.id}`)
             return
@@ -54,9 +54,7 @@ export function handleItemUse(item: Item) {
 
     switch (itemConfig.type) {
         case "armor":
-            if (equipItem(item)) {
-                removeItem(item)
-            }
+            equipItem(item)
             break
 
         case "consumable":
