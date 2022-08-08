@@ -86,6 +86,9 @@ function sortInventory() {
 
     inventory.sort((a, b) => {
         if (a.id === b.id) {
+            if (b.rarity !== a.rarity) {
+                return b.rarity - a.rarity
+            }
             return b.power - a.power
         }
 

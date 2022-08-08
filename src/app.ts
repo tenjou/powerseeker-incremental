@@ -28,12 +28,17 @@ function createEmptyProfile() {
     addCard("encounter_boar")
 
     addItem("leather_clothing", {
-        power: 1,
-        rarity: 0,
+        power: 2,
+        rarity: 2,
         amount: 1,
     })
     addItem("leather_clothing", {
-        power: 4,
+        power: 3,
+        rarity: 1,
+        amount: 2,
+    })
+    addItem("leather_clothing", {
+        power: 1,
         rarity: 1,
         amount: 2,
     })
