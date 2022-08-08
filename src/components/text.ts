@@ -27,6 +27,9 @@ template.innerHTML = html`<style>
         :host(.size30) {
             font-size: 30px;
         }
+        :host(.line16) {
+            line-height: 16px;
+        }
         :host(.uppercase) {
             text-transform: uppercase;
         }

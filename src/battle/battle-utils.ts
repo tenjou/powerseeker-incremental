@@ -1,6 +1,6 @@
 import { randomNumber } from "./../utils"
-import { CharacterStats } from "./battle-types"
 import { AbilityEffect } from "./../config/ability-configs"
+import { CharacterStats } from "./../character/character-types"
 
 export const getMaxPower = (stats: CharacterStats, effect: AbilityEffect) => {
     return (effect.power * stats[effect.stat]) | 0

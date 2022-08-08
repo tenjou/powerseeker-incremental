@@ -1,6 +1,7 @@
 import { ItemConfigs } from "../config/ItemConfigs"
 import { getState } from "../state"
 import { SlotType } from "../types"
+import { CharacterStats, CharacterStatType } from "./character-types"
 
 export function addHp(value: number) {
     const { battler } = getState()
@@ -40,7 +41,7 @@ export function restoreStatus() {
 export function recalculateStats() {
     const { battler, equipment } = getState()
 
-    battler.stats.defense = 0
+    battler.stats = createEmptyStats()
 
     for (const slotType in equipment) {
         const item = equipment[slotType as SlotType]
@@ -49,10 +50,26 @@ export function recalculateStats() {
         }
 
         const itemConfig = ItemConfigs[item.id]
-        switch (itemConfig.type) {
-            case "armor":
-                battler.stats.defense += itemConfig.defense
-                break
+        if (itemConfig.type !== "armor") {
+            continue
         }
+
+        for (const key in itemConfig.stats) {
+            const statType = key as CharacterStatType
+            const statValue = itemConfig.stats[statType]
+            battler.stats[statType] += statValue || 0
+        }
+    }
+}
+
+export function createEmptyStats(): CharacterStats {
+    return {
+        accuracy: 1,
+        attack: 1,
+        critical: 1,
+        defense: 1,
+        evasion: 1,
+        healing: 1,
+        speed: 1,
     }
 }

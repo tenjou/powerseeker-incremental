@@ -1,3 +1,5 @@
+import { CharacterStatType } from "../character/character-types"
+
 export type ItemId = "carp" | "copper_ore" | "mapple_log" | "leather_clothing" | "health_potion"
 
 export type ArmorSlot = "body"
@@ -23,7 +25,7 @@ interface ItemConfigArmor extends ItemConfigBasic {
     id: ItemId
     type: "armor"
     slot: ArmorSlot
-    defense: number
+    stats: Partial<Record<CharacterStatType, number>>
 }
 
 interface ItemConfigConsumable extends ItemConfigBasic {
@@ -57,7 +59,10 @@ export const ItemConfigs: Record<ItemId, ItemConfig> = {
         type: "armor",
         description: "",
         slot: "body",
-        defense: 1,
+        stats: {
+            defense: 10,
+            accuracy: 2,
+        },
     },
     health_potion: {
         id: "health_potion",

@@ -1,4 +1,4 @@
-import { CharacterStatType } from "../battle/battle-types"
+import { CharacterStatType } from "../character/character-types"
 
 export interface AbilityEffect {
     type: "hp-minus" | "hp-plus"

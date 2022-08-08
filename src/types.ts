@@ -14,6 +14,7 @@ export interface Item {
     uid: number
     id: ItemId
     power: number
+    rarity: number
     amount: number
 }
 

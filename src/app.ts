@@ -27,9 +27,21 @@ function createEmptyProfile() {
     addCard("dungeon")
     addCard("encounter_boar")
 
-    addItem("leather_clothing", 1, 1)
-    addItem("leather_clothing", 4, 2)
-    addItem("health_potion", 3, 5)
+    addItem("leather_clothing", {
+        power: 1,
+        rarity: 0,
+        amount: 1,
+    })
+    addItem("leather_clothing", {
+        power: 4,
+        rarity: 1,
+        amount: 2,
+    })
+    addItem("health_potion", {
+        power: 3,
+        rarity: 4,
+        amount: 5,
+    })
 }
 
 function load() {

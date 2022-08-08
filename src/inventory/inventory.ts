@@ -6,10 +6,20 @@ import { Item } from "../types"
 import { emit } from "./../events"
 import "./item-popup"
 
-export function addItem(itemId: ItemId, power: number, amount: number = 1) {
+interface ItemProps {
+    power?: number
+    rarity?: number
+    amount?: number
+}
+
+export function addItem(itemId: ItemId, props: ItemProps) {
     const { inventory, cache } = getState()
 
-    const item = inventory.find((entry) => entry.id === itemId && entry.power === power)
+    const amount = props.amount || 1
+    const power = props.power || 1
+    const rarity = props.rarity || 0
+
+    const item = inventory.find((entry) => entry.id === itemId && entry.power === power && entry.rarity === rarity)
     if (item) {
         item.amount += amount
         emit("item-update", item)
@@ -18,6 +28,7 @@ export function addItem(itemId: ItemId, power: number, amount: number = 1) {
             uid: cache.lastItemIndex++,
             id: itemId,
             power,
+            rarity,
             amount,
         }
 

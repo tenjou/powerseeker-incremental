@@ -1,5 +1,6 @@
 import { Ability } from "../state"
 import { AbilityId, BattlerId } from "../types"
+import { CharacterStats } from "./../character/character-types"
 
 export interface BattleAction {
     casterId: BattlerId
@@ -32,18 +33,6 @@ export interface Battle {
 export interface BattleResult {
     isVictory: boolean
 }
-
-export interface CharacterStats {
-    attack: number
-    defense: number
-    healing: number
-    accuracy: number
-    evasion: number
-    speed: number
-    critical: number
-}
-
-export type CharacterStatType = keyof CharacterStats
 
 export interface Battler {
     id: number

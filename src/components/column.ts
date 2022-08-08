@@ -18,6 +18,9 @@ template.innerHTML = html`<style>
         :host(.inline) {
             display: inline-flex;
         }
+        :host(.margin5) {
+            margin: 5px;
+        }
     </style>
 
     <slot></slot>`

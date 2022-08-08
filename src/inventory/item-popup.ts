@@ -36,8 +36,8 @@ template.innerHTML = html`<style>
     <popup-container>
         <x-row>
             <item-slot class="inactive"></item-slot>
-            <x-column class="center-v flex">
-                <x-text id="name" class="semibold"></x-text>
+            <x-column class="center-v flex margin5">
+                <x-text id="name" class="semibold line16"></x-text>
                 <x-text id="type" class="tertiary"></x-text>
             </x-column>
 
@@ -49,7 +49,11 @@ template.innerHTML = html`<style>
             </x-column>
         </x-row>
 
-        <div id="description"></div>
+        <div id="description">
+            <x-row><x-text>Defense</x-text><x-text>5</x-text></x-row>
+            <x-row><x-text>Strength</x-text><x-text>2</x-text></x-row>
+            <x-row><x-text>Speed</x-text><x-text>2</x-text></x-row>
+        </div>
 
         <x-row class="center-h" id="actions"> </x-row>
     </popup-container>`

@@ -1,4 +1,5 @@
 import { Battle, BattleResult, Battler } from "./battle/battle-types"
+import { createEmptyStats } from "./character/status"
 import { Card, Item, Skill, SkillId, SlotType } from "./types"
 
 interface TownStatus {
@@ -70,15 +71,7 @@ let state: State = {
         name: "Player",
         hp: 10,
         hpMax: 40,
-        stats: {
-            accuracy: 0,
-            attack: 4,
-            critical: 0,
-            defense: 0,
-            evasion: 0,
-            healing: 1,
-            speed: 2,
-        },
+        stats: createEmptyStats(),
         isTeamA: true,
         isAI: false,
     },
