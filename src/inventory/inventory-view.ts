@@ -1,20 +1,21 @@
+import { ItemSlot } from "../components/item-slot"
 import { getElement, removeAllChildren, removeElement } from "../dom"
 import { getState } from "../state"
+import { ItemConfigs, ItemType } from "./../config/ItemConfigs"
 import { subscribe, unsubscribe } from "./../events"
-import { Item } from "./../types"
-import { handleItemUse } from "./inventory"
 import { openPopup } from "./../popup"
-import { getCache } from "./../cache"
-import { ItemSlot } from "../components/item-slot"
+import { Item } from "./../types"
+
+const ItemTypeSortWeight: Record<ItemType, number> = {
+    armor: 100,
+    consumable: 50,
+    resource: 25,
+}
 
 export function loadInventoryView() {
-    const { inventory } = getState()
+    updateInventoryView()
 
-    for (const item of inventory) {
-        addItem(item)
-    }
-
-    subscribe("item-add", addItem)
+    subscribe("item-add", updateInventoryView)
     subscribe("item-remove", removeItem)
     subscribe("item-update", updateItem)
 }
@@ -22,28 +23,49 @@ export function loadInventoryView() {
 export function unloadInventoryView() {
     removeAllChildren("inventory-container")
 
-    unsubscribe("item-add", addItem)
+    unsubscribe("item-add", updateInventoryView)
     unsubscribe("item-remove", removeItem)
     unsubscribe("item-update", updateItem)
 }
 
-function addItem(item: Item) {
+function updateInventoryView() {
+    const { inventory } = getState()
+
     const parent = document.querySelector("inventory-container")
     if (!parent) {
         console.error(`Could not find inventory-container`)
         return
     }
 
-    const itemSlot = document.createElement("item-slot")
-    itemSlot.id = `item-${item.uid}`
-    itemSlot.setAttribute("uid", String(item.uid))
-    itemSlot.setAttribute("item-id", item.id)
-    itemSlot.onclick = () => openItemPopup(item)
-    // itemSlot.onclick = () => handleItemUse(item)
-    parent.appendChild(itemSlot)
+    sortInventory()
+
+    const missingChildren = inventory.length - parent.children.length
+    for (let n = 0; n < missingChildren; n += 1) {
+        const itemSlot = document.createElement("item-slot")
+        itemSlot.onclick = openItemPopup
+        parent.appendChild(itemSlot)
+    }
+
+    for (let n = 0; n < inventory.length; n += 1) {
+        const item = inventory[n]
+        const itemSlot = parent.children[n] as ItemSlot
+        itemSlot.id = `item-${item.uid}`
+        itemSlot.setAttribute("uid", String(item.uid))
+        itemSlot.setAttribute("item-id", item.id)
+    }
 }
 
-function openItemPopup(item: Item) {
+function openItemPopup(event: MouseEvent) {
+    const { inventory } = getState()
+
+    const element = event.target as HTMLElement
+    const uid = Number(element.getAttribute("uid"))
+    const item = inventory.find((entry) => entry.uid === uid)
+    if (!item) {
+        console.error(`Could not find item with UID: ${uid}`)
+        return
+    }
+
     openPopup("item-popup", {
         uid: item.uid,
         "item-id": item.id,
@@ -57,4 +79,19 @@ function removeItem(item: Item) {
 function updateItem(item: Item) {
     const element = getElement(`item-${item.uid}`) as ItemSlot
     element.update()
+}
+
+function sortInventory() {
+    const { inventory } = getState()
+
+    inventory.sort((a, b) => {
+        if (a.id === b.id) {
+            return b.power - a.power
+        }
+
+        const itemConfigA = ItemConfigs[a.id]
+        const itemConfigB = ItemConfigs[b.id]
+
+        return ItemTypeSortWeight[itemConfigB.type] - ItemTypeSortWeight[itemConfigA.type]
+    })
 }
