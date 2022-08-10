@@ -11,6 +11,7 @@ interface PlayerStatus {
     name: string
     xp: number
     xpMax: number
+    power: number
     stamina: number
     staminaMax: number
     gold: number
@@ -57,6 +58,7 @@ let state: State = {
         name: "Player",
         xp: 0,
         xpMax: 100,
+        power: 0,
         stamina: 10,
         staminaMax: 10,
         gold: 0,

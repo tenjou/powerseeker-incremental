@@ -1,4 +1,4 @@
-import { ItemConfigs } from "../config/ItemConfigs"
+import { ItemConfigs } from "../config/item-configs"
 import { emit } from "../events"
 import { getState } from "../state"
 import { Item, SlotType } from "../types"

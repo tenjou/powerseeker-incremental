@@ -1,7 +1,7 @@
 import { ItemSlot } from "../components/item-slot"
 import { getElement, removeAllChildren, removeElement } from "../dom"
 import { getState } from "../state"
-import { ItemConfigs, ItemType } from "./../config/ItemConfigs"
+import { ItemConfigs, ItemType } from "../config/item-configs"
 import { subscribe, unsubscribe } from "./../events"
 import { openPopup } from "./../popup"
 import { Item } from "./../types"

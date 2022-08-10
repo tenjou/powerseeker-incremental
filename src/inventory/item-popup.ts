@@ -1,4 +1,4 @@
-import { ItemConfig, ItemConfigs, ItemEffect, ItemId } from "../config/ItemConfigs"
+import { ItemConfig, ItemConfigs, ItemEffect, ItemId } from "../config/item-configs"
 import { HTMLComponent } from "../dom"
 import { getState } from "../state"
 import { StatsTableEntry } from "./../components/stats-table"
@@ -35,7 +35,7 @@ template.innerHTML = html`<style>
 
     <popup-container>
         <x-row>
-            <item-slot inactive></item-slot>
+            <item-slot inactive hide-power></item-slot>
             <x-column class="center-v flex margin5">
                 <x-text id="name" class="semibold line16"></x-text>
                 <x-text id="type" class="tertiary"></x-text>
@@ -94,7 +94,6 @@ export class ItemPopup extends HTMLComponent {
         const { inventory } = getState()
 
         const itemSlot = this.getElement("item-slot")
-        itemSlot.setAttribute("hide-power", "true")
 
         const uid = Number(this.getAttribute("uid"))
         let itemId = this.getAttribute("item-id")

@@ -61,6 +61,9 @@ const local: Record<string, LocalEntry> = {
     health: {
         en: "Health",
     },
+    power: {
+        en: "Power",
+    },
     attack: {
         en: "Attack",
     },

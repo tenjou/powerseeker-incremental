@@ -37,6 +37,10 @@ export function updateCharacterView() {
             value: `${battler.hp}/${battler.hpMax}`,
         },
         {
+            key: i18n("power"),
+            value: player.power,
+        },
+        {
             key: i18n("attack"),
             value: battler.stats.attack,
         },

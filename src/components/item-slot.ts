@@ -1,7 +1,9 @@
-import { ItemConfigs, ItemId } from "../config/ItemConfigs"
+import { ItemConfigs, ItemId } from "../config/item-configs"
 import { HTMLComponent } from "../dom"
 import { getState } from "../state"
+import { SlotType } from "../types"
 import { emit } from "./../events"
+import { Item } from "./../types"
 
 const template = document.createElement("template")
 template.innerHTML = html`<style>
@@ -11,6 +13,7 @@ template.innerHTML = html`<style>
             flex-direction: column;
             border-radius: 3px;
             width: 40px;
+            min-height: 40px;
             background: #b5b5b5;
             cursor: pointer;
         }
@@ -18,10 +21,7 @@ template.innerHTML = html`<style>
             outline: 2px solid white;
         }
         :host(.inactive) {
-            cursor: initial;
-        }
-        :host(.inactive:hover) {
-            outline: initial;
+            pointer-events: none;
         }
 
         :host(.rarity-0) {
@@ -109,9 +109,17 @@ export class ItemSlot extends HTMLComponent {
 
         const uid = Number(this.getAttribute("uid"))
         if (uid) {
-            const { inventory } = getState()
+            const { inventory, equipment } = getState()
 
-            const item = inventory.find((entry) => entry.uid === uid)
+            let item: Item | undefined | null
+
+            const equipmentSlot = this.getAttribute("equipment-slot")
+            if (equipmentSlot) {
+                item = equipment[equipmentSlot as SlotType]
+            } else {
+                item = inventory.find((entry) => entry.uid === uid)
+            }
+
             if (item) {
                 itemId = item.id
                 power = item.power
@@ -139,7 +147,7 @@ export class ItemSlot extends HTMLComponent {
         this.setText("amount", amount)
         this.toggleClassName("hide", amount <= 1, "amount")
 
-        const hidePower = !!this.getAttribute("hide-power")
+        const hidePower = this.haveAttribute("hide-power")
         this.setText("power", power)
         this.toggleClassName("hide", hidePower || power <= 0, "power")
     }

@@ -1,4 +1,4 @@
-import { ItemConfigs, ItemId } from "./config/ItemConfigs"
+import { ItemConfigs, ItemId } from "./config/item-configs"
 import { i18n } from "./local"
 
 export function loadTooltipSystem() {

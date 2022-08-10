@@ -147,4 +147,8 @@ export class HTMLComponent extends HTMLElement {
             this.getElement(query).classList.remove(className)
         }
     }
+
+    haveAttribute(key: string) {
+        return this.getAttribute(key) !== null
+    }
 }

@@ -1,5 +1,5 @@
 import { addHp } from "../character/status"
-import { ItemConfigs, ItemEffect, ItemId } from "../config/ItemConfigs"
+import { ItemConfigs, ItemEffect, ItemId } from "../config/item-configs"
 import { equipItem } from "../equipment/equipment"
 import { getState } from "../state"
 import { Item } from "../types"

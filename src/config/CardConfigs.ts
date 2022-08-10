@@ -1,5 +1,5 @@
 import { SkillId } from "../types"
-import { ItemId } from "./ItemConfigs"
+import { ItemId } from "./item-configs"
 import { MonsterId } from "./monster-configs"
 
 type ResourceType = "hp" | "stamina" | "gold"

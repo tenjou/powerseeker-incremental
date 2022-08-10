@@ -1,4 +1,4 @@
-import { ItemConfigs } from "../config/ItemConfigs"
+import { ItemConfigs } from "../config/item-configs"
 import { getState } from "../state"
 import { SlotType } from "../types"
 import { CharacterStats, CharacterStatType } from "./character-types"
@@ -39,9 +39,10 @@ export function restoreStatus() {
 }
 
 export function recalculateStats() {
-    const { battler, equipment } = getState()
+    const { battler, equipment, player } = getState()
 
     battler.stats = createEmptyStats()
+    player.power = 0
 
     for (const slotType in equipment) {
         const item = equipment[slotType as SlotType]
@@ -57,6 +58,8 @@ export function recalculateStats() {
         for (const stat of itemConfig.stats) {
             battler.stats[stat.type] += stat.value
         }
+
+        player.power += item.power
     }
 }
 

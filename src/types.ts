@@ -1,5 +1,5 @@
 import { CardType } from "./config/CardConfigs"
-import { ItemId } from "./config/ItemConfigs"
+import { ItemId } from "./config/item-configs"
 
 export type SkillId = "woodcutting" | "mining" | "fishing"
 

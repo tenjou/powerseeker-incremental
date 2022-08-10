@@ -1,4 +1,4 @@
-import { ItemConfigs } from "../config/ItemConfigs"
+import { ItemConfigs } from "../config/item-configs"
 import { HTMLComponent } from "../dom"
 import { SlotType } from "../types"
 import { getState } from "../state"
@@ -24,19 +24,25 @@ template.innerHTML = html`<style>
             width: 200px;
         }
 
-        x-text {
+        #name {
             padding: 0 4px;
             font-size: 11px;
-            font-weight: 600;
             color: #222222;
         }
-        :host(.empty) x-text {
+        :host(.empty) #name {
             color: #908f8f;
+        }
+
+        #power {
+            padding: 0 4px;
+            font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+            font-size: 10px;
+            color: #646262;
         }
     </style>
 
-    <item-slot></item-slot>
-    <x-column class="center-v space2"><x-text></x-text></x-column>`
+    <item-slot inactive hide-power></item-slot>
+    <x-column class="center-v space2"><x-text id="name" class="bold"></x-text><x-text id="power"></x-text></x-column>`
 
 export class EquipmentSlot extends HTMLComponent {
     constructor() {
@@ -59,11 +65,12 @@ export class EquipmentSlot extends HTMLComponent {
 
         this.toggleClassName("empty", !itemConfig)
 
-        this.setText("x-text", i18n(itemConfig ? itemConfig.id : slotType))
+        this.setText("#name", i18n(itemConfig ? itemConfig.id : slotType))
+        this.setText("#power", item ? item.power : "")
 
         const itemSlot = this.getElement("item-slot")
         itemSlot.setAttribute("uid", item ? String(item.uid) : "")
-        itemSlot.setAttribute("item-id", item ? item.id : "")
+        itemSlot.setAttribute("equipment-slot", slotType)
     }
 
     slotType(): SlotType {
