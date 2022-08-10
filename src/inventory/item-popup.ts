@@ -1,10 +1,10 @@
-import { ItemConfig, ItemConfigs, ItemId, ItemEffect } from "../config/ItemConfigs"
+import { ItemConfig, ItemConfigs, ItemEffect, ItemId } from "../config/ItemConfigs"
 import { HTMLComponent } from "../dom"
-import { equipItem } from "../equipment/equipment"
 import { getState } from "../state"
+import { StatsTableEntry } from "./../components/stats-table"
 import { i18n } from "./../local"
-import { handleItemUse } from "./inventory"
 import { closePopup } from "./../popup"
+import { handleItemUse } from "./inventory"
 
 const template = document.createElement("template")
 template.innerHTML = html`<style>
@@ -35,7 +35,7 @@ template.innerHTML = html`<style>
 
     <popup-container>
         <x-row>
-            <item-slot class="inactive"></item-slot>
+            <item-slot inactive></item-slot>
             <x-column class="center-v flex margin5">
                 <x-text id="name" class="semibold line16"></x-text>
                 <x-text id="type" class="tertiary"></x-text>
@@ -49,11 +49,8 @@ template.innerHTML = html`<style>
             </x-column>
         </x-row>
 
-        <div id="description">
-            <x-row><x-text>Defense</x-text><x-text>5</x-text></x-row>
-            <x-row><x-text>Strength</x-text><x-text>2</x-text></x-row>
-            <x-row><x-text>Speed</x-text><x-text>2</x-text></x-row>
-        </div>
+        <!-- <div id="description"></div> -->
+        <stats-table></stats-table>
 
         <x-row class="center-h" id="actions"> </x-row>
     </popup-container>`
@@ -118,8 +115,6 @@ export class ItemPopup extends HTMLComponent {
             return
         }
 
-        itemSlot.setAttribute("item-id", itemId)
-
         const itemConfig = ItemConfigs[itemId as ItemId]
         this.setText("#name", i18n(itemId))
         this.setText("#type", i18n(itemConfig.type))
@@ -127,6 +122,17 @@ export class ItemPopup extends HTMLComponent {
 
         const description = getDescription(itemConfig, itemPower)
         this.setHTML("#description", description)
+
+        if (itemConfig.type === "armor") {
+            const xAttribute = this.getElement("stats-table")
+            const data = itemConfig.stats.map<StatsTableEntry>((entry) => {
+                return {
+                    key: i18n(entry.type),
+                    value: entry.value,
+                }
+            })
+            xAttribute.setAttribute("data", JSON.stringify(data))
+        }
     }
 
     addAction(name: string, func: () => void) {

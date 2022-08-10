@@ -4,6 +4,9 @@ import { SlotType } from "../types"
 import { subscribe, unsubscribe } from "./../events"
 import "../equipment/equipment-slot"
 import { EquipmentSlot } from "../equipment/equipment-slot"
+import { getElement } from "./../dom"
+import { StatsTableEntry } from "./../components/stats-table"
+import { i18n } from "./../local"
 
 export function loadCharacterView() {
     updateCharacterView()
@@ -20,14 +23,51 @@ export function unloadCharacterView() {
 export function updateCharacterView() {
     const { player, battler } = getState()
 
-    setText("character-level", `Level: ${player.level}`)
-    setText("character-exp", `Experience: ${player.xp}/${player.xpMax}`)
-    setText("character-hp", `HP: ${battler.hp}/${battler.hpMax}`)
-    setText("character-attack", `Attack: ${battler.stats.attack}`)
-    setText("character-defense", `Defense: ${battler.stats.defense}`)
-    setText("character-speed", `Speed: ${battler.stats.speed}`)
-    setText("character-stamina", `Stamina: ${player.stamina}/${player.staminaMax}`)
-    setText("character-gold", `Gold: ${player.gold}`)
+    const statsData: StatsTableEntry[] = [
+        {
+            key: i18n("level"),
+            value: player.level,
+        },
+        {
+            key: i18n("exp"),
+            value: `${player.xp}/${player.xpMax}`,
+        },
+        {
+            key: i18n("health"),
+            value: `${battler.hp}/${battler.hpMax}`,
+        },
+        {
+            key: i18n("attack"),
+            value: battler.stats.attack,
+        },
+        {
+            key: i18n("defense"),
+            value: battler.stats.defense,
+        },
+        {
+            key: i18n("accuracy"),
+            value: battler.stats.accuracy,
+        },
+        {
+            key: i18n("evasion"),
+            value: battler.stats.evasion,
+        },
+        {
+            key: i18n("speed"),
+            value: battler.stats.speed,
+        },
+        {
+            key: i18n("stamina"),
+            value: `${player.stamina}/${player.staminaMax}`,
+        },
+        {
+            key: i18n("gold"),
+            value: player.gold,
+        },
+    ]
+
+    const statsTable = getElement("stats")
+    statsTable.setAttribute("data", JSON.stringify(statsData))
 
     const equipmentElements = document.querySelectorAll<EquipmentSlot>("equipment-slot")
     equipmentElements.forEach((element) => {

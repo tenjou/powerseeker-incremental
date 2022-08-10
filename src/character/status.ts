@@ -54,10 +54,8 @@ export function recalculateStats() {
             continue
         }
 
-        for (const key in itemConfig.stats) {
-            const statType = key as CharacterStatType
-            const statValue = itemConfig.stats[statType]
-            battler.stats[statType] += statValue || 0
+        for (const stat of itemConfig.stats) {
+            battler.stats[stat.type] += stat.value
         }
     }
 }

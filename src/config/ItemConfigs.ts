@@ -11,6 +11,11 @@ export interface ItemEffect {
     value: number
 }
 
+export interface ItemStat {
+    type: CharacterStatType
+    value: number
+}
+
 interface ItemConfigBasic {
     id: ItemId
     description: string
@@ -25,7 +30,7 @@ interface ItemConfigArmor extends ItemConfigBasic {
     id: ItemId
     type: "armor"
     slot: ArmorSlot
-    stats: Partial<Record<CharacterStatType, number>>
+    stats: ItemStat[]
 }
 
 interface ItemConfigConsumable extends ItemConfigBasic {
@@ -59,10 +64,10 @@ export const ItemConfigs: Record<ItemId, ItemConfig> = {
         type: "armor",
         description: "",
         slot: "body",
-        stats: {
-            defense: 10,
-            accuracy: 2,
-        },
+        stats: [
+            { type: "defense", value: 10 },
+            { type: "accuracy", value: 2 },
+        ],
     },
     health_potion: {
         id: "health_potion",

@@ -5,9 +5,9 @@ template.innerHTML = html`<style>
         :host {
             width: 100px;
             padding: 6px;
-            font-family: "Roboto", sans-serif;
+            font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
             font-weight: 600;
-            font-size: 10px;
+            font-size: 11px;
             text-align: center;
             color: #222;
             text-transform: uppercase;

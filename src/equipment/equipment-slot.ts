@@ -62,6 +62,7 @@ export class EquipmentSlot extends HTMLComponent {
         this.setText("x-text", i18n(itemConfig ? itemConfig.id : slotType))
 
         const itemSlot = this.getElement("item-slot")
+        itemSlot.setAttribute("uid", item ? String(item.uid) : "")
         itemSlot.setAttribute("item-id", item ? item.id : "")
     }
 

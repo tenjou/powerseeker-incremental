@@ -105,6 +105,8 @@ export class ItemSlot extends HTMLComponent {
         let amount = 0
         let itemId
 
+        this.className = ""
+
         const uid = Number(this.getAttribute("uid"))
         if (uid) {
             const { inventory } = getState()
@@ -125,11 +127,14 @@ export class ItemSlot extends HTMLComponent {
             const imgElement = this.getElement("img")
             imgElement.setAttribute("src", `./assets/icon/${itemConfig.type}/${itemId}.png`)
             imgElement.classList.remove("hide")
-
-            this.classList.add(`rarity-${rarity}`)
         } else {
             this.getElement("img").classList.add("hide")
         }
+
+        if (this.getAttribute("inactive") !== null) {
+            this.classList.add("inactive")
+        }
+        this.classList.add(`rarity-${rarity}`)
 
         this.setText("amount", amount)
         this.toggleClassName("hide", amount <= 1, "amount")

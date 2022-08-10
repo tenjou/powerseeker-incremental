@@ -12,13 +12,14 @@ import "./components/row"
 import "./components/scrolling-text"
 import "./components/text"
 import "./components/url"
+import "./components/stats-table"
 import { setShow } from "./dom"
 import { loadDungeonStage, setupDungeonSystem } from "./dungeon"
 import { addItem } from "./inventory/inventory"
-import { getState, loadState } from "./state"
-import { updateView } from "./view"
-import { loadTooltipSystem } from "./tooltip"
 import { loadPopupSystem } from "./popup"
+import { getState, loadState } from "./state"
+import { loadTooltipSystem } from "./tooltip"
+import { updateView } from "./view"
 
 let tLast = 0
 
