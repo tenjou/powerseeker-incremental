@@ -5,7 +5,7 @@ import { loadSkillsView, unloadSkillsView } from "./skills/skills-view"
 import { loadEquipmentView, unloadEquipmentView } from "./equipment/equipment-view"
 
 interface View {
-    onLoad: () => void
+    onLoad: (segments: string[]) => void
     onUnload: () => void
 }
 
@@ -39,7 +39,14 @@ let currView: ViewType | "" = ""
 export function updateView() {
     const url = location.pathname
     const segments = url.split("/")
-    const nextView = segments[1] as ViewType
+    segments.shift()
+
+    let nextView = segments.shift() as ViewType
+    if (!nextView) {
+        nextView = "character"
+        history.replaceState({}, "", `/${nextView}`)
+    }
+
     if (currView === nextView) {
         return
     }
@@ -64,7 +71,7 @@ export function updateView() {
     }
 
     currView = nextView
-    view.onLoad()
+    view.onLoad(segments)
 
     toggleClassName(`view-${nextView}`, "hide", false)
     toggleClassName(`nav-${nextView}`, "active", true)

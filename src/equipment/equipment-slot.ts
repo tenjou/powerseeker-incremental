@@ -1,9 +1,8 @@
 import { ItemConfigs } from "../config/item-configs"
 import { HTMLComponent } from "../dom"
-import { SlotType } from "../types"
-import { getState } from "../state"
-import { unequipItem } from "./equipment"
 import { i18n } from "../local"
+import { getState } from "../state"
+import { SlotType } from "../types"
 import { goTo } from "../view"
 
 const template = document.createElement("template")
@@ -49,7 +48,6 @@ export class EquipmentSlot extends HTMLComponent {
         super(template)
 
         this.onclick = () => {
-            // unequipItem(this.slotType())
             goTo(`/equipment/${this.slotType()}`)
         }
 
