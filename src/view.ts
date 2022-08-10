@@ -51,10 +51,11 @@ export function updateView() {
         return
     }
 
-    const view = views[nextView]
+    let view = views[nextView]
     if (!view) {
-        console.error(`Could not find view: ${nextView}`)
-        return
+        nextView = "character"
+        view = views.character
+        history.replaceState({}, "", `/${nextView}`)
     }
 
     if (currView) {
