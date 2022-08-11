@@ -2,6 +2,7 @@ import { ItemConfigs } from "../config/item-configs"
 import { SlotType } from "../types"
 import { goTo } from "../view"
 import { getElement, removeAllChildren } from "./../dom"
+import { subscribe, unsubscribe } from "./../events"
 import { openItemPopup, sortInventory } from "./../inventory/inventory-view"
 import { getState } from "./../state"
 import { unequipItem } from "./equipment"
@@ -42,10 +43,12 @@ export function loadEquipmentView(segments: string[]) {
         parent.appendChild(itemSlot)
     }
 
+    subscribe("close", goBack)
     getElement("close-equipment").onclick = goBack
 }
 
 export function unloadEquipmentView() {
+    unsubscribe("close", goBack)
     removeAllChildren("equipment-container")
 }
 

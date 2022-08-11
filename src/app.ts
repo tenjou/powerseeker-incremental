@@ -20,6 +20,7 @@ import { loadPopupSystem } from "./popup"
 import { getState, loadState } from "./state"
 import { loadTooltipSystem } from "./tooltip"
 import { updateView } from "./view"
+import { emit } from "./events"
 
 let tLast = 0
 
@@ -51,6 +52,12 @@ function createEmptyProfile() {
 }
 
 function load() {
+    window.addEventListener("keydown", (event: KeyboardEvent) => {
+        if (event.key === "Escape") {
+            emit("close", event)
+        }
+    })
+
     updateView()
     loadTooltipSystem()
     loadPopupSystem()

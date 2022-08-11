@@ -14,20 +14,19 @@ template.innerHTML = html`<link rel="stylesheet" href="/ext/font-awesome/all.min
 
     <i class="fa-regular fa-circle-xmark"></i>`
 
-customElements.define(
-    "close-button",
-    class extends HTMLComponent {
-        constructor() {
-            super(template)
+class CloseButtonElement extends HTMLComponent {
+    constructor() {
+        super(template)
 
-            this.onmouseenter = () => {
-                this.getElement("i").setAttribute("class", "fa-solid fa-circle-xmark")
-            }
-            this.onmouseleave = () => {
-                this.getElement("i").setAttribute("class", "fa-regular fa-circle-xmark")
-            }
-
+        this.onmouseenter = () => {
+            this.getElement("i").setAttribute("class", "fa-solid fa-circle-xmark")
+        }
+        this.onmouseleave = () => {
             this.getElement("i").setAttribute("class", "fa-regular fa-circle-xmark")
         }
+
+        this.getElement("i").setAttribute("class", "fa-regular fa-circle-xmark")
     }
-)
+}
+
+customElements.define("close-button", CloseButtonElement)

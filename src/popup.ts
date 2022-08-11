@@ -1,4 +1,5 @@
 import { getElement } from "./dom"
+import { subscribe } from "./events"
 
 type PopupType = "item-popup" | "battle-result-popup"
 
@@ -9,11 +10,7 @@ export function loadPopupSystem() {
 
     popupElement.addEventListener("click", tryClosePopup)
 
-    window.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
-            closePopup()
-        }
-    })
+    subscribe("close", closePopup)
 }
 
 export function openPopup(type: PopupType, attributes: Record<string, string | number> = {}) {
