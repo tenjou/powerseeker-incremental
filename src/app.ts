@@ -24,9 +24,9 @@ import { updateView } from "./view"
 let tLast = 0
 
 function createEmptyProfile() {
-    addCard("unknown_location")
-    addCard("dungeon")
-    addCard("encounter_boar")
+    // addCard("unknown_location")
+    // addCard("dungeon")
+    // addCard("encounter_boar")
 
     addItem("leather_clothing", {
         power: 2,
@@ -62,7 +62,7 @@ function load() {
     } else if (state.dungeon.id) {
         loadDungeonStage()
     } else {
-        setShow("area-town", true)
+        // setShow("area-town", true)
     }
 }
 

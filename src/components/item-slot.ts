@@ -133,7 +133,7 @@ export class ItemSlot extends HTMLComponent {
         if (itemId) {
             const itemConfig = ItemConfigs[itemId as ItemId]
             const imgElement = this.getElement("img")
-            imgElement.setAttribute("src", `./assets/icon/${itemConfig.type}/${itemId}.png`)
+            imgElement.setAttribute("src", `/assets/icon/${itemConfig.type}/${itemId}.png`)
             imgElement.classList.remove("hide")
         } else {
             this.getElement("img").classList.add("hide")

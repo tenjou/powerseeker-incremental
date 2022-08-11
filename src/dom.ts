@@ -127,9 +127,6 @@ export class HTMLComponent extends HTMLElement {
     }
 
     setText(query: string, text: string | number | null) {
-        if (!text) {
-            return
-        }
         this.getElement(query).innerText = String(text)
     }
 

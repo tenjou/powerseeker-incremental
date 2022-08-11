@@ -29,15 +29,13 @@ export function unloadInventoryView() {
 }
 
 function updateInventoryView() {
-    const { inventory } = getState()
-
     const parent = document.querySelector("inventory-container")
     if (!parent) {
         console.error(`Could not find inventory-container`)
         return
     }
 
-    sortInventory()
+    const inventory = sortInventory(getState().inventory)
 
     const missingChildren = inventory.length - parent.children.length
     for (let n = 0; n < missingChildren; n += 1) {
@@ -55,7 +53,34 @@ function updateInventoryView() {
     }
 }
 
-function openItemPopup(event: MouseEvent) {
+function removeItem(item: Item) {
+    removeElement(`item-${item.uid}`)
+}
+
+function updateItem(item: Item) {
+    const element = getElement(`item-${item.uid}`) as ItemSlot
+    element.update()
+}
+
+export function sortInventory(inventory: Item[]) {
+    inventory.sort((a, b) => {
+        if (a.id === b.id) {
+            if (b.rarity !== a.rarity) {
+                return b.rarity - a.rarity
+            }
+            return b.power - a.power
+        }
+
+        const itemConfigA = ItemConfigs[a.id]
+        const itemConfigB = ItemConfigs[b.id]
+
+        return ItemTypeSortWeight[itemConfigB.type] - ItemTypeSortWeight[itemConfigA.type]
+    })
+
+    return inventory
+}
+
+export function openItemPopup(event: MouseEvent) {
     const { inventory } = getState()
 
     const element = event.target as HTMLElement
@@ -69,32 +94,5 @@ function openItemPopup(event: MouseEvent) {
     openPopup("item-popup", {
         uid: item.uid,
         "item-id": item.id,
-    })
-}
-
-function removeItem(item: Item) {
-    removeElement(`item-${item.uid}`)
-}
-
-function updateItem(item: Item) {
-    const element = getElement(`item-${item.uid}`) as ItemSlot
-    element.update()
-}
-
-function sortInventory() {
-    const { inventory } = getState()
-
-    inventory.sort((a, b) => {
-        if (a.id === b.id) {
-            if (b.rarity !== a.rarity) {
-                return b.rarity - a.rarity
-            }
-            return b.power - a.power
-        }
-
-        const itemConfigA = ItemConfigs[a.id]
-        const itemConfigB = ItemConfigs[b.id]
-
-        return ItemTypeSortWeight[itemConfigB.type] - ItemTypeSortWeight[itemConfigA.type]
     })
 }
