@@ -48,11 +48,6 @@
                         <x-header>Character</x-header>
 
                         <p>
-                            <x-text class="bold size10 uppercase">Stats</x-text>
-                        </p>
-                        <stats-table id="stats"></stats-table>
-
-                        <p>
                             <x-text class="bold size10 uppercase">Equipment</x-text>
                         </p>
                         <span>
@@ -61,6 +56,11 @@
                                 <equipment-slot slot-type="main_hand"></equipment-slot>
                             </x-column>
                         </span>
+
+                        <p>
+                            <x-text class="bold size10 uppercase">Stats</x-text>
+                        </p>
+                        <stats-table id="stats"></stats-table>
                     </x-column>
 
                     <x-column id="view-inventory" class="hide">

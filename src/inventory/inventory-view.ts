@@ -80,7 +80,7 @@ export function sortInventory(inventory: Item[]) {
     return inventory
 }
 
-export function openItemPopup(event: MouseEvent) {
+export function openItemPopup(event: MouseEvent, onClose?: () => void) {
     const { inventory } = getState()
 
     const element = event.target as HTMLElement
@@ -91,8 +91,12 @@ export function openItemPopup(event: MouseEvent) {
         return
     }
 
-    openPopup("item-popup", {
-        uid: item.uid,
-        "item-id": item.id,
-    })
+    openPopup(
+        "item-popup",
+        {
+            uid: item.uid,
+            "item-id": item.id,
+        },
+        onClose
+    )
 }

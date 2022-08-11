@@ -39,7 +39,7 @@ export function loadEquipmentView(segments: string[]) {
         itemSlot.setAttribute("uid", String(item.uid))
         itemSlot.setAttribute("item-id", item.id)
         itemSlot.onclick = (event: MouseEvent) => {
-            openItemPopup(event)
+            openItemPopup(event, goBack)
         }
         parent.appendChild(itemSlot)
     }

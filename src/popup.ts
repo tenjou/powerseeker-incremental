@@ -3,7 +3,12 @@ import { subscribe } from "./events"
 
 type PopupType = "item-popup" | "battle-result-popup"
 
-const popups: HTMLElement[] = []
+interface Popup {
+    element: HTMLElement
+    onClose?: () => void
+}
+
+const popups: Popup[] = []
 
 export function loadPopupSystem() {
     const popupElement = getElement("popups")
@@ -13,21 +18,24 @@ export function loadPopupSystem() {
     subscribe("close", closePopup)
 }
 
-export function openPopup(type: PopupType, attributes: Record<string, string | number> = {}) {
-    const popup = document.createElement(type)
+export function openPopup(type: PopupType, attributes: Record<string, string | number> = {}, onClose?: () => void) {
+    const element = document.createElement(type)
 
     for (let attributeId in attributes) {
-        popup.setAttribute(attributeId, String(attributes[attributeId]))
+        element.setAttribute(attributeId, String(attributes[attributeId]))
     }
 
-    document.getElementById("popups")?.appendChild(popup)
+    document.getElementById("popups")?.appendChild(element)
 
     if (popups.length > 0) {
         const prevPopup = popups[popups.length - 1]
-        prevPopup.classList.add("hide")
+        prevPopup.element.classList.add("hide")
     }
 
-    popups.push(popup)
+    popups.push({
+        element,
+        onClose,
+    })
 }
 
 function tryClosePopup(event: MouseEvent) {
@@ -40,10 +48,15 @@ function tryClosePopup(event: MouseEvent) {
 
 export function closePopup() {
     const lastPopup = popups.pop()
-    lastPopup?.remove()
+    if (lastPopup) {
+        lastPopup.element.remove()
+        if (lastPopup.onClose) {
+            lastPopup.onClose()
+        }
+    }
 
     if (popups.length > 0) {
         const popup = popups[popups.length - 1]
-        popup.classList.remove("hide")
+        popup.element.classList.remove("hide")
     }
 }

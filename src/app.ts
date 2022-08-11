@@ -42,7 +42,7 @@ function createEmptyProfile() {
     })
     addItem("leather_clothing", {
         power: 1,
-        rarity: 1,
+        rarity: 4,
         amount: 2,
     })
     addItem("health_potion", {
