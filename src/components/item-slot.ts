@@ -53,7 +53,7 @@ template.innerHTML = html`<style>
             padding: 0 4px;
             box-sizing: border-box;
             font-size: 9px;
-            text-align: center;
+            text-align: left;
             text-shadow: 0 0 2px black;
             color: #fff;
             border-bottom-left-radius: 3px;

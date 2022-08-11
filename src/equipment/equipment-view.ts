@@ -1,7 +1,8 @@
 import { ItemConfigs } from "../config/item-configs"
+import { i18n } from "../local"
 import { SlotType } from "../types"
 import { goTo } from "../view"
-import { getElement, removeAllChildren } from "./../dom"
+import { getElement, removeAllChildren, setText } from "./../dom"
 import { subscribe, unsubscribe } from "./../events"
 import { openItemPopup, sortInventory } from "./../inventory/inventory-view"
 import { getState } from "./../state"
@@ -42,6 +43,8 @@ export function loadEquipmentView(segments: string[]) {
         }
         parent.appendChild(itemSlot)
     }
+
+    setText("equipment-category", i18n(equipmentSlot))
 
     subscribe("close", goBack)
     getElement("close-equipment").onclick = goBack
