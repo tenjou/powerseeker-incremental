@@ -25,12 +25,6 @@ export function addStamina(value: number) {
     }
 }
 
-export function addGold(value: number) {
-    const { player: status } = getState()
-
-    status.gold += value
-}
-
 export function restoreStatus() {
     const { player, battler } = getState()
 

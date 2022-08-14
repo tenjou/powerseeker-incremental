@@ -1,6 +1,7 @@
 import { startBattle } from "./battle/battle"
-import { addGold, addHp, addStamina } from "./character/status"
+import { addHp, addStamina } from "./character/status"
 import { CardConfigs, CardType } from "./config/CardConfigs"
+import { addCurrency } from "./currencies/currencies"
 import { addChild, removeElement, setText, toggleClassName } from "./dom"
 import { advanceDungeonStage, enterDungeon, handleDungeonCardClick } from "./dungeon"
 import { addItem } from "./inventory/inventory"
@@ -96,7 +97,7 @@ export function removeCard(id: number) {
 }
 
 function isCardDisabled(card: Card) {
-    const { player, battler } = getState()
+    const { player, battler, currencies } = getState()
 
     const cardConfig = CardConfigs[card.type]
 
@@ -118,7 +119,7 @@ function isCardDisabled(card: Card) {
                 statusValue = player.stamina
                 break
             case "gold":
-                statusValue = player.gold
+                statusValue = currencies.gold
                 break
         }
 
@@ -146,7 +147,7 @@ function applyCardActions(card: Card) {
                         break
 
                     case "gold":
-                        addGold(action.value)
+                        addCurrency("gold", action.value)
                         break
                 }
                 break

@@ -1,4 +1,13 @@
-type EventType = "item-add" | "item-remove" | "item-update" | "item-hover" | "equip" | "unequip" | "skill-update" | "close"
+type EventType =
+    | "item-add"
+    | "item-remove"
+    | "item-update"
+    | "equip"
+    | "unequip"
+    | "skill-update"
+    | "close"
+    | "currency-added"
+    | "currency-removed"
 
 type CallbackFunc = (payload: unknown) => void
 

@@ -1,7 +1,7 @@
 import { getElement } from "./dom"
 import { subscribe } from "./events"
 
-type PopupType = "item-popup" | "battle-result-popup"
+type PopupType = "item-popup" | "battle-result-popup" | "ability-popup"
 
 interface Popup {
     element: HTMLElement

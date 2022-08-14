@@ -36,6 +36,13 @@ template.innerHTML = html`<style>
         :host(.space-2) {
             margin-bottom: 2px;
         }
+
+        :host(.red) {
+            color: #ff0000;
+        }
+        :host(.green) {
+            color: #4caf50;
+        }
     </style>
 
     <slot></slot>`

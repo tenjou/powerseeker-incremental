@@ -21,6 +21,11 @@
             <x-column>
                 <logo><cap>P</cap>ower<cap>S</cap>eeker</logo>
             </x-column>
+
+            <x-row class="center-v">
+                <currency-item currency="gold"></currency-item>
+                <currency-item currency="ap"></currency-item>
+            </x-row>
         </navbar>
 
         <container>
@@ -33,6 +38,7 @@
                 <x-column>
                     <segment>Player</segment>
                     <x-url id="nav-character" href="/character">Character</x-url>
+                    <x-url id="nav-abilities" href="/abilities">Abilities</x-url>
                     <x-url id="nav-inventory" href="/inventory">Inventory</x-url>
                     <x-url id="nav-skills" href="/skills">Skills</x-url>
                 </x-column>
@@ -61,6 +67,11 @@
                             <x-text class="bold size10 uppercase">Stats</x-text>
                         </p>
                         <stats-table id="stats"></stats-table>
+                    </x-column>
+
+                    <x-column id="view-abilities" class="hide">
+                        <x-header>Abilities</x-header>
+                        <inventory-container id="abilities-container"></inventory-container>
                     </x-column>
 
                     <x-column id="view-inventory" class="hide">

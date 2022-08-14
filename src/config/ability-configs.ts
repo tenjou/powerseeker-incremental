@@ -10,7 +10,7 @@ export interface AbilityConfig {
     id: string
     name: string
     isOffensive: boolean
-    tooltip: string
+    description: string
     effects: AbilityEffect[]
 }
 
@@ -19,7 +19,7 @@ export const AbilityConfigs: Record<string, AbilityConfig> = {
         id: "attack",
         name: "Attack",
         isOffensive: true,
-        tooltip: "Attack an opponent, causing %0 <semibold>physical</semibold> damage.",
+        description: "Attack an opponent, causing %0 <semibold>physical</semibold> damage.",
         effects: [
             {
                 type: "hp-minus",
@@ -32,7 +32,7 @@ export const AbilityConfigs: Record<string, AbilityConfig> = {
         id: "bash",
         name: "Bash",
         isOffensive: true,
-        tooltip: "Attack an opponent, causing %0 <semibold>physical</semibold> damage.",
+        description: "Attack an opponent, causing %0 <semibold>physical</semibold> damage.",
         effects: [
             {
                 type: "hp-minus",
@@ -45,7 +45,7 @@ export const AbilityConfigs: Record<string, AbilityConfig> = {
         id: "heal",
         name: "Heal",
         isOffensive: false,
-        tooltip: "Restore %0 health to an ally.",
+        description: "Restore %0 health to an ally.",
         effects: [
             {
                 type: "hp-plus",

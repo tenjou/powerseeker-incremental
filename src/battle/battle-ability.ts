@@ -1,9 +1,9 @@
-import { AbilityConfig, AbilityConfigs, AbilityEffect } from "../config/ability-configs"
+import { getAbilityDescription } from "../abilities/abilities-view"
+import { AbilityConfig, AbilityConfigs } from "../config/ability-configs"
 import { addChild, setHTML, toggleClassName } from "../dom"
 import { Ability, getState } from "../state"
-import { toggleTeamInactive } from "./battler-item"
-import { getMaxPower } from "./battle-utils"
 import { selectAbility } from "./battle"
+import { toggleTeamInactive } from "./battler-item"
 
 export function loadAbilities() {
     const { abilities } = getState()
@@ -39,26 +39,10 @@ export function renderAbilities() {
     }
 
     if (battle.selectedAbility) {
-        const battler = battle.battlers[battle.playerBattlerId]
         const abilityConfig = AbilityConfigs[battle.selectedAbility.id]
-        let abilityTooltip = abilityConfig.tooltip
-
-        const regex = /%[0-9]/gm
-        const regexBuff = regex.exec(abilityConfig.tooltip)
-        if (regexBuff) {
-            const effects = abilityConfig.effects
-            for (const entry of regexBuff) {
-                const effectId = Number(entry.slice(1))
-                const effect = effects[effectId]
-                const color = getEffectColor(effect)
-                const power = getMaxPower(battler.stats, effect)
-
-                abilityTooltip = abilityTooltip.replace(entry, `<${color}>${power}</${color}>`)
-            }
-        }
+        const abilityTooltip = getAbilityDescription(abilityConfig)
 
         toggleClassName(`ability:${battle.selectedAbility.id}`, "selected", true)
-
         toggleClassName("battle-tooltip", "hide", false)
         setHTML("battle-tooltip-title", abilityConfig.name)
         setHTML("battle-tooltip-text", abilityTooltip)
@@ -70,15 +54,6 @@ export function renderAbilities() {
         toggleClassName("battle-tooltip", "hide", true)
         toggleTeamInactive(true, false)
         toggleTeamInactive(false, false)
-    }
-}
-
-function getEffectColor(effect: AbilityEffect) {
-    switch (effect.type) {
-        case "hp-minus":
-            return "red"
-        case "hp-plus":
-            return "green"
     }
 }
 

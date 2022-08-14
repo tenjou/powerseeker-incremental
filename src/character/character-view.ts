@@ -1,11 +1,10 @@
-import { setText } from "../dom"
-import { getState } from "../state"
-import { SlotType } from "../types"
-import { subscribe, unsubscribe } from "./../events"
 import "../equipment/equipment-slot"
 import { EquipmentSlot } from "../equipment/equipment-slot"
-import { getElement } from "./../dom"
+import { getState } from "../state"
+import { SlotType } from "../types"
 import { StatsTableEntry } from "./../components/stats-table"
+import { getElement } from "./../dom"
+import { subscribe, unsubscribe } from "./../events"
 import { i18n } from "./../local"
 
 export function loadCharacterView() {
@@ -63,10 +62,6 @@ export function updateCharacterView() {
         {
             key: i18n("stamina"),
             value: `${player.stamina}/${player.staminaMax}`,
-        },
-        {
-            key: i18n("gold"),
-            value: player.gold,
         },
     ]
 

@@ -22,7 +22,7 @@ template.innerHTML = html`<style>
             color: #2e2e2e;
         }
         #content > *:nth-child(odd) {
-            background: #ffffff61;
+            background: #c9c9c961;
             border-radius: 3px;
         }
 

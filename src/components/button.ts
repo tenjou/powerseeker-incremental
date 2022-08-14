@@ -16,6 +16,10 @@ template.innerHTML = html`<style>
         :host(:active) {
             transform: translateY(1px);
         }
+        :host(.disabled) {
+            opacity: 0.5;
+            pointer-events: none;
+        }
 
         :host(.black) {
             border: 2px solid #222;

@@ -1,5 +1,6 @@
 import { Battle, BattleResult, Battler } from "./battle/battle-types"
 import { createEmptyStats } from "./character/status"
+import { Currency, CurrencyType } from "./currencies/currency-types"
 import { Card, Item, Skill, SkillId, SlotType } from "./types"
 
 interface TownStatus {
@@ -14,7 +15,6 @@ interface PlayerStatus {
     power: number
     stamina: number
     staminaMax: number
-    gold: number
 }
 
 interface DungeonStatus {
@@ -40,6 +40,7 @@ interface Cache {
 
 interface State {
     player: PlayerStatus
+    currencies: Record<CurrencyType, number>
     equipment: Record<SlotType, Item | null>
     battler: Battler
     skills: Skill[]
@@ -61,7 +62,10 @@ let state: State = {
         power: 0,
         stamina: 10,
         staminaMax: 10,
-        gold: 0,
+    },
+    currencies: {
+        ap: 1,
+        gold: 134,
     },
     equipment: {
         body: null,

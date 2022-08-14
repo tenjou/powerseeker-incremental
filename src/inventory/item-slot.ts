@@ -1,9 +1,7 @@
 import { ItemConfigs, ItemId } from "../config/item-configs"
 import { HTMLComponent } from "../dom"
 import { getState } from "../state"
-import { SlotType } from "../types"
-import { emit } from "./../events"
-import { Item } from "./../types"
+import { Item, SlotType } from "../types"
 
 const template = document.createElement("template")
 template.innerHTML = html`<style>
@@ -85,14 +83,6 @@ template.innerHTML = html`<style>
 export class ItemSlot extends HTMLComponent {
     constructor() {
         super(template)
-
-        this.onmouseover = () => {
-            const itemId = this.getAttribute("item-id")
-            if (itemId) {
-                const itemConfig = ItemConfigs[itemId as ItemId]
-                emit("item-hover", itemConfig)
-            }
-        }
     }
 
     connectedCallback() {

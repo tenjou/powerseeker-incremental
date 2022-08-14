@@ -1,10 +1,11 @@
-import { ItemSlot } from "../components/item-slot"
+import { ItemConfigs, ItemType } from "../config/item-configs"
 import { getElement, removeAllChildren, removeElement } from "../dom"
 import { getState } from "../state"
-import { ItemConfigs, ItemType } from "../config/item-configs"
 import { subscribe, unsubscribe } from "./../events"
 import { openPopup } from "./../popup"
 import { Item } from "./../types"
+import "./item-slot"
+import { ItemSlot } from "./item-slot"
 
 const ItemTypeSortWeight: Record<ItemType, number> = {
     armor: 100,
@@ -29,7 +30,7 @@ export function unloadInventoryView() {
 }
 
 function updateInventoryView() {
-    const parent = document.querySelector("inventory-container")
+    const parent = getElement("inventory-container")
     if (!parent) {
         console.error(`Could not find inventory-container`)
         return

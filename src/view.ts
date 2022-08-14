@@ -3,13 +3,14 @@ import { toggleClassName } from "./dom"
 import { loadInventoryView, unloadInventoryView } from "./inventory/inventory-view"
 import { loadSkillsView, unloadSkillsView } from "./skills/skills-view"
 import { loadEquipmentView, unloadEquipmentView } from "./equipment/equipment-view"
+import { loadAbilitiesView, unloadAbilitiesView } from "./abilities/abilities-view"
 
 interface View {
     onLoad: (segments: string[]) => void
     onUnload: () => void
 }
 
-type ViewType = "town" | "character" | "inventory" | "skills" | "equipment"
+type ViewType = "town" | "character" | "inventory" | "skills" | "equipment" | "abilities"
 
 const views: Record<ViewType, View> = {
     town: {
@@ -31,6 +32,10 @@ const views: Record<ViewType, View> = {
     equipment: {
         onLoad: loadEquipmentView,
         onUnload: unloadEquipmentView,
+    },
+    abilities: {
+        onLoad: loadAbilitiesView,
+        onUnload: unloadAbilitiesView,
     },
 }
 

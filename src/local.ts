@@ -85,6 +85,12 @@ const local: Record<string, LocalEntry> = {
     gold: {
         en: "Gold",
     },
+    heal: {
+        en: "Heal",
+    },
+    bash: {
+        en: "Bash",
+    },
 }
 
 export function i18n(key: string | undefined | null) {

@@ -29,6 +29,8 @@ body {
 }
 
 navbar {
+    display: flex;
+    flex-direction: row;
     background: #ffffff54;
     border-bottom: 1px solid #cbcbcb;
 }
