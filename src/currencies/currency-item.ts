@@ -68,13 +68,15 @@ export class CurrencyItem extends HTMLComponent {
 
         this.update()
 
-        subscribe("currency-added", this.updateCallback)
-        subscribe("currency-removed", this.updateCallback)
+        subscribe("currency-updated", this.updateCallback)
     }
 
     disconnectedCallback() {
-        unsubscribe("currency-added", this.updateCallback)
-        unsubscribe("currency-removed", this.updateCallback)
+        unsubscribe("currency-updated", this.updateCallback)
+    }
+
+    attributeChangedCallback() {
+        this.update()
     }
 
     update() {
@@ -86,7 +88,16 @@ export class CurrencyItem extends HTMLComponent {
         const { currencies } = getState()
         const currency = currencies[currencyType as CurrencyType]
 
-        this.getElement("span").innerText = `${currency}`
+        const needValue = Number(this.getAttribute("need"))
+        if (needValue) {
+            this.getElement("span").innerText = `${needValue} / ${currency}`
+        } else {
+            this.getElement("span").innerText = `${currency}`
+        }
+    }
+
+    static get observedAttributes() {
+        return ["need"]
     }
 }
 

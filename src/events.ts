@@ -6,8 +6,8 @@ type EventType =
     | "unequip"
     | "skill-update"
     | "close"
-    | "currency-added"
-    | "currency-removed"
+    | "currency-updated"
+    | "ability-updated"
 
 type CallbackFunc = (payload: unknown) => void
 

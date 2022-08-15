@@ -7,7 +7,7 @@ export function addCurrency(currencyType: CurrencyType, value: number) {
 
     currencies[currencyType] += value
 
-    emit("currency-added", currencyType)
+    emit("currency-updated", currencyType)
 }
 
 export function removeCurrency(currencyType: CurrencyType, value: number) {
@@ -15,7 +15,7 @@ export function removeCurrency(currencyType: CurrencyType, value: number) {
 
     currencies[currencyType] -= value
 
-    emit("currency-added", currencyType)
+    emit("currency-updated", currencyType)
 }
 
 export function haveCurrency(currencyType: CurrencyType, needValue: number = 1) {

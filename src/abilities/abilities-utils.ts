@@ -1,6 +1,9 @@
+import { removeCurrency } from "../currencies/currencies"
 import { AbilityId } from "../types"
 import { AbilityEffect } from "./../config/ability-configs"
 import { getState } from "./../state"
+import { haveCurrency } from "./../currencies/currencies"
+import { emit } from "./../events"
 
 export const getAbilityEffectPower = (effect: AbilityEffect, rank: number) => {
     // return (effect.power * stats[effect.stat]) | 0
@@ -13,8 +16,29 @@ export const getRequiredAp = (abilityId: AbilityId) => {
     const ability = abilities.find((entry) => entry.id === abilityId)
     if (!ability) {
         console.error(`Could not find ability: ${abilityId}`)
-        return
+        return Number.MAX_SAFE_INTEGER
     }
 
     return ability.rank
+}
+
+export const learnAbility = (abilityId: AbilityId) => {
+    const { abilities } = getState()
+
+    const ability = abilities.find((entry) => entry.id === abilityId)
+    if (!ability) {
+        console.error(`Could not find ability: ${abilityId}`)
+        return
+    }
+
+    const needAp = getRequiredAp(abilityId)
+    if (!haveCurrency("ap", needAp)) {
+        console.error(`Does not have enough AP (${needAp}) to learn the ability (${abilityId})`)
+        return
+    }
+
+    ability.rank += 1
+    removeCurrency("ap", needAp)
+
+    emit("ability-updated", abilityId)
 }

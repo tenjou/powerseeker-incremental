@@ -1,6 +1,7 @@
 import { AbilityConfigs } from "../config/ability-configs"
 import { HTMLComponent } from "../dom"
 import { AbilityId } from "../types"
+import { getState } from "./../state"
 
 const template = document.createElement("template")
 template.innerHTML = html`<style>
@@ -28,7 +29,7 @@ template.innerHTML = html`<style>
             image-rendering: pixelated;
         }
 
-        power {
+        rank {
             width: 100%;
             flex: 1;
             padding: 0 4px;
@@ -60,7 +61,7 @@ template.innerHTML = html`<style>
     </style>
 
     <img />
-    <power></power>
+    <rank></rank>
     <amount></amount>`
 
 export class AbilitySlotElement extends HTMLComponent {
@@ -69,14 +70,27 @@ export class AbilitySlotElement extends HTMLComponent {
     }
 
     update() {
-        const abilityId = this.getAttribute("ability-id") as AbilityId
+        const abilityId = this.getAttribute("ability-id")
+        if (!abilityId) {
+            console.error(`Missing "ability-id" attribute`)
+            return
+        }
+
+        const { abilities } = getState()
+        const ability = abilities.find((entry) => entry.id === abilityId)
+        if (!ability) {
+            console.error(`Could not find ability with Id: ${abilityId}`)
+            return
+        }
+
         const abilityConfig = AbilityConfigs[abilityId]
 
         const imgElement = this.getElement("img")
         imgElement.setAttribute("src", `/assets/icon/skill/${abilityConfig.id}.png`)
 
-        // this.setText("amount", `1/10`)
-        this.setText("power", `1 / 10`)
+        const hideRank = this.haveAttribute("hide-rank")
+        this.setText("rank", `${ability.rank} / 10`)
+        this.toggleClassName("hide", hideRank, "rank")
 
         if (this.getAttribute("inactive") !== null) {
             this.classList.add("inactive")

@@ -4,7 +4,9 @@ import { i18n } from "../local"
 import { getState } from "../state"
 import { AbilityId } from "../types"
 import { getAbilityDescription } from "./abilities-view"
-import { haveCurrency } from "./../currencies/currencies"
+import { haveCurrency, removeCurrency } from "./../currencies/currencies"
+import { subscribe, unsubscribe } from "./../events"
+import { getRequiredAp, learnAbility } from "./abilities-utils"
 
 const template = document.createElement("template")
 template.innerHTML = html`<style>
@@ -33,7 +35,7 @@ template.innerHTML = html`<style>
 
     <popup-container>
         <x-row>
-            <ability-slot inactive></ability-slot>
+            <ability-slot inactive hide-rank></ability-slot>
             <x-column class="center-v flex margin5">
                 <x-text id="name" class="semibold line16"></x-text>
                 <x-text id="type" class="tertiary">Passive</x-text>
@@ -41,27 +43,45 @@ template.innerHTML = html`<style>
 
             <x-column class="center-v">
                 <x-row class="center-v">
-                    <x-text class="bold size22" id="rank"></x-text>
-                    <rank>Rank</rank>
+                    <currency-item currency="ap" need="" />
                 </x-row>
             </x-column>
         </x-row>
 
-        <div id="description"></div>
+        <div id="description"><rank>Rank 1</rank><x-text></x-text></div>
         <x-column class="center-h"><x-icon icon="fa-angle-down"></x-icon></x-column>
-        <div id="description2"></div>
+        <div id="description2"><rank>Rank 2</rank><x-text></x-text></div>
         <stats-table></stats-table>
 
         <x-row class="center-h" id="actions"><x-button class="black">Learn</x-button></x-row>
     </popup-container>`
 
 export class AbilityPopup extends HTMLComponent {
+    updateCallback: () => void
+
     constructor() {
         super(template)
+
+        this.updateCallback = () => this.update()
     }
 
     connectedCallback() {
         this.update()
+
+        this.getElement("x-button").onclick = () => {
+            const abilityId = this.getAttribute("ability-id")
+            if (!abilityId) {
+                return
+            }
+
+            learnAbility(abilityId)
+        }
+
+        subscribe("ability-updated", this.updateCallback)
+    }
+
+    disconnectedCallback() {
+        unsubscribe("ability-updated", this.updateCallback)
     }
 
     update() {
@@ -73,7 +93,7 @@ export class AbilityPopup extends HTMLComponent {
         const { abilities } = getState()
         const ability = abilities.find((entry) => entry.id === abilityId)
         const abilityRank = ability ? ability.rank : 1
-        this.setText("#rank", abilityRank)
+        // this.setText("#rank", abilityRank)
 
         const abilitySlot = this.getElement("ability-slot")
         abilitySlot.setAttribute("ability-id", abilityId)
@@ -85,11 +105,13 @@ export class AbilityPopup extends HTMLComponent {
 
         const description = getAbilityDescription(abilityConfig, abilityRank)
         const description2 = getAbilityDescription(abilityConfig, abilityRank + 1)
-        this.setHTML("#description", description)
-        this.setHTML("#description2", description2)
+        this.setHTML("#description x-text", description)
+        this.setHTML("#description2 x-text", description2)
 
-        const haveAp = haveCurrency("ap", 1)
+        const needAp = getRequiredAp(abilityId)
+        const haveAp = haveCurrency("ap", needAp)
         this.toggleClassName("disabled", !haveAp, "x-button")
+        this.getElement("currency-item").setAttribute("need", String(needAp))
 
         // if (abilityConfig.type === "armor") {
         //     const xAttribute = this.getElement("stats-table")
