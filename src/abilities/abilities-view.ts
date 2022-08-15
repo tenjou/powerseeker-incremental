@@ -7,6 +7,8 @@ import { getElement, removeAllChildren } from "./../dom"
 import { getAbilityEffectPower } from "./abilities-utils"
 import "./ability-popup"
 import "./ability-slot"
+import { AbilitySlotElement } from "./ability-slot"
+import { subscribe, unsubscribe } from "./../events"
 
 export function loadAbilitiesView() {
     const parent = getElement("abilities-container")
@@ -17,10 +19,21 @@ export function loadAbilitiesView() {
         abilitySlot.onclick = () => openAbilityPopup(abilityId)
         parent.appendChild(abilitySlot)
     }
+
+    subscribe("ability-updated", updateView)
 }
 
 export function unloadAbilitiesView() {
     removeAllChildren("abilities-container")
+
+    unsubscribe("ability-updated", updateView)
+}
+
+function updateView() {
+    const parent = getElement("abilities-container")
+    parent.childNodes.forEach((element) => {
+        ;(element as AbilitySlotElement).update()
+    })
 }
 
 function openAbilityPopup(abilityId: AbilityId) {

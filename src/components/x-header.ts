@@ -6,7 +6,7 @@ template.innerHTML = html`<style>
             font-weight: 700;
             text-transform: uppercase;
             border-bottom: 1px solid #bfbfbf;
-            margin: 0px 5px 4px 2px;
+            margin: 0px 5px 5px 2px;
         }
 
         header-title {
