@@ -1,10 +1,8 @@
-const emptyElement = document.createElement("div")
-
 export function getElement(id: string) {
     const element = document.getElementById(id)
     if (!element) {
         console.error(`Could get element with Id: "${id}"`)
-        return emptyElement
+        return document.createElement("div")
     }
 
     return element
@@ -110,7 +108,7 @@ export class HTMLComponent extends HTMLElement {
     getElement(query: string): HTMLElement {
         if (!this.shadowRoot) {
             console.error(`Missing shadowRoot`)
-            return emptyElement
+            return document.createElement("div")
         }
 
         if (!query) {
@@ -120,7 +118,7 @@ export class HTMLComponent extends HTMLElement {
         const element = this.shadowRoot.querySelector(query) as HTMLElement
         if (!element) {
             console.error(`Could not find child element with query: ${query}`)
-            return emptyElement
+            return document.createElement("div")
         }
 
         return element
