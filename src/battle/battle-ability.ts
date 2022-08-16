@@ -6,9 +6,18 @@ import { selectAbility } from "./battle"
 import { toggleTeamInactive } from "./battler-item"
 
 export function loadAbilities() {
-    const { abilities } = getState()
+    const { abilities, loadout } = getState()
 
-    for (const ability of abilities) {
+    for (const abilityId of loadout.abilities) {
+        if (!abilityId) {
+            continue
+        }
+
+        const ability = abilities[abilityId]
+        if (!ability) {
+            continue
+        }
+
         loadAbility(ability)
     }
 }

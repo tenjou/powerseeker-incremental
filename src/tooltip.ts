@@ -1,4 +1,4 @@
-import { AbilityConfigs } from "./config/ability-configs"
+import { AbilityConfigs, AbilityId } from "./config/ability-configs"
 import { ItemConfigs, ItemId } from "./config/item-configs"
 import { i18n } from "./local"
 
@@ -16,14 +16,14 @@ export function loadTooltipSystem() {
     window.onmousemove = (event) => {
         const element = event.target as HTMLElement
 
-        const itemId = element.getAttribute("item-id")
-        const abilityId = element.getAttribute("ability-id")
+        const itemId = element.getAttribute("item-id") as ItemId | null
+        const abilityId = element.getAttribute("ability-id") as AbilityId | null
 
         if (itemId && element.tagName === "ITEM-SLOT") {
-            const itemConfig = ItemConfigs[itemId as ItemId]
+            const itemConfig = ItemConfigs[itemId]
             showTooltip(event, itemConfig.id)
         } else if (abilityId && element.tagName === "ABILITY-SLOT") {
-            const abilityConfig = AbilityConfigs[abilityId as ItemId]
+            const abilityConfig = AbilityConfigs[abilityId]
             showTooltip(event, abilityConfig.id)
         } else {
             tooltipElement.classList.add("hide")

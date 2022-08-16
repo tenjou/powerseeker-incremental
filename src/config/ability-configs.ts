@@ -1,5 +1,7 @@
 import { CharacterStatType } from "../character/character-types"
 
+export type AbilityId = "attack" | "bash" | "heal"
+
 export interface AbilityEffect {
     type: "hp-minus" | "hp-plus"
     power: number
@@ -7,14 +9,14 @@ export interface AbilityEffect {
 }
 
 export interface AbilityConfig {
-    id: string
+    id: AbilityId
     name: string
     isOffensive: boolean
     description: string
     effects: AbilityEffect[]
 }
 
-export const AbilityConfigs: Record<string, AbilityConfig> = {
+export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
     attack: {
         id: "attack",
         name: "Attack",

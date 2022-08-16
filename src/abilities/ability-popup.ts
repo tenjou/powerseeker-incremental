@@ -1,12 +1,11 @@
-import { AbilityConfigs } from "../config/ability-configs"
+import { AbilityConfigs, AbilityId } from "../config/ability-configs"
 import { HTMLComponent } from "../dom"
 import { i18n } from "../local"
 import { getState } from "../state"
-import { AbilityId } from "../types"
-import { getAbilityDescription } from "./abilities-view"
-import { haveCurrency, removeCurrency } from "./../currencies/currencies"
+import { haveCurrency } from "./../currencies/currencies"
 import { subscribe, unsubscribe } from "./../events"
 import { getRequiredAp, learnAbility } from "./abilities-utils"
+import { getAbilityDescription } from "./abilities-view"
 
 const template = document.createElement("template")
 template.innerHTML = html`<style>
@@ -69,7 +68,7 @@ export class AbilityPopup extends HTMLComponent {
         this.update()
 
         this.getElement("x-button").onclick = () => {
-            const abilityId = this.getAttribute("ability-id")
+            const abilityId = this.getAttribute("ability-id") as AbilityId | null
             if (!abilityId) {
                 return
             }
@@ -85,13 +84,13 @@ export class AbilityPopup extends HTMLComponent {
     }
 
     update() {
-        const abilityId = this.getAttribute("ability-id")
+        const abilityId = this.getAttribute("ability-id") as AbilityId | null
         if (!abilityId) {
             return
         }
 
         const { abilities } = getState()
-        const ability = abilities.find((entry) => entry.id === abilityId)
+        const ability = abilities[abilityId]
         const abilityRank = ability ? ability.rank : 1
         // this.setText("#rank", abilityRank)
 

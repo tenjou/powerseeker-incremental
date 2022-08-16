@@ -89,5 +89,5 @@ export function goTo(url: string | null) {
     }
 
     history.pushState({}, "", url)
-    window.dispatchEvent(new Event("onpushstate"))
+    window.dispatchEvent(new Event("pushstate"))
 }

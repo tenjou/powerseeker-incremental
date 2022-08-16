@@ -1,6 +1,5 @@
-import { AbilityConfigs } from "../config/ability-configs"
+import { AbilityConfigs, AbilityId } from "../config/ability-configs"
 import { HTMLComponent } from "../dom"
-import { AbilityId } from "../types"
 import { getState } from "./../state"
 
 const template = document.createElement("template")
@@ -20,6 +19,9 @@ template.innerHTML = html`<style>
         }
         :host(.inactive) {
             pointer-events: none;
+        }
+        :host-context(x-row) {
+            margin-right: 6px;
         }
 
         img {
@@ -69,15 +71,24 @@ export class AbilitySlotElement extends HTMLComponent {
         super(template)
     }
 
+    connectedCallback() {
+        this.update()
+    }
+
     update() {
-        const abilityId = this.getAttribute("ability-id")
+        const { abilities, loadout } = getState()
+
+        const slotId = this.getAttribute("slot-id")
+        const slottedAbilityId = loadout.abilities[Number(slotId)]
+
+        const abilityId = slottedAbilityId || (this.getAttribute("ability-id") as AbilityId | null)
         if (!abilityId) {
+            this.getElement("img").removeAttribute("img")
             console.error(`Missing "ability-id" attribute`)
             return
         }
 
-        const { abilities } = getState()
-        const ability = abilities.find((entry) => entry.id === abilityId)
+        const ability = abilities[abilityId]
         if (!ability) {
             console.error(`Could not find ability with Id: ${abilityId}`)
             return
@@ -139,13 +150,13 @@ export class AbilitySlotElement extends HTMLComponent {
         // this.toggleClassName("hide", hidePower || power <= 0, "power")
     }
 
-    attributeChangedCallback() {
-        this.update()
-    }
+    // attributeChangedCallback() {
+    //     this.update()
+    // }
 
-    static get observedAttributes() {
-        return ["ability-id"]
-    }
+    // static get observedAttributes() {
+    //     return ["ability-id"]
+    // }
 }
 
 customElements.define("ability-slot", AbilitySlotElement)

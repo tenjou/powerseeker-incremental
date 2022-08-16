@@ -130,7 +130,7 @@ export function useSelectedAbility(targetId: BattlerId) {
 function executeAutoBattle() {
     const { abilities, battle } = getState()
 
-    const firstAbility = abilities[0]
+    const firstAbility = abilities.attack
     const team = battle.isTeamA ? battle.teamB : battle.teamA
     const targetId = randomItem(team)
 
@@ -205,6 +205,7 @@ function nextAction() {
 
     let action: BattleAction | null | undefined
     let caster: Battler | null = null
+
     while (battle.actions.length > 0) {
         action = battle.actions.pop()
         if (!action) {

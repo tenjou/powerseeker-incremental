@@ -1,5 +1,6 @@
+import { AbilityId } from "../config/ability-configs"
 import { Ability } from "../state"
-import { AbilityId, BattlerId } from "../types"
+import { BattlerId } from "../types"
 import { CharacterStats } from "./../character/character-types"
 
 export interface BattleAction {

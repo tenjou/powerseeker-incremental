@@ -35,7 +35,7 @@ template.innerHTML = html`<style>
             text-shadow: 1px 1px 0px black;
             border: 1px solid #030f1424;
             background: linear-gradient(#00bcd4, #03a9f4);
-            background: linear-gradient(#e91e63, #e91e63);
+            <!-- background: linear-gradient(#e91e63, #e91e63); -->
         }
     </style>
 

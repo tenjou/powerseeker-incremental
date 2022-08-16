@@ -1,7 +1,9 @@
-import { Battle, BattleResult, Battler } from "./battle/battle-types"
+import { Battle, Battler, BattleResult } from "./battle/battle-types"
 import { createEmptyStats } from "./character/status"
-import { Currency, CurrencyType } from "./currencies/currency-types"
-import { Card, Item, Skill, SkillId, SlotType } from "./types"
+import { AbilityId } from "./config/ability-configs"
+import { ItemId } from "./config/item-configs"
+import { CurrencyType } from "./currencies/currency-types"
+import { Card, Item, Skill, SlotType } from "./types"
 
 interface TownStatus {
     cards: Card[]
@@ -28,7 +30,7 @@ interface DungeonStatus {
 }
 
 export interface Ability {
-    id: string
+    id: AbilityId
     rank: number
 }
 
@@ -45,7 +47,11 @@ interface State {
     battler: Battler
     skills: Skill[]
     inventory: Item[]
-    abilities: Ability[]
+    abilities: Record<AbilityId, Ability>
+    loadout: {
+        abilities: (AbilityId | null)[]
+        items: (ItemId | null)[]
+    }
     town: TownStatus
     dungeon: DungeonStatus
     battle: Battle
@@ -135,20 +141,15 @@ let state: State = {
         isAuto: false,
     },
     battleResult: null,
-    abilities: [
-        {
-            id: "attack",
-            rank: 1,
-        },
-        {
-            id: "bash",
-            rank: 1,
-        },
-        {
-            id: "heal",
-            rank: 1,
-        },
-    ],
+    abilities: {
+        attack: { id: "attack", rank: 1 },
+        bash: { id: "bash", rank: 1 },
+        heal: { id: "heal", rank: 1 },
+    },
+    loadout: {
+        abilities: ["attack", "bash", "heal", null],
+        items: [null],
+    },
     cache: {
         lastItemIndex: 1,
         lastCardIndex: 1,

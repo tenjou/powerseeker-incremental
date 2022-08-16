@@ -1,7 +1,6 @@
-import { AbilityConfig, AbilityConfigs } from "../config/ability-configs"
+import { AbilityConfig, AbilityConfigs, AbilityId } from "../config/ability-configs"
 import { openPopup } from "../popup"
 import { getState } from "../state"
-import { AbilityId } from "../types"
 import { AbilityEffect } from "./../config/ability-configs"
 import { getElement, removeAllChildren } from "./../dom"
 import { getAbilityEffectPower } from "./abilities-utils"
@@ -16,7 +15,7 @@ export function loadAbilitiesView() {
     for (const abilityId in AbilityConfigs) {
         const abilitySlot = document.createElement("ability-slot")
         abilitySlot.setAttribute("ability-id", abilityId)
-        abilitySlot.onclick = () => openAbilityPopup(abilityId)
+        abilitySlot.onclick = () => openAbilityPopup(abilityId as AbilityId)
         parent.appendChild(abilitySlot)
     }
 
@@ -46,7 +45,7 @@ export function getAbilityDescription(abilityConfig: AbilityConfig, abilityRank?
     const { abilities } = getState()
 
     if (!abilityRank) {
-        const ability = abilities.find((entry) => entry.id === abilityConfig.id)
+        const ability = abilities[abilityConfig.id]
         abilityRank = ability ? ability.rank : 1
     }
 

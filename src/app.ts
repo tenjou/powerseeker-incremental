@@ -125,8 +125,9 @@ window.onbeforeunload = () => {
     // localStorage.setItem("profile", JSON.stringify(state))
 }
 
-window.addEventListener("onpopstate", updateView)
-window.addEventListener("onpushstate", updateView)
+window.addEventListener("popstate", updateView)
+window.addEventListener("pushstate", updateView)
+window.addEventListener("hashchange", updateView)
 
 declare global {
     function html(str: TemplateStringsArray): string

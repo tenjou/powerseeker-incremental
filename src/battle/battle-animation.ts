@@ -1,4 +1,5 @@
-import { AbilityId, BattlerId } from "../types"
+import { AbilityId } from "../config/ability-configs"
+import { BattlerId } from "../types"
 import { BattleActionLog } from "./battle-types"
 import { addBattlerHp, addBattlerScrollingText, showBattlerAbility, toggleBattlerForward, toggleBattlerShake } from "./battler-item"
 

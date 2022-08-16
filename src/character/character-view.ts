@@ -1,3 +1,4 @@
+import { AbilitySlotElement } from "../abilities/ability-slot"
 import "../equipment/equipment-slot"
 import { EquipmentSlot } from "../equipment/equipment-slot"
 import { getState } from "../state"
@@ -72,6 +73,8 @@ export function updateCharacterView() {
     equipmentElements.forEach((element) => {
         element.update()
     })
+
+    // upadateLoadoutWidget()
 }
 
 function updateEquipmentSlot(slotType: SlotType) {
@@ -82,4 +85,9 @@ function updateEquipmentSlot(slotType: SlotType) {
     }
 
     equipmentElement.update()
+}
+
+function upadateLoadoutWidget() {
+    const abilitySlots = document.querySelectorAll<AbilitySlotElement>("ability-slot")
+    console.log(abilitySlots)
 }

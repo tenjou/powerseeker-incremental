@@ -1,6 +1,5 @@
 import { removeCurrency } from "../currencies/currencies"
-import { AbilityId } from "../types"
-import { AbilityEffect } from "./../config/ability-configs"
+import { AbilityEffect, AbilityId } from "./../config/ability-configs"
 import { getState } from "./../state"
 import { haveCurrency } from "./../currencies/currencies"
 import { emit } from "./../events"
@@ -13,7 +12,7 @@ export const getAbilityEffectPower = (effect: AbilityEffect, rank: number) => {
 export const getRequiredAp = (abilityId: AbilityId) => {
     const { abilities } = getState()
 
-    const ability = abilities.find((entry) => entry.id === abilityId)
+    const ability = abilities[abilityId]
     if (!ability) {
         console.error(`Could not find ability: ${abilityId}`)
         return Number.MAX_SAFE_INTEGER
@@ -25,7 +24,7 @@ export const getRequiredAp = (abilityId: AbilityId) => {
 export const learnAbility = (abilityId: AbilityId) => {
     const { abilities } = getState()
 
-    const ability = abilities.find((entry) => entry.id === abilityId)
+    const ability = abilities[abilityId]
     if (!ability) {
         console.error(`Could not find ability: ${abilityId}`)
         return

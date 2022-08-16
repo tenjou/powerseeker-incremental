@@ -31,4 +31,3 @@ export type Brand<T, FlavorT> = T & {
 
 export type BattleId = Brand<number, "BattleId">
 export type BattlerId = Brand<number, "BattlerId">
-export type AbilityId = Brand<string, "AbilityId">
