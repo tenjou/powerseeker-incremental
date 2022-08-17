@@ -75,88 +75,41 @@ export class AbilitySlotElement extends HTMLComponent {
         this.update()
     }
 
+    attributeChangedCallback() {
+        this.update()
+    }
+
     update() {
         const { abilities, loadout } = getState()
 
         const slotId = this.getAttribute("slot-id")
-        const slottedAbilityId = loadout.abilities[Number(slotId)]
+        const hideRank = this.haveAttribute("hide-rank")
 
+        const slottedAbilityId = slotId !== null ? loadout.abilities[Number(slotId)] : null
         const abilityId = slottedAbilityId || (this.getAttribute("ability-id") as AbilityId | null)
-        if (!abilityId) {
-            this.getElement("img").removeAttribute("img")
-            console.error(`Missing "ability-id" attribute`)
-            return
-        }
-
-        const ability = abilities[abilityId]
-        if (!ability) {
-            console.error(`Could not find ability with Id: ${abilityId}`)
-            return
-        }
-
-        const abilityConfig = AbilityConfigs[abilityId]
+        const ability = abilityId ? abilities[abilityId] : null
 
         const imgElement = this.getElement("img")
-        imgElement.setAttribute("src", `/assets/icon/skill/${abilityConfig.id}.png`)
 
-        const hideRank = this.haveAttribute("hide-rank")
-        this.setText("rank", `${ability.rank} / 10`)
+        if (ability) {
+            imgElement.setAttribute("src", `/assets/icon/skill/${ability.id}.png`)
+            imgElement.classList.remove("hide")
+
+            this.setText("rank", `${ability.rank} / 10`)
+        } else {
+            imgElement.classList.add("hide")
+        }
+
         this.toggleClassName("hide", hideRank, "rank")
 
         if (this.getAttribute("inactive") !== null) {
             this.classList.add("inactive")
         }
-
-        // let power = 0
-        // let rarity = 0
-        // let amount = 0
-        // let itemId
-        // this.className = ""
-        // const uid = Number(this.getAttribute("uid"))
-        // if (uid) {
-        //     const { inventory, equipment } = getState()
-        //     let item: Item | undefined | null
-        //     const equipmentSlot = this.getAttribute("equipment-slot")
-        //     if (equipmentSlot) {
-        //         item = equipment[equipmentSlot as SlotType]
-        //     } else {
-        //         item = inventory.find((entry) => entry.uid === uid)
-        //     }
-        //     if (item) {
-        //         itemId = item.id
-        //         power = item.power
-        //         rarity = item.rarity
-        //         amount = item.amount
-        //     }
-        // } else {
-        //     itemId = this.getAttribute("item-id")
-        // }
-        // if (itemId) {
-        //     const itemConfig = ItemConfigs[itemId as ItemId]
-        //     const imgElement = this.getElement("img")
-        //     imgElement.setAttribute("src", `/assets/icon/${itemConfig.type}/${itemId}.png`)
-        //     imgElement.classList.remove("hide")
-        // } else {
-        //     this.getElement("img").classList.add("hide")
-        // }
-        // if (this.getAttribute("inactive") !== null) {
-        //     this.classList.add("inactive")
-        // }
-        // this.classList.add(`rarity-${rarity}`)
-        // this.setText("amount", amount)
-        // this.toggleClassName("hide", amount <= 1, "amount")
-        // const hidePower = this.haveAttribute("hide-power")
-        // this.setText("power", power)
-        // this.toggleClassName("hide", hidePower || power <= 0, "power")
     }
 
-    // attributeChangedCallback() {
-    //     this.update()
-    // }
-
-    // static get observedAttributes() {
-    //     return ["ability-id"]
-    // }
+    static get observedAttributes() {
+        return ["ability-id"]
+    }
 }
 
 customElements.define("ability-slot", AbilitySlotElement)
