@@ -108,11 +108,6 @@ function generateBattleResult(): BattleResult {
     const loot: BattleLootItem[] = []
     const opponentIsTeamA = !battle.isTeamA
 
-    const goldItem: BattleLootItem = {
-        id: "gold",
-        amount: 0,
-    }
-
     for (const battler of battle.battlers) {
         if (!battler.monsterId || battler.isTeamA !== opponentIsTeamA) {
             continue
@@ -121,8 +116,6 @@ function generateBattleResult(): BattleResult {
         const monsterConfig = MonsterConfigs[battler.monsterId]
         exp += monsterConfig.xp
         gold += monsterConfig.gold
-
-        loot.push(goldItem)
 
         for (const monsterDrop of monsterConfig.loot) {
             if (roll(monsterDrop.chance)) {
@@ -135,8 +128,6 @@ function generateBattleResult(): BattleResult {
             }
         }
     }
-
-    goldItem.amount = gold
 
     return {
         isVictory,

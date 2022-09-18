@@ -10,9 +10,13 @@ template.innerHTML = html`<popup-container>
             <x-text id="result" class="header size30"></x-text>
         </x-row>
 
-        <x-row class="center-h padding10">
+        <x-row class="center-h">
             <x-text class="bold">${i18n("exp")}: </x-text>
             <x-text id="exp"></x-text>
+        </x-row>
+        <x-row class="center-h">
+            <img src="/assets/icon/currency/gold.png" />
+            <x-text id="gold"></x-text>
         </x-row>
 
         <inventory-container id="loot"></inventory-container>
@@ -39,6 +43,7 @@ export class BattleResultPopup extends HTMLComponent {
 
         this.setText("#result", battleResult.isVictory ? "Victory!" : "Defeat!")
         this.setText("#exp", battleResult.exp)
+        this.setText("#gold", battleResult.gold)
 
         const lootContainer = this.getElement("#loot")
         lootContainer.onmousemove = handeMouseMoveTooltip

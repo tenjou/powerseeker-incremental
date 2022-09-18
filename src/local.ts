@@ -97,6 +97,9 @@ const local: Record<string, LocalEntry> = {
     resource: {
         en: "Resource",
     },
+    currency: {
+        en: "Currency",
+    },
 }
 
 export function i18n(key: string | undefined | null) {
