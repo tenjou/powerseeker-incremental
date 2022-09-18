@@ -4,7 +4,7 @@ import { SlotType } from "../types"
 import { goTo } from "../view"
 import { getElement, removeAllChildren, setText } from "./../dom"
 import { subscribe, unsubscribe } from "./../events"
-import { openItemPopup, sortInventory } from "./../inventory/inventory-view"
+import { openItemPopup, sortInventory } from "../inventory/ui/inventory-view"
 import { getState } from "./../state"
 import { unequipItem } from "./equipment"
 

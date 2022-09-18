@@ -19,8 +19,8 @@ const local: Record<string, LocalEntry> = {
     carp: {
         en: "Carp",
     },
-    mapple_log: {
-        en: "Mapple Log",
+    maple_log: {
+        en: "Maple Log",
     },
     leather_clothing: {
         en: "Leather Clothing",

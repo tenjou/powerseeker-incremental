@@ -1,5 +1,6 @@
 import { AbilityId } from "../abilities/ability-type"
 import { EncounterId } from "../config/encounter-configs"
+import { ItemId } from "../config/item-configs"
 import { MonsterId } from "../config/monster-configs"
 import { Ability } from "../state"
 import { BattlerId } from "../types"
@@ -36,6 +37,7 @@ export interface Battle {
 export interface BattleResult {
     isVictory: boolean
     exp: number
+    loot: BattleLootItem[]
 }
 
 export interface Battler {
@@ -65,4 +67,9 @@ export interface BattleActionLog {
     abilityId: AbilityId
     casterId: BattlerId
     targets: BattleActionTarget[]
+}
+
+export interface BattleLootItem {
+    id: ItemId
+    amount: number
 }

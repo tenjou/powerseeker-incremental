@@ -200,7 +200,7 @@ export const CardConfigs: Record<CardType, CardConfig> = {
             },
             {
                 type: "add_item",
-                itemId: "mapple_log",
+                itemId: "maple_log",
                 amount: 1,
             },
             {
@@ -232,7 +232,7 @@ export const CardConfigs: Record<CardType, CardConfig> = {
         actions: [
             {
                 type: "add_item",
-                itemId: "mapple_log",
+                itemId: "maple_log",
                 amount: 10,
             },
         ],

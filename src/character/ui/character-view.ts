@@ -7,7 +7,7 @@ import { StatsTableEntry } from "../../components/stats-table"
 import { getElement } from "../../dom"
 import { subscribe, unsubscribe } from "../../events"
 import { i18n } from "../../local"
-import { ItemSlot } from "../../inventory/item-slot"
+import { ItemSlot } from "../../inventory/ui/item-slot"
 import { goTo } from "../../view"
 import { LevelConfig } from "./../../config/level-config"
 

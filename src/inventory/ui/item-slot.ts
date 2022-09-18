@@ -1,7 +1,7 @@
-import { ItemConfigs, ItemId } from "../config/item-configs"
-import { HTMLComponent } from "../dom"
-import { getState } from "../state"
-import { Item, SlotType } from "../types"
+import { ItemConfigs, ItemId } from "../../config/item-configs"
+import { HTMLComponent } from "../../dom"
+import { getState } from "../../state"
+import { Item, SlotType } from "../../types"
 
 const template = document.createElement("template")
 template.innerHTML = html`<style>
@@ -118,6 +118,7 @@ export class ItemSlot extends HTMLComponent {
             }
         } else {
             itemId = this.getAttribute("item-id")
+            amount = Number(this.getAttribute("amount"))
         }
 
         if (itemId) {

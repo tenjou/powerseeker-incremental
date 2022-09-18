@@ -1,6 +1,6 @@
 import { loadCharacterView, unloadCharacterView } from "./character/ui/character-view"
 import { toggleClassName } from "./dom"
-import { loadInventoryView, unloadInventoryView } from "./inventory/inventory-view"
+import { loadInventoryView, unloadInventoryView } from "./inventory/ui/inventory-view"
 import { loadSkillsView, unloadSkillsView } from "./skills/skills-view"
 import { loadEquipmentView, unloadEquipmentView } from "./equipment/equipment-view"
 import { loadAbilitiesView, unloadAbilitiesView } from "./abilities/abilities-view"

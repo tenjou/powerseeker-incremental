@@ -1,6 +1,6 @@
 import { CharacterStatType } from "../character/character-types"
 
-export type ItemId = "carp" | "copper_ore" | "mapple_log" | "leather_clothing" | "health_potion"
+export type ItemId = "carp" | "copper_ore" | "maple_log" | "leather_clothing" | "health_potion"
 
 export type ArmorSlot = "body"
 
@@ -54,8 +54,8 @@ export const ItemConfigs: Record<ItemId, ItemConfig> = {
         type: "resource",
         description: "",
     },
-    mapple_log: {
-        id: "mapple_log",
+    maple_log: {
+        id: "maple_log",
         type: "resource",
         description: "",
     },

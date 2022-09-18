@@ -4,7 +4,7 @@ import { equipItem } from "../equipment/equipment"
 import { getState } from "../state"
 import { Item } from "../types"
 import { emit } from "./../events"
-import "./item-popup"
+import "./ui/item-popup"
 
 interface ItemProps {
     power?: number

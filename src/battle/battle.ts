@@ -5,15 +5,16 @@ import { removeAllChildren, setOnClick, setShow, setText } from "../dom"
 import { PlayerService } from "../player/player-service"
 import { Ability, getState } from "../state"
 import { BattlerId } from "../types"
-import { randomItem, roll } from "../utils"
+import { randomItem, randomNumber, roll } from "../utils"
 import { openPopup } from "./../popup"
 import { shuffle } from "./../utils"
-import { Battle, BattleAction, BattleActionLog, BattleActionTarget, Battler } from "./battle-types"
+import { Battle, BattleAction, BattleActionLog, BattleActionTarget, BattleLootItem, Battler, BattleResult } from "./battle-types"
 import { calculatePower, getActionSpeed } from "./battle-utils"
 import { addBattler, createMonsterBattler, loadBattlers } from "./battler"
 import { loadAbilities, renderAbilities } from "./ui/battle-ability"
 import { addAnimationsFromLog, updateBattleAnimation } from "./ui/battle-animation"
 import "./ui/battle-result-popup"
+import { addItem } from "./../inventory/inventory"
 
 const AttackAbility: Ability = {
     id: "attack",
@@ -79,28 +80,29 @@ export function unloadBattle() {
 
 function endBattle() {
     const state = getState()
-    const { battle } = state
 
-    battle.status = "ended"
-
-    const isVictory = isTeamDead(battle.isTeamA ? battle.teamB : battle.teamA)
-    const exp = getTotalExp()
-
-    state.battleResult = {
-        isVictory,
-        exp,
-    }
+    state.battle.status = "ended"
+    state.battleResult = generateBattleResult()
 
     openPopup("battle-result-popup", {}, () => {
         unloadBattle()
     })
 }
 
-function getTotalExp() {
+function generateBattleResult(): BattleResult {
     const { battle } = getState()
 
-    let exp = 0
+    const isVictory = isTeamDead(battle.isTeamA ? battle.teamB : battle.teamA)
+    if (!isVictory) {
+        return {
+            isVictory,
+            exp: 0,
+            loot: [],
+        }
+    }
 
+    let exp = 0
+    const loot: BattleLootItem[] = []
     const opponentIsTeamA = !battle.isTeamA
 
     for (const battler of battle.battlers) {
@@ -110,9 +112,22 @@ function getTotalExp() {
 
         const monsterConfig = MonsterConfigs[battler.monsterId]
         exp += monsterConfig.xp
+
+        for (const monsterDrop of monsterConfig.loot) {
+            if (roll(monsterDrop.chance)) {
+                loot.push({
+                    id: monsterDrop.id,
+                    amount: randomNumber(monsterDrop.amountMin, monsterDrop.amountMax),
+                })
+            }
+        }
     }
 
-    return exp
+    return {
+        isVictory,
+        exp,
+        loot,
+    }
 }
 
 function rewardPlayer() {
@@ -123,6 +138,12 @@ function rewardPlayer() {
     }
 
     PlayerService.addExp(battleResult.exp)
+
+    for (const itemReward of battleResult.loot) {
+        addItem(itemReward.id, {
+            amount: itemReward.amount,
+        })
+    }
 }
 
 function renderBattleStatus() {

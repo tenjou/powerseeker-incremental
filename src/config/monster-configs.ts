@@ -1,3 +1,5 @@
+import { ItemId } from "./item-configs"
+
 export type MonsterId = "boar"
 
 interface MonsterConfig {
@@ -9,9 +11,11 @@ interface MonsterConfig {
     speed: number
     xp: number
     loot: {
-        itemType: string
-        amount: number
-    }
+        id: ItemId
+        amountMin: number
+        amountMax: number
+        chance: number
+    }[]
 }
 
 export const MonsterConfigs: Record<MonsterId, MonsterConfig> = {
@@ -23,9 +27,19 @@ export const MonsterConfigs: Record<MonsterId, MonsterConfig> = {
         defense: 1,
         speed: 1,
         xp: 345,
-        loot: {
-            itemType: "mapple_log",
-            amount: 10,
-        },
+        loot: [
+            {
+                id: "maple_log",
+                amountMin: 2,
+                amountMax: 10,
+                chance: 100,
+            },
+            {
+                id: "maple_log",
+                amountMin: 2,
+                amountMax: 10,
+                chance: 100,
+            },
+        ],
     },
 }

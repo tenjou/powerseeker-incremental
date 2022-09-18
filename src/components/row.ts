@@ -15,6 +15,9 @@ template.innerHTML = html`<style>
         :host(.center-v) {
             align-items: center;
         }
+        :host(.padding10) {
+            padding: 10px;
+        }
     </style>
 
     <slot></slot>`
