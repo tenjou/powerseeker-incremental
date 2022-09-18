@@ -12,7 +12,6 @@
             function html(str, ...values) {
                 if (values.length) {
                     const zipped = str.map((entry, n) => {
-                        console.log(entry.concat(values[n] || ""))
                         return entry.concat(values[n])
                     })
 

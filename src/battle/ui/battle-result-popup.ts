@@ -2,6 +2,7 @@ import { HTMLComponent } from "../../dom"
 import { openItemPopup } from "../../inventory/ui/inventory-view"
 import { closePopup } from "../../popup"
 import { getState } from "../../state"
+import { handeMouseMoveTooltip } from "../../tooltip"
 import { i18n } from "./../../local"
 
 const template = document.createElement("template")
@@ -48,12 +49,14 @@ export class BattleResultPopup extends HTMLComponent {
         this.setText("#exp", battleResult.exp)
 
         const lootContainer = this.getElement("#loot")
+        lootContainer.onmousemove = handeMouseMoveTooltip
 
         for (const loot of battleResult.loot) {
             const itemSlot = document.createElement("item-slot")
             itemSlot.setAttribute("item-id", loot.id)
             itemSlot.setAttribute("amount", String(loot.amount))
             itemSlot.onclick = openItemPopup
+
             lootContainer.appendChild(itemSlot)
         }
     }

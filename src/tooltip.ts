@@ -14,24 +14,27 @@ export function loadTooltipSystem() {
 
     tooltipElement = element as HTMLElement
 
-    window.onmousemove = (event) => {
-        const element = event.target as HTMLElement
-
-        const itemId = element.getAttribute("item-id") as ItemId | null
-        const abilityId = element.getAttribute("ability-id") as AbilityId | null
-
-        if (itemId && element.tagName === "ITEM-SLOT") {
-            const itemConfig = ItemConfigs[itemId]
-            showTooltip(event, itemConfig.id)
-        } else if (abilityId && element.tagName === "ABILITY-SLOT") {
-            const abilityConfig = AbilityConfigs[abilityId]
-            showTooltip(event, abilityConfig.id)
-        } else {
-            tooltipElement.classList.add("hide")
-        }
-    }
-
+    window.onmousemove = handeMouseMoveTooltip
     window.onclick = () => {
+        tooltipElement.classList.add("hide")
+    }
+}
+
+export function handeMouseMoveTooltip(event: MouseEvent) {
+    event.stopPropagation()
+
+    const element = event.target as HTMLElement
+
+    const itemId = element.getAttribute("item-id") as ItemId | null
+    const abilityId = element.getAttribute("ability-id") as AbilityId | null
+
+    if (itemId && element.tagName === "ITEM-SLOT") {
+        const itemConfig = ItemConfigs[itemId]
+        showTooltip(event, itemConfig.id)
+    } else if (abilityId && element.tagName === "ABILITY-SLOT") {
+        const abilityConfig = AbilityConfigs[abilityId]
+        showTooltip(event, abilityConfig.id)
+    } else {
         tooltipElement.classList.add("hide")
     }
 }
