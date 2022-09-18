@@ -130,5 +130,5 @@ window.addEventListener("pushstate", updateView)
 window.addEventListener("hashchange", updateView)
 
 declare global {
-    function html(str: TemplateStringsArray): string
+    function html(str: TemplateStringsArray, ...values: unknown[]): string
 }

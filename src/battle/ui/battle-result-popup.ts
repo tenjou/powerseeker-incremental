@@ -1,6 +1,8 @@
 import { HTMLComponent } from "../../dom"
+import { openItemPopup } from "../../inventory/ui/inventory-view"
 import { closePopup } from "../../popup"
 import { getState } from "../../state"
+import { i18n } from "./../../local"
 
 const template = document.createElement("template")
 template.innerHTML = html`<popup-container>
@@ -9,7 +11,7 @@ template.innerHTML = html`<popup-container>
         </x-row>
 
         <x-row class="center-h padding10">
-            <x-text class="bold">Experience: </x-text>
+            <x-text class="bold">${i18n("exp")}: </x-text>
             <x-text id="exp"></x-text>
         </x-row>
 
@@ -51,6 +53,7 @@ export class BattleResultPopup extends HTMLComponent {
             const itemSlot = document.createElement("item-slot")
             itemSlot.setAttribute("item-id", loot.id)
             itemSlot.setAttribute("amount", String(loot.amount))
+            itemSlot.onclick = openItemPopup
             lootContainer.appendChild(itemSlot)
         }
     }

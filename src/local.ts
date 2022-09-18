@@ -91,6 +91,9 @@ const local: Record<string, LocalEntry> = {
     bash: {
         en: "Bash",
     },
+    resource: {
+        en: "Resource",
+    },
 }
 
 export function i18n(key: string | undefined | null) {

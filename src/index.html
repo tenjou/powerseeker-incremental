@@ -9,7 +9,16 @@
         <link rel="stylesheet" href="../dist/ext/font-awesome/all.min.css" />
 
         <script>
-            function html(str) {
+            function html(str, ...values) {
+                if (values.length) {
+                    const zipped = str.map((entry, n) => {
+                        console.log(entry.concat(values[n] || ""))
+                        return entry.concat(values[n])
+                    })
+
+                    return zipped.join("")
+                }
+
                 return str
             }
         </script>
