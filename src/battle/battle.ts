@@ -1,50 +1,54 @@
 import { AbilityConfigs } from "../config/ability-configs"
-import { StartBattleAction } from "../config/CardConfigs"
-import { removeAllChildren, setShow, setText, setOnClick } from "../dom"
+import { EncounterConfigs, EncounterId } from "../config/encounter-configs"
+import { MonsterConfigs } from "../config/monster-configs"
+import { removeAllChildren, setOnClick, setShow, setText } from "../dom"
+import { PlayerService } from "../player/player-service"
 import { Ability, getState } from "../state"
 import { BattlerId } from "../types"
 import { randomItem, roll } from "../utils"
+import { openPopup } from "./../popup"
 import { shuffle } from "./../utils"
-import { loadAbilities, renderAbilities } from "./battle-ability"
-import { addAnimationsFromLog, updateBattleAnimation } from "./battle-animation"
-import "./battle-result-popup"
 import { Battle, BattleAction, BattleActionLog, BattleActionTarget, Battler } from "./battle-types"
 import { calculatePower, getActionSpeed } from "./battle-utils"
 import { addBattler, createMonsterBattler, loadBattlers } from "./battler"
-import { openPopup } from "./../popup"
+import { loadAbilities, renderAbilities } from "./ui/battle-ability"
+import { addAnimationsFromLog, updateBattleAnimation } from "./ui/battle-animation"
+import "./ui/battle-result-popup"
 
 const AttackAbility: Ability = {
     id: "attack",
     rank: 1,
 }
 
-export function startBattle(cardId: number, action: StartBattleAction) {
-    createBattleInstance(cardId, action)
+export function startBattle(encounterId: EncounterId) {
+    createBattleInstance(encounterId)
     loadBattle()
 }
 
-function createBattleInstance(cardId: number, action: StartBattleAction) {
+function createBattleInstance(encounterId: EncounterId) {
     const state = getState()
     const { battler, cache } = state
 
+    const encounter = EncounterConfigs[encounterId]
+
     const battle = createBattle()
     battle.id = cache.lastBattleId++
-    battle.cardId = cardId
+    battle.encounterId = encounterId
     state.battle = battle
 
     nextTurn()
-
     addBattler(battler)
+
     battle.playerBattlerId = battler.id
 
-    for (const monsterId of action.monsters) {
+    for (const monsterId of encounter.monsters) {
         const monsterBattler = createMonsterBattler(monsterId)
         addBattler(monsterBattler)
     }
 }
 
 export function loadBattle() {
-    setShow("area-town", false)
+    setShow("battle-container", true)
 
     updateBattleAuto()
     setOnClick("battle-auto", toggleBattleAuto)
@@ -54,11 +58,13 @@ export function loadBattle() {
 
     renderBattleStatus()
 
-    setShow("ui-battle", true)
+    setShow("main-container", false)
 }
 
 export function unloadBattle() {
     const state = getState()
+
+    rewardPlayer()
 
     state.battle = createBattle()
     state.battleResult = null
@@ -67,8 +73,8 @@ export function unloadBattle() {
     removeAllChildren("battle-column-b")
     removeAllChildren("battle-abilities")
 
-    setShow("area-town", true)
-    setShow("ui-battle", false)
+    setShow("main-container", true)
+    setShow("battle-container", false)
 }
 
 function endBattle() {
@@ -78,12 +84,45 @@ function endBattle() {
     battle.status = "ended"
 
     const isVictory = isTeamDead(battle.isTeamA ? battle.teamB : battle.teamA)
+    const exp = getTotalExp()
 
     state.battleResult = {
         isVictory,
+        exp,
     }
 
-    openPopup("battle-result-popup")
+    openPopup("battle-result-popup", {}, () => {
+        unloadBattle()
+    })
+}
+
+function getTotalExp() {
+    const { battle } = getState()
+
+    let exp = 0
+
+    const opponentIsTeamA = !battle.isTeamA
+
+    for (const battler of battle.battlers) {
+        if (!battler.monsterId || battler.isTeamA !== opponentIsTeamA) {
+            continue
+        }
+
+        const monsterConfig = MonsterConfigs[battler.monsterId]
+        exp += monsterConfig.xp
+    }
+
+    return exp
+}
+
+function rewardPlayer() {
+    const { battleResult } = getState()
+
+    if (!battleResult || !battleResult.isVictory) {
+        return
+    }
+
+    PlayerService.addExp(battleResult.exp)
 }
 
 function renderBattleStatus() {
@@ -143,7 +182,7 @@ function updateAI() {
 
     for (const battlerId of battle.teamB) {
         const battler = battle.battlers[battlerId]
-        if (!battler.isAI) {
+        if (!battler.monsterId) {
             continue
         }
 
@@ -374,7 +413,7 @@ function createBattle(): Battle {
         teamA: [],
         teamB: [],
         actions: [],
-        cardId: -1,
+        encounterId: "test_battle",
         id: 0,
         turn: 0,
         selectedAbility: null,

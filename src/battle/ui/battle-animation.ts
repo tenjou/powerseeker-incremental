@@ -1,6 +1,6 @@
-import { AbilityId } from "../config/ability-configs"
-import { BattlerId } from "../types"
-import { BattleActionLog } from "./battle-types"
+import { AbilityId } from "../../abilities/ability-type"
+import { BattlerId } from "../../types"
+import { BattleActionLog } from "../battle-types"
 import { addBattlerHp, addBattlerScrollingText, showBattlerAbility, toggleBattlerForward, toggleBattlerShake } from "./battler-item"
 
 const animations: Animation[] = []

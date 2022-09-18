@@ -1,12 +1,15 @@
-import { AbilitySlotElement } from "../abilities/ability-slot"
-import "../equipment/equipment-slot"
-import { EquipmentSlot } from "../equipment/equipment-slot"
-import { getState } from "../state"
-import { SlotType } from "../types"
-import { StatsTableEntry } from "./../components/stats-table"
-import { getElement } from "./../dom"
-import { subscribe, unsubscribe } from "./../events"
-import { i18n } from "./../local"
+import { AbilitySlotElement } from "../../abilities/ability-slot"
+import "../../equipment/equipment-slot"
+import { EquipmentSlot } from "../../equipment/equipment-slot"
+import { getState } from "../../state"
+import { SlotType } from "../../types"
+import { StatsTableEntry } from "../../components/stats-table"
+import { getElement } from "../../dom"
+import { subscribe, unsubscribe } from "../../events"
+import { i18n } from "../../local"
+import { ItemSlot } from "../../inventory/item-slot"
+import { goTo } from "../../view"
+import { LevelConfig } from "./../../config/level-config"
 
 export function loadCharacterView() {
     updateCharacterView()
@@ -30,7 +33,7 @@ export function updateCharacterView() {
         },
         {
             key: i18n("exp"),
-            value: `${player.xp}/${player.xpMax}`,
+            value: `${player.xp}/${LevelConfig[player.level - 1]}`,
         },
         {
             key: i18n("health"),
@@ -71,6 +74,17 @@ export function updateCharacterView() {
 
     const equipmentElements = document.querySelectorAll<EquipmentSlot>("equipment-slot")
     equipmentElements.forEach((element) => {
+        element.update()
+    })
+
+    const abilitiesSlots = document.querySelectorAll<AbilitySlotElement>("ability-slot")
+    abilitiesSlots.forEach((element) => {
+        element.update()
+        element.onclick = () => goTo(`loadout/ability`)
+    })
+
+    const itemSlots = document.querySelectorAll<ItemSlot>("item-slot")
+    itemSlots.forEach((element) => {
         element.update()
     })
 

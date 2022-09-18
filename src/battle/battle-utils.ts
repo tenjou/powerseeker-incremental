@@ -1,6 +1,6 @@
 import { randomNumber } from "./../utils"
-import { AbilityEffect } from "./../config/ability-configs"
 import { CharacterStats } from "./../character/character-types"
+import { AbilityEffect } from "../abilities/ability-type"
 // import { getMaxPower } from "./../abilities/abilities-utils"
 
 export const getPower = (maxPower: number) => {

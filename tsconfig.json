@@ -7,12 +7,7 @@
         "noFallthroughCasesInSwitch": true,
         "noEmit": true,
         "target": "esnext",
-        "lib": [
-            "dom",
-            "ES7"
-        ]
+        "lib": ["dom", "ES2017"]
     },
-    "include": [
-        "src"
-    ]
+    "include": ["src"]
 }

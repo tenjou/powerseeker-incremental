@@ -180,10 +180,6 @@ function applyCardActions(card: Card) {
             case "next_stage":
                 advanceDungeonStage()
                 break
-
-            case "start_battle":
-                startBattle(card.id, action)
-                break
         }
     }
 }

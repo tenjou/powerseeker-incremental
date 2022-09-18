@@ -282,6 +282,7 @@ inventory-item.empty {
 battle-status {
     display: flex;
     align-items: center;
+    width: 400px;
     height: 34px;
     margin: 4px 4px 100px;
     padding: 0 8px;

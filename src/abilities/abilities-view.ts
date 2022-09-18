@@ -1,13 +1,13 @@
-import { AbilityConfig, AbilityConfigs, AbilityId } from "../config/ability-configs"
+import { AbilityConfig, AbilityConfigs } from "../config/ability-configs"
 import { openPopup } from "../popup"
 import { getState } from "../state"
-import { AbilityEffect } from "./../config/ability-configs"
 import { getElement, removeAllChildren } from "./../dom"
 import { getAbilityEffectPower } from "./abilities-utils"
 import "./ability-popup"
 import "./ability-slot"
 import { AbilitySlotElement } from "./ability-slot"
 import { subscribe, unsubscribe } from "./../events"
+import { AbilityEffect, AbilityId } from "./ability-type"
 
 export function loadAbilitiesView() {
     const parent = getElement("abilities-container")

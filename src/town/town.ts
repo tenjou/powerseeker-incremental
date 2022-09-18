@@ -1,3 +1,3 @@
-export function loadTown() {}
+export function loadTownView() {}
 
-export function unloadTown() {}
+export function unloadTownView() {}

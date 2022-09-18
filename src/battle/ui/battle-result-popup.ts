@@ -1,12 +1,17 @@
-import { HTMLComponent } from "../dom"
-import { closePopup } from "../popup"
-import { getState } from "../state"
-import { unloadBattle } from "./battle"
+import { HTMLComponent } from "../../dom"
+import { closePopup } from "../../popup"
+import { getState } from "../../state"
+import { unloadBattle } from "../battle"
 
 const template = document.createElement("template")
 template.innerHTML = html`<popup-container>
     <x-row class="center-h">
         <x-text id="result" class="header size30"></x-text>
+    </x-row>
+
+    <x-row class="center-h">
+        <x-text class="bold">Experience: </x-text>
+        <x-text id="exp"></x-text>
     </x-row>
 
     <x-row class="center-h">
@@ -20,16 +25,14 @@ export class BattleResultPopup extends HTMLComponent {
 
         const { battleResult } = getState()
 
-        this.getElement("close-button").onclick = () => {
-            unloadBattle()
-            closePopup()
-        }
+        this.getElement("close-button").onclick = closePopup
 
         if (!battleResult) {
             return
         }
 
         this.setText("#result", battleResult.isVictory ? "Victory!" : "Defeat!")
+        this.setText("#exp", battleResult.exp)
     }
 }
 

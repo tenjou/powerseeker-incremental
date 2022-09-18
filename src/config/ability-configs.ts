@@ -1,16 +1,8 @@
-import { CharacterStatType } from "../character/character-types"
-
-export type AbilityId = "attack" | "bash" | "heal"
-
-export interface AbilityEffect {
-    type: "hp-minus" | "hp-plus"
-    power: number
-    stat: CharacterStatType
-}
+import { AbilityId, AbilityType, AbilityEffect } from "../abilities/ability-type"
 
 export interface AbilityConfig {
     id: AbilityId
-    name: string
+    type: AbilityType
     isOffensive: boolean
     description: string
     effects: AbilityEffect[]
@@ -19,7 +11,7 @@ export interface AbilityConfig {
 export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
     attack: {
         id: "attack",
-        name: "Attack",
+        type: "instant",
         isOffensive: true,
         description: "Attack an opponent, causing %0 <semibold>physical</semibold> damage.",
         effects: [
@@ -32,7 +24,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
     },
     bash: {
         id: "bash",
-        name: "Bash",
+        type: "instant",
         isOffensive: true,
         description: "Attack an opponent, causing %0 <semibold>physical</semibold> damage.",
         effects: [
@@ -45,7 +37,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
     },
     heal: {
         id: "heal",
-        name: "Heal",
+        type: "instant",
         isOffensive: false,
         description: "Restore %0 health to an ally.",
         effects: [

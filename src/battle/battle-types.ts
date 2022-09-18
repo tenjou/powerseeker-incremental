@@ -1,4 +1,6 @@
-import { AbilityId } from "../config/ability-configs"
+import { AbilityId } from "../abilities/ability-type"
+import { EncounterId } from "../config/encounter-configs"
+import { MonsterId } from "../config/monster-configs"
 import { Ability } from "../state"
 import { BattlerId } from "../types"
 import { CharacterStats } from "./../character/character-types"
@@ -12,7 +14,7 @@ export interface BattleAction {
 
 export interface Battle {
     id: number
-    cardId: number
+    encounterId: EncounterId
     status: "preparing" | "waiting" | "executing" | "ended"
     battlers: Battler[]
     battlersView: BattlerView[]
@@ -33,6 +35,7 @@ export interface Battle {
 
 export interface BattleResult {
     isVictory: boolean
+    exp: number
 }
 
 export interface Battler {
@@ -43,7 +46,7 @@ export interface Battler {
     hpMax: number
     stats: CharacterStats
     isTeamA: boolean
-    isAI: boolean
+    monsterId: MonsterId | null
 }
 
 export interface BattlerView {

@@ -1,4 +1,4 @@
-import { AbilityConfigs, AbilityId } from "../config/ability-configs"
+import { AbilityConfigs } from "../config/ability-configs"
 import { HTMLComponent } from "../dom"
 import { i18n } from "../local"
 import { getState } from "../state"
@@ -6,6 +6,7 @@ import { haveCurrency } from "./../currencies/currencies"
 import { subscribe, unsubscribe } from "./../events"
 import { getRequiredAp, learnAbility } from "./abilities-utils"
 import { getAbilityDescription } from "./abilities-view"
+import { AbilityId } from "./ability-type"
 
 const template = document.createElement("template")
 template.innerHTML = html`<style>

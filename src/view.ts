@@ -1,21 +1,28 @@
-import { loadCharacterView, unloadCharacterView } from "./character/character-view"
+import { loadCharacterView, unloadCharacterView } from "./character/ui/character-view"
 import { toggleClassName } from "./dom"
 import { loadInventoryView, unloadInventoryView } from "./inventory/inventory-view"
 import { loadSkillsView, unloadSkillsView } from "./skills/skills-view"
 import { loadEquipmentView, unloadEquipmentView } from "./equipment/equipment-view"
 import { loadAbilitiesView, unloadAbilitiesView } from "./abilities/abilities-view"
+import { loadLoadoutView, unloadLoadoutView } from "./loadout/loadout-vew"
+import { loadWorldView, unloadWorldView } from "./world/world-view"
+import { loadTownView, unloadTownView } from "./town/town"
 
 interface View {
     onLoad: (segments: string[]) => void
     onUnload: () => void
 }
 
-type ViewType = "town" | "character" | "inventory" | "skills" | "equipment" | "abilities"
+type ViewType = "town" | "world" | "character" | "inventory" | "skills" | "equipment" | "abilities" | "loadout"
 
 const views: Record<ViewType, View> = {
     town: {
-        onLoad: () => {},
-        onUnload: () => {},
+        onLoad: loadTownView,
+        onUnload: unloadTownView,
+    },
+    world: {
+        onLoad: loadWorldView,
+        onUnload: unloadWorldView,
     },
     character: {
         onLoad: loadCharacterView,
@@ -36,6 +43,10 @@ const views: Record<ViewType, View> = {
     abilities: {
         onLoad: loadAbilitiesView,
         onUnload: unloadAbilitiesView,
+    },
+    loadout: {
+        onLoad: loadLoadoutView,
+        onUnload: unloadLoadoutView,
     },
 }
 

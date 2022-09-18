@@ -1,6 +1,6 @@
+import { AbilityId } from "./abilities/ability-type"
 import { Battle, Battler, BattleResult } from "./battle/battle-types"
 import { createEmptyStats } from "./character/status"
-import { AbilityId } from "./config/ability-configs"
 import { ItemId } from "./config/item-configs"
 import { CurrencyType } from "./currencies/currency-types"
 import { Card, Item, Skill, SlotType } from "./types"
@@ -13,7 +13,6 @@ interface PlayerStatus {
     level: number
     name: string
     xp: number
-    xpMax: number
     power: number
     stamina: number
     staminaMax: number
@@ -64,7 +63,6 @@ let state: State = {
         level: 1,
         name: "Player",
         xp: 0,
-        xpMax: 100,
         power: 0,
         stamina: 10,
         staminaMax: 10,
@@ -85,7 +83,7 @@ let state: State = {
         hpMax: 40,
         stats: createEmptyStats(),
         isTeamA: true,
-        isAI: false,
+        monsterId: null,
     },
     skills: [
         {
@@ -122,8 +120,8 @@ let state: State = {
     },
     battle: {
         id: 0,
-        cardId: 0,
         status: "preparing",
+        encounterId: "test_battle",
         battlers: [],
         battlersView: [],
         teamA: [],

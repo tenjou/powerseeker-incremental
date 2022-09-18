@@ -7,6 +7,7 @@ interface MonsterConfig {
     attack: number
     defense: number
     speed: number
+    xp: number
     loot: {
         itemType: string
         amount: number
@@ -21,6 +22,7 @@ export const MonsterConfigs: Record<MonsterId, MonsterConfig> = {
         attack: 2,
         defense: 1,
         speed: 1,
+        xp: 345,
         loot: {
             itemType: "mapple_log",
             amount: 10,

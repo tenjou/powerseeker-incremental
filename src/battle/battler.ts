@@ -1,7 +1,7 @@
 import { MonsterConfigs, MonsterId } from "../config/monster-configs"
 import { getState } from "../state"
 import { Battler } from "./battle-types"
-import { loadBattler } from "./battler-item"
+import { loadBattler } from "./ui/battler-item"
 
 export function addBattler(battler: Battler) {
     const { battle } = getState()
@@ -47,6 +47,6 @@ export function createMonsterBattler(monsterId: MonsterId): Battler {
             speed: monsterConfig.speed,
         },
         isTeamA: false,
-        isAI: true,
+        monsterId,
     }
 }

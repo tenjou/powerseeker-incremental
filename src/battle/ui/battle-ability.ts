@@ -1,9 +1,10 @@
-import { getAbilityDescription } from "../abilities/abilities-view"
-import { AbilityConfig, AbilityConfigs } from "../config/ability-configs"
-import { addChild, setHTML, toggleClassName } from "../dom"
-import { Ability, getState } from "../state"
-import { selectAbility } from "./battle"
+import { getAbilityDescription } from "../../abilities/abilities-view"
+import { AbilityConfig, AbilityConfigs } from "../../config/ability-configs"
+import { addChild, setHTML, toggleClassName } from "../../dom"
+import { Ability, getState } from "../../state"
+import { selectAbility } from "../battle"
 import { toggleTeamInactive } from "./battler-item"
+import { i18n } from "../../local"
 
 export function loadAbilities() {
     const { abilities, loadout } = getState()
@@ -53,7 +54,7 @@ export function renderAbilities() {
 
         toggleClassName(`ability:${battle.selectedAbility.id}`, "selected", true)
         toggleClassName("battle-tooltip", "hide", false)
-        setHTML("battle-tooltip-title", abilityConfig.name)
+        setHTML("battle-tooltip-title", i18n(abilityConfig.id))
         setHTML("battle-tooltip-text", abilityTooltip)
 
         const abilityUsable = canTargetTeamA(abilityConfig, battle.isTeamA)
