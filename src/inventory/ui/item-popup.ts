@@ -155,17 +155,17 @@ export class ItemPopup extends HTMLComponent {
 customElements.define("item-popup", ItemPopup)
 
 function getDescription(itemConfig: ItemConfig, itemPower: number) {
+    let description = i18n(`${itemConfig.id}_description`) || ""
+
     if (itemConfig.type !== "consumable") {
-        return itemConfig.description
+        return description
     }
 
     const regex = /%[0-9]/gm
-    const regexDescription = regex.exec(itemConfig.description)
+    const regexDescription = regex.exec(description)
     if (!regexDescription) {
-        return itemConfig.description
+        return description
     }
-
-    let description = itemConfig.description
 
     const effects = itemConfig.effects
     for (const entry of regexDescription) {

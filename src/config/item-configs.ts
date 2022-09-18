@@ -1,6 +1,6 @@
 import { CharacterStatType } from "../character/character-types"
 
-export type ItemId = "carp" | "copper_ore" | "maple_log" | "leather_clothing" | "health_potion"
+export type ItemId = "gold" | "carp" | "copper_ore" | "maple_log" | "leather_clothing" | "health_potion"
 
 export type ArmorSlot = "body"
 
@@ -18,12 +18,16 @@ export interface ItemStat {
 
 interface ItemConfigBasic {
     id: ItemId
-    description: string
 }
 
 interface ItemConfigResource extends ItemConfigBasic {
     id: ItemId
     type: "resource"
+}
+
+interface ItemConfigCurrency extends ItemConfigBasic {
+    id: ItemId
+    type: "currency"
 }
 
 interface ItemConfigArmor extends ItemConfigBasic {
@@ -39,30 +43,30 @@ interface ItemConfigConsumable extends ItemConfigBasic {
     effects: ItemEffect[]
 }
 
-export type ItemConfig = ItemConfigResource | ItemConfigArmor | ItemConfigConsumable
+export type ItemConfig = ItemConfigResource | ItemConfigCurrency | ItemConfigArmor | ItemConfigConsumable
 
 export type ItemType = ItemConfig["type"]
 
 export const ItemConfigs: Record<ItemId, ItemConfig> = {
+    gold: {
+        id: "gold",
+        type: "currency",
+    },
     copper_ore: {
         id: "copper_ore",
         type: "resource",
-        description: "",
     },
     carp: {
         id: "carp",
         type: "resource",
-        description: "",
     },
     maple_log: {
         id: "maple_log",
         type: "resource",
-        description: "",
     },
     leather_clothing: {
         id: "leather_clothing",
         type: "armor",
-        description: "",
         slot: "body",
         stats: [
             { type: "defense", value: 10 },
@@ -72,7 +76,6 @@ export const ItemConfigs: Record<ItemId, ItemConfig> = {
     health_potion: {
         id: "health_potion",
         type: "consumable",
-        description: "Restore %0 <semibold>health</semibold>.",
         effects: [
             {
                 type: "restore_hp",

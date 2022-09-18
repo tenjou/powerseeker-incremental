@@ -10,6 +10,7 @@ interface MonsterConfig {
     defense: number
     speed: number
     xp: number
+    gold: number
     loot: {
         id: ItemId
         amountMin: number
@@ -27,6 +28,7 @@ export const MonsterConfigs: Record<MonsterId, MonsterConfig> = {
         defense: 1,
         speed: 1,
         xp: 345,
+        gold: 15,
         loot: [
             {
                 id: "maple_log",

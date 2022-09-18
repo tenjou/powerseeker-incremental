@@ -34,12 +34,6 @@ export interface Battle {
     isAuto: boolean
 }
 
-export interface BattleResult {
-    isVictory: boolean
-    exp: number
-    loot: BattleLootItem[]
-}
-
 export interface Battler {
     id: number
     level: number
@@ -72,6 +66,13 @@ export interface BattleActionLog {
 export interface BattleLootItem {
     id: ItemId
     amount: number
-    power: number
-    rarity: number
+    power?: number
+    rarity?: number
+}
+
+export interface BattleResult {
+    isVictory: boolean
+    exp: number
+    gold: number
+    loot: BattleLootItem[]
 }

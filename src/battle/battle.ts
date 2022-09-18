@@ -15,6 +15,7 @@ import { loadAbilities, renderAbilities } from "./ui/battle-ability"
 import { addAnimationsFromLog, updateBattleAnimation } from "./ui/battle-animation"
 import "./ui/battle-result-popup"
 import { addItem } from "./../inventory/inventory"
+import { addCurrency } from "./../currencies/currencies"
 
 const AttackAbility: Ability = {
     id: "attack",
@@ -97,13 +98,20 @@ function generateBattleResult(): BattleResult {
         return {
             isVictory,
             exp: 0,
+            gold: 0,
             loot: [],
         }
     }
 
     let exp = 0
+    let gold = 0
     const loot: BattleLootItem[] = []
     const opponentIsTeamA = !battle.isTeamA
+
+    const goldItem: BattleLootItem = {
+        id: "gold",
+        amount: 0,
+    }
 
     for (const battler of battle.battlers) {
         if (!battler.monsterId || battler.isTeamA !== opponentIsTeamA) {
@@ -112,6 +120,9 @@ function generateBattleResult(): BattleResult {
 
         const monsterConfig = MonsterConfigs[battler.monsterId]
         exp += monsterConfig.xp
+        gold += monsterConfig.gold
+
+        loot.push(goldItem)
 
         for (const monsterDrop of monsterConfig.loot) {
             if (roll(monsterDrop.chance)) {
@@ -125,9 +136,12 @@ function generateBattleResult(): BattleResult {
         }
     }
 
+    goldItem.amount = gold
+
     return {
         isVictory,
         exp,
+        gold,
         loot,
     }
 }
@@ -140,6 +154,7 @@ function rewardPlayer() {
     }
 
     PlayerService.addExp(battleResult.exp)
+    addCurrency("gold", battleResult.gold)
 
     for (const itemReward of battleResult.loot) {
         addItem(itemReward.id, {

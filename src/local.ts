@@ -28,6 +28,9 @@ const local: Record<string, LocalEntry> = {
     health_potion: {
         en: "Health Potion",
     },
+    health_potion_description: {
+        en: "Restore %0 <semibold>health</semibold>.",
+    },
     none: {
         en: "None",
     },

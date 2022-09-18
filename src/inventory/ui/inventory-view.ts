@@ -11,6 +11,7 @@ const ItemTypeSortWeight: Record<ItemType, number> = {
     armor: 100,
     consumable: 50,
     resource: 25,
+    currency: 0,
 }
 
 export function loadInventoryView() {
