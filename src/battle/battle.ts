@@ -118,6 +118,8 @@ function generateBattleResult(): BattleResult {
                 loot.push({
                     id: monsterDrop.id,
                     amount: randomNumber(monsterDrop.amountMin, monsterDrop.amountMax),
+                    power: randomNumber(1, 100),
+                    rarity: randomNumber(0, 4),
                 })
             }
         }
@@ -142,6 +144,8 @@ function rewardPlayer() {
     for (const itemReward of battleResult.loot) {
         addItem(itemReward.id, {
             amount: itemReward.amount,
+            power: itemReward.power,
+            rarity: itemReward.rarity,
         })
     }
 }

@@ -40,6 +40,12 @@ export const MonsterConfigs: Record<MonsterId, MonsterConfig> = {
                 amountMax: 10,
                 chance: 100,
             },
+            {
+                id: "leather_clothing",
+                amountMin: 1,
+                amountMax: 1,
+                chance: 100,
+            },
         ],
     },
 }

@@ -1,6 +1,5 @@
 import { HTMLComponent } from "../../dom"
 import { openItemPopup } from "../../inventory/ui/inventory-view"
-import { closePopup } from "../../popup"
 import { getState } from "../../state"
 import { handeMouseMoveTooltip } from "../../tooltip"
 import { i18n } from "./../../local"
@@ -17,10 +16,6 @@ template.innerHTML = html`<popup-container>
         </x-row>
 
         <inventory-container id="loot"></inventory-container>
-
-        <x-row class="center-h">
-            <close-button></close-button>
-        </x-row>
     </popup-container>
 
     <style>
@@ -38,9 +33,6 @@ export class BattleResultPopup extends HTMLComponent {
         super(template)
 
         const { battleResult } = getState()
-
-        this.getElement("close-button").onclick = closePopup
-
         if (!battleResult) {
             return
         }
@@ -55,6 +47,8 @@ export class BattleResultPopup extends HTMLComponent {
             const itemSlot = document.createElement("item-slot")
             itemSlot.setAttribute("item-id", loot.id)
             itemSlot.setAttribute("amount", String(loot.amount))
+            itemSlot.setAttribute("power", String(loot.power))
+            itemSlot.setAttribute("rarity", String(loot.rarity))
             itemSlot.onclick = openItemPopup
 
             lootContainer.appendChild(itemSlot)

@@ -109,9 +109,18 @@ export class ItemPopup extends HTMLComponent {
             itemId = item.id
             itemPower = item.power
             itemSlot.setAttribute("uid", String(uid))
-        } else if (!itemId) {
-            console.error(`ItemPopup should have either one of attributes: "uid" or "itemId"`)
-            return
+        } else {
+            if (!itemId) {
+                console.error(`ItemPopup should have either one of attributes: "uid" or "itemId"`)
+                return
+            }
+
+            itemPower = Number(this.getAttribute("power"))
+            const itemRarity = Number(this.getAttribute("rarity"))
+
+            itemSlot.setAttribute("item-id", itemId)
+            itemSlot.setAttribute("power", String(itemPower))
+            itemSlot.setAttribute("rarity", String(itemRarity))
         }
 
         const itemConfig = ItemConfigs[itemId as ItemId]

@@ -85,9 +85,24 @@ export function openItemPopup(event: MouseEvent, onClose?: () => void) {
     const { inventory } = getState()
 
     const element = event.target as HTMLElement
+
     const uid = Number(element.getAttribute("uid"))
     const item = inventory.find((entry) => entry.uid === uid)
     if (!item) {
+        const itemId = element.getAttribute("item-id")
+        if (itemId) {
+            openPopup(
+                "item-popup",
+                {
+                    "item-id": itemId,
+                    power: Number(element.getAttribute("power")),
+                    rarity: Number(element.getAttribute("rarity")),
+                },
+                onClose
+            )
+            return
+        }
+
         console.error(`Could not find item with UID: ${uid}`)
         return
     }

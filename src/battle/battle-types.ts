@@ -72,4 +72,6 @@ export interface BattleActionLog {
 export interface BattleLootItem {
     id: ItemId
     amount: number
+    power: number
+    rarity: number
 }

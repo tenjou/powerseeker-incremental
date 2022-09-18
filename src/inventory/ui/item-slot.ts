@@ -119,6 +119,8 @@ export class ItemSlot extends HTMLComponent {
         } else {
             itemId = this.getAttribute("item-id")
             amount = Number(this.getAttribute("amount"))
+            power = Number(this.getAttribute("power"))
+            rarity = Number(this.getAttribute("rarity"))
         }
 
         if (itemId) {
