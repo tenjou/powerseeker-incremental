@@ -1,5 +1,6 @@
 import { getState } from "../state"
 import { LevelConfig } from "../config/level-config"
+import { addCurrency } from "./../currencies/currencies"
 
 export const PlayerService = {
     addExp(xp: number) {
@@ -15,6 +16,8 @@ export const PlayerService = {
 
         while (player.xp > xpMax) {
             player.level += 1
+
+            addCurrency("ap", player.level - 1)
 
             if (player.level >= LevelConfig.length) {
                 player.xp = 0
