@@ -14,6 +14,9 @@ import { LevelConfig } from "./../../config/level-config"
 export function loadCharacterView() {
     updateCharacterView()
 
+    getElement("select-job-primary").onclick = () => goTo("/jobs/primary")
+    getElement("select-job-secondary").onclick = () => goTo("/jobs/secondary")
+
     subscribe("equip", updateEquipmentSlot)
     subscribe("unequip", updateEquipmentSlot)
 }
@@ -24,16 +27,22 @@ export function unloadCharacterView() {
 }
 
 export function updateCharacterView() {
-    const { player, battler } = getState()
+    const { player, battler, jobs } = getState()
+
+    const jobPrimary = jobs[player.jobPrimary]
+    if (!jobPrimary) {
+        console.error(`Could not find job: ${player.jobPrimary}`)
+        return
+    }
 
     const statsData: StatsTableEntry[] = [
         {
             key: i18n("level"),
-            value: player.level,
+            value: jobPrimary.level,
         },
         {
             key: i18n("exp"),
-            value: `${player.xp}/${LevelConfig[player.level - 1]}`,
+            value: `${jobPrimary.exp}/${LevelConfig[jobPrimary.level - 1]}`,
         },
         {
             key: i18n("health"),

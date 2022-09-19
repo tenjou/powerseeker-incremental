@@ -2,7 +2,10 @@ import { AbilityId } from "./abilities/ability-type"
 import { Battle, Battler, BattleResult } from "./battle/battle-types"
 import { createEmptyStats } from "./character/status"
 import { ItemId } from "./config/item-configs"
+import { JobId } from "./config/job-configs"
 import { CurrencyType } from "./currencies/currency-types"
+import { JobsService } from "./jobs/jobs-service"
+import { Job } from "./jobs/jobs-types"
 import { Card, Item, Skill, SlotType } from "./types"
 
 interface TownStatus {
@@ -10,9 +13,9 @@ interface TownStatus {
 }
 
 interface PlayerStatus {
-    level: number
     name: string
-    xp: number
+    jobPrimary: JobId
+    jobSecondary: JobId | null
     power: number
     stamina: number
     staminaMax: number
@@ -41,6 +44,7 @@ interface Cache {
 
 interface State {
     player: PlayerStatus
+    jobs: Partial<Record<JobId, Job>>
     currencies: Record<CurrencyType, number>
     equipment: Record<SlotType, Item | null>
     battler: Battler
@@ -60,12 +64,15 @@ interface State {
 
 let state: State = {
     player: {
-        level: 1,
         name: "Player",
-        xp: 0,
+        jobPrimary: "warrior",
+        jobSecondary: null,
         power: 0,
         stamina: 10,
         staminaMax: 10,
+    },
+    jobs: {
+        warrior: JobsService.createJob("warrior"),
     },
     currencies: {
         ap: 1,

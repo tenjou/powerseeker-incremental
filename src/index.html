@@ -68,6 +68,16 @@
                         <x-header>Character</x-header>
 
                         <p>
+                            <x-text class="bold size10 uppercase">Jobs</x-text>
+                        </p>
+                        <span>
+                            <x-row>
+                                <x-button id="select-job-primary" class="black">Primary</x-button>
+                                <x-button id="select-job-secondary" class="black">Secondary</x-button>
+                            </x-row>
+                        </span>
+
+                        <p>
                             <x-text class="bold size10 uppercase">Equipment</x-text>
                         </p>
                         <span>
@@ -125,6 +135,11 @@
                             <div id="skill-mining"></div>
                             <div id="skill-fishing"></div>
                         </x-column>
+                    </x-column>
+
+                    <x-column id="view-jobs" class="hide">
+                        <x-header>Jobs<x-icon></x-icon><span id="category-jobs"></span></x-header>
+                        <x-column id="jobs"></x-column>
                     </x-column>
 
                     <x-column id="view-loadout" class="hide">

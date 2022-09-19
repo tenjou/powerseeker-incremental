@@ -100,6 +100,27 @@ const local: Record<string, LocalEntry> = {
     currency: {
         en: "Currency",
     },
+    job: {
+        en: "Job",
+    },
+    primary: {
+        en: "Primary",
+    },
+    secondary: {
+        en: "Secondary",
+    },
+    thief: {
+        en: "Thief",
+    },
+    elementalist: {
+        en: "Elementalist",
+    },
+    warrior: {
+        en: "Warrior",
+    },
+    cleric: {
+        en: "Cleric",
+    },
 }
 
 export function i18n(key: string | undefined | null) {

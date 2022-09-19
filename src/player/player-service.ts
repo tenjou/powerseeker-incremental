@@ -3,29 +3,35 @@ import { LevelConfig } from "../config/level-config"
 import { addCurrency } from "./../currencies/currencies"
 
 export const PlayerService = {
-    addExp(xp: number) {
-        const { player } = getState()
+    addExp(exp: number) {
+        const { player, jobs } = getState()
 
-        if (player.level >= LevelConfig.length) {
+        const job = jobs[player.jobPrimary]
+        if (!job) {
+            console.error(`Job not available: ${player.jobPrimary}`)
             return
         }
 
-        player.xp += xp
+        if (job.level >= LevelConfig.length) {
+            return
+        }
 
-        let xpMax = LevelConfig[player.level - 1]
+        job.exp += exp
 
-        while (player.xp > xpMax) {
-            player.level += 1
+        let expMax = LevelConfig[job.level - 1]
 
-            addCurrency("ap", player.level - 1)
+        while (job.exp > expMax) {
+            job.level += 1
 
-            if (player.level >= LevelConfig.length) {
-                player.xp = 0
+            addCurrency("ap", job.level - 1)
+
+            if (job.level >= LevelConfig.length) {
+                job.exp = 0
                 return
             }
 
-            player.xp -= xpMax
-            xpMax = LevelConfig[player.level - 1]
+            job.exp -= expMax
+            expMax = LevelConfig[job.level - 1]
         }
     },
 }

@@ -7,13 +7,14 @@ import { loadAbilitiesView, unloadAbilitiesView } from "./abilities/abilities-vi
 import { loadLoadoutView, unloadLoadoutView } from "./loadout/loadout-vew"
 import { loadWorldView, unloadWorldView } from "./world/world-view"
 import { loadTownView, unloadTownView } from "./town/town"
+import { loadJobsView, unloadJobsView } from "./jobs/ui/jobs-view"
 
 interface View {
     onLoad: (segments: string[]) => void
     onUnload: () => void
 }
 
-type ViewType = "town" | "world" | "character" | "inventory" | "skills" | "equipment" | "abilities" | "loadout"
+type ViewType = "town" | "world" | "character" | "inventory" | "skills" | "equipment" | "abilities" | "loadout" | "jobs"
 
 const views: Record<ViewType, View> = {
     town: {
@@ -47,6 +48,10 @@ const views: Record<ViewType, View> = {
     loadout: {
         onLoad: loadLoadoutView,
         onUnload: unloadLoadoutView,
+    },
+    jobs: {
+        onLoad: loadJobsView,
+        onUnload: unloadJobsView,
     },
 }
 
