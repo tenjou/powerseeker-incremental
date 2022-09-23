@@ -2,7 +2,8 @@ import { removeCurrency } from "../currencies/currencies"
 import { getState } from "./../state"
 import { haveCurrency } from "./../currencies/currencies"
 import { emit } from "./../events"
-import { AbilityEffect, AbilityId } from "./ability-type"
+import { AbilityEffect } from "./ability-type"
+import { AbilityId } from "../config/ability-configs"
 
 export const getAbilityEffectPower = (effect: AbilityEffect, rank: number) => {
     // return (effect.power * stats[effect.stat]) | 0

@@ -1,4 +1,4 @@
-import { AbilityConfigs } from "../config/ability-configs"
+import { AbilityConfig, AbilityConfigs } from "../config/ability-configs"
 import { EncounterConfigs, EncounterId } from "../config/encounter-configs"
 import { MonsterConfigs } from "../config/monster-configs"
 import { removeAllChildren, setOnClick, setShow, setText } from "../dom"
@@ -303,7 +303,7 @@ function nextAction() {
 
     const abilityConfig = AbilityConfigs[action.ability.id]
 
-    const targets = targetOpponent(caster, action.targetId)
+    const targets = targetOpponent(caster, action.targetId, abilityConfig)
 
     let targetHasDied = false
     const actionTargets: BattleActionTarget[] = new Array(targets.length)
@@ -385,15 +385,32 @@ function nextAction() {
     }
 }
 
-function targetOpponent(caster: Battler, targetId: BattlerId) {
+function targetOpponent(caster: Battler, targetId: BattlerId, abilityConfig: AbilityConfig) {
     const { battle } = getState()
 
     const targetBattler = battle.battlers[targetId]
+    if (!targetBattler) {
+        return []
+    }
+
+    if (abilityConfig.isAoE) {
+        const battlers: Battler[] = []
+        const targetTeam = targetBattler.isTeamA && abilityConfig.isOffensive ? battle.teamA : battle.teamB
+        for (const battlerId of targetTeam) {
+            const battler = battle.battlers[battlerId]
+            if (battler && battler.hp > 0) {
+                battlers.push(battler)
+            }
+        }
+
+        return battlers
+    }
+
     if (targetBattler && targetBattler.hp > 0) {
         return [targetBattler]
     }
 
-    const targetTeam = caster.isTeamA ? battle.teamB : battle.teamA
+    const targetTeam = caster.isTeamA && abilityConfig.isOffensive ? battle.teamA : battle.teamB
     for (const battlerId of targetTeam) {
         const battler = battle.battlers[battlerId]
         if (battler && battler.hp > 0) {

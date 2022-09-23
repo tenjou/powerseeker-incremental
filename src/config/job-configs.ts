@@ -1,4 +1,4 @@
-import { AbilityId } from "../abilities/ability-type"
+import { AbilityId } from "./ability-configs"
 
 export type JobId = "warrior" | "thief" | "cleric" | "elementalist"
 

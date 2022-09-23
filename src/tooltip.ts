@@ -1,5 +1,4 @@
-import { AbilityId } from "./abilities/ability-type"
-import { AbilityConfigs } from "./config/ability-configs"
+import { AbilityConfigs, AbilityId } from "./config/ability-configs"
 import { ItemConfigs, ItemId } from "./config/item-configs"
 import { i18n } from "./local"
 

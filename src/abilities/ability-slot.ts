@@ -1,4 +1,4 @@
-import { AbilityId } from "../abilities/ability-type"
+import { AbilityId } from "../config/ability-configs"
 import { HTMLComponent } from "../dom"
 import { getState } from "./../state"
 

@@ -70,12 +70,10 @@
                         <p>
                             <x-text class="bold size10 uppercase">Jobs</x-text>
                         </p>
-                        <span>
-                            <x-row>
-                                <x-button id="select-job-primary" class="black">Primary</x-button>
-                                <x-button id="select-job-secondary" class="black">Secondary</x-button>
-                            </x-row>
-                        </span>
+                        <x-column>
+                            <job-slot id="job-primary"></job-slot>
+                            <job-slot id="job-secondary"></job-slot>
+                        </x-column>
 
                         <p>
                             <x-text class="bold size10 uppercase">Equipment</x-text>
@@ -137,9 +135,10 @@
                         </x-column>
                     </x-column>
 
-                    <x-column id="view-jobs" class="hide">
+                    <x-column id="view-jobs" class="hide flex">
                         <x-header>Jobs<x-icon></x-icon><span id="category-jobs"></span></x-header>
-                        <x-column id="jobs"></x-column>
+                        <x-column id="jobs" class="flex"></x-column>
+                        <x-row class="center-h"><close-button id="close-jobs"></close-button></x-row>
                     </x-column>
 
                     <x-column id="view-loadout" class="hide">

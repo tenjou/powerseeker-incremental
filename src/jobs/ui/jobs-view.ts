@@ -7,11 +7,14 @@ import { JobsService } from "./../jobs-service"
 export function loadJobsView(segments: string[]) {
     const segment = segments.pop()
     if (segment !== "primary" && segment !== "secondary") {
-        goTo("/")
+        goTo("/character")
         return
     }
 
     setText("category-jobs", segment)
+    getElement("close-jobs").onclick = () => {
+        goTo("/character")
+    }
 
     const parent = getElement("jobs")
     const isPrimary = segment === "primary"

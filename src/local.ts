@@ -121,6 +121,9 @@ const local: Record<string, LocalEntry> = {
     cleric: {
         en: "Cleric",
     },
+    magnum_break: {
+        en: "Magnum Break",
+    },
 }
 
 export function i18n(key: string | undefined | null) {

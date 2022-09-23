@@ -29,7 +29,7 @@ function loadAbility(ability: Ability) {
     element.onclick = () => selectAbility(ability)
 
     const img = document.createElement("img")
-    img.setAttribute("src", `assets/icon/skill/${ability.id}.png`)
+    img.setAttribute("src", `assets/icon/ability/${ability.id}.png`)
     element.appendChild(img)
 
     addChild("battle-abilities", element)

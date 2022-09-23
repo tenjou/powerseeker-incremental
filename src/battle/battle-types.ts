@@ -1,4 +1,4 @@
-import { AbilityId } from "../abilities/ability-type"
+import { AbilityId } from "../config/ability-configs"
 import { EncounterId } from "../config/encounter-configs"
 import { ItemId } from "../config/item-configs"
 import { MonsterId } from "../config/monster-configs"

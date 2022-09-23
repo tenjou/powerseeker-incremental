@@ -1,12 +1,11 @@
 import { ScrollingText } from "../../components/scrolling-text"
-import { AbilityConfigs } from "../../config/ability-configs"
+import { AbilityConfigs, AbilityId } from "../../config/ability-configs"
 import { addChild, HTMLComponent, toggleClassName } from "../../dom"
 import { getState } from "../../state"
 import { BattlerId } from "../../types"
 import { useSelectedAbility } from "../battle"
 import { Battler } from "../battle-types"
 import { clamp } from "../../utils"
-import { AbilityId } from "../../abilities/ability-type"
 import { i18n } from "../../local"
 
 export function updateBattler(battler: Battler) {
@@ -110,7 +109,7 @@ class BattlerItem extends HTMLComponent {
             const abilityConfig = AbilityConfigs[abilityId]
 
             this.getElement("#ability-name").innerText = i18n(abilityConfig.id)
-            this.getElement("#ability-icon").setAttribute("src", `assets/icon/skill/${abilityId}.png`)
+            this.getElement("#ability-icon").setAttribute("src", `assets/icon/ability/${abilityId}.png`)
         }
     }
 }

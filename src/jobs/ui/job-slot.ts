@@ -7,10 +7,10 @@ import { i18n } from "./../../local"
 const template = document.createElement("template")
 template.innerHTML = html`<style>
         :host {
-            margin: 4px;
+            margin: 3px 0;
+            padding: 6px;
             background: #e9e7e7;
             border-radius: 3px;
-            padding: 6px;
         }
     </style>
 
@@ -30,23 +30,40 @@ export class JobSlot extends HTMLComponent {
     }
 
     connectedCallback() {
+        this.update()
+    }
+
+    attributeChangedCallback() {
+        this.update()
+    }
+
+    update() {
         const jobId = this.getAttribute("job-id") as JobId
         const job = JobsService.getJob(jobId)
 
-        const isPrimary = Boolean(this.getAttribute("primary"))
+        if (jobId) {
+            const isPrimary = Boolean(this.getAttribute("primary"))
 
-        this.setText("#name", i18n(jobId))
-        this.setText("#level", `Level ${job.level}`)
+            this.setText("#name", i18n(jobId))
+            this.setText("#level", `Level ${job.level}`)
 
-        this.getElement("#select").onclick = () => {
-            if (isPrimary) {
-                JobsService.selectPrimaryJob(jobId)
-            } else {
-                JobsService.selectSecondaryJob(jobId)
+            this.getElement("#select").onclick = () => {
+                if (isPrimary) {
+                    JobsService.selectPrimaryJob(jobId)
+                } else {
+                    JobsService.selectSecondaryJob(jobId)
+                }
+
+                goTo("/character")
             }
-
-            goTo("/character")
+        } else {
+            this.toggleClassName("hide", true, "#name")
+            this.setText("#level", i18n("none"))
         }
+    }
+
+    static get observedAttributes() {
+        return ["job-id"]
     }
 }
 

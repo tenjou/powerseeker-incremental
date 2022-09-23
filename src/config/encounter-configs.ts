@@ -10,6 +10,6 @@ export interface EncounterConfig {
 export const EncounterConfigs: Record<string, EncounterConfig> = {
     test_battle: {
         id: "test_battle",
-        monsters: ["boar"],
+        monsters: ["boar", "boar"],
     },
 }

@@ -1,15 +1,14 @@
 import { AbilitySlotElement } from "../../abilities/ability-slot"
-import "../../equipment/equipment-slot"
-import { EquipmentSlot } from "../../equipment/equipment-slot"
-import { getState } from "../../state"
-import { SlotType } from "../../types"
 import { StatsTableEntry } from "../../components/stats-table"
 import { getElement } from "../../dom"
+import "../../equipment/equipment-slot"
+import { EquipmentSlot } from "../../equipment/equipment-slot"
 import { subscribe, unsubscribe } from "../../events"
-import { i18n } from "../../local"
 import { ItemSlot } from "../../inventory/ui/item-slot"
+import { i18n } from "../../local"
+import { getState } from "../../state"
+import { SlotType } from "../../types"
 import { goTo } from "../../view"
-import { LevelConfig } from "./../../config/level-config"
 
 export function loadCharacterView() {
     updateCharacterView()
@@ -35,18 +34,13 @@ export function updateCharacterView() {
         return
     }
 
+    getElement("job-primary").setAttribute("job-id", player.jobPrimary)
+    getElement("job-secondary").setAttribute("job-id", player.jobSecondary || "")
+
     const statsData: StatsTableEntry[] = [
         {
-            key: i18n("level"),
-            value: jobPrimary.level,
-        },
-        {
-            key: i18n("exp"),
-            value: `${jobPrimary.exp}/${LevelConfig[jobPrimary.level - 1]}`,
-        },
-        {
             key: i18n("health"),
-            value: `${battler.hp}/${battler.hpMax}`,
+            value: battler.hpMax,
         },
         {
             key: i18n("power"),
@@ -71,10 +65,6 @@ export function updateCharacterView() {
         {
             key: i18n("speed"),
             value: battler.stats.speed,
-        },
-        {
-            key: i18n("stamina"),
-            value: `${player.stamina}/${player.staminaMax}`,
         },
     ]
 

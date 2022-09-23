@@ -1,6 +1,6 @@
-import { AbilityId } from "./abilities/ability-type"
 import { Battle, Battler, BattleResult } from "./battle/battle-types"
 import { createEmptyStats } from "./character/status"
+import { AbilityId } from "./config/ability-configs"
 import { ItemId } from "./config/item-configs"
 import { JobId } from "./config/job-configs"
 import { CurrencyType } from "./currencies/currency-types"
@@ -150,9 +150,10 @@ let state: State = {
         attack: { id: "attack", rank: 1 },
         bash: { id: "bash", rank: 1 },
         heal: { id: "heal", rank: 1 },
+        magnum_break: { id: "magnum_break", rank: 1 },
     },
     loadout: {
-        abilities: ["attack", "bash", "heal", null],
+        abilities: ["attack", "bash", "heal", "magnum_break"],
         items: [null],
     },
     cache: {
