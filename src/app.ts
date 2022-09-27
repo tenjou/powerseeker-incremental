@@ -43,7 +43,12 @@ function createEmptyProfile() {
     addItem("axe", {
         power: 3,
         rarity: 1,
-        amount: 2,
+        amount: 1,
+    })
+    addItem("sword", {
+        power: 2,
+        rarity: 2,
+        amount: 1,
     })
     addItem("leather_clothing", {
         power: 1,

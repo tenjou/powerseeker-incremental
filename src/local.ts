@@ -127,6 +127,9 @@ const local: Record<string, LocalEntry> = {
     axe: {
         en: "Axe",
     },
+    sword: {
+        en: "Sword",
+    },
     equipment: {
         en: "Equipment",
     },

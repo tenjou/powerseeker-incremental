@@ -1,6 +1,6 @@
 import { CharacterStatType } from "../character/character-types"
 
-export type ItemId = "gold" | "carp" | "copper_ore" | "maple_log" | "leather_clothing" | "health_potion" | "axe"
+export type ItemId = "gold" | "carp" | "copper_ore" | "maple_log" | "leather_clothing" | "health_potion" | "axe" | "sword"
 
 export type EquipmentSlot = "body" | "main_hand"
 
@@ -93,5 +93,12 @@ export const ItemConfigs: Record<ItemId, ItemConfig> = {
         slot: "main_hand",
         equipmentType: "axe",
         stats: [{ type: "attack", value: 4 }],
+    },
+    sword: {
+        id: "sword",
+        type: "equipment",
+        slot: "main_hand",
+        equipmentType: "sword",
+        stats: [{ type: "attack", value: 2 }],
     },
 }
