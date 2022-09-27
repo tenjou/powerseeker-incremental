@@ -1,12 +1,11 @@
-import { ItemConfigs } from "../config/item-configs"
-import { i18n } from "../local"
-import { SlotType } from "../types"
-import { goTo } from "../view"
-import { getElement, removeAllChildren, setText } from "./../dom"
-import { subscribe, unsubscribe } from "./../events"
-import { openItemPopup, sortInventory } from "../inventory/ui/inventory-view"
-import { getState } from "./../state"
-import { unequipItem } from "./equipment"
+import { EquipmentSlot, ItemConfigs } from "../../config/item-configs"
+import { i18n } from "../../local"
+import { goTo } from "../../view"
+import { getElement, removeAllChildren, setText } from "../../dom"
+import { subscribe, unsubscribe } from "../../events"
+import { openItemPopup, sortInventory } from "../../inventory/ui/inventory-view"
+import { getState } from "../../state"
+import { unequipItem } from "../equipment"
 
 export function loadEquipmentView(segments: string[]) {
     const { inventory } = getState()
@@ -19,7 +18,11 @@ export function loadEquipmentView(segments: string[]) {
 
     const items = inventory.filter((entry) => {
         const itemConfig = ItemConfigs[entry.id]
-        return itemConfig.type === "armor" && itemConfig.slot === equipmentSlot
+        if (itemConfig.type !== "equipment") {
+            return false
+        }
+
+        return itemConfig.slot === equipmentSlot
     })
 
     sortInventory(items)
@@ -28,7 +31,7 @@ export function loadEquipmentView(segments: string[]) {
 
     const itemSlot = document.createElement("item-slot")
     itemSlot.onclick = () => {
-        unequipItem(equipmentSlot as SlotType)
+        unequipItem(equipmentSlot as EquipmentSlot)
         goBack()
     }
     parent.appendChild(itemSlot)

@@ -1,6 +1,5 @@
-import { ItemConfigs } from "../config/item-configs"
+import { EquipmentSlot, ItemConfigs } from "../config/item-configs"
 import { getState } from "../state"
-import { SlotType } from "../types"
 import { CharacterStats } from "./character-types"
 
 export function addHp(value: number) {
@@ -15,13 +14,13 @@ export function addHp(value: number) {
 }
 
 export function addStamina(value: number) {
-    const { player: status } = getState()
+    const { player } = getState()
 
-    status.stamina += value
-    if (status.stamina > status.staminaMax) {
-        status.stamina = status.staminaMax
-    } else if (status.stamina < 0) {
-        status.stamina = 0
+    player.stamina += value
+    if (player.stamina > player.staminaMax) {
+        player.stamina = player.staminaMax
+    } else if (player.stamina < 0) {
+        player.stamina = 0
     }
 }
 
@@ -39,13 +38,13 @@ export function recalculateStats() {
     player.power = 0
 
     for (const slotType in equipment) {
-        const item = equipment[slotType as SlotType]
+        const item = equipment[slotType as EquipmentSlot]
         if (!item) {
             continue
         }
 
         const itemConfig = ItemConfigs[item.id]
-        if (itemConfig.type !== "armor") {
+        if (itemConfig.type !== "equipment") {
             continue
         }
 

@@ -2,7 +2,7 @@ import { loadCharacterView, unloadCharacterView } from "./character/ui/character
 import { toggleClassName } from "./dom"
 import { loadInventoryView, unloadInventoryView } from "./inventory/ui/inventory-view"
 import { loadSkillsView, unloadSkillsView } from "./skills/skills-view"
-import { loadEquipmentView, unloadEquipmentView } from "./equipment/equipment-view"
+import { loadEquipmentView, unloadEquipmentView } from "./equipment/ui/equipment-view"
 import { loadAbilitiesView, unloadAbilitiesView } from "./abilities/abilities-view"
 import { loadLoadoutView, unloadLoadoutView } from "./loadout/loadout-vew"
 import { loadWorldView, unloadWorldView } from "./world/world-view"

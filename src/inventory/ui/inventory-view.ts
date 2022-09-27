@@ -8,7 +8,7 @@ import "./item-slot"
 import { ItemSlot } from "./item-slot"
 
 const ItemTypeSortWeight: Record<ItemType, number> = {
-    armor: 100,
+    equipment: 100,
     consumable: 50,
     resource: 25,
     currency: 0,

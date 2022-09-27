@@ -1,7 +1,7 @@
-import { ItemConfigs, ItemId } from "../../config/item-configs"
+import { EquipmentSlot, ItemConfigs, ItemId } from "../../config/item-configs"
 import { HTMLComponent } from "../../dom"
 import { getState } from "../../state"
-import { Item, SlotType } from "../../types"
+import { Item } from "../../types"
 
 const template = document.createElement("template")
 template.innerHTML = html`<style>
@@ -105,7 +105,7 @@ export class ItemSlot extends HTMLComponent {
 
             const equipmentSlot = this.getAttribute("equipment-slot")
             if (equipmentSlot) {
-                item = equipment[equipmentSlot as SlotType]
+                item = equipment[equipmentSlot as EquipmentSlot]
             } else {
                 item = inventory.find((entry) => entry.uid === uid)
             }

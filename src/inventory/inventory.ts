@@ -64,7 +64,7 @@ export function handleItemUse(item: Item) {
     const itemConfig = ItemConfigs[item.id]
 
     switch (itemConfig.type) {
-        case "armor":
+        case "equipment":
             equipItem(item)
             break
 

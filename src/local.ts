@@ -124,6 +124,12 @@ const local: Record<string, LocalEntry> = {
     magnum_break: {
         en: "Magnum Break",
     },
+    axe: {
+        en: "Axe",
+    },
+    equipment: {
+        en: "Equipment",
+    },
 }
 
 export function i18n(key: string | undefined | null) {

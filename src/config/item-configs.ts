@@ -1,8 +1,10 @@
 import { CharacterStatType } from "../character/character-types"
 
-export type ItemId = "gold" | "carp" | "copper_ore" | "maple_log" | "leather_clothing" | "health_potion"
+export type ItemId = "gold" | "carp" | "copper_ore" | "maple_log" | "leather_clothing" | "health_potion" | "axe"
 
-export type ArmorSlot = "body"
+export type EquipmentSlot = "body" | "main_hand"
+
+export type EquipmentType = "armor" | "axe" | "sword"
 
 export type EffectType = "restore_hp"
 
@@ -30,10 +32,11 @@ interface ItemConfigCurrency extends ItemConfigBasic {
     type: "currency"
 }
 
-interface ItemConfigArmor extends ItemConfigBasic {
+interface ItemConfigEquipment extends ItemConfigBasic {
     id: ItemId
-    type: "armor"
-    slot: ArmorSlot
+    type: "equipment"
+    slot: EquipmentSlot
+    equipmentType: EquipmentType
     stats: ItemStat[]
 }
 
@@ -43,7 +46,7 @@ interface ItemConfigConsumable extends ItemConfigBasic {
     effects: ItemEffect[]
 }
 
-export type ItemConfig = ItemConfigResource | ItemConfigCurrency | ItemConfigArmor | ItemConfigConsumable
+export type ItemConfig = ItemConfigResource | ItemConfigCurrency | ItemConfigEquipment | ItemConfigConsumable
 
 export type ItemType = ItemConfig["type"]
 
@@ -66,8 +69,9 @@ export const ItemConfigs: Record<ItemId, ItemConfig> = {
     },
     leather_clothing: {
         id: "leather_clothing",
-        type: "armor",
+        type: "equipment",
         slot: "body",
+        equipmentType: "armor",
         stats: [
             { type: "defense", value: 10 },
             { type: "accuracy", value: 2 },
@@ -82,5 +86,12 @@ export const ItemConfigs: Record<ItemId, ItemConfig> = {
                 value: 5,
             },
         ],
+    },
+    axe: {
+        id: "axe",
+        type: "equipment",
+        slot: "main_hand",
+        equipmentType: "axe",
+        stats: [{ type: "attack", value: 4 }],
     },
 }

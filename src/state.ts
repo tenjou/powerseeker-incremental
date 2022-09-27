@@ -2,12 +2,12 @@ import { Ability } from "./abilities/ability-type"
 import { Battle, Battler, BattleResult } from "./battle/battle-types"
 import { createEmptyStats } from "./character/status"
 import { AbilityId } from "./config/ability-configs"
-import { ItemId } from "./config/item-configs"
+import { EquipmentSlot, ItemId } from "./config/item-configs"
 import { JobId } from "./config/job-configs"
 import { CurrencyType } from "./currencies/currency-types"
 import { JobsService } from "./jobs/jobs-service"
 import { Job } from "./jobs/jobs-types"
-import { Card, Item, Skill, SlotType } from "./types"
+import { Card, Item, Skill } from "./types"
 
 interface TownStatus {
     cards: Card[]
@@ -42,7 +42,7 @@ interface State {
     player: PlayerStatus
     jobs: Partial<Record<JobId, Job>>
     currencies: Record<CurrencyType, number>
-    equipment: Record<SlotType, Item | null>
+    equipment: Record<EquipmentSlot, Item | null>
     battler: Battler
     skills: Skill[]
     inventory: Item[]

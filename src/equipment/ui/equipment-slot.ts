@@ -1,9 +1,8 @@
-import { ItemConfigs } from "../config/item-configs"
-import { HTMLComponent } from "../dom"
-import { i18n } from "../local"
-import { getState } from "../state"
-import { SlotType } from "../types"
-import { goTo } from "../view"
+import { EquipmentSlot, ItemConfigs } from "../../config/item-configs"
+import { HTMLComponent } from "../../dom"
+import { i18n } from "../../local"
+import { getState } from "../../state"
+import { goTo } from "../../view"
 
 const template = document.createElement("template")
 template.innerHTML = html`<style>
@@ -43,7 +42,7 @@ template.innerHTML = html`<style>
     <item-slot inactive hide-power></item-slot>
     <x-column class="center-v space2"><x-text id="name" class="bold"></x-text><x-text id="power"></x-text></x-column>`
 
-export class EquipmentSlot extends HTMLComponent {
+export class EquipmentSlotElement extends HTMLComponent {
     constructor() {
         super(template)
 
@@ -71,14 +70,14 @@ export class EquipmentSlot extends HTMLComponent {
         itemSlot.setAttribute("equipment-slot", slotType)
     }
 
-    slotType(): SlotType {
+    slotType(): EquipmentSlot {
         const slotType = this.getAttribute("slot-type")
         if (!slotType) {
-            return "none" as SlotType
+            return "none" as EquipmentSlot
         }
 
-        return slotType as SlotType
+        return slotType as EquipmentSlot
     }
 }
 
-customElements.define("equipment-slot", EquipmentSlot)
+customElements.define("equipment-slot", EquipmentSlotElement)

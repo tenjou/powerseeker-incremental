@@ -78,7 +78,7 @@ export class ItemPopup extends HTMLComponent {
 
             const itemConfig = ItemConfigs[item.id]
             switch (itemConfig.type) {
-                case "armor":
+                case "equipment":
                     this.addAction("Equip", callback)
                     break
                 case "consumable":
@@ -124,14 +124,15 @@ export class ItemPopup extends HTMLComponent {
         }
 
         const itemConfig = ItemConfigs[itemId as ItemId]
+
         this.setText("#name", i18n(itemId))
-        this.setText("#type", i18n(itemConfig.type))
+        this.setText("#type", listItemTypes(itemConfig))
         this.setText("#power", itemPower)
 
         const description = getDescription(itemConfig, itemPower)
         this.setHTML("#description", description)
 
-        if (itemConfig.type === "armor") {
+        if (itemConfig.type === "equipment") {
             const xAttribute = this.getElement("stats-table")
             const data = itemConfig.stats.map<StatsTableEntry>((entry) => {
                 return {
@@ -186,4 +187,12 @@ function getEffectColor(effect: ItemEffect) {
 
 function getMaxPower(effect: ItemEffect, power: number) {
     return effect.value + power
+}
+
+function listItemTypes(itemConfig: ItemConfig) {
+    if (itemConfig.type === "equipment") {
+        return `${i18n(itemConfig.type)}, ${i18n(itemConfig.equipmentType)}`
+    }
+
+    return i18n(itemConfig.type)
 }

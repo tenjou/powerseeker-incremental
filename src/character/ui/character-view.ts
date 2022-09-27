@@ -1,14 +1,14 @@
 import { AbilitySlotElement } from "../../abilities/ability-slot"
 import { StatsTableEntry } from "../../components/stats-table"
+import { EquipmentSlot } from "../../config/item-configs"
 import { getElement } from "../../dom"
-import "../../equipment/equipment-slot"
-import { EquipmentSlot } from "../../equipment/equipment-slot"
+import "../../equipment/ui/equipment-slot"
 import { subscribe, unsubscribe } from "../../events"
 import { ItemSlot } from "../../inventory/ui/item-slot"
 import { i18n } from "../../local"
 import { getState } from "../../state"
-import { SlotType } from "../../types"
 import { goTo } from "../../view"
+import { EquipmentSlotElement } from "../../equipment/ui/equipment-slot"
 
 export function loadCharacterView() {
     updateCharacterView()
@@ -71,7 +71,7 @@ export function updateCharacterView() {
     const statsTable = getElement("stats")
     statsTable.setAttribute("data", JSON.stringify(statsData))
 
-    const equipmentElements = document.querySelectorAll<EquipmentSlot>("equipment-slot")
+    const equipmentElements = document.querySelectorAll<EquipmentSlotElement>("equipment-slot")
     equipmentElements.forEach((element) => {
         element.update()
     })
@@ -90,8 +90,8 @@ export function updateCharacterView() {
     // upadateLoadoutWidget()
 }
 
-function updateEquipmentSlot(slotType: SlotType) {
-    const equipmentElement = document.querySelector<EquipmentSlot>(`[slot-type=${slotType}`)
+function updateEquipmentSlot(slotType: EquipmentSlot) {
+    const equipmentElement = document.querySelector<EquipmentSlotElement>(`[slot-type=${slotType}`)
     if (!equipmentElement) {
         console.error(`Could not find EquipmentSlot with slot-type: ${slotType}`)
         return
