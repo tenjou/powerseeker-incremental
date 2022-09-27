@@ -6,7 +6,7 @@ template.innerHTML = html`<style>
             position: relative;
             display: flex;
             width: 100%;
-            height: 16px;
+            height: 14px;
             background: black;
             border-radius: 3px;
         }
@@ -19,11 +19,12 @@ template.innerHTML = html`<style>
             transition: width 0.2s;
             background: linear-gradient(#e0313d, #bb232d);
             border-radius: 2px;
-            border-top: 1px solid #ffffff5c;
+            border-top: 1px solid #ff857c;
         }
 
         :host(.blue) .bar {
             background: linear-gradient(#369ce4, #2f87c5);
+            border-top: 1px solid #8db8db;
         }
 
         .shadow {

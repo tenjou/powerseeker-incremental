@@ -61,7 +61,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
     magnum_break: {
         id: "magnum_break",
         type: "instant",
-        energy: 30,
+        energy: 15,
         isOffensive: true,
         isAoE: true,
         description: "Attack all opponents",

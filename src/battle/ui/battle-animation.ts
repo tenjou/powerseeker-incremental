@@ -5,9 +5,9 @@ import {
     addBattlerHealth,
     addBattlerEnergy,
     addBattlerScrollingText,
-    showBattlerAbility,
     toggleBattlerForward,
     toggleBattlerShake,
+    findBattlerElement,
 } from "./battler-item"
 
 const animations: Animation[] = []
@@ -50,8 +50,7 @@ function activateAnimation(animation: Animation) {
             break
 
         case "ability-use":
-            showBattlerAbility(animation.battlerId, animation.abilityId)
-            addBattlerEnergy(animation.battlerId, animation.energy)
+            addBattlerEnergy(animation.battlerId, animation.energy, animation.abilityId)
             break
 
         case "shake":
@@ -82,7 +81,7 @@ function deactivateAnimation(animation: Animation) {
             break
 
         case "ability-use":
-            showBattlerAbility(animation.battlerId)
+            findBattlerElement(animation.battlerId).update(animation.battlerId)
             break
 
         case "shake":
@@ -138,16 +137,16 @@ export function addAnimationsFromLog(log: BattleActionLog) {
             animations.push({
                 type: "shake",
                 battlerId: target.battlerId,
-                tStart: tAnim + 1000,
-                tEnd: tAnim + 1000 + 200,
+                tStart: tAnim + 800,
+                tEnd: tAnim + 800 + 200,
             })
         }
 
         animations.push({
             type: "scrolling-text",
             battlerId: target.battlerId,
-            tStart: tAnim + 1000,
-            tEnd: tAnim + 1000 + 200,
+            tStart: tAnim + 800,
+            tEnd: tAnim + 800 + 200,
             isCritical: target.isCritical,
             isMiss: target.isMiss,
             value: target.power,

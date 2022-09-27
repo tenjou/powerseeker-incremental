@@ -48,11 +48,6 @@ export function toggleBattlerInactive(battlerId: BattlerId, inactive: boolean) {
     toggleClassName(`battler:${battlerId}`, "inactive", inactive)
 }
 
-export function showBattlerAbility(battlerId: BattlerId, abilityId?: AbilityId) {
-    const element = findBattlerElement(battlerId)
-    element.update(battlerId, abilityId)
-}
-
 export function addBattlerScrollingText(battlerId: BattlerId, text: string, color: string) {
     const element = findBattlerElement(battlerId)
     element.addScrollingText(text, color)
@@ -69,7 +64,7 @@ export function addBattlerHealth(battlerId: BattlerId, value: number) {
     element.update(battlerId)
 }
 
-export function addBattlerEnergy(battlerId: BattlerId, value: number) {
+export function addBattlerEnergy(battlerId: BattlerId, value: number, abilityId?: AbilityId) {
     const { battle } = getState()
 
     const battlerView = battle.battlersView[battlerId]
@@ -77,10 +72,10 @@ export function addBattlerEnergy(battlerId: BattlerId, value: number) {
     battlerView.energy = clamp(battlerView.energy, 0, battlerView.energyMax)
 
     const element = findBattlerElement(battlerId)
-    element.update(battlerId)
+    element.update(battlerId, abilityId)
 }
 
-function findBattlerElement(battlerId: BattlerId): BattlerItem {
+export function findBattlerElement(battlerId: BattlerId): BattlerItem {
     const element = document.getElementById(`battler:${battlerId}`) as BattlerItem | null
     if (!element) {
         throw `Could not find battler with id: ${battlerId}`
@@ -138,6 +133,7 @@ template.innerHTML = html`<style>
             flex: 1;
             width: 110px;
             margin: 2px;
+            padding-bottom: 1px;
             background-color: #000;
             border: 2px solid #000;
             border-radius: 3px;
@@ -145,21 +141,23 @@ template.innerHTML = html`<style>
             transition: transform 0.2s ease;
             cursor: pointer;
         }
-        :host(:hover) {
-            background-color: #fff;
-            color: #000;
-            border: 2px solid #333;
-        }
+
         :host(.forward_top) {
-            background-color: white;
-            color: black;
             transform: translate(0, 10px);
         }
-        :host(.forward_bottom) {
+        :host(.forward_top) .row {
             background-color: white;
             color: black;
+        }
+
+        :host(.forward_bottom) {
             transform: translate(0, -10px);
         }
+        :host(.forward_bottom) .row {
+            background-color: white;
+            color: black;
+        }
+
         :host(.shake) {
             animation-name: battler-shake;
             animation-duration: 0.2s;
@@ -170,12 +168,15 @@ template.innerHTML = html`<style>
             pointer-events: none;
         }
 
-        .container {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
+        :host(:hover) {
+            outline: 3px solid white;
         }
-        .frame {
+        :host(:hover) .row {
+            background-color: #fff;
+            color: #000;
+        }
+
+        .container {
             display: flex;
             flex-direction: column;
             flex: 1;
@@ -184,10 +185,17 @@ template.innerHTML = html`<style>
             display: flex;
             flex-direction: row;
             flex: 1;
-            padding: 2px;
+            padding: 2px 2px 1px 2px;
+            margin-bottom: 2px;
         }
         .hide {
             display: none;
+        }
+
+        .frame {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
         }
 
         #level {
@@ -219,9 +227,8 @@ template.innerHTML = html`<style>
 
         #cast-bar {
             position: absolute;
-            width: 110%;
-            left: -5%;
-            bottom: 40px;
+            width: 100%;
+            bottom: 56px;
         }
         .cast-bar-container {
             display: flex;
@@ -246,6 +253,10 @@ template.innerHTML = html`<style>
             color: #fff;
             text-shadow: 0 0 2px black;
             text-align: center;
+        }
+
+        #energy {
+            margin-top: 2px;
         }
     </style>
 
