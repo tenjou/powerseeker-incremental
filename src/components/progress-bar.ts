@@ -19,6 +19,11 @@ template.innerHTML = html`<style>
             transition: width 0.2s;
             background: linear-gradient(#e0313d, #bb232d);
             border-radius: 2px;
+            border-top: 1px solid #ffffff5c;
+        }
+
+        :host(.blue) .bar {
+            background: linear-gradient(#369ce4, #2f87c5);
         }
 
         .shadow {

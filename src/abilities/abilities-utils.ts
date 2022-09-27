@@ -2,8 +2,9 @@ import { removeCurrency } from "../currencies/currencies"
 import { getState } from "./../state"
 import { haveCurrency } from "./../currencies/currencies"
 import { emit } from "./../events"
-import { AbilityEffect } from "./ability-type"
-import { AbilityId } from "../config/ability-configs"
+import { Ability, AbilityEffect } from "./ability-type"
+import { AbilityConfigs, AbilityId } from "../config/ability-configs"
+import { Battler } from "../battle/battle-types"
 
 export const getAbilityEffectPower = (effect: AbilityEffect, rank: number) => {
     // return (effect.power * stats[effect.stat]) | 0
@@ -41,4 +42,17 @@ export const learnAbility = (abilityId: AbilityId) => {
     removeCurrency("ap", needAp)
 
     emit("ability-updated", abilityId)
+}
+
+export function canUseAbility(battler: Battler, ability: Ability) {
+    const energyNeed = getEnergyNeeded(ability)
+
+    return energyNeed <= battler.energy
+}
+
+export function getEnergyNeeded(ability: Ability) {
+    const abilityConfig = AbilityConfigs[ability.id]
+    const energyNeed = abilityConfig.energy + (ability.rank - 1)
+
+    return energyNeed
 }

@@ -201,27 +201,6 @@ battle-abilities {
     padding: 20px;
     height: 100px;
 }
-battle-ability {
-    padding: 4px;
-    border: 2px solid #000;
-    border-radius: 3px;
-    cursor: pointer;
-    background: linear-gradient(#dad8d8, #c3c2c2);
-    box-shadow: 0 0 2px #696969;
-    margin: 0 3px;
-}
-battle-ability > img {
-    display: block;
-    zoom: 2;
-    image-rendering: pixelated;
-}
-battle-ability:hover,
-battle-ability.selected {
-    border: 2px solid #fff;
-}
-battle-ability:active {
-    transform: translateY(1px);
-}
 
 battle-hint {
     font-size: 10px;

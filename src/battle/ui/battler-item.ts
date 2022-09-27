@@ -58,12 +58,23 @@ export function addBattlerScrollingText(battlerId: BattlerId, text: string, colo
     element.addScrollingText(text, color)
 }
 
-export function addBattlerHp(battlerId: BattlerId, value: number) {
+export function addBattlerHealth(battlerId: BattlerId, value: number) {
     const { battle } = getState()
 
     const battlerView = battle.battlersView[battlerId]
-    battlerView.hp += value
-    battlerView.hp = clamp(battlerView.hp, 0, battlerView.hpMax)
+    battlerView.health += value
+    battlerView.health = clamp(battlerView.health, 0, battlerView.healthMax)
+
+    const element = findBattlerElement(battlerId)
+    element.update(battlerId)
+}
+
+export function addBattlerEnergy(battlerId: BattlerId, value: number) {
+    const { battle } = getState()
+
+    const battlerView = battle.battlersView[battlerId]
+    battlerView.energy += value
+    battlerView.energy = clamp(battlerView.energy, 0, battlerView.energyMax)
 
     const element = findBattlerElement(battlerId)
     element.update(battlerId)
@@ -98,10 +109,12 @@ class BattlerItem extends HTMLComponent {
 
         this.getElement("#name").innerText = battler.name
         this.getElement("#level").innerText = String(battler.level)
-        this.getElement("progress-bar").setAttribute("value", `${battlerView.hp}`)
-        this.getElement("progress-bar").setAttribute("value-max", `${battlerView.hpMax}`)
+        this.getElement("#health").setAttribute("value", `${battlerView.health}`)
+        this.getElement("#health").setAttribute("value-max", `${battlerView.healthMax}`)
+        this.getElement("#energy").setAttribute("value", `${battlerView.energy}`)
+        this.getElement("#energy").setAttribute("value-max", `${battlerView.energyMax}`)
 
-        this.toggleClassName("inactive", battlerView.hp <= 0)
+        this.toggleClassName("inactive", battlerView.health <= 0)
 
         toggleClassName("cast-bar", "hide", !abilityId, this)
 
@@ -252,6 +265,7 @@ template.innerHTML = html`<style>
                 <div id="level"></div>
                 <div id="name"></div>
             </div>
-            <progress-bar value="10" value-max="30"></progress-bar>
+            <progress-bar id="health" value="10" value-max="30"></progress-bar>
+            <progress-bar id="energy" value="10" value-max="30" class="blue"></progress-bar>
         </div>
     </div>`

@@ -3,7 +3,7 @@ import { EncounterConfigs, EncounterId } from "../config/encounter-configs"
 import { MonsterConfigs } from "../config/monster-configs"
 import { removeAllChildren, setOnClick, setShow, setText } from "../dom"
 import { PlayerService } from "../player/player-service"
-import { Ability, getState } from "../state"
+import { getState } from "../state"
 import { BattlerId } from "../types"
 import { randomItem, randomNumber, roll } from "../utils"
 import { openPopup } from "./../popup"
@@ -16,6 +16,8 @@ import { addAnimationsFromLog, updateBattleAnimation } from "./ui/battle-animati
 import "./ui/battle-result-popup"
 import { addItem } from "./../inventory/inventory"
 import { addCurrency } from "./../currencies/currencies"
+import { canUseAbility, getEnergyNeeded } from "../abilities/abilities-utils"
+import { Ability } from "../abilities/ability-type"
 
 const AttackAbility: Ability = {
     id: "attack",
@@ -171,7 +173,12 @@ function renderBattleStatus() {
 }
 
 export function selectAbility(ability: Ability | null) {
-    const { battle } = getState()
+    const { battle, battler } = getState()
+
+    if (ability && !canUseAbility(battler, ability)) {
+        battle.selectedAbility = null
+        return
+    }
 
     battle.selectedAbility = ability
 
@@ -246,7 +253,7 @@ function isTeamDead(battlerIds: BattlerId[]) {
 
     for (const battlerId of battlerIds) {
         const battler = battle.battlers[battlerId]
-        if (battler.hp > 0) {
+        if (battler.health > 0) {
             return false
         }
     }
@@ -267,6 +274,7 @@ function nextTurn() {
     battle.actions.length = 0
     battle.log.push([])
 
+    renderAbilities()
     renderBattleStatus()
 }
 
@@ -284,7 +292,7 @@ function nextAction() {
 
         caster = battle.battlers[action.casterId]
         if (caster) {
-            if (caster.hp <= 0) {
+            if (caster.health <= 0) {
                 action = null
                 continue
             }
@@ -302,6 +310,9 @@ function nextAction() {
     }
 
     const abilityConfig = AbilityConfigs[action.ability.id]
+
+    const energyNeeded = getEnergyNeeded(action.ability)
+    caster.energy -= energyNeeded
 
     const targets = targetOpponent(caster, action.targetId, abilityConfig)
 
@@ -333,9 +344,9 @@ function nextAction() {
                         power *= 1.25 | 0
                     }
 
-                    target.hp += power
-                    if (target.hp <= 0) {
-                        target.hp = 0
+                    target.health += power
+                    if (target.health <= 0) {
+                        target.health = 0
                         targetHasDied = true
                         removeBattlerFromTeam(target)
                     }
@@ -351,9 +362,9 @@ function nextAction() {
                         power *= 1.25 | 0
                     }
 
-                    target.hp += power
-                    if (target.hp > target.hpMax) {
-                        target.hp = target.hpMax
+                    target.health += power
+                    if (target.health > target.stats.health) {
+                        target.health = target.stats.health
                     }
                     break
                 }
@@ -372,6 +383,7 @@ function nextAction() {
         abilityId: action.ability.id,
         casterId: action.casterId,
         targets: actionTargets,
+        energy: -energyNeeded,
     }
     const turnLog = battle.log[battle.turn - 1]
     turnLog.push(logEntry)
@@ -398,7 +410,7 @@ function targetOpponent(caster: Battler, targetId: BattlerId, abilityConfig: Abi
         const targetTeam = targetBattler.isTeamA && abilityConfig.isOffensive ? battle.teamA : battle.teamB
         for (const battlerId of targetTeam) {
             const battler = battle.battlers[battlerId]
-            if (battler && battler.hp > 0) {
+            if (battler && battler.health > 0) {
                 battlers.push(battler)
             }
         }
@@ -406,14 +418,14 @@ function targetOpponent(caster: Battler, targetId: BattlerId, abilityConfig: Abi
         return battlers
     }
 
-    if (targetBattler && targetBattler.hp > 0) {
+    if (targetBattler && targetBattler.health > 0) {
         return [targetBattler]
     }
 
     const targetTeam = caster.isTeamA && abilityConfig.isOffensive ? battle.teamA : battle.teamB
     for (const battlerId of targetTeam) {
         const battler = battle.battlers[battlerId]
-        if (battler && battler.hp > 0) {
+        if (battler && battler.health > 0) {
             return [battler]
         }
     }

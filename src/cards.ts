@@ -113,7 +113,7 @@ function isCardDisabled(card: Card) {
 
         switch (action.resource) {
             case "hp":
-                statusValue = battler.hp
+                statusValue = battler.health
                 break
             case "stamina":
                 statusValue = player.stamina

@@ -40,7 +40,7 @@ export function updateCharacterView() {
     const statsData: StatsTableEntry[] = [
         {
             key: i18n("health"),
-            value: battler.hpMax,
+            value: battler.stats.health,
         },
         {
             key: i18n("power"),

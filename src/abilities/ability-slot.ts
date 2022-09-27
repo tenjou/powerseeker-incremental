@@ -92,7 +92,7 @@ export class AbilitySlotElement extends HTMLComponent {
         const imgElement = this.getElement("img")
 
         if (ability) {
-            imgElement.setAttribute("src", `/assets/icon/skill/${ability.id}.png`)
+            imgElement.setAttribute("src", `/assets/icon/ability/${ability.id}.png`)
             imgElement.classList.remove("hide")
 
             this.setText("rank", `${ability.rank} / 10`)

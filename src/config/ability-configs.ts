@@ -5,6 +5,7 @@ export type AbilityId = "attack" | "bash" | "heal" | "magnum_break"
 export interface AbilityConfig {
     id: AbilityId
     type: AbilityType
+    energy: number
     isOffensive: boolean
     isAoE: boolean
     description: string
@@ -15,6 +16,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
     attack: {
         id: "attack",
         type: "instant",
+        energy: 0,
         isOffensive: true,
         isAoE: false,
         description: "Attack an opponent, causing %0 <semibold>physical</semibold> damage.",
@@ -29,6 +31,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
     bash: {
         id: "bash",
         type: "instant",
+        energy: 1,
         isOffensive: true,
         isAoE: false,
         description: "Attack an opponent, causing %0 <semibold>physical</semibold> damage.",
@@ -43,6 +46,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
     heal: {
         id: "heal",
         type: "instant",
+        energy: 8,
         isOffensive: false,
         isAoE: false,
         description: "Restore %0 health to an ally.",
@@ -57,6 +61,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
     magnum_break: {
         id: "magnum_break",
         type: "instant",
+        energy: 30,
         isOffensive: true,
         isAoE: true,
         description: "Attack all opponents",

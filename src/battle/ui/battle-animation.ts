@@ -1,7 +1,14 @@
 import { AbilityId } from "../../config/ability-configs"
 import { BattlerId } from "../../types"
 import { BattleActionLog } from "../battle-types"
-import { addBattlerHp, addBattlerScrollingText, showBattlerAbility, toggleBattlerForward, toggleBattlerShake } from "./battler-item"
+import {
+    addBattlerHealth,
+    addBattlerEnergy,
+    addBattlerScrollingText,
+    showBattlerAbility,
+    toggleBattlerForward,
+    toggleBattlerShake,
+} from "./battler-item"
 
 const animations: Animation[] = []
 const animationsActive: Animation[] = []
@@ -24,6 +31,7 @@ interface AnimationShake extends BattleAnimationBasic {
 interface AnimationSkillUse extends BattleAnimationBasic {
     type: "ability-use"
     abilityId: AbilityId
+    energy: number
 }
 
 interface AnimationScrollingText extends BattleAnimationBasic {
@@ -43,6 +51,7 @@ function activateAnimation(animation: Animation) {
 
         case "ability-use":
             showBattlerAbility(animation.battlerId, animation.abilityId)
+            addBattlerEnergy(animation.battlerId, animation.energy)
             break
 
         case "shake":
@@ -60,7 +69,7 @@ function activateAnimation(animation: Animation) {
             }
 
             addBattlerScrollingText(animation.battlerId, text, color)
-            addBattlerHp(animation.battlerId, animation.value)
+            addBattlerHealth(animation.battlerId, animation.value)
             break
         }
     }
@@ -121,6 +130,7 @@ export function addAnimationsFromLog(log: BattleActionLog) {
         tStart: tAnim + 100,
         tEnd: tAnim + 100 + 800,
         abilityId: log.abilityId,
+        energy: log.energy,
     })
 
     for (const target of log.targets) {

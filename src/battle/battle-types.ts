@@ -1,8 +1,8 @@
+import { Ability } from "../abilities/ability-type"
 import { AbilityId } from "../config/ability-configs"
 import { EncounterId } from "../config/encounter-configs"
 import { ItemId } from "../config/item-configs"
 import { MonsterId } from "../config/monster-configs"
-import { Ability } from "../state"
 import { BattlerId } from "../types"
 import { CharacterStats } from "./../character/character-types"
 
@@ -38,16 +38,18 @@ export interface Battler {
     id: number
     level: number
     name: string
-    hp: number
-    hpMax: number
+    health: number
+    energy: number
     stats: CharacterStats
     isTeamA: boolean
     monsterId: MonsterId | null
 }
 
 export interface BattlerView {
-    hp: number
-    hpMax: number
+    health: number
+    healthMax: number
+    energy: number
+    energyMax: number
 }
 
 export interface BattleActionTarget {
@@ -61,6 +63,7 @@ export interface BattleActionLog {
     abilityId: AbilityId
     casterId: BattlerId
     targets: BattleActionTarget[]
+    energy: number
 }
 
 export interface BattleLootItem {

@@ -1,3 +1,4 @@
+import { Ability } from "./abilities/ability-type"
 import { Battle, Battler, BattleResult } from "./battle/battle-types"
 import { createEmptyStats } from "./character/status"
 import { AbilityId } from "./config/ability-configs"
@@ -29,11 +30,6 @@ interface DungeonStatus {
     cards: Card[]
     stageCompleted: boolean
     reachedEnd: boolean
-}
-
-export interface Ability {
-    id: AbilityId
-    rank: number
 }
 
 interface Cache {
@@ -86,8 +82,8 @@ let state: State = {
         id: 0,
         level: 1,
         name: "Player",
-        hp: 10,
-        hpMax: 40,
+        health: 10,
+        energy: 20,
         stats: createEmptyStats(),
         isTeamA: true,
         monsterId: null,

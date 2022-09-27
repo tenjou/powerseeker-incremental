@@ -5,7 +5,8 @@ export type MonsterId = "boar"
 interface MonsterConfig {
     name: string
     level: number
-    hp: number
+    health: number
+    energy: number
     attack: number
     defense: number
     speed: number
@@ -23,7 +24,8 @@ export const MonsterConfigs: Record<MonsterId, MonsterConfig> = {
     boar: {
         name: "Boar",
         level: 1,
-        hp: 10,
+        health: 10,
+        energy: 2,
         attack: 2,
         defense: 1,
         speed: 1,
