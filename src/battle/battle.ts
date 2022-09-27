@@ -407,7 +407,7 @@ function targetOpponent(caster: Battler, targetId: BattlerId, abilityConfig: Abi
 
     if (abilityConfig.isAoE) {
         const battlers: Battler[] = []
-        const targetTeam = targetBattler.isTeamA && abilityConfig.isOffensive ? battle.teamA : battle.teamB
+        const targetTeam = caster.isTeamA && abilityConfig.isOffensive ? battle.teamB : battle.teamA
         for (const battlerId of targetTeam) {
             const battler = battle.battlers[battlerId]
             if (battler && battler.health > 0) {
@@ -422,7 +422,7 @@ function targetOpponent(caster: Battler, targetId: BattlerId, abilityConfig: Abi
         return [targetBattler]
     }
 
-    const targetTeam = caster.isTeamA && abilityConfig.isOffensive ? battle.teamA : battle.teamB
+    const targetTeam = caster.isTeamA && abilityConfig.isOffensive ? battle.teamB : battle.teamA
     for (const battlerId of targetTeam) {
         const battler = battle.battlers[battlerId]
         if (battler && battler.health > 0) {

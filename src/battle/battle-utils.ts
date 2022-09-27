@@ -10,8 +10,8 @@ export const getPower = (maxPower: number) => {
 
 export const calculatePower = (stats: CharacterStats, effect: AbilityEffect) => {
     // const maxPower = getMaxPower(stats, effect)
-    // return getPower(maxPower)
-    return 1
+    const maxPower = stats.attack
+    return getPower(maxPower)
 }
 
 export const getActionSpeed = (maxSpeed: number) => {

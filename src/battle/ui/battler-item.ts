@@ -163,7 +163,7 @@ template.innerHTML = html`<style>
             animation-duration: 0.2s;
             animation-iteration-count: 1;
         }
-        :host(.inactive) {
+        :host(.inactive) .container {
             opacity: 0.5;
             pointer-events: none;
         }

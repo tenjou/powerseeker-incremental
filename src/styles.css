@@ -88,10 +88,10 @@ green {
     display: none !important;
 }
 
-.inactive {
+/* .inactive {
     opacity: 0.5;
     pointer-events: none;
-}
+} */
 
 text.header {
     font-weight: bold;
