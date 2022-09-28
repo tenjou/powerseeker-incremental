@@ -8,6 +8,7 @@ import { CurrencyType } from "./currencies/currency-types"
 import { JobsService } from "./jobs/jobs-service"
 import { Job } from "./jobs/jobs-types"
 import { Card, Item, Skill } from "./types"
+import { LoadoutAbility } from "./loadout/loadout-types"
 
 interface TownStatus {
     cards: Card[]
@@ -48,7 +49,7 @@ interface State {
     inventory: Item[]
     abilities: Record<AbilityId, Ability>
     loadout: {
-        abilities: (AbilityId | null)[]
+        abilities: (LoadoutAbility | null)[]
         items: (ItemId | null)[]
     }
     town: TownStatus
@@ -149,9 +150,10 @@ let state: State = {
         magnum_break: { id: "magnum_break", rank: 1 },
         sword_mastery: { id: "sword_mastery", rank: 0 },
         axe_mastery: { id: "axe_mastery", rank: 0 },
+        berserk: { id: "berserk", rank: 1 },
     },
     loadout: {
-        abilities: ["attack", "bash", "heal", "magnum_break"],
+        abilities: [],
         items: [null],
     },
     cache: {

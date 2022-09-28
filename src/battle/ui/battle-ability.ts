@@ -8,24 +8,20 @@ import { getState } from "../../state"
 import { selectAbility } from "../battle"
 import { InstantAbilityConfig } from "./../../config/ability-configs"
 import { toggleTeamInactive } from "./battler-item"
+import { LoadoutAbility } from "./../../loadout/loadout-types"
 
 export function loadAbilities() {
-    const { abilities, loadout } = getState()
+    const { loadout } = getState()
 
     const parent = getElement("battle-abilities")
 
-    for (const abilityId of loadout.abilities) {
-        if (!abilityId) {
-            continue
-        }
-
-        const ability = abilities[abilityId]
-        if (!ability) {
+    for (const loadoutAbility of loadout.abilities) {
+        if (!loadoutAbility) {
             continue
         }
 
         const element = document.createElement("battler-ability-slot") as BattlerAbilitySlot
-        element.setup(ability)
+        element.setup(loadoutAbility)
         parent.appendChild(element)
     }
 }
@@ -69,19 +65,20 @@ function canTargetTeamA(abilityConfig: InstantAbilityConfig, isTeamA: boolean) {
     return isTeamA
 }
 
+const defaultLoadoutAbility: LoadoutAbility = {
+    id: "attack",
+    rank: 0,
+    cooldown: 0,
+}
+
 class BattlerAbilitySlot extends HTMLComponent {
-    ability: Ability
+    ability: LoadoutAbility = defaultLoadoutAbility
 
     constructor() {
         super(template)
-
-        this.ability = {
-            id: "attack",
-            rank: 0,
-        }
     }
 
-    setup(ability: Ability) {
+    setup(ability: LoadoutAbility) {
         this.ability = ability
 
         const abilityConfig = AbilityConfigs[ability.id] as InstantAbilityConfig
@@ -103,6 +100,11 @@ class BattlerAbilitySlot extends HTMLComponent {
 
         this.toggleClassName("selected", battle.status === "waiting" && battle.selectedAbility?.id === this.ability.id)
         this.toggleClassName("inactive", battle.status === "waiting" && battler.energy < getEnergyNeeded(this.ability))
+
+        const cooldown = this.ability.cooldown - (battle.turn - 1)
+        this.toggleClassName("hide", cooldown <= 0, "#cooldown")
+        this.toggleClassName("hide", cooldown > 0, "#energy")
+        this.setText("#cooldown", cooldown)
     }
 }
 
@@ -137,7 +139,23 @@ template.innerHTML = html`<style>
             pointer-events: none;
         }
 
-        div {
+        #cooldown {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000ad;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            pointer-events: none;
+        }
+
+        #energy {
             position: absolute;
             padding: 0 1px 0 2px;
             right: 0;
@@ -147,7 +165,12 @@ template.innerHTML = html`<style>
             font-size: 10px;
             border-top-left-radius: 3px;
         }
+
+        .hide {
+            display: none !important;
+        }
     </style>
 
     <img />
+    <div id="cooldown"></div>
     <div id="energy"></div>`

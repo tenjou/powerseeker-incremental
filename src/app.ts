@@ -23,6 +23,7 @@ import { loadPopupSystem } from "./popup"
 import { getState, loadState } from "./state"
 import { loadTooltipSystem } from "./tooltip"
 import { updateView } from "./view"
+import { equipAbility } from "./loadout/loadout"
 
 let tLast = 0
 
@@ -61,6 +62,11 @@ function createEmptyProfile() {
         rarity: 4,
         amount: 5,
     })
+
+    equipAbility("attack")
+    equipAbility("bash")
+    equipAbility("heal")
+    equipAbility("berserk")
 }
 
 function load() {

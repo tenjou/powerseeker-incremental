@@ -1,15 +1,15 @@
-import { Ability } from "../abilities/ability-type"
 import { AbilityId } from "../config/ability-configs"
 import { EncounterId } from "../config/encounter-configs"
 import { ItemId } from "../config/item-configs"
 import { MonsterId } from "../config/monster-configs"
 import { BattlerId } from "../types"
 import { CharacterStats } from "./../character/character-types"
+import { LoadoutAbility } from "./../loadout/loadout-types"
 
 export interface BattleAction {
     casterId: BattlerId
     targetId: BattlerId
-    ability: Ability
+    ability: LoadoutAbility
     speed: number
 }
 
@@ -23,7 +23,7 @@ export interface Battle {
     teamB: BattlerId[]
     actions: BattleAction[]
     turn: number
-    selectedAbility: Ability | null
+    selectedAbility: LoadoutAbility | null
     selectedBattlerId: BattlerId
     playerBattlerId: BattlerId
     log: BattleActionLog[][]

@@ -4,7 +4,7 @@ import { loadInventoryView, unloadInventoryView } from "./inventory/ui/inventory
 import { loadSkillsView, unloadSkillsView } from "./skills/skills-view"
 import { loadEquipmentView, unloadEquipmentView } from "./equipment/ui/equipment-view"
 import { loadAbilitiesView, unloadAbilitiesView } from "./abilities/ui/abilities-view"
-import { loadLoadoutView, unloadLoadoutView } from "./loadout/loadout-vew"
+import { loadLoadoutView, unloadLoadoutView } from "./loadout/ui/loadout-vew"
 import { loadWorldView, unloadWorldView } from "./world/world-view"
 import { loadTownView, unloadTownView } from "./town/town"
 import { loadJobsView, unloadJobsView } from "./jobs/ui/jobs-view"

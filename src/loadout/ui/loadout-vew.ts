@@ -1,7 +1,7 @@
-import { AbilityConfigs } from "../config/ability-configs"
-import { goTo } from "../view"
-import { setText } from "./../dom"
-import { getState } from "./../state"
+import { AbilityConfigs } from "../../config/ability-configs"
+import { goTo } from "../../view"
+import { setText } from "../../dom"
+import { getState } from "../../state"
 
 export function loadLoadoutView(segments: string[]) {
     const categoryId = segments.pop()

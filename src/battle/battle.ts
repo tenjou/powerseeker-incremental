@@ -1,4 +1,5 @@
-import { AbilityConfig, AbilityConfigs } from "../config/ability-configs"
+import { canUseAbility, getEnergyNeeded } from "../abilities/abilities-utils"
+import { AbilityConfigs } from "../config/ability-configs"
 import { EncounterConfigs, EncounterId } from "../config/encounter-configs"
 import { MonsterConfigs } from "../config/monster-configs"
 import { removeAllChildren, setOnClick, setShow, setText } from "../dom"
@@ -6,6 +7,10 @@ import { PlayerService } from "../player/player-service"
 import { getState } from "../state"
 import { BattlerId } from "../types"
 import { randomItem, randomNumber, roll } from "../utils"
+import { InstantAbilityConfig } from "./../config/ability-configs"
+import { addCurrency } from "./../currencies/currencies"
+import { addItem } from "./../inventory/inventory"
+import { LoadoutAbility } from "./../loadout/loadout-types"
 import { openPopup } from "./../popup"
 import { shuffle } from "./../utils"
 import { Battle, BattleAction, BattleActionLog, BattleActionTarget, BattleLootItem, Battler, BattleResult } from "./battle-types"
@@ -14,15 +19,11 @@ import { addBattler, createMonsterBattler, loadBattlers } from "./battler"
 import { loadAbilities, renderAbilities } from "./ui/battle-ability"
 import { addAnimationsFromLog, updateBattleAnimation } from "./ui/battle-animation"
 import "./ui/battle-result-popup"
-import { addItem } from "./../inventory/inventory"
-import { addCurrency } from "./../currencies/currencies"
-import { canUseAbility, getEnergyNeeded } from "../abilities/abilities-utils"
-import { Ability } from "../abilities/ability-type"
-import { InstantAbilityConfig } from "./../config/ability-configs"
 
-const AttackAbility: Ability = {
+const AttackAbility: LoadoutAbility = {
     id: "attack",
     rank: 1,
+    cooldown: 0,
 }
 
 export function startBattle(encounterId: EncounterId) {
@@ -173,7 +174,7 @@ function renderBattleStatus() {
     }
 }
 
-export function selectAbility(ability: Ability | null) {
+export function selectAbility(ability: LoadoutAbility | null) {
     const { battle, battler } = getState()
 
     if (ability && !canUseAbility(battler, ability)) {
@@ -206,9 +207,9 @@ export function useSelectedAbility(targetId: BattlerId) {
 }
 
 function executeAutoBattle() {
-    const { abilities, battle } = getState()
+    const { loadout, battle } = getState()
 
-    const firstAbility = abilities.attack
+    const firstAbility = loadout.abilities[0]
     const team = battle.isTeamA ? battle.teamB : battle.teamA
     const targetId = randomItem(team)
 
@@ -314,6 +315,8 @@ function nextAction() {
 
     const energyNeeded = getEnergyNeeded(action.ability)
     caster.energy -= energyNeeded
+
+    action.ability.cooldown = battle.turn + abilityConfig.cooldown
 
     const targets = targetOpponent(caster, action.targetId, abilityConfig)
 
