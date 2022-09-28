@@ -89,6 +89,12 @@ function endBattle() {
     state.battle.status = "ended"
     state.battleResult = generateBattleResult()
 
+    for (const ability of state.loadout.abilities) {
+        if (ability) {
+            ability.cooldown = 0
+        }
+    }
+
     openPopup("battle-result-popup", {}, () => {
         unloadBattle()
     })
