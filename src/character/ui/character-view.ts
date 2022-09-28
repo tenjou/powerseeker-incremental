@@ -1,4 +1,4 @@
-import { AbilitySlotElement } from "../../abilities/ability-slot"
+import { AbilitySlotElement } from "../../abilities/ui/ability-slot"
 import { StatsTableEntry } from "../../components/stats-table"
 import { EquipmentSlot } from "../../config/item-configs"
 import { getElement } from "../../dom"

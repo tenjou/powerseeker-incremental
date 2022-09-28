@@ -1,11 +1,12 @@
 import { getEnergyNeeded } from "../../abilities/abilities-utils"
-import { getAbilityDescription } from "../../abilities/abilities-view"
+import { getAbilityDescription } from "../../abilities/ui/abilities-view"
 import { Ability } from "../../abilities/ability-type"
-import { AbilityConfig, AbilityConfigs } from "../../config/ability-configs"
+import { AbilityConfigs } from "../../config/ability-configs"
 import { getElement, HTMLComponent, setHTML, toggleClassName } from "../../dom"
 import { i18n } from "../../local"
 import { getState } from "../../state"
 import { selectAbility } from "../battle"
+import { InstantAbilityConfig } from "./../../config/ability-configs"
 import { toggleTeamInactive } from "./battler-item"
 
 export function loadAbilities() {
@@ -43,7 +44,7 @@ export function renderAbilities() {
     }
 
     if (battle.selectedAbility) {
-        const abilityConfig = AbilityConfigs[battle.selectedAbility.id]
+        const abilityConfig = AbilityConfigs[battle.selectedAbility.id] as InstantAbilityConfig
         const abilityTooltip = getAbilityDescription(abilityConfig)
 
         toggleClassName("battle-tooltip", "hide", false)
@@ -60,7 +61,7 @@ export function renderAbilities() {
     }
 }
 
-function canTargetTeamA(abilityConfig: AbilityConfig, isTeamA: boolean) {
+function canTargetTeamA(abilityConfig: InstantAbilityConfig, isTeamA: boolean) {
     if (abilityConfig.isOffensive) {
         return !isTeamA
     }
@@ -83,7 +84,7 @@ class BattlerAbilitySlot extends HTMLComponent {
     setup(ability: Ability) {
         this.ability = ability
 
-        const abilityConfig = AbilityConfigs[ability.id]
+        const abilityConfig = AbilityConfigs[ability.id] as InstantAbilityConfig
 
         this.getElement("img").setAttribute("src", `assets/icon/ability/${ability.id}.png`)
         if (abilityConfig.energy > 0) {

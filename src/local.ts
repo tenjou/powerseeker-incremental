@@ -124,6 +124,12 @@ const local: Record<string, LocalEntry> = {
     magnum_break: {
         en: "Magnum Break",
     },
+    sword_mastery: {
+        en: "Sword Mastery",
+    },
+    axe_mastery: {
+        en: "Axe Mastery",
+    },
     axe: {
         en: "Axe",
     },

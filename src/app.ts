@@ -1,10 +1,10 @@
 import { loadBattle, updateBattle } from "./battle/battle"
 import { loadCards } from "./cards"
+import { recalculateStats } from "./character/status"
 import "./components/area-transition"
 import "./components/button"
 import "./components/close-button"
 import "./components/column"
-import "./components/x-header"
 import "./components/popup-container"
 import "./components/progress-bar"
 import "./components/row"
@@ -12,6 +12,7 @@ import "./components/scrolling-text"
 import "./components/stats-table"
 import "./components/text"
 import "./components/url"
+import "./components/x-header"
 import "./components/x-icon"
 import "./currencies/currency-item"
 import { setShow } from "./dom"
@@ -69,6 +70,7 @@ function load() {
         }
     })
 
+    recalculateStats()
     updateView()
     loadTooltipSystem()
     loadPopupSystem()

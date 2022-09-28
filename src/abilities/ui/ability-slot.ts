@@ -1,6 +1,6 @@
-import { AbilityId } from "../config/ability-configs"
-import { HTMLComponent } from "../dom"
-import { getState } from "./../state"
+import { AbilityId } from "../../config/ability-configs"
+import { HTMLComponent } from "../../dom"
+import { getState } from "../../state"
 
 const template = document.createElement("template")
 template.innerHTML = html`<style>

@@ -1,6 +1,9 @@
+import { AbilityId } from "../config/ability-configs"
 import { EquipmentSlot, ItemConfigs } from "../config/item-configs"
 import { getState } from "../state"
 import { CharacterStats } from "./character-types"
+import { AbilityConfigs } from "./../config/ability-configs"
+import { Ability } from "./../abilities/ability-type"
 
 export function addHp(value: number) {
     const { battler } = getState()
@@ -32,7 +35,7 @@ export function restoreStatus() {
 }
 
 export function recalculateStats() {
-    const { battler, equipment, player } = getState()
+    const { abilities, battler, equipment, player } = getState()
 
     battler.stats = createEmptyStats()
     player.power = 0
@@ -48,11 +51,37 @@ export function recalculateStats() {
             continue
         }
 
+        if (itemConfig.slot === "main_hand") {
+            switch (itemConfig.equipmentType) {
+                case "axe":
+                    addStatsFromPassive(abilities.axe_mastery)
+                    break
+
+                case "sword":
+                    addStatsFromPassive(abilities.sword_mastery)
+                    break
+            }
+        }
+
         for (const stat of itemConfig.stats) {
             battler.stats[stat.type] += stat.value
         }
 
         player.power += item.power
+    }
+}
+
+function addStatsFromPassive(ability?: Ability) {
+    if (!ability || ability.rank === 0) {
+        return
+    }
+
+    const { battler } = getState()
+
+    const abilityConfig = AbilityConfigs[ability.id]
+
+    for (const effect of abilityConfig.effects) {
+        battler.stats[effect.stat] += effect.power * ability.rank
     }
 }
 

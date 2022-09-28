@@ -5,6 +5,7 @@ import { emit } from "./../events"
 import { Ability, AbilityEffect } from "./ability-type"
 import { AbilityConfigs, AbilityId } from "../config/ability-configs"
 import { Battler } from "../battle/battle-types"
+import { recalculateStats } from "../character/status"
 
 export const getAbilityEffectPower = (effect: AbilityEffect, rank: number) => {
     // return (effect.power * stats[effect.stat]) | 0
@@ -40,6 +41,7 @@ export const learnAbility = (abilityId: AbilityId) => {
 
     ability.rank += 1
     removeCurrency("ap", needAp)
+    recalculateStats()
 
     emit("ability-updated", abilityId)
 }
@@ -52,7 +54,10 @@ export function canUseAbility(battler: Battler, ability: Ability) {
 
 export function getEnergyNeeded(ability: Ability) {
     const abilityConfig = AbilityConfigs[ability.id]
-    const energyNeed = abilityConfig.energy + (ability.rank - 1)
+    if (abilityConfig.type !== "instant") {
+        return 0
+    }
 
+    const energyNeed = abilityConfig.energy + (ability.rank - 1)
     return energyNeed
 }

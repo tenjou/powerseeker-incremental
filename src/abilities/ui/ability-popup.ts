@@ -1,10 +1,10 @@
-import { AbilityConfigs, AbilityId } from "../config/ability-configs"
-import { HTMLComponent } from "../dom"
-import { i18n } from "../local"
-import { getState } from "../state"
-import { haveCurrency } from "./../currencies/currencies"
-import { subscribe, unsubscribe } from "./../events"
-import { getRequiredAp, learnAbility } from "./abilities-utils"
+import { AbilityConfigs, AbilityId } from "../../config/ability-configs"
+import { HTMLComponent } from "../../dom"
+import { i18n } from "../../local"
+import { getState } from "../../state"
+import { haveCurrency } from "../../currencies/currencies"
+import { subscribe, unsubscribe } from "../../events"
+import { getRequiredAp, learnAbility } from "../abilities-utils"
 import { getAbilityDescription } from "./abilities-view"
 
 const template = document.createElement("template")

@@ -1,10 +1,10 @@
 import { CharacterStatType } from "../character/character-types"
 import { AbilityId } from "../config/ability-configs"
 
-export type AbilityType = "instant" | "passive"
+export type AbilityEffectType = "hp-minus" | "hp-plus" | "stat-plus"
 
 export interface AbilityEffect {
-    type: "hp-minus" | "hp-plus"
+    type: AbilityEffectType
     power: number
     stat: CharacterStatType
 }

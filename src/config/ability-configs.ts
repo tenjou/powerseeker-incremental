@@ -1,16 +1,27 @@
-import { AbilityType, AbilityEffect } from "../abilities/ability-type"
+import { AbilityEffect } from "../abilities/ability-type"
 
-export type AbilityId = "attack" | "bash" | "heal" | "magnum_break"
+export type AbilityId = "attack" | "bash" | "heal" | "magnum_break" | "sword_mastery" | "axe_mastery"
 
-export interface AbilityConfig {
+export type AbilityType = "instant" | "passive"
+
+interface BasicAbilityConfig {
     id: AbilityId
-    type: AbilityType
-    energy: number
-    isOffensive: boolean
-    isAoE: boolean
     description: string
     effects: AbilityEffect[]
 }
+
+export interface InstantAbilityConfig extends BasicAbilityConfig {
+    type: "instant"
+    energy: number
+    isOffensive: boolean
+    isAoE: boolean
+}
+
+interface PassiveAbilityConfig extends BasicAbilityConfig {
+    type: "passive"
+}
+
+export type AbilityConfig = InstantAbilityConfig | PassiveAbilityConfig
 
 export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
     attack: {
@@ -68,6 +79,30 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
         effects: [
             {
                 type: "hp-minus",
+                power: 1,
+                stat: "attack",
+            },
+        ],
+    },
+    sword_mastery: {
+        id: "sword_mastery",
+        type: "passive",
+        description: "Increase damage with swords.",
+        effects: [
+            {
+                type: "stat-plus",
+                power: 1,
+                stat: "attack",
+            },
+        ],
+    },
+    axe_mastery: {
+        id: "axe_mastery",
+        type: "passive",
+        description: "Increase damage with axes.",
+        effects: [
+            {
+                type: "stat-plus",
                 power: 1,
                 stat: "attack",
             },

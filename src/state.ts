@@ -1,4 +1,4 @@
-import { Ability } from "./abilities/ability-type"
+import { Ability, AbilityEffect, AbilityEffectType } from "./abilities/ability-type"
 import { Battle, Battler, BattleResult } from "./battle/battle-types"
 import { createEmptyStats } from "./character/status"
 import { AbilityId } from "./config/ability-configs"
@@ -147,6 +147,8 @@ let state: State = {
         bash: { id: "bash", rank: 1 },
         heal: { id: "heal", rank: 1 },
         magnum_break: { id: "magnum_break", rank: 1 },
+        sword_mastery: { id: "sword_mastery", rank: 0 },
+        axe_mastery: { id: "axe_mastery", rank: 0 },
     },
     loadout: {
         abilities: ["attack", "bash", "heal", "magnum_break"],

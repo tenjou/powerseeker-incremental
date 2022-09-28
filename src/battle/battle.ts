@@ -18,6 +18,7 @@ import { addItem } from "./../inventory/inventory"
 import { addCurrency } from "./../currencies/currencies"
 import { canUseAbility, getEnergyNeeded } from "../abilities/abilities-utils"
 import { Ability } from "../abilities/ability-type"
+import { InstantAbilityConfig } from "./../config/ability-configs"
 
 const AttackAbility: Ability = {
     id: "attack",
@@ -309,7 +310,7 @@ function nextAction() {
         return
     }
 
-    const abilityConfig = AbilityConfigs[action.ability.id]
+    const abilityConfig = AbilityConfigs[action.ability.id] as InstantAbilityConfig
 
     const energyNeeded = getEnergyNeeded(action.ability)
     caster.energy -= energyNeeded
@@ -397,7 +398,7 @@ function nextAction() {
     }
 }
 
-function targetOpponent(caster: Battler, targetId: BattlerId, abilityConfig: AbilityConfig) {
+function targetOpponent(caster: Battler, targetId: BattlerId, abilityConfig: InstantAbilityConfig) {
     const { battle } = getState()
 
     const targetBattler = battle.battlers[targetId]
