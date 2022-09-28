@@ -139,6 +139,12 @@ const local: Record<string, LocalEntry> = {
     equipment: {
         en: "Equipment",
     },
+    passive: {
+        en: "Passive",
+    },
+    instant: {
+        en: "Instant",
+    },
 }
 
 export function i18n(key: string | undefined | null) {

@@ -37,7 +37,7 @@ template.innerHTML = html`<style>
             <ability-slot inactive hide-rank></ability-slot>
             <x-column class="center-v flex margin5">
                 <x-text id="name" class="semibold line16"></x-text>
-                <x-text id="type" class="tertiary">Passive</x-text>
+                <x-text id="type" class="tertiary"></x-text>
             </x-column>
 
             <x-column class="center-v">
@@ -99,6 +99,7 @@ export class AbilityPopup extends HTMLComponent {
 
         const abilityConfig = AbilityConfigs[abilityId as AbilityId]
         this.setText("#name", i18n(abilityId))
+        this.setText("#type", i18n(abilityConfig.type))
         // this.setText("#type", i18n(abilityConfig.type))
         // this.setText("#power", itemPower)
 
