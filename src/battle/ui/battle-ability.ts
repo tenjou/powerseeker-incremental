@@ -1,7 +1,7 @@
 import { getEnergyNeeded } from "../../abilities/abilities-utils"
 import { getAbilityDescription } from "../../abilities/ui/abilities-view"
 import { Ability } from "../../abilities/ability-type"
-import { AbilityConfigs } from "../../config/ability-configs"
+import { AbilityConfigs, AbilityFlag } from "../../config/ability-configs"
 import { getElement, HTMLComponent, setHTML, toggleClassName } from "../../dom"
 import { i18n } from "../../local"
 import { getState } from "../../state"
@@ -58,7 +58,7 @@ export function renderAbilities() {
 }
 
 function canTargetTeamA(abilityConfig: InstantAbilityConfig, isTeamA: boolean) {
-    if (abilityConfig.isOffensive) {
+    if (abilityConfig.flags & AbilityFlag.Offensive) {
         return !isTeamA
     }
 

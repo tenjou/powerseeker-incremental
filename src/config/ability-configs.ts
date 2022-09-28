@@ -4,6 +4,12 @@ export type AbilityId = "attack" | "bash" | "heal" | "magnum_break" | "sword_mas
 
 export type AbilityType = "instant" | "passive"
 
+export enum AbilityFlag {
+    Offensive = 1,
+    AoE = 2,
+    Self = 4,
+}
+
 interface BasicAbilityConfig {
     id: AbilityId
     description: string
@@ -14,8 +20,8 @@ export interface InstantAbilityConfig extends BasicAbilityConfig {
     type: "instant"
     energy: number
     cooldown: number
-    isOffensive: boolean
-    isAoE: boolean
+    duration: number
+    flags: number
 }
 
 interface PassiveAbilityConfig extends BasicAbilityConfig {
@@ -30,8 +36,8 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
         type: "instant",
         energy: 0,
         cooldown: 0,
-        isOffensive: true,
-        isAoE: false,
+        duration: 0,
+        flags: AbilityFlag.Offensive,
         description: "Attack an opponent, causing %0 <semibold>physical</semibold> damage.",
         effects: [
             {
@@ -46,8 +52,8 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
         type: "instant",
         energy: 1,
         cooldown: 0,
-        isOffensive: true,
-        isAoE: false,
+        duration: 0,
+        flags: AbilityFlag.Offensive,
         description: "Attack an opponent, causing %0 <semibold>physical</semibold> damage.",
         effects: [
             {
@@ -62,8 +68,8 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
         type: "instant",
         energy: 8,
         cooldown: 0,
-        isOffensive: false,
-        isAoE: false,
+        duration: 0,
+        flags: 0,
         description: "Restore %0 health to an ally.",
         effects: [
             {
@@ -78,8 +84,8 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
         type: "instant",
         energy: 15,
         cooldown: 0,
-        isOffensive: true,
-        isAoE: true,
+        duration: 0,
+        flags: AbilityFlag.Offensive | AbilityFlag.AoE,
         description: "Attack all opponents",
         effects: [
             {
@@ -118,13 +124,13 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
         type: "instant",
         description: "Increase damage with axes.",
         energy: 4,
-        cooldown: 1,
-        isAoE: false,
-        isOffensive: false,
+        cooldown: 10,
+        duration: 3,
+        flags: AbilityFlag.Self,
         effects: [
             {
                 type: "stat-plus",
-                power: 1,
+                power: 100,
                 stat: "attack",
             },
         ],

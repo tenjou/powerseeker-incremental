@@ -1,5 +1,5 @@
 import { canUseAbility, getEnergyNeeded } from "../abilities/abilities-utils"
-import { AbilityConfigs } from "../config/ability-configs"
+import { AbilityConfigs, AbilityFlag } from "../config/ability-configs"
 import { EncounterConfigs, EncounterId } from "../config/encounter-configs"
 import { MonsterConfigs } from "../config/monster-configs"
 import { removeAllChildren, setOnClick, setShow, setText } from "../dom"
@@ -415,9 +415,13 @@ function targetOpponent(caster: Battler, targetId: BattlerId, abilityConfig: Ins
         return []
     }
 
-    if (abilityConfig.isAoE) {
+    if (abilityConfig.flags & AbilityFlag.Self) {
+        return [caster]
+    }
+
+    if (abilityConfig.flags & AbilityFlag.AoE) {
         const battlers: Battler[] = []
-        const targetTeam = caster.isTeamA && abilityConfig.isOffensive ? battle.teamB : battle.teamA
+        const targetTeam = caster.isTeamA && abilityConfig.flags & AbilityFlag.Offensive ? battle.teamB : battle.teamA
         for (const battlerId of targetTeam) {
             const battler = battle.battlers[battlerId]
             if (battler && battler.health > 0) {
@@ -432,7 +436,7 @@ function targetOpponent(caster: Battler, targetId: BattlerId, abilityConfig: Ins
         return [targetBattler]
     }
 
-    const targetTeam = caster.isTeamA && abilityConfig.isOffensive ? battle.teamB : battle.teamA
+    const targetTeam = caster.isTeamA && abilityConfig.flags & AbilityFlag.Offensive ? battle.teamB : battle.teamA
     for (const battlerId of targetTeam) {
         const battler = battle.battlers[battlerId]
         if (battler && battler.health > 0) {
