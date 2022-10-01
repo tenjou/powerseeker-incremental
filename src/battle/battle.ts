@@ -1,4 +1,5 @@
 import { canUseAbility, getEnergyNeeded } from "../abilities/abilities-utils"
+import { AbilityEffect } from "../abilities/ability-type"
 import { AbilityConfigs, AbilityFlag } from "../config/ability-configs"
 import { EncounterConfigs, EncounterId } from "../config/encounter-configs"
 import { MonsterConfigs } from "../config/monster-configs"
@@ -388,6 +389,9 @@ function nextAction() {
                 power,
             }
         }
+
+        removeExpiredEffects(target)
+        tryApplyEffects(caster, target, action.ability, abilityConfig)
     }
 
     const logEntry: BattleActionLog = {
@@ -398,9 +402,6 @@ function nextAction() {
     }
     const turnLog = battle.log[battle.turn - 1]
     turnLog.push(logEntry)
-
-    tryApplyEffects(caster, abilityConfig)
-    removeExpiredEffects(caster)
 
     addAnimationsFromLog(logEntry)
 
@@ -520,7 +521,7 @@ function updateBattleAuto() {
     setText("battle-auto", battle.isAuto ? "Auto" : "Manual")
 }
 
-function tryApplyEffects(battler: Battler, abilityConfig: InstantAbilityConfig) {
+function tryApplyEffects(caster: Battler, target: Battler, ability: LoadoutAbility, abilityConfig: InstantAbilityConfig) {
     if (!abilityConfig.duration) {
         return
     }
@@ -528,20 +529,37 @@ function tryApplyEffects(battler: Battler, abilityConfig: InstantAbilityConfig) 
     const { battle } = getState()
 
     const duration = battle.turn + abilityConfig.duration
+    const effects = abilityConfig.effects.map<AbilityEffect>((effect) => {
+        return {
+            power: ability.rank * effect.power,
+            stat: effect.stat,
+            type: effect.type,
+        }
+    })
 
-    const prevEffect = battler.effects.find((effect) => effect.abilityId === abilityConfig.id)
+    const prevEffect = target.effects.find((effect) => effect.abilityId === abilityConfig.id)
     if (prevEffect) {
+        for (const effect of prevEffect.effects) {
+            target.stats[effect.stat] -= effect.power
+        }
+
+        prevEffect.casterId = caster.id
         prevEffect.duration = duration
+        prevEffect.effects = effects
     } else {
-        battler.effects.push({
+        target.effects.push({
             abilityId: abilityConfig.id,
-            casterId: battler.id,
+            casterId: caster.id,
             duration: battle.turn + abilityConfig.duration,
-            effects: [...abilityConfig.effects],
+            effects,
         })
     }
 
-    battler.effects.sort((a, b) => b.duration - a.duration)
+    target.effects.sort((a, b) => b.duration - a.duration)
+
+    for (const effect of effects) {
+        target.stats[effect.stat] += effect.power
+    }
 }
 
 function removeExpiredEffects(battler: Battler) {
