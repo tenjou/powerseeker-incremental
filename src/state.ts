@@ -86,6 +86,7 @@ let state: State = {
         health: 10,
         energy: 20,
         stats: createEmptyStats(),
+        effects: [],
         isTeamA: true,
         monsterId: null,
     },

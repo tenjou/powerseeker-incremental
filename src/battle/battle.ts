@@ -19,6 +19,7 @@ import { addBattler, createMonsterBattler, loadBattlers } from "./battler"
 import { loadAbilities, renderAbilities } from "./ui/battle-ability"
 import { addAnimationsFromLog, updateBattleAnimation } from "./ui/battle-animation"
 import "./ui/battle-result-popup"
+import { updateBattlerEffects } from "./ui/battler-item"
 
 const AttackAbility: LoadoutAbility = {
     id: "attack",
@@ -398,6 +399,9 @@ function nextAction() {
     const turnLog = battle.log[battle.turn - 1]
     turnLog.push(logEntry)
 
+    tryApplyEffects(caster, abilityConfig)
+    removeExpiredEffects(caster)
+
     addAnimationsFromLog(logEntry)
 
     battle.tNextAction = battle.tCurrent + 2000
@@ -514,4 +518,48 @@ function updateBattleAuto() {
     const { battle } = getState()
 
     setText("battle-auto", battle.isAuto ? "Auto" : "Manual")
+}
+
+function tryApplyEffects(battler: Battler, abilityConfig: InstantAbilityConfig) {
+    if (!abilityConfig.duration) {
+        return
+    }
+
+    const { battle } = getState()
+
+    const duration = battle.turn + abilityConfig.duration
+
+    const prevEffect = battler.effects.find((effect) => effect.abilityId === abilityConfig.id)
+    if (prevEffect) {
+        prevEffect.duration = duration
+    } else {
+        battler.effects.push({
+            abilityId: abilityConfig.id,
+            casterId: battler.id,
+            duration: battle.turn + abilityConfig.duration,
+            effects: [...abilityConfig.effects],
+        })
+    }
+
+    battler.effects.sort((a, b) => b.duration - a.duration)
+}
+
+function removeExpiredEffects(battler: Battler) {
+    const { battle } = getState()
+
+    const effects = battler.effects
+    if (effects.length <= 0) {
+        return
+    }
+
+    for (let n = effects.length - 1; n >= 0; n -= 1) {
+        const effect = effects[n]
+        if (effect.duration > battle.turn) {
+            return
+        }
+
+        effects.pop()
+    }
+
+    updateBattlerEffects(battler.id)
 }

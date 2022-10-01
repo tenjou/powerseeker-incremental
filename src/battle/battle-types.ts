@@ -1,3 +1,4 @@
+import { AbilityEffect } from "../abilities/ability-type"
 import { AbilityId } from "../config/ability-configs"
 import { EncounterId } from "../config/encounter-configs"
 import { ItemId } from "../config/item-configs"
@@ -34,6 +35,13 @@ export interface Battle {
     isAuto: boolean
 }
 
+export interface BattlerAbilityEffect {
+    abilityId: AbilityId
+    casterId: BattlerId
+    effects: AbilityEffect[]
+    duration: number
+}
+
 export interface Battler {
     id: number
     level: number
@@ -41,6 +49,7 @@ export interface Battler {
     health: number
     energy: number
     stats: CharacterStats
+    effects: BattlerAbilityEffect[]
     isTeamA: boolean
     monsterId: MonsterId | null
 }

@@ -1,12 +1,14 @@
 import { ScrollingText } from "../../components/scrolling-text"
 import { AbilityConfigs, AbilityId } from "../../config/ability-configs"
 import { addChild, HTMLComponent, toggleClassName } from "../../dom"
+import { i18n } from "../../local"
 import { getState } from "../../state"
 import { BattlerId } from "../../types"
+import { clamp } from "../../utils"
 import { useSelectedAbility } from "../battle"
 import { Battler } from "../battle-types"
-import { clamp } from "../../utils"
-import { i18n } from "../../local"
+import "./battler-effect-element"
+import { BattlerEffectElement } from "./battler-effect-element"
 
 export function updateBattler(battler: Battler) {
     const element = document.getElementById(`battler:${battler.id}`) as BattlerItem
@@ -84,6 +86,11 @@ export function findBattlerElement(battlerId: BattlerId): BattlerItem {
     return element
 }
 
+export function updateBattlerEffects(battlerId: BattlerId) {
+    const element = findBattlerElement(battlerId)
+    element.updateEffects(battlerId)
+}
+
 class BattlerItem extends HTMLComponent {
     constructor() {
         super(template)
@@ -102,8 +109,8 @@ class BattlerItem extends HTMLComponent {
         const battler = battle.battlers[battlerId]
         const battlerView = battle.battlersView[battlerId]
 
-        this.getElement("#name").innerText = battler.name
-        this.getElement("#level").innerText = String(battler.level)
+        this.setText("#name", battler.name)
+        this.setText("#level", battler.level)
         this.getElement("#health").setAttribute("value", `${battlerView.health}`)
         this.getElement("#health").setAttribute("value-max", `${battlerView.healthMax}`)
         this.getElement("#energy").setAttribute("value", `${battlerView.energy}`)
@@ -111,13 +118,50 @@ class BattlerItem extends HTMLComponent {
 
         this.toggleClassName("inactive", battlerView.health <= 0)
 
-        toggleClassName("cast-bar", "hide", !abilityId, this)
+        this.toggleClassName("hide", !abilityId, "#cast-bar")
+        this.toggleClassName("hide", !!abilityId, "#effects")
 
         if (abilityId) {
             const abilityConfig = AbilityConfigs[abilityId]
 
             this.getElement("#ability-name").innerText = i18n(abilityConfig.id)
             this.getElement("#ability-icon").setAttribute("src", `assets/icon/ability/${abilityId}.png`)
+        }
+
+        if (battler.effects.length > 0) {
+            this.updateEffects(battlerId)
+        }
+    }
+
+    updateEffects(battlerId: BattlerId) {
+        const { battle } = getState()
+
+        const battler = battle.battlers[battlerId]
+        const effects = battler.effects
+
+        const effectsParent = this.getElement("#effects")
+
+        if (effects.length > effectsParent.childElementCount) {
+            const numMissing = effects.length - effectsParent.childElementCount
+            for (let n = 0; n < numMissing; n += 1) {
+                const effectElement = document.createElement("battler-effect") as BattlerEffectElement
+                effectElement.update(effects[0])
+                effectsParent.appendChild(effectElement)
+            }
+        }
+
+        while (effects.length < effectsParent.childElementCount) {
+            if (!effectsParent.lastChild) {
+                console.error("Missing effects child to remove")
+                return
+            }
+            effectsParent.removeChild(effectsParent.lastChild)
+        }
+
+        for (let n = 0; n < effects.length; n += 1) {
+            const effect = effects[n]
+            const child = effectsParent.children[n] as BattlerEffectElement
+            child.update(effect)
         }
     }
 }
@@ -189,7 +233,7 @@ template.innerHTML = html`<style>
             margin-bottom: 2px;
         }
         .hide {
-            display: none;
+            display: none !important;
         }
 
         .frame {
@@ -258,6 +302,16 @@ template.innerHTML = html`<style>
         #energy {
             margin-top: 2px;
         }
+
+        #effects {
+            position: absolute;
+            top: -22px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
     </style>
 
     <div class="container">
@@ -271,6 +325,7 @@ template.innerHTML = html`<style>
                 <div class="border"></div>
             </div>
         </div>
+        <div id="effects"></div>
         <div class="frame">
             <div class="row">
                 <div id="level"></div>

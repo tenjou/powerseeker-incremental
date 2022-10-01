@@ -124,8 +124,8 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
         type: "instant",
         description: "Increase damage with axes.",
         energy: 4,
-        cooldown: 10,
-        duration: 3,
+        cooldown: 0,
+        duration: 1,
         flags: AbilityFlag.Self,
         effects: [
             {

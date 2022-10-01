@@ -98,10 +98,12 @@ class BattlerAbilitySlot extends HTMLComponent {
     update() {
         const { battle, battler } = getState()
 
-        this.toggleClassName("selected", battle.status === "waiting" && battle.selectedAbility?.id === this.ability.id)
-        this.toggleClassName("inactive", battle.status === "waiting" && battler.energy < getEnergyNeeded(this.ability))
-
         const cooldown = this.ability.cooldown - (battle.turn - 1)
+        const isInactive = cooldown === 0 && battle.status === "waiting" && battler.energy < getEnergyNeeded(this.ability)
+
+        this.toggleClassName("selected", battle.status === "waiting" && battle.selectedAbility?.id === this.ability.id)
+        this.toggleClassName("inactive", isInactive)
+
         this.toggleClassName("hide", cooldown <= 0, "#cooldown")
         this.toggleClassName("hide", cooldown > 0, "#energy")
         this.setText("#cooldown", cooldown)
