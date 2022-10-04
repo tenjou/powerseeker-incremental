@@ -50,9 +50,9 @@ export function toggleBattlerInactive(battlerId: BattlerId, inactive: boolean) {
     toggleClassName(`battler:${battlerId}`, "inactive", inactive)
 }
 
-export function addBattlerScrollingText(battlerId: BattlerId, text: string, color: string) {
+export function addBattlerScrollingText(battlerId: BattlerId, text: string, color: string, icon: string | null) {
     const element = findBattlerElement(battlerId)
-    element.addScrollingText(text, color)
+    element.addScrollingText(text, color, icon)
 }
 
 export function addBattlerHealth(battlerId: BattlerId, value: number) {
@@ -96,10 +96,9 @@ class BattlerItem extends HTMLComponent {
         super(template)
     }
 
-    addScrollingText(text: string, color: string) {
+    addScrollingText(text: string, color: string, icon: string | null) {
         const scrollingText = new ScrollingText()
-        scrollingText.style.color = color
-        scrollingText.innerText = text
+        scrollingText.setup(text, color, icon)
         this.shadowRoot?.appendChild(scrollingText)
     }
 

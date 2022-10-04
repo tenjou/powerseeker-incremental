@@ -406,8 +406,6 @@ function nextAction() {
                     break
                 }
             }
-
-            targetsEffects[n] = targetEffects
         }
 
         if (abilityConfig.duration > 0) {
@@ -418,6 +416,8 @@ function nextAction() {
                 power: 0,
             })
         }
+
+        targetsEffects[n] = targetEffects
 
         removeExpiredEffects(target)
         tryApplyEffects(caster, target, action.ability, abilityConfig)

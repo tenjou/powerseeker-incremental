@@ -38,6 +38,7 @@ interface AnimationSkillUse extends BattleAnimationBasic {
 
 interface AnimationScrollingText extends BattleAnimationBasic {
     type: "scrolling-text"
+    abilityId: AbilityId | null
     value: number
     flags: BattleActionFlag
 }
@@ -60,6 +61,7 @@ function activateAnimation(animation: Animation) {
 
         case "scrolling-text": {
             const color = animation.value >= 0 ? "#8bc34a" : "#f44336"
+            const icon = animation.abilityId ? `assets/icon/ability/${animation.abilityId}.png` : null
 
             let text = `${Math.abs(animation.value)}`
             if (animation.flags & BattleActionFlag.Miss) {
@@ -68,7 +70,7 @@ function activateAnimation(animation: Animation) {
                 text += " !"
             }
 
-            addBattlerScrollingText(animation.battlerId, text, color)
+            addBattlerScrollingText(animation.battlerId, text, color, icon)
             addBattlerHealth(animation.battlerId, animation.value)
             break
         }
@@ -158,6 +160,7 @@ export function addAnimationsFromLog(log: BattleActionLog) {
             animations.push({
                 type: "scrolling-text",
                 battlerId: effect.battlerId,
+                abilityId: effect.abilityId,
                 tStart: tEffectStart,
                 tEnd: tEffectStart + attackAnimationLength,
                 flags: effect.flags,
