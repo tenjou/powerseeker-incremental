@@ -14,7 +14,16 @@ import { addItem } from "./../inventory/inventory"
 import { LoadoutAbility } from "./../loadout/loadout-types"
 import { openPopup } from "./../popup"
 import { shuffle } from "./../utils"
-import { Battle, BattleAction, BattleActionLog, BattleActionTarget, BattleLootItem, Battler, BattleResult } from "./battle-types"
+import {
+    Battle,
+    BattleAction,
+    BattleActionFlag,
+    BattleActionLog,
+    BattleActionTarget as BattleActionEffect,
+    BattleLootItem,
+    Battler,
+    BattleResult,
+} from "./battle-types"
 import { calculatePower, getActionSpeed } from "./battle-utils"
 import { addBattler, createMonsterBattler, loadBattlers } from "./battler"
 import { loadAbilities, renderAbilities } from "./ui/battle-ability"
@@ -329,21 +338,21 @@ function nextAction() {
     const targets = targetOpponent(caster, action.targetId, abilityConfig)
 
     let targetHasDied = false
-    const actionTargets: BattleActionTarget[] = new Array(targets.length)
+    const targetsEffects: BattleActionEffect[][] = new Array(targets.length)
 
     for (let n = 0; n < targets.length; n += 1) {
         const target = targets[n]
+        const targetEffects = []
 
         for (const effect of abilityConfig.effects) {
             let power = 0
-            let isCritical = false
-            let isMiss = false
+            let flags = 0
 
             switch (effect.type) {
                 case "hp-minus": {
                     const hitChance = 100 + caster.stats.accuracy - target.stats.evasion
                     if (!roll(hitChance)) {
-                        isMiss = true
+                        flags |= BattleActionFlag.Miss
                         power = -1
                         break
                     }
@@ -352,16 +361,25 @@ function nextAction() {
 
                     const criticalChance = caster.stats.critical - target.stats.critical
                     if (roll(criticalChance)) {
-                        isCritical = true
+                        flags |= BattleActionFlag.Critical
                         power *= 1.25 | 0
                     }
 
-                    target.health += power
-                    if (target.health <= 0) {
-                        target.health = 0
-                        targetHasDied = true
-                        removeBattlerFromTeam(target)
+                    if (target.health > 0) {
+                        target.health += power
+                        if (target.health <= 0) {
+                            target.health = 0
+                            targetHasDied = true
+                            removeBattlerFromTeam(target)
+                        }
                     }
+
+                    targetEffects.push({
+                        battlerId: target.id,
+                        abilityId: null,
+                        flags,
+                        power,
+                    })
                     break
                 }
 
@@ -370,7 +388,7 @@ function nextAction() {
 
                     const criticalChance = 100 + caster.stats.critical
                     if (roll(criticalChance)) {
-                        isCritical = true
+                        flags |= BattleActionFlag.Critical
                         power *= 1.25 | 0
                     }
 
@@ -378,16 +396,27 @@ function nextAction() {
                     if (target.health > target.stats.health) {
                         target.health = target.stats.health
                     }
+
+                    targetEffects.push({
+                        battlerId: target.id,
+                        abilityId: null,
+                        flags,
+                        power,
+                    })
                     break
                 }
             }
 
-            actionTargets[n] = {
+            targetsEffects[n] = targetEffects
+        }
+
+        if (abilityConfig.duration > 0) {
+            targetEffects.push({
                 battlerId: target.id,
-                isCritical,
-                isMiss,
-                power,
-            }
+                abilityId: abilityConfig.id,
+                flags: 0,
+                power: 0,
+            })
         }
 
         removeExpiredEffects(target)
@@ -397,15 +426,13 @@ function nextAction() {
     const logEntry: BattleActionLog = {
         abilityId: action.ability.id,
         casterId: action.casterId,
-        targets: actionTargets,
+        targets: targetsEffects,
         energy: -energyNeeded,
     }
     const turnLog = battle.log[battle.turn - 1]
     turnLog.push(logEntry)
 
-    addAnimationsFromLog(logEntry)
-
-    battle.tNextAction = battle.tCurrent + 2000
+    battle.tNextAction = addAnimationsFromLog(logEntry)
 
     if (targetHasDied) {
         battle.isEnding = isTeamDead(battle.teamA) || isTeamDead(battle.teamB)
@@ -529,7 +556,7 @@ function tryApplyEffects(caster: Battler, target: Battler, ability: LoadoutAbili
     const { battle } = getState()
 
     const duration = battle.turn + abilityConfig.duration
-    const effects = abilityConfig.effects.map<AbilityEffect>((effect) => {
+    const effects = abilityConfig.durationEffects.map<AbilityEffect>((effect) => {
         return {
             power: ability.rank * effect.power,
             stat: effect.stat,

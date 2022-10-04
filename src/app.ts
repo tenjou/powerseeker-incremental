@@ -67,6 +67,7 @@ function createEmptyProfile() {
     equipAbility("bash")
     equipAbility("heal")
     equipAbility("berserk")
+    equipAbility("poison")
 }
 
 function load() {

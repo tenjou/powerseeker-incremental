@@ -38,7 +38,7 @@ template.innerHTML = html`<style>
         @keyframes scrolling-text {
             0% {
                 opacity: 1;
-                transform: translate(-50%, 0px) scale(2, 2);
+                transform: translate(-50%, 0px) scale(3, 3);
             }
             15% {
                 opacity: 1;

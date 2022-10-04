@@ -133,6 +133,9 @@ const local: Record<string, LocalEntry> = {
     berserk: {
         en: "Berserk",
     },
+    poison: {
+        en: "Poison",
+    },
     axe: {
         en: "Axe",
     },

@@ -152,6 +152,7 @@ let state: State = {
         sword_mastery: { id: "sword_mastery", rank: 0 },
         axe_mastery: { id: "axe_mastery", rank: 0 },
         berserk: { id: "berserk", rank: 1 },
+        poison: { id: "poison", rank: 1 },
     },
     loadout: {
         abilities: [],

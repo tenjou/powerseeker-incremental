@@ -1,6 +1,6 @@
 import { AbilityId } from "../../config/ability-configs"
 import { BattlerId } from "../../types"
-import { BattleActionLog } from "../battle-types"
+import { BattleActionFlag, BattleActionLog } from "../battle-types"
 import {
     addBattlerHealth,
     addBattlerEnergy,
@@ -9,6 +9,8 @@ import {
     toggleBattlerShake,
     findBattlerElement,
 } from "./battler-item"
+
+const attackAnimationLength = 300
 
 const animations: Animation[] = []
 const animationsActive: Animation[] = []
@@ -37,8 +39,7 @@ interface AnimationSkillUse extends BattleAnimationBasic {
 interface AnimationScrollingText extends BattleAnimationBasic {
     type: "scrolling-text"
     value: number
-    isCritical: boolean
-    isMiss: boolean
+    flags: BattleActionFlag
 }
 
 export type Animation = AnimationForward | AnimationSkillUse | AnimationShake | AnimationScrollingText
@@ -61,9 +62,9 @@ function activateAnimation(animation: Animation) {
             const color = animation.value >= 0 ? "#8bc34a" : "#f44336"
 
             let text = `${Math.abs(animation.value)}`
-            if (animation.isMiss) {
-                text = "miss"
-            } else {
+            if (animation.flags & BattleActionFlag.Miss) {
+                text = "Miss"
+            } else if (animation.flags & BattleActionFlag.Critical) {
                 text += " !"
             }
 
@@ -116,42 +117,61 @@ export function updateBattleAnimation(tDelta: number) {
 }
 
 export function addAnimationsFromLog(log: BattleActionLog) {
-    animations.push({
+    let tStart = tAnim
+
+    const forwardAnim: Animation = {
         type: "forward",
         battlerId: log.casterId,
-        tStart: tAnim,
-        tEnd: tAnim + 1600,
-    })
+        tStart,
+        tEnd: tStart,
+    }
+    animations.push(forwardAnim)
 
+    tStart += 100
     animations.push({
         type: "ability-use",
         battlerId: log.casterId,
-        tStart: tAnim + 100,
-        tEnd: tAnim + 100 + 800,
+        tStart,
+        tEnd: tStart + 800,
         abilityId: log.abilityId,
         energy: log.energy,
     })
 
-    for (const target of log.targets) {
-        if (target.power < 0) {
-            animations.push({
-                type: "shake",
-                battlerId: target.battlerId,
-                tStart: tAnim + 800,
-                tEnd: tAnim + 800 + 200,
-            })
-        }
+    tStart += 800
+    let tEffectStart = 0
 
-        animations.push({
-            type: "scrolling-text",
-            battlerId: target.battlerId,
-            tStart: tAnim + 800,
-            tEnd: tAnim + 800 + 200,
-            isCritical: target.isCritical,
-            isMiss: target.isMiss,
-            value: target.power,
-        })
+    for (const targetEffects of log.targets) {
+        let alreadyShaked = false
+        tEffectStart = tStart
+
+        for (const effect of targetEffects) {
+            if (effect.power < 0 && !alreadyShaked) {
+                alreadyShaked = true
+                animations.push({
+                    type: "shake",
+                    battlerId: effect.battlerId,
+                    tStart: tEffectStart,
+                    tEnd: tEffectStart + attackAnimationLength,
+                })
+            }
+
+            animations.push({
+                type: "scrolling-text",
+                battlerId: effect.battlerId,
+                tStart: tEffectStart,
+                tEnd: tEffectStart + attackAnimationLength,
+                flags: effect.flags,
+                value: effect.power,
+            })
+
+            tEffectStart += attackAnimationLength
+        }
     }
 
+    tStart = tEffectStart
+    forwardAnim.tEnd = tStart
+
     animations.sort((a, b) => b.tStart - a.tStart)
+
+    return tStart
 }

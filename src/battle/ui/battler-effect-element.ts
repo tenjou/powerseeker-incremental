@@ -24,7 +24,7 @@ battlerEffectTemplate.innerHTML = html`<style>
         :host {
             position: relative;
             margin: 0 1px;
-            background: black;
+            background: #bdbdbd;
         }
         img {
             display: block;

@@ -61,17 +61,22 @@ export interface BattlerView {
     energyMax: number
 }
 
+export enum BattleActionFlag {
+    Critical = 1,
+    Miss = 2,
+}
+
 export interface BattleActionTarget {
     battlerId: BattlerId
+    abilityId: AbilityId | null
     power: number
-    isCritical: boolean
-    isMiss: boolean
+    flags: BattleActionFlag
 }
 
 export interface BattleActionLog {
     abilityId: AbilityId
     casterId: BattlerId
-    targets: BattleActionTarget[]
+    targets: BattleActionTarget[][]
     energy: number
 }
 
