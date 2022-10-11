@@ -8,6 +8,8 @@ export interface CharacterStats {
     evasion: number
     speed: number
     critical: number
+    regenHealth: number
+    regenEnergy: number
 }
 
 export type CharacterStatType = keyof CharacterStats

@@ -49,6 +49,8 @@ export function createMonsterBattler(monsterId: MonsterId): Battler {
             evasion: 0,
             healing: 0,
             speed: monsterConfig.speed,
+            regenEnergy: 1,
+            regenHealth: 1,
         },
         effects: [],
         isTeamA: false,

@@ -96,5 +96,7 @@ export function createEmptyStats(): CharacterStats {
         evasion: 1,
         healing: 1,
         speed: 100,
+        regenEnergy: 1,
+        regenHealth: 1,
     }
 }

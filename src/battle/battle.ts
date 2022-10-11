@@ -22,12 +22,13 @@ import {
     BattleActionTarget as BattleActionEffect,
     BattleLootItem,
     Battler,
+    BattleRegen,
     BattleResult,
 } from "./battle-types"
 import { calculatePower, getActionSpeed } from "./battle-utils"
 import { addBattler, createMonsterBattler, loadBattlers } from "./battler"
 import { loadAbilities, renderAbilities } from "./ui/battle-ability"
-import { addAnimationsFromLog, updateBattleAnimation } from "./ui/battle-animation"
+import { addAnimationsFromLog, addRegenAnimations, updateBattleAnimation } from "./ui/battle-animation"
 import "./ui/battle-result-popup"
 import { updateBattlerEffects } from "./ui/battler-item"
 
@@ -297,6 +298,38 @@ function nextTurn() {
     renderBattleStatus()
 }
 
+function regenTurn() {
+    const { battle } = getState()
+
+    battle.status = "regen"
+
+    const regens: BattleRegen[] = []
+
+    for (const battler of battle.battlers) {
+        if (battler.health <= 0) {
+            continue
+        }
+
+        battler.health += battler.stats.regenHealth
+        if (battler.health > battler.stats.health) {
+            battler.health = battler.stats.health
+        }
+
+        battler.energy += battler.stats.regenEnergy
+        if (battler.energy > battler.stats.energy) {
+            battler.energy = battler.stats.energy
+        }
+
+        regens.push({
+            battlerId: battler.id,
+            health: battler.stats.regenHealth,
+            energy: battler.stats.regenEnergy,
+        })
+    }
+
+    battle.tNextAction = addRegenAnimations(battle.tCurrent, regens)
+}
+
 function nextAction() {
     const { battle } = getState()
 
@@ -320,7 +353,7 @@ function nextAction() {
     }
 
     if (!action) {
-        nextTurn()
+        regenTurn()
         return
     }
     if (!caster) {
@@ -432,7 +465,7 @@ function nextAction() {
     const turnLog = battle.log[battle.turn - 1]
     turnLog.push(logEntry)
 
-    battle.tNextAction = addAnimationsFromLog(logEntry)
+    battle.tNextAction = addAnimationsFromLog(battle.tCurrent, logEntry)
 
     if (targetHasDied) {
         battle.isEnding = isTeamDead(battle.teamA) || isTeamDead(battle.teamB)
@@ -501,13 +534,26 @@ export function updateBattle(tDelta: number) {
 
     battle.tCurrent += tDelta
 
-    updateBattleAnimation(tDelta)
+    updateBattleAnimation(battle.tCurrent)
 
-    if (battle.status === "waiting" && battle.isAuto) {
-        executeAutoBattle()
-    }
-    if (battle.status === "executing" && battle.tNextAction <= battle.tCurrent) {
-        nextAction()
+    switch (battle.status) {
+        case "waiting":
+            if (battle.isAuto) {
+                executeAutoBattle()
+            }
+            break
+
+        case "executing":
+            if (battle.tNextAction <= battle.tCurrent) {
+                nextAction()
+            }
+            break
+
+        case "regen":
+            if (battle.tNextAction <= battle.tCurrent) {
+                nextTurn()
+            }
+            break
     }
 }
 

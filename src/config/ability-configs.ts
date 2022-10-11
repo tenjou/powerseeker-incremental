@@ -150,13 +150,12 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
         duration: 2,
         durationEffects: [],
         flags: AbilityFlag.Offensive,
-        effects: [],
-        // effects: [
-        //     {
-        //         type: "hp-minus",
-        //         power: 1,
-        //         stat: "attack",
-        //     },
-        // ],
+        effects: [
+            {
+                type: "hp-minus",
+                power: 1,
+                stat: "attack",
+            },
+        ],
     },
 }

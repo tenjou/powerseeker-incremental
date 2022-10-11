@@ -17,7 +17,7 @@ export interface BattleAction {
 export interface Battle {
     id: number
     encounterId: EncounterId
-    status: "preparing" | "waiting" | "executing" | "ended"
+    status: "preparing" | "waiting" | "executing" | "regen" | "ended"
     battlers: Battler[]
     battlersView: BattlerView[]
     teamA: BattlerId[]
@@ -64,6 +64,7 @@ export interface BattlerView {
 export enum BattleActionFlag {
     Critical = 1,
     Miss = 2,
+    Energy = 4,
 }
 
 export interface BattleActionTarget {
@@ -92,4 +93,10 @@ export interface BattleResult {
     exp: number
     gold: number
     loot: BattleLootItem[]
+}
+
+export interface BattleRegen {
+    battlerId: BattlerId
+    health: number
+    energy: number
 }

@@ -1,20 +1,20 @@
 import { AbilityId } from "../../config/ability-configs"
 import { BattlerId } from "../../types"
-import { BattleActionFlag, BattleActionLog } from "../battle-types"
+import { BattleActionFlag, BattleActionLog, BattleRegen } from "../battle-types"
 import {
-    addBattlerHealth,
     addBattlerEnergy,
+    addBattlerHealth,
     addBattlerScrollingText,
+    findBattlerElement,
     toggleBattlerForward,
     toggleBattlerShake,
-    findBattlerElement,
 } from "./battler-item"
 
-const attackAnimationLength = 300
+const attackAnimationLength = 450
+const animationRegenDelay = 1000
 
 const animations: Animation[] = []
 const animationsActive: Animation[] = []
-let tAnim = 0
 
 export interface BattleAnimationBasic {
     battlerId: BattlerId
@@ -60,8 +60,15 @@ function activateAnimation(animation: Animation) {
             break
 
         case "scrolling-text": {
-            const color = animation.value >= 0 ? "#8bc34a" : "#f44336"
+            console.log("activate", animation)
             const icon = animation.abilityId ? `assets/icon/ability/${animation.abilityId}.png` : null
+
+            let color
+            if (animation.flags & BattleActionFlag.Energy) {
+                color = animation.value >= 0 ? "#03a9f4" : "#9c27b0"
+            } else {
+                color = animation.value >= 0 ? "#8bc34a" : "#f44336"
+            }
 
             let text = `${Math.abs(animation.value)}`
             if (animation.flags & BattleActionFlag.Miss) {
@@ -71,7 +78,11 @@ function activateAnimation(animation: Animation) {
             }
 
             addBattlerScrollingText(animation.battlerId, text, color, icon)
-            addBattlerHealth(animation.battlerId, animation.value)
+            if (animation.flags & BattleActionFlag.Energy) {
+                addBattlerEnergy(animation.battlerId, animation.value)
+            } else {
+                addBattlerHealth(animation.battlerId, animation.value)
+            }
             break
         }
     }
@@ -96,12 +107,10 @@ function deactivateAnimation(animation: Animation) {
     }
 }
 
-export function updateBattleAnimation(tDelta: number) {
-    tAnim += tDelta
-
+export function updateBattleAnimation(tCurrent: number) {
     if (animations.length > 0) {
         const animation = animations[animations.length - 1]
-        if (animation.tStart <= tAnim) {
+        if (animation.tStart <= tCurrent) {
             animations.pop()
             animationsActive.push(animation)
             animationsActive.sort((a, b) => b.tEnd - a.tEnd)
@@ -111,15 +120,15 @@ export function updateBattleAnimation(tDelta: number) {
 
     if (animationsActive.length > 0) {
         const animation = animationsActive[animationsActive.length - 1]
-        if (animation.tEnd <= tAnim) {
+        if (animation.tEnd <= tCurrent) {
             animationsActive.pop()
             deactivateAnimation(animation)
         }
     }
 }
 
-export function addAnimationsFromLog(log: BattleActionLog) {
-    let tStart = tAnim
+export function addAnimationsFromLog(tCurrent: number, log: BattleActionLog) {
+    let tStart = tCurrent
 
     const forwardAnim: Animation = {
         type: "forward",
@@ -133,7 +142,7 @@ export function addAnimationsFromLog(log: BattleActionLog) {
     animations.push({
         type: "ability-use",
         battlerId: log.casterId,
-        tStart,
+        tStart: tStart,
         tEnd: tStart + 800,
         abilityId: log.abilityId,
         energy: log.energy,
@@ -177,4 +186,48 @@ export function addAnimationsFromLog(log: BattleActionLog) {
     animations.sort((a, b) => b.tStart - a.tStart)
 
     return tStart
+}
+
+export function addRegenAnimations(tCurrent: number, regens: BattleRegen[]) {
+    let tWaitMax = tCurrent + animationRegenDelay
+
+    for (const entry of regens) {
+        let tStart = tCurrent + animationRegenDelay
+
+        if (entry.health !== 0) {
+            animations.push({
+                type: "scrolling-text",
+                battlerId: entry.battlerId,
+                abilityId: null,
+                tStart,
+                tEnd: tStart + attackAnimationLength,
+                flags: 0,
+                value: entry.health,
+            })
+
+            tStart += attackAnimationLength
+        }
+
+        if (entry.energy !== 0) {
+            animations.push({
+                type: "scrolling-text",
+                battlerId: entry.battlerId,
+                abilityId: null,
+                tStart,
+                tEnd: tStart + attackAnimationLength,
+                flags: BattleActionFlag.Energy,
+                value: entry.energy,
+            })
+
+            tStart += attackAnimationLength
+        }
+
+        if (tWaitMax < tStart) {
+            tWaitMax = tStart
+        }
+    }
+
+    animations.sort((a, b) => b.tStart - a.tStart)
+
+    return tWaitMax
 }
