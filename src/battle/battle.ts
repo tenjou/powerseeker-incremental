@@ -419,7 +419,7 @@ function nextAction() {
                         }
                     }
 
-                    power = calculatePower(caster.stats, effect) * -1
+                    power = calculatePower(caster.stats, effect)
 
                     const criticalChance = caster.stats.critical - target.stats.critical
                     if (roll(criticalChance)) {
