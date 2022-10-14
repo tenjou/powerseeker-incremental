@@ -148,12 +148,18 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
         energy: 4,
         cooldown: 0,
         duration: 2,
-        durationEffects: [],
+        durationEffects: [
+            {
+                type: "stat-plus",
+                power: -50,
+                stat: "regenHealth",
+            },
+        ],
         flags: AbilityFlag.Offensive,
         effects: [
             {
-                type: "hp-minus",
-                power: 1,
+                type: "health",
+                power: -1,
                 stat: "attack",
             },
         ],

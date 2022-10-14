@@ -1,6 +1,6 @@
 import { AbilityId } from "../../config/ability-configs"
 import { BattlerId } from "../../types"
-import { BattleActionFlag, BattleActionLog, BattleRegen } from "../battle-types"
+import { BattleActionFlag, BattleActionLog, BattleRegen, BattleRegenTarget } from "../battle-types"
 import {
     addBattlerEnergy,
     addBattlerHealth,
@@ -60,7 +60,6 @@ function activateAnimation(animation: Animation) {
             break
 
         case "scrolling-text": {
-            console.log("activate", animation)
             const icon = animation.abilityId ? `assets/icon/ability/${animation.abilityId}.png` : null
 
             let color
@@ -70,14 +69,17 @@ function activateAnimation(animation: Animation) {
                 color = animation.value >= 0 ? "#8bc34a" : "#f44336"
             }
 
+            let hideText = animation.value === 0
             let text = `${Math.abs(animation.value)}`
             if (animation.flags & BattleActionFlag.Miss) {
+                hideText = false
                 text = "Miss"
             } else if (animation.flags & BattleActionFlag.Critical) {
+                hideText = false
                 text += " !"
             }
 
-            addBattlerScrollingText(animation.battlerId, text, color, icon)
+            addBattlerScrollingText(animation.battlerId, hideText ? "" : text, color, icon)
             if (animation.flags & BattleActionFlag.Energy) {
                 addBattlerEnergy(animation.battlerId, animation.value)
             } else {
@@ -188,38 +190,24 @@ export function addAnimationsFromLog(tCurrent: number, log: BattleActionLog) {
     return tStart
 }
 
-export function addRegenAnimations(tCurrent: number, regens: BattleRegen[]) {
+export function addRegenAnimations(tCurrent: number, regenTargets: BattleRegenTarget[]) {
     let tWaitMax = tCurrent + animationRegenDelay
 
-    for (const entry of regens) {
-        let tStart = tCurrent + animationRegenDelay
+    for (const target of regenTargets) {
+        let tStart = tCurrent
 
-        if (entry.health !== 0) {
+        for (const regen of target.regens) {
             animations.push({
                 type: "scrolling-text",
-                battlerId: entry.battlerId,
-                abilityId: null,
+                battlerId: target.battlerId,
+                abilityId: regen.abilityId,
                 tStart,
                 tEnd: tStart + attackAnimationLength,
-                flags: 0,
-                value: entry.health,
+                flags: regen.flags,
+                value: regen.value,
             })
 
-            tStart += attackAnimationLength
-        }
-
-        if (entry.energy !== 0) {
-            animations.push({
-                type: "scrolling-text",
-                battlerId: entry.battlerId,
-                abilityId: null,
-                tStart,
-                tEnd: tStart + attackAnimationLength,
-                flags: BattleActionFlag.Energy,
-                value: entry.energy,
-            })
-
-            tStart += attackAnimationLength
+            tStart += animationRegenDelay
         }
 
         if (tWaitMax < tStart) {

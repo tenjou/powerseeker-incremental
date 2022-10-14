@@ -23,6 +23,7 @@ import {
     BattleLootItem,
     Battler,
     BattleRegen,
+    BattleRegenTarget,
     BattleResult,
 } from "./battle-types"
 import { calculatePower, getActionSpeed } from "./battle-utils"
@@ -303,31 +304,57 @@ function regenTurn() {
 
     battle.status = "regen"
 
-    const regens: BattleRegen[] = []
+    const targetRegens: BattleRegenTarget[] = []
+    let battlerHasDied = false
 
     for (const battler of battle.battlers) {
         if (battler.health <= 0) {
             continue
         }
 
-        battler.health += battler.stats.regenHealth
-        if (battler.health > battler.stats.health) {
-            battler.health = battler.stats.health
+        const regens: BattleRegen[] = []
+
+        if (battler.stats.regenHealth) {
+            battler.health += battler.stats.regenHealth
+            regens.push({
+                abilityId: null,
+                value: battler.stats.regenHealth,
+                flags: 0,
+            })
+
+            if (battler.health <= 0) {
+                battler.health = 0
+                battlerHasDied = true
+                removeBattlerFromTeam(battler)
+            } else if (battler.health > battler.stats.health) {
+                battler.health = battler.stats.health
+            }
         }
 
-        battler.energy += battler.stats.regenEnergy
-        if (battler.energy > battler.stats.energy) {
-            battler.energy = battler.stats.energy
+        if (battler.health > 0 && battler.stats.regenEnergy) {
+            battler.energy += battler.stats.regenEnergy
+            regens.push({
+                abilityId: null,
+                value: battler.stats.regenEnergy,
+                flags: BattleActionFlag.Energy,
+            })
+
+            if (battler.energy > battler.stats.energy) {
+                battler.energy = battler.stats.energy
+            }
         }
 
-        regens.push({
+        targetRegens.push({
             battlerId: battler.id,
-            health: battler.stats.regenHealth,
-            energy: battler.stats.regenEnergy,
+            regens,
         })
     }
 
-    battle.tNextAction = addRegenAnimations(battle.tCurrent, regens)
+    battle.tNextAction = addRegenAnimations(battle.tCurrent, targetRegens)
+
+    if (battlerHasDied) {
+        battle.isEnding = isTeamDead(battle.teamA) || isTeamDead(battle.teamB)
+    }
 }
 
 function nextAction() {
@@ -610,7 +637,7 @@ function tryApplyEffects(caster: Battler, target: Battler, ability: LoadoutAbili
         }
     })
 
-    const prevEffect = target.effects.find((effect) => effect.abilityId === abilityConfig.id)
+    const prevEffect = target.effects.find((effect) => effect.casterId === caster.id && effect.abilityId === abilityConfig.id)
     if (prevEffect) {
         for (const effect of prevEffect.effects) {
             target.stats[effect.stat] -= effect.power

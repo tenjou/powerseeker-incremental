@@ -96,7 +96,12 @@ export interface BattleResult {
 }
 
 export interface BattleRegen {
+    abilityId: AbilityId | null
+    value: number
+    flags: BattleActionFlag
+}
+
+export interface BattleRegenTarget {
     battlerId: BattlerId
-    health: number
-    energy: number
+    regens: BattleRegen[]
 }
