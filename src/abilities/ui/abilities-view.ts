@@ -61,20 +61,21 @@ export function getAbilityDescription(abilityConfig: AbilityConfig, abilityRank?
     for (const entry of regexDescription) {
         const effectId = Number(entry.slice(1))
         const effect = effects[effectId]
-        const color = getAbilityEffectColor(effect)
         const power = getAbilityEffectPower(effect, abilityRank)
+        const color = getAbilityEffectColor(effect, power)
 
-        description = description.replace(entry, `<x-text class="${color} bold">${power}</x-text>`)
+        description = description.replace(entry, `<x-text class="${color} bold">${Math.abs(power)}</x-text>`)
     }
 
     return description
 }
 
-function getAbilityEffectColor(effect: AbilityEffect) {
+function getAbilityEffectColor(effect: AbilityEffect, power: number) {
     switch (effect.type) {
-        case "hp-minus":
-            return "red"
-        case "hp-plus":
-            return "green"
+        case "health":
+            return power > 0 ? "green" : "red"
+
+        case "energy":
+            return power > 0 ? "energy-up" : "energy-down"
     }
 }

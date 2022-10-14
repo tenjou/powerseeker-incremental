@@ -409,12 +409,14 @@ function nextAction() {
             let flags = 0
 
             switch (effect.type) {
-                case "hp-minus": {
-                    const hitChance = 100 + caster.stats.accuracy - target.stats.evasion
-                    if (!roll(hitChance)) {
-                        flags |= BattleActionFlag.Miss
-                        power = -1
-                        break
+                case "health": {
+                    if (abilityConfig.flags & AbilityFlag.Missable) {
+                        const hitChance = 100 + caster.stats.accuracy - target.stats.evasion
+                        if (!roll(hitChance)) {
+                            flags |= BattleActionFlag.Miss
+                            power = -1
+                            break
+                        }
                     }
 
                     power = calculatePower(caster.stats, effect) * -1
@@ -425,35 +427,13 @@ function nextAction() {
                         power *= 1.25 | 0
                     }
 
-                    if (target.health > 0) {
-                        target.health += power
-                        if (target.health <= 0) {
-                            target.health = 0
-                            targetHasDied = true
-                            removeBattlerFromTeam(target)
-                        }
-                    }
-
-                    targetEffects.push({
-                        battlerId: target.id,
-                        abilityId: null,
-                        flags,
-                        power,
-                    })
-                    break
-                }
-
-                case "hp-plus": {
-                    power = calculatePower(caster.stats, effect)
-
-                    const criticalChance = 100 + caster.stats.critical
-                    if (roll(criticalChance)) {
-                        flags |= BattleActionFlag.Critical
-                        power *= 1.25 | 0
-                    }
-
                     target.health += power
-                    if (target.health > target.stats.health) {
+
+                    if (target.health <= 0) {
+                        target.health = 0
+                        targetHasDied = true
+                        removeBattlerFromTeam(target)
+                    } else if (target.health > target.stats.health) {
                         target.health = target.stats.health
                     }
 

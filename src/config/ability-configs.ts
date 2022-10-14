@@ -8,6 +8,7 @@ export enum AbilityFlag {
     Offensive = 1,
     AoE = 2,
     Self = 4,
+    Missable = 8,
 }
 
 interface BasicAbilityConfig {
@@ -39,12 +40,12 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
         cooldown: 0,
         duration: 0,
         durationEffects: [],
-        flags: AbilityFlag.Offensive,
+        flags: AbilityFlag.Offensive | AbilityFlag.Missable,
         description: "Attack an opponent, causing %0 <semibold>physical</semibold> damage.",
         effects: [
             {
-                type: "hp-minus",
-                power: 1,
+                type: "health",
+                power: -1,
                 stat: "attack",
             },
         ],
@@ -56,12 +57,12 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
         cooldown: 0,
         duration: 0,
         durationEffects: [],
-        flags: AbilityFlag.Offensive,
+        flags: AbilityFlag.Offensive | AbilityFlag.Missable,
         description: "Attack an opponent, causing %0 <semibold>physical</semibold> damage.",
         effects: [
             {
-                type: "hp-minus",
-                power: 2,
+                type: "health",
+                power: -2,
                 stat: "attack",
             },
         ],
@@ -77,7 +78,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
         description: "Restore %0 health to an ally.",
         effects: [
             {
-                type: "hp-plus",
+                type: "health",
                 power: 1,
                 stat: "healing",
             },
@@ -94,8 +95,8 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
         description: "Attack all opponents",
         effects: [
             {
-                type: "hp-minus",
-                power: 1,
+                type: "health",
+                power: -1,
                 stat: "attack",
             },
         ],
@@ -106,7 +107,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
         description: "Increase damage with swords.",
         effects: [
             {
-                type: "stat-plus",
+                type: "stat",
                 power: 1,
                 stat: "attack",
             },
@@ -118,7 +119,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
         description: "Increase damage with axes.",
         effects: [
             {
-                type: "stat-plus",
+                type: "stat",
                 power: 1,
                 stat: "attack",
             },
@@ -133,7 +134,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
         duration: 1,
         durationEffects: [
             {
-                type: "stat-plus",
+                type: "stat",
                 power: 100,
                 stat: "attack",
             },
@@ -150,7 +151,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
         duration: 2,
         durationEffects: [
             {
-                type: "stat-plus",
+                type: "stat",
                 power: -50,
                 stat: "regenHealth",
             },

@@ -43,6 +43,18 @@ template.innerHTML = html`<style>
         :host(.green) {
             color: #4caf50;
         }
+        :host(.energy-up) {
+            color: #03a9f4;
+        }
+        :host(.energy-down) {
+            color: #9c27b0;
+        }
+        :host(.health-up) {
+            color: #8bc34a;
+        }
+        :host(.health-down) {
+            color: #f44336;
+        }
     </style>
 
     <slot></slot>`
