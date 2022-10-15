@@ -139,7 +139,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
                 stat: "attack",
             },
         ],
-        flags: AbilityFlag.Offensive | AbilityFlag.AoE,
+        flags: AbilityFlag.AoE,
         effects: [],
     },
     poison: {
@@ -152,7 +152,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
         durationEffects: [
             {
                 type: "stat",
-                power: -50,
+                power: -1,
                 stat: "regenHealth",
             },
         ],

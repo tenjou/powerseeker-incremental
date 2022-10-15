@@ -210,6 +210,10 @@ template.innerHTML = html`<style>
             opacity: 0.5;
             pointer-events: none;
         }
+        :host-context(x-row.inactive) {
+            opacity: 0.25;
+            pointer-events: none;
+        }
 
         :host(:hover) {
             outline: 3px solid white;
