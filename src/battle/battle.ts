@@ -214,6 +214,15 @@ export function useSelectedAbility(targetId: BattlerId) {
         return
     }
 
+    const abilityConfig = AbilityConfigs[battle.selectedAbility.id]
+    if (abilityConfig.type === "instant") {
+        const needTeamA = abilityConfig.flags & AbilityFlag.Offensive ? !battler.isTeamA : battler.isTeamA
+        const target = battle.battlers[targetId]
+        if (target.isTeamA !== needTeamA) {
+            return
+        }
+    }
+
     battle.actions.push({
         casterId: battler.id,
         targetId,
@@ -530,6 +539,7 @@ function removeBattlerFromTeam(battlerToRemove: Battler) {
     }
 
     team.splice(index, 1)
+    removeEffects(battlerToRemove)
 }
 
 export function updateBattle(tDelta: number) {
@@ -658,6 +668,12 @@ function removeExpiredEffects(battler: Battler) {
 
         effects.pop()
     }
+
+    updateBattlerEffects(battler.id)
+}
+
+function removeEffects(battler: Battler) {
+    battler.effects.length = 0
 
     updateBattlerEffects(battler.id)
 }
