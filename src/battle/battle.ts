@@ -99,6 +99,10 @@ export function unloadBattle() {
 function endBattle() {
     const state = getState()
 
+    for (const battler of state.battle.battlers) {
+        removeEffects(battler, false)
+    }
+
     state.battle.status = "ended"
     state.battleResult = generateBattleResult()
 
@@ -655,25 +659,44 @@ function tryApplyEffects(caster: Battler, target: Battler, ability: LoadoutAbili
 function removeExpiredEffects(battler: Battler) {
     const { battle } = getState()
 
-    const effects = battler.effects
-    if (effects.length <= 0) {
+    const abilityEffects = battler.effects
+    if (abilityEffects.length <= 0) {
         return
     }
 
-    for (let n = effects.length - 1; n >= 0; n -= 1) {
-        const effect = effects[n]
-        if (effect.duration > battle.turn) {
+    for (let n = abilityEffects.length - 1; n >= 0; n -= 1) {
+        const abilityEffect = abilityEffects[n]
+        if (abilityEffect.duration > battle.turn) {
             return
         }
 
-        effects.pop()
+        for (const effect of abilityEffect.effects) {
+            battler.stats[effect.stat] -= effect.power
+        }
+
+        abilityEffects.pop()
     }
 
     updateBattlerEffects(battler.id)
 }
 
-function removeEffects(battler: Battler) {
-    battler.effects.length = 0
+function removeEffects(battler: Battler, updateUI = true) {
+    const abilityEffects = battler.effects
+    if (abilityEffects.length <= 0) {
+        return
+    }
 
-    updateBattlerEffects(battler.id)
+    for (let n = abilityEffects.length - 1; n >= 0; n -= 1) {
+        const abilityEffect = abilityEffects[n]
+
+        for (const effect of abilityEffect.effects) {
+            battler.stats[effect.stat] -= effect.power
+        }
+
+        abilityEffects.pop()
+    }
+
+    if (updateUI) {
+        updateBattlerEffects(battler.id)
+    }
 }
