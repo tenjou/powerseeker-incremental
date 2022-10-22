@@ -18,10 +18,11 @@ import {
     Battle,
     BattleAction,
     BattleActionFlag,
-    BattleActionLog,
-    BattleActionTarget as BattleActionEffect,
+    BattleBattlerLogs,
+    BattleLog,
     BattleLootItem,
     Battler,
+    BattlerAbilityEffect,
     BattleRegen,
     BattleRegenTarget,
     BattleResult,
@@ -411,11 +412,11 @@ function nextAction() {
     const targets = targetOpponent(caster, action.targetId, abilityConfig)
 
     let targetHasDied = false
-    const targetsEffects: BattleActionEffect[][] = new Array(targets.length)
+    const targetsLogs: BattleLog[][] = new Array(targets.length)
 
     for (let n = 0; n < targets.length; n += 1) {
         const target = targets[n]
-        const targetEffects = []
+        const targetLogs: BattleLog[] = []
 
         for (const effect of abilityConfig.effects) {
             let power = 0
@@ -450,9 +451,9 @@ function nextAction() {
                         target.health = target.stats.health
                     }
 
-                    targetEffects.push({
-                        battlerId: target.id,
-                        abilityId: null,
+                    targetLogs.push({
+                        type: "basic",
+                        targetId: target.id,
                         flags,
                         power,
                     })
@@ -462,24 +463,25 @@ function nextAction() {
         }
 
         if (abilityConfig.duration > 0) {
-            targetEffects.push({
-                battlerId: target.id,
-                abilityId: abilityConfig.id,
-                flags: 0,
-                power: 0,
+            const effect = applyEffects(caster, target, action.ability, abilityConfig)
+
+            targetLogs.push({
+                type: "effect-added",
+                targetId: target.id,
+                effectId: effect.id,
+                duration: effect.duration,
             })
         }
 
-        targetsEffects[n] = targetEffects
+        removeExpiredEffects(target, targetLogs)
 
-        removeExpiredEffects(target)
-        tryApplyEffects(caster, target, action.ability, abilityConfig)
+        targetsLogs[n] = targetLogs
     }
 
-    const logEntry: BattleActionLog = {
+    const logEntry: BattleBattlerLogs = {
         abilityId: action.ability.id,
         casterId: action.casterId,
-        targets: targetsEffects,
+        targets: targetsLogs,
         energy: -energyNeeded,
     }
     const turnLog = battle.log[battle.turn - 1]
@@ -598,6 +600,7 @@ function createBattle(): Battle {
         isTeamA: true,
         isEnding: false,
         isAuto: false,
+        nextEffectId: 0,
     }
 }
 
@@ -615,11 +618,12 @@ function updateBattleAuto() {
     setText("battle-auto", battle.isAuto ? "Auto" : "Manual")
 }
 
-function tryApplyEffects(caster: Battler, target: Battler, ability: LoadoutAbility, abilityConfig: InstantAbilityConfig) {
-    if (!abilityConfig.duration) {
-        return
-    }
-
+function applyEffects(
+    caster: Battler,
+    target: Battler,
+    ability: LoadoutAbility,
+    abilityConfig: InstantAbilityConfig
+): BattlerAbilityEffect {
     const { battle } = getState()
 
     const duration = battle.turn + abilityConfig.duration
@@ -631,22 +635,24 @@ function tryApplyEffects(caster: Battler, target: Battler, ability: LoadoutAbili
         }
     })
 
-    const prevEffect = target.effects.find((effect) => effect.casterId === caster.id && effect.abilityId === abilityConfig.id)
-    if (prevEffect) {
-        for (const effect of prevEffect.effects) {
-            target.stats[effect.stat] -= effect.power
+    let effect = target.effects.find((effect) => effect.casterId === caster.id && effect.abilityId === abilityConfig.id)
+    if (effect) {
+        for (const entry of effect.effects) {
+            target.stats[entry.stat] -= entry.power
         }
 
-        prevEffect.casterId = caster.id
-        prevEffect.duration = duration
-        prevEffect.effects = effects
+        effect.casterId = caster.id
+        effect.duration = duration
+        effect.effects = effects
     } else {
-        target.effects.push({
+        effect = {
+            id: battle.nextEffectId++,
             abilityId: abilityConfig.id,
             casterId: caster.id,
             duration: battle.turn + abilityConfig.duration,
             effects,
-        })
+        }
+        target.effects.push(effect)
     }
 
     target.effects.sort((a, b) => b.duration - a.duration)
@@ -654,9 +660,11 @@ function tryApplyEffects(caster: Battler, target: Battler, ability: LoadoutAbili
     for (const effect of effects) {
         target.stats[effect.stat] += effect.power
     }
+
+    return effect
 }
 
-function removeExpiredEffects(battler: Battler) {
+function removeExpiredEffects(battler: Battler, targetLogs: BattleLog[]) {
     const { battle } = getState()
 
     const abilityEffects = battler.effects
@@ -675,6 +683,12 @@ function removeExpiredEffects(battler: Battler) {
         }
 
         abilityEffects.pop()
+
+        targetLogs.push({
+            type: "effect-removed",
+            effectId: abilityEffect.id,
+            targetId: battler.id,
+        })
     }
 
     updateBattlerEffects(battler.id)

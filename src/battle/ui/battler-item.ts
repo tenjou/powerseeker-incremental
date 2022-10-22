@@ -77,6 +77,40 @@ export function addBattlerEnergy(battlerId: BattlerId, value: number, abilityId?
     element.update(battlerId, abilityId)
 }
 
+export function addBattlerEffect(battlerId: BattlerId, effectId: number, abilityId: AbilityId, duration: number) {
+    const { battle } = getState()
+
+    const battlerView = battle.battlersView[battlerId]
+    const prevEffect = battlerView.effects.find((entry) => entry.id === effectId)
+    if (prevEffect) {
+        prevEffect.duration = duration
+    } else {
+        battlerView.effects.push({
+            id: effectId,
+            abilityId,
+            duration,
+        })
+    }
+
+    const element = findBattlerElement(battlerId)
+    element.updateEffects(battlerId)
+}
+
+export function removeBattlerEffect(battlerId: BattlerId, effectId: number) {
+    const { battle } = getState()
+
+    const battlerView = battle.battlersView[battlerId]
+    const effectIndex = battlerView.effects.findIndex((entry) => entry.id === effectId)
+    if (effectIndex === -1) {
+        return
+    }
+
+    battlerView.effects.splice(effectIndex, 1)
+
+    const element = findBattlerElement(battlerId)
+    element.updateEffects(battlerId)
+}
+
 export function findBattlerElement(battlerId: BattlerId): BattlerItem {
     const element = document.getElementById(`battler:${battlerId}`) as BattlerItem | null
     if (!element) {
@@ -126,16 +160,12 @@ class BattlerItem extends HTMLComponent {
             this.getElement("#ability-name").innerText = i18n(abilityConfig.id)
             this.getElement("#ability-icon").setAttribute("src", `assets/icon/ability/${abilityId}.png`)
         }
-
-        if (battler.effects.length > 0) {
-            this.updateEffects(battlerId)
-        }
     }
 
     updateEffects(battlerId: BattlerId) {
         const { battle } = getState()
 
-        const battler = battle.battlers[battlerId]
+        const battler = battle.battlersView[battlerId]
         const effects = battler.effects
 
         const effectsParent = this.getElement("#effects")
@@ -155,6 +185,10 @@ class BattlerItem extends HTMLComponent {
                 return
             }
             effectsParent.removeChild(effectsParent.lastChild)
+        }
+
+        if (effects.length) {
+            console.log("update-effects")
         }
 
         for (let n = 0; n < effects.length; n += 1) {

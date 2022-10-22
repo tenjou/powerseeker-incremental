@@ -27,15 +27,17 @@ export interface Battle {
     selectedAbility: LoadoutAbility | null
     selectedBattlerId: BattlerId
     playerBattlerId: BattlerId
-    log: BattleActionLog[][]
+    log: BattleBattlerLogs[][]
     tCurrent: number
     tNextAction: number
     isTeamA: boolean
     isEnding: boolean
     isAuto: boolean
+    nextEffectId: number
 }
 
 export interface BattlerAbilityEffect {
+    id: number
     abilityId: AbilityId
     casterId: BattlerId
     effects: AbilityEffect[]
@@ -54,11 +56,18 @@ export interface Battler {
     monsterId: MonsterId | null
 }
 
+export interface BattlerViewEffect {
+    id: number
+    abilityId: AbilityId
+    duration: number
+}
+
 export interface BattlerView {
     health: number
     healthMax: number
     energy: number
     energyMax: number
+    effects: BattlerViewEffect[]
 }
 
 export enum BattleActionFlag {
@@ -67,17 +76,32 @@ export enum BattleActionFlag {
     Energy = 4,
 }
 
-export interface BattleActionTarget {
-    battlerId: BattlerId
-    abilityId: AbilityId | null
+export interface BattleLogBasic {
+    type: "basic"
+    targetId: BattlerId
     power: number
-    flags: BattleActionFlag
+    flags: number
 }
 
-export interface BattleActionLog {
-    abilityId: AbilityId
+interface BattleLogEffectAdded {
+    type: "effect-added"
+    targetId: BattlerId
+    effectId: number
+    duration: number
+}
+
+interface BattleLogEffectRemoved {
+    type: "effect-removed"
+    targetId: BattlerId
+    effectId: number
+}
+
+export type BattleLog = BattleLogBasic | BattleLogEffectAdded | BattleLogEffectRemoved
+
+export interface BattleBattlerLogs {
     casterId: BattlerId
-    targets: BattleActionTarget[][]
+    abilityId: AbilityId
+    targets: BattleLog[][]
     energy: number
 }
 

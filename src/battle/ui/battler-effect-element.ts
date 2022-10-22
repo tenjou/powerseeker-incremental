@@ -1,13 +1,13 @@
 import { HTMLComponent } from "../../dom"
 import { getState } from "../../state"
-import { BattlerAbilityEffect } from "./../battle-types"
+import { BattlerViewEffect } from "./../battle-types"
 
 export class BattlerEffectElement extends HTMLComponent {
     constructor() {
         super(battlerEffectTemplate)
     }
 
-    update(effect: BattlerAbilityEffect) {
+    update(effect: BattlerViewEffect) {
         const { battle } = getState()
 
         const duration = effect.duration - battle.turn

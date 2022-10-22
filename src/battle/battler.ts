@@ -13,6 +13,7 @@ export function addBattler(battler: Battler) {
         healthMax: battler.stats.health,
         energy: battler.energy,
         energyMax: battler.stats.energy,
+        effects: [],
     })
 
     if (battler.isTeamA) {

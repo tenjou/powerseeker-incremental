@@ -1,11 +1,13 @@
 import { AbilityId } from "../../config/ability-configs"
 import { BattlerId } from "../../types"
-import { BattleActionFlag, BattleActionLog, BattleRegen, BattleRegenTarget } from "../battle-types"
+import { BattleActionFlag, BattleBattlerLogs, BattleRegenTarget } from "../battle-types"
 import {
+    addBattlerEffect,
     addBattlerEnergy,
     addBattlerHealth,
     addBattlerScrollingText,
     findBattlerElement,
+    removeBattlerEffect,
     toggleBattlerForward,
     toggleBattlerShake,
 } from "./battler-item"
@@ -43,7 +45,25 @@ interface AnimationScrollingText extends BattleAnimationBasic {
     flags: BattleActionFlag
 }
 
-export type Animation = AnimationForward | AnimationSkillUse | AnimationShake | AnimationScrollingText
+interface AnimationEffectAdd extends BattleAnimationBasic {
+    type: "effect-add"
+    abilityId: AbilityId
+    effectId: number
+    duration: number
+}
+
+interface AnimationEffectRemove extends BattleAnimationBasic {
+    type: "effect-remove"
+    effectId: number
+}
+
+export type Animation =
+    | AnimationForward
+    | AnimationSkillUse
+    | AnimationShake
+    | AnimationScrollingText
+    | AnimationEffectAdd
+    | AnimationEffectRemove
 
 function activateAnimation(animation: Animation) {
     switch (animation.type) {
@@ -57,6 +77,14 @@ function activateAnimation(animation: Animation) {
 
         case "shake":
             toggleBattlerShake(animation.battlerId, true)
+            break
+
+        case "effect-add":
+            addBattlerEffect(animation.battlerId, animation.effectId, animation.abilityId, animation.duration)
+            break
+
+        case "effect-remove":
+            removeBattlerEffect(animation.battlerId, animation.effectId)
             break
 
         case "scrolling-text": {
@@ -129,7 +157,7 @@ export function updateBattleAnimation(tCurrent: number) {
     }
 }
 
-export function addAnimationsFromLog(tCurrent: number, log: BattleActionLog) {
+export function addAnimationsFromLog(tCurrent: number, log: BattleBattlerLogs) {
     let tStart = tCurrent
 
     const forwardAnim: Animation = {
@@ -158,27 +186,54 @@ export function addAnimationsFromLog(tCurrent: number, log: BattleActionLog) {
         tEffectStart = tStart
 
         for (const effect of targetEffects) {
-            if (effect.power < 0 && !alreadyShaked) {
-                alreadyShaked = true
-                animations.push({
-                    type: "shake",
-                    battlerId: effect.battlerId,
-                    tStart: tEffectStart,
-                    tEnd: tEffectStart + attackAnimationLength,
-                })
+            switch (effect.type) {
+                case "basic": {
+                    if (effect.power < 0 && !alreadyShaked) {
+                        alreadyShaked = true
+                        animations.push({
+                            type: "shake",
+                            battlerId: effect.targetId,
+                            tStart: tEffectStart,
+                            tEnd: tEffectStart + attackAnimationLength,
+                        })
+                    }
+
+                    animations.push({
+                        type: "scrolling-text",
+                        battlerId: effect.targetId,
+                        abilityId: null,
+                        tStart: tEffectStart,
+                        tEnd: tEffectStart + attackAnimationLength,
+                        flags: effect.flags,
+                        value: effect.power,
+                    })
+
+                    tEffectStart += attackAnimationLength
+                    break
+                }
+
+                case "effect-added":
+                    animations.push({
+                        type: "effect-add",
+                        abilityId: log.abilityId,
+                        battlerId: effect.targetId,
+                        duration: effect.duration,
+                        effectId: effect.effectId,
+                        tStart: tEffectStart,
+                        tEnd: tEffectStart,
+                    })
+                    break
+
+                case "effect-removed":
+                    animations.push({
+                        type: "effect-remove",
+                        battlerId: effect.targetId,
+                        effectId: effect.effectId,
+                        tStart: tEffectStart,
+                        tEnd: tEffectStart,
+                    })
+                    break
             }
-
-            animations.push({
-                type: "scrolling-text",
-                battlerId: effect.battlerId,
-                abilityId: effect.abilityId,
-                tStart: tEffectStart,
-                tEnd: tEffectStart + attackAnimationLength,
-                flags: effect.flags,
-                value: effect.power,
-            })
-
-            tEffectStart += attackAnimationLength
         }
     }
 

@@ -9,6 +9,7 @@ export enum AbilityFlag {
     AoE = 2,
     Self = 4,
     Missable = 8,
+    ExpiresAfterAction = 16,
 }
 
 interface BasicAbilityConfig {
@@ -139,7 +140,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
                 stat: "attack",
             },
         ],
-        flags: AbilityFlag.AoE,
+        flags: AbilityFlag.AoE | AbilityFlag.ExpiresAfterAction,
         effects: [],
     },
     poison: {
