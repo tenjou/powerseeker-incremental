@@ -23,14 +23,13 @@ import {
     BattleLootItem,
     Battler,
     BattlerAbilityEffect,
-    BattleRegen,
-    BattleRegenTarget,
     BattleResult,
+    BattleTargetLog,
 } from "./battle-types"
 import { calculatePower, getActionSpeed } from "./battle-utils"
 import { addBattler, createMonsterBattler, loadBattlers } from "./battler"
 import { loadAbilities, renderAbilities } from "./ui/battle-ability"
-import { addAnimationsFromLog, addRegenAnimations, updateBattleAnimation } from "./ui/battle-animation"
+import { addAnimationsFromLogs, addRegenAnimations, updateBattleAnimation } from "./ui/battle-animation"
 import "./ui/battle-result-popup"
 import { updateBattlerEffects } from "./ui/battler-item"
 
@@ -318,22 +317,25 @@ function regenTurn() {
 
     battle.status = "regen"
 
-    const targetRegens: BattleRegenTarget[] = []
+    const targetsLogs: BattleTargetLog[] = new Array(battle.battlers.length)
     let battlerHasDied = false
 
-    for (const battler of battle.battlers) {
+    for (let n = 0; n < battle.battlers.length; n += 1) {
+        const battler = battle.battlers[n]
         if (battler.health <= 0) {
             continue
         }
 
-        const regens: BattleRegen[] = []
+        const targetLogs: BattleLog[] = []
+
+        updateEffectsDuration(battler, targetLogs, false)
 
         if (battler.stats.regenHealth) {
             battler.health += battler.stats.regenHealth
-            regens.push({
-                abilityId: null,
+            targetLogs.push({
+                type: "regen",
                 value: battler.stats.regenHealth,
-                flags: 0,
+                isEnergy: false,
             })
 
             if (battler.health <= 0) {
@@ -347,10 +349,10 @@ function regenTurn() {
 
         if (battler.health > 0 && battler.stats.regenEnergy) {
             battler.energy += battler.stats.regenEnergy
-            regens.push({
-                abilityId: null,
+            targetLogs.push({
+                type: "regen",
                 value: battler.stats.regenEnergy,
-                flags: BattleActionFlag.Energy,
+                isEnergy: true,
             })
 
             if (battler.energy > battler.stats.energy) {
@@ -358,13 +360,13 @@ function regenTurn() {
             }
         }
 
-        targetRegens.push({
+        targetsLogs[n] = {
             battlerId: battler.id,
-            regens,
-        })
+            logs: targetLogs,
+        }
     }
 
-    battle.tNextAction = addRegenAnimations(battle.tCurrent, targetRegens)
+    battle.tNextAction = addRegenAnimations(battle.tCurrent, targetsLogs)
 
     if (battlerHasDied) {
         battle.isEnding = isTeamDead(battle.teamA) || isTeamDead(battle.teamB)
@@ -412,7 +414,8 @@ function nextAction() {
     const targets = targetOpponent(caster, action.targetId, abilityConfig)
 
     let targetHasDied = false
-    const targetsLogs: BattleLog[][] = new Array(targets.length)
+    const targetsLogs: BattleTargetLog[] = new Array(targets.length)
+    const casterLogs: BattleLog[] = []
 
     for (let n = 0; n < targets.length; n += 1) {
         const target = targets[n]
@@ -453,7 +456,6 @@ function nextAction() {
 
                     targetLogs.push({
                         type: "basic",
-                        targetId: target.id,
                         flags,
                         power,
                     })
@@ -467,27 +469,40 @@ function nextAction() {
 
             targetLogs.push({
                 type: "effect-added",
-                targetId: target.id,
                 effectId: effect.id,
                 duration: effect.duration,
             })
         }
 
-        removeExpiredEffects(target, targetLogs)
-
-        targetsLogs[n] = targetLogs
+        targetsLogs[n] = {
+            battlerId: target.id,
+            logs: targetLogs,
+        }
     }
 
     const logEntry: BattleBattlerLogs = {
         abilityId: action.ability.id,
         casterId: action.casterId,
         targets: targetsLogs,
+        casterLogs: null,
         energy: -energyNeeded,
     }
+
+    if (caster.effects.length > 0) {
+        updateEffectsDuration(caster, casterLogs, true)
+
+        if (casterLogs) {
+            logEntry.casterLogs = {
+                battlerId: caster.id,
+                logs: casterLogs,
+            }
+        }
+    }
+
     const turnLog = battle.log[battle.turn - 1]
     turnLog.push(logEntry)
 
-    battle.tNextAction = addAnimationsFromLog(battle.tCurrent, logEntry)
+    battle.tNextAction = addAnimationsFromLogs(battle.tCurrent, logEntry)
 
     if (targetHasDied) {
         battle.isEnding = isTeamDead(battle.teamA) || isTeamDead(battle.teamB)
@@ -649,7 +664,7 @@ function applyEffects(
             id: battle.nextEffectId++,
             abilityId: abilityConfig.id,
             casterId: caster.id,
-            duration: battle.turn + abilityConfig.duration,
+            duration,
             effects,
         }
         target.effects.push(effect)
@@ -664,17 +679,26 @@ function applyEffects(
     return effect
 }
 
-function removeExpiredEffects(battler: Battler, targetLogs: BattleLog[]) {
+function updateEffectsDuration(battler: Battler, targetLogs: BattleLog[], isAction: boolean) {
     const { battle } = getState()
 
     const abilityEffects = battler.effects
     if (abilityEffects.length <= 0) {
         return
     }
+    if (!battler.isTeamA) {
+        return
+    }
 
     for (let n = abilityEffects.length - 1; n >= 0; n -= 1) {
         const abilityEffect = abilityEffects[n]
-        if (abilityEffect.duration > battle.turn) {
+        const abilityConfig = AbilityConfigs[abilityEffect.abilityId] as InstantAbilityConfig
+
+        let duration = abilityEffect.duration
+        if (isAction && (abilityConfig.flags & AbilityFlag.ExpiresAfterAction) === 0) {
+            duration += 1
+        }
+        if (duration > battle.turn) {
             return
         }
 
@@ -687,11 +711,8 @@ function removeExpiredEffects(battler: Battler, targetLogs: BattleLog[]) {
         targetLogs.push({
             type: "effect-removed",
             effectId: abilityEffect.id,
-            targetId: battler.id,
         })
     }
-
-    updateBattlerEffects(battler.id)
 }
 
 function removeEffects(battler: Battler, updateUI = true) {

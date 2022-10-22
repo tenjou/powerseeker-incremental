@@ -78,30 +78,39 @@ export enum BattleActionFlag {
 
 export interface BattleLogBasic {
     type: "basic"
-    targetId: BattlerId
     power: number
     flags: number
 }
 
 interface BattleLogEffectAdded {
     type: "effect-added"
-    targetId: BattlerId
     effectId: number
     duration: number
 }
 
 interface BattleLogEffectRemoved {
     type: "effect-removed"
-    targetId: BattlerId
     effectId: number
 }
 
-export type BattleLog = BattleLogBasic | BattleLogEffectAdded | BattleLogEffectRemoved
+interface BattleLogRegen {
+    type: "regen"
+    value: number
+    isEnergy: boolean
+}
+
+export type BattleLog = BattleLogBasic | BattleLogEffectAdded | BattleLogEffectRemoved | BattleLogRegen
+
+export interface BattleTargetLog {
+    battlerId: BattlerId
+    logs: BattleLog[]
+}
 
 export interface BattleBattlerLogs {
     casterId: BattlerId
     abilityId: AbilityId
-    targets: BattleLog[][]
+    targets: BattleTargetLog[]
+    casterLogs: BattleTargetLog | null
     energy: number
 }
 
@@ -117,15 +126,4 @@ export interface BattleResult {
     exp: number
     gold: number
     loot: BattleLootItem[]
-}
-
-export interface BattleRegen {
-    abilityId: AbilityId | null
-    value: number
-    flags: BattleActionFlag
-}
-
-export interface BattleRegenTarget {
-    battlerId: BattlerId
-    regens: BattleRegen[]
 }

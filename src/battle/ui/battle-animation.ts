@@ -1,6 +1,6 @@
 import { AbilityId } from "../../config/ability-configs"
 import { BattlerId } from "../../types"
-import { BattleActionFlag, BattleBattlerLogs, BattleRegenTarget } from "../battle-types"
+import { BattleActionFlag, BattleBattlerLogs, BattleTargetLog } from "../battle-types"
 import {
     addBattlerEffect,
     addBattlerEnergy,
@@ -157,12 +157,12 @@ export function updateBattleAnimation(tCurrent: number) {
     }
 }
 
-export function addAnimationsFromLog(tCurrent: number, log: BattleBattlerLogs) {
+export function addAnimationsFromLogs(tCurrent: number, battlerLogs: BattleBattlerLogs) {
     let tStart = tCurrent
 
     const forwardAnim: Animation = {
         type: "forward",
-        battlerId: log.casterId,
+        battlerId: battlerLogs.casterId,
         tStart,
         tEnd: tStart,
     }
@@ -171,28 +171,28 @@ export function addAnimationsFromLog(tCurrent: number, log: BattleBattlerLogs) {
     tStart += 100
     animations.push({
         type: "ability-use",
-        battlerId: log.casterId,
+        battlerId: battlerLogs.casterId,
         tStart: tStart,
         tEnd: tStart + 800,
-        abilityId: log.abilityId,
-        energy: log.energy,
+        abilityId: battlerLogs.abilityId,
+        energy: battlerLogs.energy,
     })
 
     tStart += 800
     let tEffectStart = 0
 
-    for (const targetEffects of log.targets) {
+    for (const target of battlerLogs.targets) {
         let alreadyShaked = false
         tEffectStart = tStart
 
-        for (const effect of targetEffects) {
-            switch (effect.type) {
+        for (const log of target.logs) {
+            switch (log.type) {
                 case "basic": {
-                    if (effect.power < 0 && !alreadyShaked) {
+                    if (log.power < 0 && !alreadyShaked) {
                         alreadyShaked = true
                         animations.push({
                             type: "shake",
-                            battlerId: effect.targetId,
+                            battlerId: target.battlerId,
                             tStart: tEffectStart,
                             tEnd: tEffectStart + attackAnimationLength,
                         })
@@ -200,12 +200,12 @@ export function addAnimationsFromLog(tCurrent: number, log: BattleBattlerLogs) {
 
                     animations.push({
                         type: "scrolling-text",
-                        battlerId: effect.targetId,
+                        battlerId: target.battlerId,
                         abilityId: null,
                         tStart: tEffectStart,
                         tEnd: tEffectStart + attackAnimationLength,
-                        flags: effect.flags,
-                        value: effect.power,
+                        flags: log.flags,
+                        value: log.power,
                     })
 
                     tEffectStart += attackAnimationLength
@@ -215,10 +215,10 @@ export function addAnimationsFromLog(tCurrent: number, log: BattleBattlerLogs) {
                 case "effect-added":
                     animations.push({
                         type: "effect-add",
-                        abilityId: log.abilityId,
-                        battlerId: effect.targetId,
-                        duration: effect.duration,
-                        effectId: effect.effectId,
+                        abilityId: battlerLogs.abilityId,
+                        battlerId: target.battlerId,
+                        duration: log.duration,
+                        effectId: log.effectId,
                         tStart: tEffectStart,
                         tEnd: tEffectStart,
                     })
@@ -227,8 +227,38 @@ export function addAnimationsFromLog(tCurrent: number, log: BattleBattlerLogs) {
                 case "effect-removed":
                     animations.push({
                         type: "effect-remove",
-                        battlerId: effect.targetId,
-                        effectId: effect.effectId,
+                        battlerId: target.battlerId,
+                        effectId: log.effectId,
+                        tStart: tEffectStart,
+                        tEnd: tEffectStart,
+                    })
+                    break
+            }
+        }
+    }
+
+    if (battlerLogs.casterLogs) {
+        const casterLogs = battlerLogs.casterLogs
+
+        for (const log of casterLogs.logs) {
+            switch (log.type) {
+                case "effect-added":
+                    animations.push({
+                        type: "effect-add",
+                        abilityId: battlerLogs.abilityId,
+                        battlerId: casterLogs.battlerId,
+                        duration: log.duration,
+                        effectId: log.effectId,
+                        tStart: tEffectStart,
+                        tEnd: tEffectStart,
+                    })
+                    break
+
+                case "effect-removed":
+                    animations.push({
+                        type: "effect-remove",
+                        battlerId: casterLogs.battlerId,
+                        effectId: log.effectId,
                         tStart: tEffectStart,
                         tEnd: tEffectStart,
                     })
@@ -245,24 +275,39 @@ export function addAnimationsFromLog(tCurrent: number, log: BattleBattlerLogs) {
     return tStart
 }
 
-export function addRegenAnimations(tCurrent: number, regenTargets: BattleRegenTarget[]) {
-    let tWaitMax = tCurrent + animationRegenDelay
+export function addRegenAnimations(tCurrent: number, targets: BattleTargetLog[]) {
+    let tWaitMax = tCurrent
 
-    for (const target of regenTargets) {
+    for (const target of targets) {
         let tStart = tCurrent
 
-        for (const regen of target.regens) {
-            animations.push({
-                type: "scrolling-text",
-                battlerId: target.battlerId,
-                abilityId: regen.abilityId,
-                tStart,
-                tEnd: tStart + attackAnimationLength,
-                flags: regen.flags,
-                value: regen.value,
-            })
+        for (const log of target.logs) {
+            switch (log.type) {
+                case "regen": {
+                    animations.push({
+                        type: "scrolling-text",
+                        battlerId: target.battlerId,
+                        abilityId: null,
+                        tStart,
+                        tEnd: tStart + attackAnimationLength,
+                        flags: log.isEnergy ? BattleActionFlag.Energy : 0,
+                        value: log.value,
+                    })
 
-            tStart += animationRegenDelay
+                    tStart += animationRegenDelay
+                    break
+                }
+
+                case "effect-removed":
+                    animations.push({
+                        type: "effect-remove",
+                        battlerId: target.battlerId,
+                        effectId: log.effectId,
+                        tStart: tStart,
+                        tEnd: tStart,
+                    })
+                    break
+            }
         }
 
         if (tWaitMax < tStart) {

@@ -187,10 +187,6 @@ class BattlerItem extends HTMLComponent {
             effectsParent.removeChild(effectsParent.lastChild)
         }
 
-        if (effects.length) {
-            console.log("update-effects")
-        }
-
         for (let n = 0; n < effects.length; n += 1) {
             const effect = effects[n]
             const child = effectsParent.children[n] as BattlerEffectElement
