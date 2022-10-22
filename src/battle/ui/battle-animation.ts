@@ -212,7 +212,19 @@ export function addAnimationsFromLogs(tCurrent: number, battlerLogs: BattleBattl
                     break
                 }
 
-                case "effect-added":
+                case "effect-added": {
+                    animations.push({
+                        type: "scrolling-text",
+                        battlerId: target.battlerId,
+                        abilityId: battlerLogs.abilityId,
+                        tStart: tEffectStart,
+                        tEnd: tEffectStart + attackAnimationLength,
+                        flags: 0,
+                        value: 0,
+                    })
+
+                    tEffectStart += attackAnimationLength
+
                     animations.push({
                         type: "effect-add",
                         abilityId: battlerLogs.abilityId,
@@ -223,6 +235,7 @@ export function addAnimationsFromLogs(tCurrent: number, battlerLogs: BattleBattl
                         tEnd: tEffectStart,
                     })
                     break
+                }
 
                 case "effect-removed":
                     animations.push({
