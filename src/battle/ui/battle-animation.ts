@@ -8,6 +8,7 @@ import {
     addBattlerScrollingText,
     findBattlerElement,
     removeBattlerEffect,
+    removeBattlerEffectAll,
     toggleBattlerForward,
     toggleBattlerShake,
 } from "./battler-item"
@@ -57,6 +58,10 @@ interface AnimationEffectRemove extends BattleAnimationBasic {
     effectId: number
 }
 
+interface AnimationEffectRemoveAll extends BattleAnimationBasic {
+    type: "effect-remove-all"
+}
+
 export type Animation =
     | AnimationForward
     | AnimationSkillUse
@@ -64,6 +69,7 @@ export type Animation =
     | AnimationScrollingText
     | AnimationEffectAdd
     | AnimationEffectRemove
+    | AnimationEffectRemoveAll
 
 function activateAnimation(animation: Animation) {
     switch (animation.type) {
@@ -85,6 +91,10 @@ function activateAnimation(animation: Animation) {
 
         case "effect-remove":
             removeBattlerEffect(animation.battlerId, animation.effectId)
+            break
+
+        case "effect-remove-all":
+            removeBattlerEffectAll(animation.battlerId)
             break
 
         case "scrolling-text": {
@@ -246,6 +256,15 @@ export function addAnimationsFromLogs(tCurrent: number, battlerLogs: BattleBattl
                         tEnd: tEffectStart,
                     })
                     break
+
+                case "defeated":
+                    animations.push({
+                        type: "effect-remove-all",
+                        battlerId: target.battlerId,
+                        tStart: tEffectStart,
+                        tEnd: tEffectStart,
+                    })
+                    break
             }
         }
     }
@@ -316,6 +335,15 @@ export function addRegenAnimations(tCurrent: number, targets: BattleTargetLog[])
                         type: "effect-remove",
                         battlerId: target.battlerId,
                         effectId: log.effectId,
+                        tStart: tStart,
+                        tEnd: tStart,
+                    })
+                    break
+
+                case "defeated":
+                    animations.push({
+                        type: "effect-remove-all",
+                        battlerId: target.battlerId,
                         tStart: tStart,
                         tEnd: tStart,
                     })

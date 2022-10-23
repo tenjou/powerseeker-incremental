@@ -99,7 +99,11 @@ interface BattleLogRegen {
     isEnergy: boolean
 }
 
-export type BattleLog = BattleLogBasic | BattleLogEffectAdded | BattleLogEffectRemoved | BattleLogRegen
+interface BattleLogDefeated {
+    type: "defeated"
+}
+
+export type BattleLog = BattleLogBasic | BattleLogEffectAdded | BattleLogEffectRemoved | BattleLogRegen | BattleLogDefeated
 
 export interface BattleTargetLog {
     battlerId: BattlerId

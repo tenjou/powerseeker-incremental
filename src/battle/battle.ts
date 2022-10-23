@@ -342,6 +342,9 @@ function regenTurn() {
                 battler.health = 0
                 battlerHasDied = true
                 removeBattlerFromTeam(battler)
+                targetLogs.push({
+                    type: "defeated",
+                })
             } else if (battler.health > battler.stats.health) {
                 battler.health = battler.stats.health
             }
@@ -449,6 +452,9 @@ function nextAction() {
                     if (target.health <= 0) {
                         target.health = 0
                         targetHasDied = true
+                        targetLogs.push({
+                            type: "defeated",
+                        })
                         removeBattlerFromTeam(target)
                     } else if (target.health > target.stats.health) {
                         target.health = target.stats.health

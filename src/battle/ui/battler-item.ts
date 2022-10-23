@@ -111,6 +111,16 @@ export function removeBattlerEffect(battlerId: BattlerId, effectId: number) {
     element.updateEffects(battlerId)
 }
 
+export function removeBattlerEffectAll(battlerId: BattlerId) {
+    const { battle } = getState()
+
+    const battlerView = battle.battlersView[battlerId]
+    battlerView.effects.length = 0
+
+    const element = findBattlerElement(battlerId)
+    element.updateEffects(battlerId)
+}
+
 export function findBattlerElement(battlerId: BattlerId): BattlerItem {
     const element = document.getElementById(`battler:${battlerId}`) as BattlerItem | null
     if (!element) {
