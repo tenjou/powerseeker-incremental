@@ -60,6 +60,7 @@ export interface BattlerViewEffect {
     id: number
     abilityId: AbilityId
     duration: number
+    appliedOnTurn: number
 }
 
 export interface BattlerView {

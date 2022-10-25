@@ -89,6 +89,7 @@ export function addBattlerEffect(battlerId: BattlerId, effectId: number, ability
             id: effectId,
             abilityId,
             duration,
+            appliedOnTurn: battle.turn,
         })
     }
 
@@ -175,7 +176,7 @@ class BattlerItem extends HTMLComponent {
     updateEffects(battlerId: BattlerId) {
         const { battle } = getState()
 
-        const battler = battle.battlersView[battlerId]
+        const battler = battle.battlers[battlerId]
         const effects = battler.effects
 
         const effectsParent = this.getElement("#effects")

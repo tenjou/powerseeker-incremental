@@ -187,7 +187,7 @@ function renderBattleStatus() {
     const { battle } = getState()
 
     setText("battle-name", "Dungeon Encounter")
-    setText("battle-round", `Round ${battle.turn}`)
+    setText("battle-round", `Turn  ${battle.turn}`)
     setText("battle-level", "Level 1")
 
     if (!battle.selectedAbility && battle.status === "waiting") {
@@ -304,9 +304,6 @@ function nextTurn() {
     }
 
     battle.status = "waiting"
-    battle.turn += 1
-    battle.actions.length = 0
-    battle.log.push([])
 
     renderAbilities()
     renderBattleStatus()
@@ -316,6 +313,8 @@ function regenTurn() {
     const { battle } = getState()
 
     battle.status = "regen"
+    battle.turn += 1
+    battle.log.push([])
 
     const targetsLogs: BattleTargetLog[] = new Array(battle.battlers.length)
     let battlerHasDied = false
@@ -326,9 +325,8 @@ function regenTurn() {
             continue
         }
 
+        let needUpdateEffects = battler.effects.length > 0
         const targetLogs: BattleLog[] = []
-
-        updateEffectsDuration(battler, targetLogs, false)
 
         if (battler.stats.regenHealth) {
             battler.health += battler.stats.regenHealth
@@ -350,22 +348,32 @@ function regenTurn() {
             }
         }
 
-        if (battler.health > 0 && battler.stats.regenEnergy) {
-            battler.energy += battler.stats.regenEnergy
-            targetLogs.push({
-                type: "regen",
-                value: battler.stats.regenEnergy,
-                isEnergy: true,
-            })
+        if (battler.health > 0) {
+            if (battler.stats.regenEnergy) {
+                battler.energy += battler.stats.regenEnergy
+                targetLogs.push({
+                    type: "regen",
+                    value: battler.stats.regenEnergy,
+                    isEnergy: true,
+                })
 
-            if (battler.energy > battler.stats.energy) {
-                battler.energy = battler.stats.energy
+                if (battler.energy > battler.stats.energy) {
+                    battler.energy = battler.stats.energy
+                }
+            }
+
+            if (updateEffectsDuration(battler, targetLogs, false)) {
+                needUpdateEffects = false
             }
         }
 
         targetsLogs[n] = {
             battlerId: battler.id,
             logs: targetLogs,
+        }
+
+        if (needUpdateEffects) {
+            updateBattlerEffects(battler.id)
         }
     }
 
@@ -595,6 +603,9 @@ export function updateBattle(tDelta: number) {
 
         case "regen":
             if (battle.tNextAction <= battle.tCurrent) {
+                for (const battler of battle.battlers) {
+                    updateBattlerEffects(battler.id)
+                }
                 nextTurn()
             }
             break
@@ -611,11 +622,11 @@ function createBattle(): Battle {
         actions: [],
         encounterId: "test_battle",
         id: 0,
-        turn: 0,
+        turn: 1,
         selectedAbility: null,
         selectedBattlerId: -1,
         playerBattlerId: -1,
-        log: [],
+        log: [[]],
         tCurrent: 0,
         tNextAction: 0,
         isTeamA: true,
@@ -647,7 +658,6 @@ function applyEffects(
 ): BattlerAbilityEffect {
     const { battle } = getState()
 
-    const duration = battle.turn + abilityConfig.duration
     const effects = abilityConfig.durationEffects.map<AbilityEffect>((effect) => {
         return {
             power: ability.rank * effect.power,
@@ -655,6 +665,11 @@ function applyEffects(
             type: effect.type,
         }
     })
+
+    let duration = abilityConfig.duration
+    if (abilityConfig.flags & AbilityFlag.ExpiresAfterAction) {
+        duration += 0.5
+    }
 
     let effect = target.effects.find((effect) => effect.casterId === caster.id && effect.abilityId === abilityConfig.id)
     if (effect) {
@@ -686,26 +701,31 @@ function applyEffects(
 }
 
 function updateEffectsDuration(battler: Battler, targetLogs: BattleLog[], isAction: boolean) {
-    const { battle } = getState()
-
     const abilityEffects = battler.effects
     if (abilityEffects.length <= 0) {
-        return
+        return false
     }
-    if (!battler.isTeamA) {
-        return
+
+    for (let n = 0; n < abilityEffects.length; n += 1) {
+        const abilityEffect = abilityEffects[n]
+        const abilityConfig = AbilityConfigs[abilityEffect.abilityId] as InstantAbilityConfig
+
+        if (isAction) {
+            if (abilityConfig.flags & AbilityFlag.ExpiresAfterAction) {
+                abilityEffect.duration -= 1
+            }
+        } else {
+            if ((abilityConfig.flags & AbilityFlag.ExpiresAfterAction) === 0) {
+                abilityEffect.duration -= 1
+            }
+        }
     }
 
     for (let n = abilityEffects.length - 1; n >= 0; n -= 1) {
         const abilityEffect = abilityEffects[n]
-        const abilityConfig = AbilityConfigs[abilityEffect.abilityId] as InstantAbilityConfig
 
-        let duration = abilityEffect.duration
-        if (isAction && (abilityConfig.flags & AbilityFlag.ExpiresAfterAction) === 0) {
-            duration += 1
-        }
-        if (duration > battle.turn) {
-            return
+        if (abilityEffect.duration > 0) {
+            break
         }
 
         for (const effect of abilityEffect.effects) {
@@ -713,7 +733,6 @@ function updateEffectsDuration(battler: Battler, targetLogs: BattleLog[], isActi
         }
 
         abilityEffects.pop()
-
         targetLogs.push({
             type: "effect-removed",
             effectId: abilityEffect.id,

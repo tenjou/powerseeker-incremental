@@ -153,7 +153,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
         durationEffects: [
             {
                 type: "stat",
-                power: -1,
+                power: -2,
                 stat: "regenHealth",
             },
         ],
