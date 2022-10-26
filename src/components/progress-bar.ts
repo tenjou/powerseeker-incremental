@@ -62,6 +62,7 @@ class ProgressBar extends HTMLComponent {
     update() {
         const value = Number(this.getAttribute("value"))
         const valueMax = Number(this.getAttribute("value-max"))
+        const showMax = this.haveAttribute("show-max")
 
         let percents = ((100 / valueMax) * value) | 0
         if (percents > 100) {
@@ -70,12 +71,12 @@ class ProgressBar extends HTMLComponent {
             percents = 0
         }
 
-        this.getElement("#value").innerText = `${value}`
+        this.getElement("#value").innerText = showMax ? `${value} / ${valueMax}` : `${value}`
         this.getElement("#progress").style.width = `${percents}%`
     }
 
     static get observedAttributes() {
-        return ["value", "value-max"]
+        return ["value", "value-max", "show-max"]
     }
 }
 
