@@ -27,7 +27,7 @@ export function loadJobsView(segments: string[]) {
     for (const job of jobs) {
         const jobSlot = document.createElement("job-slot")
         jobSlot.setAttribute("job-id", job.id)
-        jobSlot.setAttribute("primary", String(isPrimary))
+        jobSlot.setAttribute("primary", isPrimary ? String(isPrimary) : "")
         parent.appendChild(jobSlot)
     }
 }

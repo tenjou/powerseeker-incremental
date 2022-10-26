@@ -6,6 +6,12 @@ template.innerHTML = html`<style>
             display: flex;
             flex-direction: row;
         }
+        :host(.colored) {
+            margin: 3px 0;
+            padding: 6px;
+            background: #e9e7e7;
+            border-radius: 3px;
+        }
         :host(.flex) {
             flex: 1;
         }

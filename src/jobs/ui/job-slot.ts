@@ -5,24 +5,15 @@ import { JobsService } from "../jobs-service"
 import { i18n } from "./../../local"
 
 const template = document.createElement("template")
-template.innerHTML = html`<style>
-        :host {
-            margin: 3px 0;
-            padding: 6px;
-            background: #e9e7e7;
-            border-radius: 3px;
-        }
-    </style>
-
+template.innerHTML = html`<x-row class="colored">
+    <x-column class="flex center-v">
+        <x-text id="name" class="bold"></x-text>
+        <x-text id="level" class="tertiary"></x-text>
+    </x-column>
     <x-row>
-        <x-column class="flex center-v">
-            <x-text id="name" class="bold"></x-text>
-            <x-text id="level" class="tertiary"></x-text>
-        </x-column>
-        <x-row>
-            <x-button id="select" class="black">Select</x-button>
-        </x-row>
-    </x-row>`
+        <x-button id="select" class="black">Select</x-button>
+    </x-row>
+</x-row>`
 
 export class JobSlot extends HTMLComponent {
     constructor() {
@@ -30,10 +21,6 @@ export class JobSlot extends HTMLComponent {
     }
 
     connectedCallback() {
-        this.update()
-    }
-
-    attributeChangedCallback() {
         this.update()
     }
 
@@ -60,10 +47,6 @@ export class JobSlot extends HTMLComponent {
             this.toggleClassName("hide", true, "#name")
             this.setText("#level", i18n("none"))
         }
-    }
-
-    static get observedAttributes() {
-        return ["job-id"]
     }
 }
 

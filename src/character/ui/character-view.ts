@@ -1,7 +1,7 @@
 import { AbilitySlotElement } from "../../abilities/ui/ability-slot"
 import { StatsTableEntry } from "../../components/stats-table"
 import { EquipmentSlot } from "../../config/item-configs"
-import { getElement } from "../../dom"
+import { getElement, toggleClassName } from "../../dom"
 import "../../equipment/ui/equipment-slot"
 import { subscribe, unsubscribe } from "../../events"
 import { ItemSlot } from "../../inventory/ui/item-slot"
@@ -9,12 +9,10 @@ import { i18n } from "../../local"
 import { getState } from "../../state"
 import { goTo } from "../../view"
 import { EquipmentSlotElement } from "../../equipment/ui/equipment-slot"
+import { setText } from "./../../dom"
 
 export function loadCharacterView() {
     updateCharacterView()
-
-    getElement("select-job-primary").onclick = () => goTo("/jobs/primary")
-    getElement("select-job-secondary").onclick = () => goTo("/jobs/secondary")
 
     subscribe("equip", updateEquipmentSlot)
     subscribe("unequip", updateEquipmentSlot)
@@ -26,16 +24,9 @@ export function unloadCharacterView() {
 }
 
 export function updateCharacterView() {
-    const { player, battler, jobs } = getState()
+    const { player, battler } = getState()
 
-    const jobPrimary = jobs[player.jobPrimary]
-    if (!jobPrimary) {
-        console.error(`Could not find job: ${player.jobPrimary}`)
-        return
-    }
-
-    getElement("job-primary").setAttribute("job-id", player.jobPrimary)
-    getElement("job-secondary").setAttribute("job-id", player.jobSecondary || "")
+    updateJobs()
 
     const statsData: StatsTableEntry[] = [
         {
@@ -88,6 +79,41 @@ export function updateCharacterView() {
     })
 
     // upadateLoadoutWidget()
+}
+
+function updateJobs() {
+    const { player, jobs } = getState()
+
+    getElement("select-primary-job").onclick = () => {
+        goTo("/jobs/primary")
+    }
+    getElement("select-secondary-job").onclick = () => {
+        goTo("/jobs/secondary")
+    }
+
+    const jobPrimary = jobs[player.jobPrimary]
+    if (!jobPrimary) {
+        console.error(`Could not find job: ${player.jobPrimary}`)
+        return
+    }
+
+    setText("primary-job-name", i18n(jobPrimary.id))
+    setText("primary-job-level", `${i18n("level")} ${jobPrimary.level}`)
+
+    if (player.jobSecondary) {
+        const jobSecondary = jobs[player.jobSecondary]
+        if (!jobSecondary) {
+            console.error(`Could not find job: ${player.jobSecondary}`)
+            return
+        }
+
+        toggleClassName("secondary-job-name", "hidden", false)
+        setText("secondary-job-name", i18n(jobSecondary.id))
+        setText("secondary-job-level", `${i18n("level")} ${jobPrimary.level}`)
+    } else {
+        toggleClassName("secondary-job-name", "hidden", true)
+        setText("secondary-job-level", i18n("none"))
+    }
 }
 
 function updateEquipmentSlot(slotType: EquipmentSlot) {

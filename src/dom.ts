@@ -1,7 +1,7 @@
 export function getElement(id: string) {
     const element = document.getElementById(id)
     if (!element) {
-        console.error(`Could get element with Id: "${id}"`)
+        console.error(`Could get element with id: "${id}"`)
         return document.createElement("div")
     }
 
@@ -40,14 +40,14 @@ export function addChild(id: string, child: HTMLElement) {
     element.appendChild(child)
 }
 
-export function setText(id: string, text: string) {
+export function setText(id: string, text: string | number) {
     const element = document.getElementById(id)
     if (!element) {
         console.error(`Could set element: "${id}" text to: ${text}`)
         return
     }
 
-    element.innerText = text
+    element.innerText = String(text)
 }
 
 export function setHTML(id: string, text: string) {
