@@ -107,8 +107,6 @@ class BattlerAbilitySlot extends HTMLComponent {
         this.toggleClassName("hide", cooldown <= 0, "#cooldown")
         this.toggleClassName("hide", cooldown > 0, "#energy")
         this.setText("#cooldown", cooldown)
-
-        console.log("cooldown", cooldown, this.ability.id)
     }
 }
 
