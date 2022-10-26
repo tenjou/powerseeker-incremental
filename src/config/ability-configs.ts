@@ -130,9 +130,9 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
         id: "berserk",
         type: "instant",
         description: "Increase damage with axes.",
-        energy: 4,
-        cooldown: 0,
-        duration: 1,
+        energy: 2,
+        cooldown: 1,
+        duration: 2,
         durationEffects: [
             {
                 type: "stat",

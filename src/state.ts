@@ -1,4 +1,5 @@
-import { Ability, AbilityEffect, AbilityEffectType } from "./abilities/ability-type"
+import { Ability } from "./abilities/ability-type"
+import { createBattle } from "./battle/battle"
 import { Battle, Battler, BattleResult } from "./battle/battle-types"
 import { createEmptyStats } from "./character/status"
 import { AbilityId } from "./config/ability-configs"
@@ -7,8 +8,8 @@ import { JobId } from "./config/job-configs"
 import { CurrencyType } from "./currencies/currency-types"
 import { JobsService } from "./jobs/jobs-service"
 import { Job } from "./jobs/jobs-types"
-import { Card, Item, Skill } from "./types"
 import { LoadoutAbility } from "./loadout/loadout-types"
+import { Card, Item, Skill } from "./types"
 
 interface TownStatus {
     cards: Card[]
@@ -123,26 +124,7 @@ let state: State = {
         stageCompleted: false,
         reachedEnd: false,
     },
-    battle: {
-        id: 0,
-        status: "preparing",
-        encounterId: "test_battle",
-        battlers: [],
-        battlersView: [],
-        teamA: [],
-        teamB: [],
-        actions: [],
-        turn: 1,
-        selectedAbility: null,
-        selectedBattlerId: -1,
-        playerBattlerId: -1,
-        log: [],
-        tCurrent: 0,
-        tNextAction: 0,
-        isTeamA: true,
-        isEnding: false,
-        isAuto: false,
-    },
+    battle: createBattle(),
     battleResult: null,
     abilities: {
         attack: { id: "attack", rank: 1 },

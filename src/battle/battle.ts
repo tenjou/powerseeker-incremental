@@ -612,7 +612,7 @@ export function updateBattle(tDelta: number) {
     }
 }
 
-function createBattle(): Battle {
+export function createBattle(): Battle {
     return {
         status: "preparing",
         battlers: [],

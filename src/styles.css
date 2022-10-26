@@ -201,6 +201,10 @@ battle-abilities {
     padding: 20px;
     height: 100px;
 }
+battle-abilities.inactive {
+    opacity: 0.1;
+    pointer-events: none;
+}
 
 battle-hint {
     font-size: 10px;
