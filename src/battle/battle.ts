@@ -316,7 +316,7 @@ function regenTurn() {
     battle.turn += 1
     battle.log.push([])
 
-    const targetsLogs: BattleTargetLog[] = new Array(battle.battlers.length)
+    const targetsLogs: BattleTargetLog[] = []
     let battlerHasDied = false
 
     for (let n = 0; n < battle.battlers.length; n += 1) {
@@ -367,10 +367,10 @@ function regenTurn() {
             }
         }
 
-        targetsLogs[n] = {
+        targetsLogs.push({
             battlerId: battler.id,
             logs: targetLogs,
-        }
+        })
 
         if (needUpdateEffects) {
             updateBattlerEffects(battler.id)
