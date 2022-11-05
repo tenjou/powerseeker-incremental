@@ -268,6 +268,7 @@ template.innerHTML = html`<style>
             display: flex;
             flex-direction: column;
             flex: 1;
+            margin-bottom: -1px;
         }
         .row {
             display: flex;
@@ -344,7 +345,7 @@ template.innerHTML = html`<style>
         }
 
         #energy {
-            margin-top: 2px;
+            margin-top: 1px;
         }
 
         #effects {
@@ -375,7 +376,7 @@ template.innerHTML = html`<style>
                 <div id="level"></div>
                 <div id="name"></div>
             </div>
-            <progress-bar id="health" value="10" value-max="30"></progress-bar>
-            <progress-bar id="energy" value="10" value-max="30" class="blue"></progress-bar>
+            <progress-bar id="health" value="10" value-max="30" class="battle"></progress-bar>
+            <progress-bar id="energy" value="10" value-max="30" class="battle blue"></progress-bar>
         </div>
     </div>`

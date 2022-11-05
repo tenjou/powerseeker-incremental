@@ -22,13 +22,14 @@ template.innerHTML = html`<style>
         }
 
         :host(.black) {
-            border: 2px solid #222;
+            border: 1px solid #666;
             border-radius: 3px;
         }
         :host(.black:hover) {
             padding: 7px;
             margin: -1px;
-            box-shadow: 0 0 6px #9e9e9e;
+            border: 1px solid #000;
+            background: #f1f1f1;
             color: #000;
         }
 

@@ -6,9 +6,12 @@ template.innerHTML = html`<style>
             position: relative;
             display: flex;
             width: 100%;
-            height: 14px;
+            height: 16px;
             background: black;
             border-radius: 3px;
+        }
+        :host(.battle) {
+            height: 14px;
         }
 
         .bar {
@@ -20,11 +23,18 @@ template.innerHTML = html`<style>
             background: linear-gradient(#e0313d, #bb232d);
             border-radius: 2px;
             border-top: 1px solid #ff857c;
+            box-sizing: border-box;
         }
 
         :host(.blue) .bar {
             background: linear-gradient(#369ce4, #2f87c5);
             border-top: 1px solid #8db8db;
+        }
+
+        :host(.green) .bar {
+            background: linear-gradient(#75c120, #63a718);
+            border-top: 1px solid #8fe729;
+            border-bottom: 1px solid #5d9d12;
         }
 
         .shadow {

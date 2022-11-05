@@ -21,6 +21,21 @@ template.innerHTML = html`<style>
         :host(.margin5) {
             margin: 5px;
         }
+        :host(.w-64) {
+            flex: 0 0 64px;
+        }
+        :host(.w-128) {
+            flex: 0 0 128px;
+        }
+        :host(.w-128) {
+            flex: 0 0 128px;
+        }
+        :host(.pl-6) {
+            padding-left: 1.5rem;
+        }
+        :host(.pr-6) {
+            padding-right: 1.5rem;
+        }
     </style>
 
     <slot></slot>`

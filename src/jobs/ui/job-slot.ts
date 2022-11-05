@@ -3,12 +3,16 @@ import { HTMLComponent } from "../../dom"
 import { goTo } from "../../view"
 import { JobsService } from "../jobs-service"
 import { i18n } from "./../../local"
+import { LevelConfig } from "./../../config/level-config"
 
 const template = document.createElement("template")
 template.innerHTML = html`<x-row class="colored">
     <x-column class="flex center-v">
         <x-text id="name" class="bold"></x-text>
         <x-text id="level" class="tertiary"></x-text>
+    </x-column>
+    <x-column class="flex center-v w-128 pl-6 pr-6">
+        <progress-bar id="exp" value="50" value-max="100" show-max class="green"></progress-bar>
     </x-column>
     <x-row>
         <x-button id="select" class="black">Select</x-button>
@@ -33,6 +37,10 @@ export class JobSlot extends HTMLComponent {
 
             this.setText("#name", i18n(jobId))
             this.setText("#level", `Level ${job.level}`)
+
+            const progressBar = this.getElement("#exp")
+            progressBar.setAttribute("value", String(job.exp))
+            progressBar.setAttribute("value-max", String(LevelConfig[job.level]))
 
             this.getElement("#select").onclick = () => {
                 if (isPrimary) {
