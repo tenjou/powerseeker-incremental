@@ -135,6 +135,10 @@ export class HTMLComponent extends HTMLElement {
         this.getElement(query).innerHTML = String(text)
     }
 
+    setAttrib(key: string, value: string | number) {
+        this.setAttribute(key, String(value))
+    }
+
     toggleClassName(className: string, add: boolean, query: string = "") {
         if (add) {
             this.getElement(query).classList.add(className)

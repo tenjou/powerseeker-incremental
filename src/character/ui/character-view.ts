@@ -10,6 +10,8 @@ import { getState } from "../../state"
 import { goTo } from "../../view"
 import { EquipmentSlotElement } from "../../equipment/ui/equipment-slot"
 import { setText } from "./../../dom"
+import { ProgressBar } from "./../../components/progress-bar"
+import { LevelConfig } from "../../config/level-config"
 
 export function loadCharacterView() {
     updateCharacterView()
@@ -99,6 +101,10 @@ function updateJobs() {
 
     setText("primary-job-name", i18n(jobPrimary.id))
     setText("primary-job-level", `${i18n("level")} ${jobPrimary.level}`)
+
+    const primaryProgressBar = getElement("primary-job-exp") as ProgressBar
+    primaryProgressBar.setAttrib("value", jobPrimary.exp)
+    primaryProgressBar.setAttrib("value-max", LevelConfig[jobPrimary.level])
 
     if (player.jobSecondary) {
         const jobSecondary = jobs[player.jobSecondary]

@@ -13,6 +13,9 @@ template.innerHTML = html`<style>
         :host(.battle) {
             height: 14px;
         }
+        :host(.border) {
+            border: 1px solid #383434;
+        }
 
         .bar {
             position: absolute;
@@ -60,7 +63,7 @@ template.innerHTML = html`<style>
     <div id="progress" class="bar"></div>
     <div id="value" class="value"></div>`
 
-class ProgressBar extends HTMLComponent {
+export class ProgressBar extends HTMLComponent {
     constructor() {
         super(template)
     }

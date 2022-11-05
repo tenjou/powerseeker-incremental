@@ -76,6 +76,14 @@
                                     <x-text id="primary-job-name" class="bold"></x-text>
                                     <x-text id="primary-job-level" class="tertiary"></x-text>
                                 </x-column>
+                                <x-column class="flex center-v w-128 pl-6 pr-6">
+                                    <progress-bar
+                                        id="primary-job-exp"
+                                        value="0"
+                                        value-max="100"
+                                        show-max
+                                        class="green border"></progress-bar>
+                                </x-column>
                                 <x-row>
                                     <x-button id="select-primary-job" class="black">Select</x-button>
                                 </x-row>
