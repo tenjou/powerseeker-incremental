@@ -6,6 +6,7 @@ import { haveCurrency } from "../../currencies/currencies"
 import { subscribe, unsubscribe } from "../../events"
 import { getRequiredAp, learnAbility } from "../abilities-utils"
 import { getAbilityDescription } from "./abilities-view"
+import { closePopup } from "./../../popup"
 
 const template = document.createElement("template")
 template.innerHTML = html`<style>
@@ -74,6 +75,7 @@ export class AbilityPopup extends HTMLComponent {
             }
 
             learnAbility(abilityId)
+            closePopup()
         }
 
         subscribe("ability-updated", this.updateCallback)

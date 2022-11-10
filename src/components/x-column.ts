@@ -30,6 +30,9 @@ template.innerHTML = html`<style>
         :host(.w-128) {
             flex: 0 0 128px;
         }
+        :host(.m-1) {
+            margin: 0.35rem;
+        }
         :host(.pl-6) {
             padding-left: 1.5rem;
         }

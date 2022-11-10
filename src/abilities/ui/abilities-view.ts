@@ -5,6 +5,7 @@ import { getElement, removeAllChildren } from "../../dom"
 import { getAbilityEffectPower } from "../abilities-utils"
 import "./ability-popup"
 import "./ability-slot"
+import "./ability-card"
 import { AbilitySlotElement } from "./ability-slot"
 import { subscribe, unsubscribe } from "../../events"
 import { AbilityEffect } from "../ability-type"
@@ -13,7 +14,7 @@ export function loadAbilitiesView() {
     const parent = getElement("abilities-container")
 
     for (const abilityId in AbilityConfigs) {
-        const abilitySlot = document.createElement("ability-slot")
+        const abilitySlot = document.createElement("ability-card")
         abilitySlot.setAttribute("ability-id", abilityId)
         abilitySlot.onclick = () => openAbilityPopup(abilityId as AbilityId)
         parent.appendChild(abilitySlot)

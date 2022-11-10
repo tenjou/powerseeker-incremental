@@ -2,6 +2,10 @@ import { HTMLComponent } from "../dom"
 
 const template = document.createElement("template")
 template.innerHTML = html`<style>
+        :host {
+            font-size: 12px;
+            line-height: 14px;
+        }
         :host(.header) {
             font-weight: bold;
             text-transform: uppercase;

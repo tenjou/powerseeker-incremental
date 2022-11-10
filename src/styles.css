@@ -302,8 +302,8 @@ segment {
 }
 
 inventory-container {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
 }
 inventory-container > * {
     margin: 3px;

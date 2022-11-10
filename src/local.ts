@@ -151,6 +151,9 @@ const local: Record<string, LocalEntry> = {
     instant: {
         en: "Instant",
     },
+    rank: {
+        en: "Rank",
+    },
 }
 
 export function i18n(key: string | undefined | null) {
