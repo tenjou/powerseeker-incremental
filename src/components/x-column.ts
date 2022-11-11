@@ -27,11 +27,18 @@ template.innerHTML = html`<style>
         :host(.w-128) {
             flex: 0 0 128px;
         }
-        :host(.w-128) {
-            flex: 0 0 128px;
-        }
+
         :host(.m-1) {
             margin: 0.35rem;
+        }
+        :host(.m-2) {
+            margin: 0.5rem;
+        }
+        :host(.ml-2) {
+            margin-left: 0.5rem;
+        }
+        :host(.mr-2) {
+            margin-right: 0.5rem;
         }
         :host(.pl-6) {
             padding-left: 1.5rem;

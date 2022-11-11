@@ -8,6 +8,8 @@ type EventType =
     | "close"
     | "currency-updated"
     | "ability-updated"
+    | "location-added"
+    | "location-updated"
 
 type CallbackFunc = (payload: unknown) => void
 

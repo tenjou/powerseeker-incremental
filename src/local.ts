@@ -154,6 +154,12 @@ const local: Record<string, LocalEntry> = {
     rank: {
         en: "Rank",
     },
+    forest: {
+        en: "Forest",
+    },
+    desert: {
+        en: "Desert",
+    },
 }
 
 export function i18n(key: string | undefined | null) {

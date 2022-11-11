@@ -24,6 +24,9 @@ template.innerHTML = html`<style>
         :host(.padding10) {
             padding: 10px;
         }
+        :host(.w-128) {
+            flex: 0 0 128px;
+        }
     </style>
 
     <slot></slot>`

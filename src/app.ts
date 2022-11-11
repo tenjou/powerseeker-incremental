@@ -24,6 +24,7 @@ import { getState, loadState } from "./state"
 import { loadTooltipSystem } from "./tooltip"
 import { updateView } from "./view"
 import { equipAbility } from "./loadout/loadout"
+import { LocationService } from "./world/location-service"
 
 let tLast = 0
 
@@ -62,6 +63,8 @@ function createEmptyProfile() {
         rarity: 4,
         amount: 5,
     })
+
+    LocationService.addLocation("forest")
 
     equipAbility("attack")
     equipAbility("bash")

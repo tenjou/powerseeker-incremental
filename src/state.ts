@@ -5,11 +5,13 @@ import { createEmptyStats } from "./character/status"
 import { AbilityId } from "./config/ability-configs"
 import { EquipmentSlot, ItemId } from "./config/item-configs"
 import { JobId } from "./config/job-configs"
+import { LocationId } from "./config/location-config"
 import { CurrencyType } from "./currencies/currency-types"
 import { JobsService } from "./jobs/jobs-service"
 import { Job } from "./jobs/jobs-types"
 import { LoadoutAbility } from "./loadout/loadout-types"
 import { Card, Item, Skill } from "./types"
+import { LocationState } from "./world/location-types"
 
 interface TownStatus {
     cards: Card[]
@@ -53,6 +55,7 @@ interface State {
         abilities: (LoadoutAbility | null)[]
         items: (ItemId | null)[]
     }
+    locations: Partial<Record<LocationId, LocationState>>
     town: TownStatus
     dungeon: DungeonStatus
     battle: Battle
@@ -140,6 +143,7 @@ let state: State = {
         abilities: [],
         items: [null],
     },
+    locations: {},
     cache: {
         lastItemIndex: 1,
         lastCardIndex: 1,
