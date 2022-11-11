@@ -21,6 +21,7 @@ template.innerHTML = html`<style>
             outline: 2px solid white;
         }
         :host(.inactive) {
+            opacity: 0.5;
             pointer-events: none;
         }
         :host(:active) {
@@ -56,6 +57,7 @@ export class LocationCard extends HTMLComponent {
 
         this.toggleClassName("hide", !!locationAttrib, "#unknown")
         this.toggleClassName("hide", !locationAttrib, "#info")
+        this.toggleClassName("inactive", !locationAttrib)
 
         if (locationAttrib) {
             const locationId = locationAttrib as LocationId
