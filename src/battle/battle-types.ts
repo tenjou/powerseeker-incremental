@@ -1,6 +1,6 @@
 import { AbilityEffect } from "../abilities/ability-type"
 import { AbilityId } from "../config/ability-configs"
-import { EncounterId } from "../config/encounter-configs"
+import { BattleId } from "../config/battle-configs"
 import { ItemId } from "../config/item-configs"
 import { MonsterId } from "../config/monster-configs"
 import { BattlerId } from "../types"
@@ -16,7 +16,7 @@ export interface BattleAction {
 
 export interface Battle {
     id: number
-    encounterId: EncounterId
+    encounterId: BattleId
     status: "preparing" | "waiting" | "executing" | "regen" | "ended"
     battlers: Battler[]
     battlersView: BattlerView[]

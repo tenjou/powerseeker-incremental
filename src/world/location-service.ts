@@ -1,6 +1,7 @@
 import { LocationId } from "../config/location-config"
 import { getState } from "../state"
 import { emit } from "./../events"
+import { LocationConfigs } from "./../config/location-config"
 
 export const LocationService = {
     addLocation(locationId: LocationId) {
@@ -14,12 +15,13 @@ export const LocationService = {
         locations[locationId] = {
             id: locationId,
             progress: 0,
+            entities: [],
         }
 
         emit("location-added", locationId)
     },
 
-    addProgress(locationId: LocationId, progress: number) {
+    explore(locationId: LocationId) {
         const { locations } = getState()
 
         const location = locations[locationId]
@@ -28,7 +30,14 @@ export const LocationService = {
             return
         }
 
-        location.progress += progress
+        location.progress += 5
+
+        const locationConfig = LocationConfigs[locationId]
+        for (const entityConfig of locationConfig.entities) {
+            location.entities.push({
+                id: entityConfig.id,
+            })
+        }
 
         emit("location-updated", locationId)
     },

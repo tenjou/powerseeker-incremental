@@ -1,4 +1,3 @@
-import { CardType } from "./config/CardConfigs"
 import { ItemId } from "./config/item-configs"
 
 export type SkillId = "woodcutting" | "mining" | "fishing"
@@ -20,7 +19,6 @@ export interface Item {
 
 export interface Card {
     id: number
-    type: CardType
 }
 
 export type Brand<T, FlavorT> = T & {

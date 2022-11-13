@@ -1,7 +1,7 @@
 import { canUseAbility, getEnergyNeeded } from "../abilities/abilities-utils"
 import { AbilityEffect } from "../abilities/ability-type"
 import { AbilityConfigs, AbilityFlag } from "../config/ability-configs"
-import { EncounterConfigs, EncounterId } from "../config/encounter-configs"
+import { BattleConfigs, BattleId } from "../config/battle-configs"
 import { MonsterConfigs } from "../config/monster-configs"
 import { removeAllChildren, setOnClick, setShow, setText } from "../dom"
 import { PlayerService } from "../player/player-service"
@@ -39,16 +39,16 @@ const AttackAbility: LoadoutAbility = {
     cooldown: 0,
 }
 
-export function startBattle(encounterId: EncounterId) {
+export function startBattle(encounterId: BattleId) {
     createBattleInstance(encounterId)
     loadBattle()
 }
 
-function createBattleInstance(encounterId: EncounterId) {
+function createBattleInstance(encounterId: BattleId) {
     const state = getState()
     const { battler, cache } = state
 
-    const encounter = EncounterConfigs[encounterId]
+    const encounter = BattleConfigs[encounterId]
 
     const battle = createBattle()
     battle.id = cache.lastBattleId++

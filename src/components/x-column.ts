@@ -15,6 +15,9 @@ template.innerHTML = html`<style>
         :host(.flex) {
             flex: 1;
         }
+        :host(.hide) {
+            display: none;
+        }
         :host(.inline) {
             display: inline-flex;
         }

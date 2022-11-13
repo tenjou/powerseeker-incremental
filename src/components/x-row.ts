@@ -27,6 +27,9 @@ template.innerHTML = html`<style>
         :host(.w-128) {
             flex: 0 0 128px;
         }
+        :host(.hide) {
+            display: none;
+        }
     </style>
 
     <slot></slot>`

@@ -160,6 +160,12 @@ const local: Record<string, LocalEntry> = {
     desert: {
         en: "Desert",
     },
+    town: {
+        en: "Town",
+    },
+    fight: {
+        en: "Fight",
+    },
 }
 
 export function i18n(key: string | undefined | null) {

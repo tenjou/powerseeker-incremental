@@ -1,29 +1,29 @@
 import { loadBattle, updateBattle } from "./battle/battle"
-import { loadCards } from "./cards"
 import { recalculateStats } from "./character/status"
 import "./components/area-transition"
-import "./components/x-button"
 import "./components/close-button"
-import "./components/x-column"
 import "./components/popup-container"
 import "./components/progress-bar"
-import "./components/x-row"
 import "./components/scrolling-text"
 import "./components/stats-table"
-import "./components/x-text"
 import "./components/url"
+import "./components/x-button"
+import "./components/x-card"
+import "./components/x-column"
 import "./components/x-header"
 import "./components/x-icon"
+import "./components/x-row"
+import "./components/x-text"
 import "./currencies/currency-item"
 import { setShow } from "./dom"
-import { loadDungeonStage, setupDungeonSystem } from "./dungeon"
+import "./entities/entity-service"
 import { emit } from "./events"
 import { addItem } from "./inventory/inventory"
+import { equipAbility } from "./loadout/loadout"
 import { loadPopupSystem } from "./popup"
 import { getState, loadState } from "./state"
 import { loadTooltipSystem } from "./tooltip"
 import { updateView } from "./view"
-import { equipAbility } from "./loadout/loadout"
 import { LocationService } from "./world/location-service"
 
 let tLast = 0
@@ -89,8 +89,6 @@ function load() {
 
     if (state.battle.id) {
         loadBattle()
-    } else if (state.dungeon.id) {
-        loadDungeonStage()
     } else {
         // setShow("area-town", true)
     }
@@ -99,20 +97,14 @@ function load() {
 function loadSave() {
     const state = getState()
 
-    loadCards(state.town.cards, false)
-
     if (state.battle.id) {
         console.log("battle")
-    } else if (state.dungeon.id) {
-        loadDungeonStage()
     } else {
         setShow("area-town", true)
     }
 }
 
 function update() {
-    setupDungeonSystem()
-
     tLast = Date.now()
 
     setInterval(() => {
