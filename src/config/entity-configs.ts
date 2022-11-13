@@ -1,4 +1,4 @@
-export type EntityId = "fight"
+export type EntityId = "fight" | "treasure"
 
 export interface EntityConfig {
     id: EntityId
@@ -7,5 +7,8 @@ export interface EntityConfig {
 export const CardConfigs: Record<EntityId, EntityConfig> = {
     fight: {
         id: "fight",
+    },
+    treasure: {
+        id: "treasure",
     },
 }

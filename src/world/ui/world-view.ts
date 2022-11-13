@@ -1,11 +1,11 @@
-import { getElement, removeAllChildren } from "../../dom"
-import { startBattle } from "../../battle/battle"
-import "./location-card"
-import { LocationId, LocationConfigs } from "./../../config/location-config"
-import { LocationService } from "./../location-service"
+import { getElement, removeAllChildren, removeElement } from "../../dom"
+import { LocationConfigs, LocationId } from "./../../config/location-config"
 import { subscribe, unsubscribe } from "./../../events"
+import { LocationService } from "./../location-service"
+import "./entity-card"
+import { EntityCard } from "./entity-card"
+import "./location-card"
 import { LocationCard } from "./location-card"
-import { EntityCard } from "./../../entities/ui/entity-card"
 
 export function loadWorldView() {
     const worldParent = getElement("world")
@@ -28,6 +28,7 @@ export function loadWorldView() {
     }
 
     subscribe("location-updated", update)
+    subscribe("location-removed", remove)
 }
 
 export function unloadWorldView() {
@@ -35,6 +36,7 @@ export function unloadWorldView() {
     removeAllChildren("location-container")
 
     unsubscribe("location-updated", update)
+    unsubscribe("location-removed", remove)
 }
 
 function update(locationId: LocationId) {
@@ -58,6 +60,11 @@ function update(locationId: LocationId) {
     for (let n = 0; n < location.entities.length; n += 1) {
         const entity = location.entities[n]
         const entityCard = parent.children[n] as EntityCard
+        entityCard.id = `entity-${entity.uid}`
         entityCard.update(entity)
     }
+}
+
+function remove(uid: number) {
+    removeElement(`entity-${uid}`)
 }

@@ -4,6 +4,7 @@ export type LocationId = "town" | "forest" | "desert"
 
 export interface LocationEntityConfig {
     id: EntityId
+    chance: number
 }
 
 export interface LocationConfig {
@@ -23,6 +24,11 @@ export const LocationConfigs: Record<LocationId, LocationConfig> = {
         entities: [
             {
                 id: "fight",
+                chance: 100,
+            },
+            {
+                id: "treasure",
+                chance: 50,
             },
         ],
         level: 1,

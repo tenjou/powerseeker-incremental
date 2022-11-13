@@ -9,6 +9,7 @@ type EventType =
     | "currency-updated"
     | "ability-updated"
     | "location-added"
+    | "location-removed"
     | "location-updated"
 
 type CallbackFunc = (payload: unknown) => void

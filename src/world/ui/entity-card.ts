@@ -1,6 +1,7 @@
 import { HTMLComponent } from "../../dom"
-import { Entity } from "../entity-types"
-import { i18n } from "./../../local"
+import { i18n } from "../../local"
+import { Entity } from "../location-types"
+import { LocationService } from "./../location-service"
 
 const template = document.createElement("template")
 template.innerHTML = html`
@@ -13,13 +14,19 @@ template.innerHTML = html`
 `
 
 export class EntityCard extends HTMLComponent {
+    entity: Entity = {} as Entity
+
     constructor() {
         super(template)
+
+        this.onclick = () => LocationService.remove(this.entity.uid)
     }
 
     update(entity: Entity) {
-        this.setText("#name", i18n(entity.id))
-        this.setText("#type", i18n(entity.id))
+        this.entity = entity
+
+        this.setText("#name", i18n(entity.entityId))
+        this.setText("#type", i18n(entity.entityId))
     }
 }
 

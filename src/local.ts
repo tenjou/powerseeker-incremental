@@ -166,6 +166,9 @@ const local: Record<string, LocalEntry> = {
     fight: {
         en: "Fight",
     },
+    treasure: {
+        en: "Treasure",
+    },
 }
 
 export function i18n(key: string | undefined | null) {

@@ -38,7 +38,7 @@ interface DungeonStatus {
 
 interface Cache {
     lastItemIndex: number
-    lastCardIndex: number
+    lastEntityIndex: number
     lastBattleId: number
 }
 
@@ -146,7 +146,7 @@ let state: State = {
     locations: {},
     cache: {
         lastItemIndex: 1,
-        lastCardIndex: 1,
+        lastEntityIndex: 1,
         lastBattleId: 1,
     },
 }

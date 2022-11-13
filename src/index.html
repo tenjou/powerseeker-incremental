@@ -27,7 +27,12 @@
     <body>
         <navbar>
             <x-column>
-                <logo><cap>P</cap>ower<cap>S</cap>eeker</logo>
+                <logo>
+                    <cap>P</cap>
+                    ower
+                    <cap>S</cap>
+                    eeker
+                </logo>
             </x-column>
 
             <x-row class="center-v">
@@ -64,7 +69,7 @@
                         <x-column id="world"></x-column>
                         <inventory-container id="location-container" class="grid-15"></inventory-container>
                         <x-text class="bold size12">Entities</x-text>
-                        <inventory-container id="entities-container" class="grid-15"></inventory-container>
+                        <inventory-container id="entities-container" class="grid-9"></inventory-container>
                     </x-column>
 
                     <x-column id="view-character" class="hide">
@@ -144,7 +149,11 @@
                     </x-column>
 
                     <x-column id="view-equipment" class="hide flex">
-                        <x-header>Equipment<x-icon></x-icon><span id="equipment-category"></span></x-header>
+                        <x-header>
+                            Equipment
+                            <x-icon></x-icon>
+                            <span id="equipment-category"></span>
+                        </x-header>
                         <x-column class="flex">
                             <inventory-container id="equipment-container"></inventory-container>
                         </x-column>
@@ -164,13 +173,21 @@
                     </x-column>
 
                     <x-column id="view-jobs" class="hide flex">
-                        <x-header>Jobs<x-icon></x-icon><span id="category-jobs"></span></x-header>
+                        <x-header>
+                            Jobs
+                            <x-icon></x-icon>
+                            <span id="category-jobs"></span>
+                        </x-header>
                         <x-column id="jobs" class="flex"></x-column>
                         <x-row class="center-h"><close-button id="close-jobs"></close-button></x-row>
                     </x-column>
 
                     <x-column id="view-loadout" class="hide">
-                        <x-header>Loadout<x-icon></x-icon><span id="loadout-category"></span></x-header>
+                        <x-header>
+                            Loadout
+                            <x-icon></x-icon>
+                            <span id="loadout-category"></span>
+                        </x-header>
                         <x-column class="flex">
                             <inventory-container id="loadout-container"></inventory-container>
                         </x-column>
