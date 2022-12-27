@@ -11,7 +11,8 @@ import { JobsService } from "./jobs/jobs-service"
 import { Job } from "./jobs/jobs-types"
 import { LoadoutAbility } from "./loadout/loadout-types"
 import { Card, Item, Skill } from "./types"
-import { LocationState } from "./world/location-types"
+import { LocationState } from "./exploration/exploration-types"
+import { ExplorationState } from "./world/world-types"
 
 interface TownStatus {
     cards: Card[]
@@ -60,6 +61,7 @@ interface State {
     dungeon: DungeonStatus
     battle: Battle
     battleResult: BattleResult | null
+    exploration: ExplorationState | null
     cache: Cache
 }
 
@@ -144,6 +146,15 @@ let state: State = {
         items: [null],
     },
     locations: {},
+    // exploration: {
+    //     locationId: "forest",
+    //     tStart: 0,
+    //     tEnd: 1000,
+    //     result: {
+    //         type: "combat",
+    //     },
+    // },
+    exploration: null,
     cache: {
         lastItemIndex: 1,
         lastEntityIndex: 1,
@@ -157,4 +168,11 @@ export function loadState(newState: State) {
 
 export function getState() {
     return state
+}
+
+export function updateState(updatedState: Partial<State>) {
+    state = {
+        ...state,
+        ...updatedState,
+    }
 }

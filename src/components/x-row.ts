@@ -1,7 +1,8 @@
 import { HTMLComponent } from "../dom"
 
 const template = document.createElement("template")
-template.innerHTML = html`<style>
+template.innerHTML = html`
+    <style>
         :host {
             display: flex;
             flex-direction: row;
@@ -21,18 +22,28 @@ template.innerHTML = html`<style>
         :host(.center-v) {
             align-items: center;
         }
-        :host(.padding10) {
+        :host(.p-6) {
+            padding: 6px;
+        }
+        :host(.p-10) {
             padding: 10px;
+        }
+        :host(.p-20) {
+            padding: 20px;
         }
         :host(.w-128) {
             flex: 0 0 128px;
+        }
+        :host(.w-256) {
+            flex: 0 0 256px;
         }
         :host(.hide) {
             display: none;
         }
     </style>
 
-    <slot></slot>`
+    <slot></slot>
+`
 
 class Row extends HTMLComponent {
     constructor() {

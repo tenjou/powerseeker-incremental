@@ -1,7 +1,8 @@
 import { HTMLComponent } from "../dom"
 
 const template = document.createElement("template")
-template.innerHTML = html`<style>
+template.innerHTML = html`
+    <style>
         :host {
             font-size: 12px;
             line-height: 14px;
@@ -9,9 +10,6 @@ template.innerHTML = html`<style>
         :host(.header) {
             font-weight: bold;
             text-transform: uppercase;
-        }
-        :host(.tertiary) {
-            color: #787878;
         }
         :host(.semibold) {
             font-weight: 600;
@@ -24,6 +22,10 @@ template.innerHTML = html`<style>
         }
         :host(.size13) {
             font-size: 13px;
+        }
+        :host(.size-14) {
+            font-size: 14px;
+            line-height: 20px;
         }
         :host(.size22) {
             font-size: 22px;
@@ -41,6 +43,12 @@ template.innerHTML = html`<style>
             margin-bottom: 2px;
         }
 
+        :host(.secondary) {
+            color: #666;
+        }
+        :host(.tertiary) {
+            color: #787878;
+        }
         :host(.red) {
             color: #ff0000;
         }
@@ -61,7 +69,8 @@ template.innerHTML = html`<style>
         }
     </style>
 
-    <slot></slot>`
+    <slot></slot>
+`
 
 export class Text extends HTMLComponent {
     constructor() {

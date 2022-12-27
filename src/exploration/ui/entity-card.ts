@@ -1,7 +1,8 @@
 import { HTMLComponent } from "../../dom"
 import { i18n } from "../../local"
-import { Entity } from "../location-types"
-import { LocationService } from "./../location-service"
+import { openPopup } from "../../popup"
+import { Entity } from "../exploration-types"
+import { ExplorationService } from "../exploration-service"
 
 const template = document.createElement("template")
 template.innerHTML = html`
@@ -16,10 +17,8 @@ template.innerHTML = html`
 export class EntityCard extends HTMLComponent {
     entity: Entity = {} as Entity
 
-    constructor() {
-        super(template)
-
-        this.onclick = () => LocationService.remove(this.entity.uid)
+    connectedCallback() {
+        super.connectedCallback(template)
     }
 
     update(entity: Entity) {

@@ -64,7 +64,7 @@ export function updateView() {
 
     let nextView = segments.shift() as ViewType
     if (!nextView) {
-        nextView = "character"
+        nextView = "world"
         history.replaceState({}, "", `/${nextView}`)
     }
 
@@ -74,7 +74,7 @@ export function updateView() {
 
     let view = views[nextView]
     if (!view) {
-        nextView = "character"
+        nextView = "world"
         view = views.character
         history.replaceState({}, "", `/${nextView}`)
     }

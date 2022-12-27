@@ -1,48 +1,25 @@
+import { LocationConfigs, LocationId } from "../../config/location-config"
 import { HTMLComponent } from "../../dom"
-import { LocationConfigs, LocationId } from "./../../config/location-config"
 import { i18n } from "./../../local"
-import { LocationService } from "./../location-service"
 
 const template = document.createElement("template")
-template.innerHTML = html`<x-card>
-    <x-row id="unknown" class="center-h"><x-text class="tertiary">???</x-text></x-row>
-    <x-row id="info">
-        <x-column class="flex"><x-text id="name" class="bold"></x-text><x-text id="level" class="tertiary"></x-text></x-column>
-        <x-row class="flex center-v w-128">
-            <progress-bar id="progress" value="0" value-max="50" show-max class="blue border"></progress-bar>
-        </x-row>
-    </x-row>
-</x-card>`
+template.setAttribute("class", "p-2 bg-white hover:outline active:outline border-radius-3 cursor-pointer")
+template.innerHTML = html`
+    <div id="name" clas="font-bold"></div>
+`
 
 export class LocationCard extends HTMLComponent {
-    constructor() {
-        super(template)
-    }
-
     connectedCallback() {
+        super.connectedCallback(template)
         this.update()
     }
 
     update() {
-        const locationAttrib = this.getAttribute("location")
+        const location = this.getAttribute("location") as LocationId
 
-        this.toggleClassName("hide", !!locationAttrib, "#unknown")
-        this.toggleClassName("hide", !locationAttrib, "#info")
-        this.toggleClassName("inactive", !locationAttrib)
+        const locationConfig = LocationConfigs[location]
 
-        if (locationAttrib) {
-            const locationId = locationAttrib as LocationId
-            const locationConfig = LocationConfigs[locationId]
-            const location = LocationService.get(locationId)
-
-            this.setText("#name", i18n(locationConfig.id))
-            this.setText("#level", `${i18n("level")} ${locationConfig.level}`)
-            this.getElement("#progress").setAttribute("value", String(location?.progress))
-
-            this.onclick = () => {
-                LocationService.explore(locationId)
-            }
-        }
+        this.setText("#name", i18n(locationConfig.id))
     }
 }
 

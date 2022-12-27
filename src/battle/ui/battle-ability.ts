@@ -2,7 +2,7 @@ import { getEnergyNeeded } from "../../abilities/abilities-utils"
 import { getAbilityDescription } from "../../abilities/ui/abilities-view"
 import { Ability } from "../../abilities/ability-type"
 import { AbilityConfigs, AbilityFlag } from "../../config/ability-configs"
-import { getElement, HTMLComponent, setHTML, toggleClassName } from "../../dom"
+import { getElementById, HTMLComponent, setHTML, toggleClassName } from "../../dom"
 import { i18n } from "../../local"
 import { getState } from "../../state"
 import { selectAbility } from "../battle"
@@ -13,7 +13,7 @@ import { LoadoutAbility } from "./../../loadout/loadout-types"
 export function loadAbilities() {
     const { loadout } = getState()
 
-    const parent = getElement("battle-abilities")
+    const parent = getElementById("battle-abilities")
 
     for (const loadoutAbility of loadout.abilities) {
         if (!loadoutAbility) {
@@ -29,7 +29,7 @@ export function loadAbilities() {
 export function renderAbilities() {
     const { battle } = getState()
 
-    const element = getElement("battle-abilities")
+    const element = getElementById("battle-abilities")
     const children = element.children as unknown as BattlerAbilitySlot[]
 
     toggleClassName("battle-abilities", "inactive", battle.status !== "waiting")
@@ -113,7 +113,8 @@ class BattlerAbilitySlot extends HTMLComponent {
 customElements.define("battler-ability-slot", BattlerAbilitySlot)
 
 const template = document.createElement("template")
-template.innerHTML = html`<style>
+template.innerHTML = html`
+    <style>
         :host {
             position: relative;
             padding: 4px;
@@ -175,4 +176,5 @@ template.innerHTML = html`<style>
 
     <img />
     <div id="cooldown"></div>
-    <div id="energy"></div>`
+    <div id="energy"></div>
+`

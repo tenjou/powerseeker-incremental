@@ -1,7 +1,7 @@
-import { getElement } from "./dom"
+import { getElementById } from "./dom"
 import { subscribe } from "./events"
 
-type PopupType = "item-popup" | "battle-result-popup" | "ability-popup"
+type PopupType = "item-popup" | "battle-result-popup" | "ability-popup" | "explore-popup"
 
 interface Popup {
     element: HTMLElement
@@ -11,7 +11,7 @@ interface Popup {
 const popups: Popup[] = []
 
 export function loadPopupSystem() {
-    const popupElement = getElement("popups")
+    const popupElement = getElementById("popups")
 
     popupElement.addEventListener("click", tryClosePopup)
 
@@ -20,6 +20,8 @@ export function loadPopupSystem() {
 
 export function openPopup(type: PopupType, attributes: Record<string, string | number> = {}, onClose?: () => void) {
     const element = document.createElement(type)
+
+    element.id = type
 
     for (let attributeId in attributes) {
         element.setAttribute(attributeId, String(attributes[attributeId]))
@@ -39,7 +41,7 @@ export function openPopup(type: PopupType, attributes: Record<string, string | n
 }
 
 function tryClosePopup(event: MouseEvent) {
-    const popupElement = getElement("popups")
+    const popupElement = getElementById("popups")
 
     if (event.target === popupElement) {
         closePopup()

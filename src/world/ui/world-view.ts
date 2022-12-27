@@ -1,70 +1,55 @@
-import { getElement, removeAllChildren, removeElement } from "../../dom"
-import { LocationConfigs, LocationId } from "./../../config/location-config"
+import { LocationConfigs, LocationId } from "../../config/location-config"
+import { getElement, getElementById, removeAllChildren } from "./../../dom"
 import { subscribe, unsubscribe } from "./../../events"
-import { LocationService } from "./../location-service"
-import "./entity-card"
-import { EntityCard } from "./entity-card"
+import { LocationCard } from "./../../exploration/ui/location-card"
+import { WorldService } from "./../world-service"
+import "./explore-wilderness"
+import { ExploreWilderness } from "./explore-wilderness"
 import "./location-card"
-import { LocationCard } from "./location-card"
 
-export function loadWorldView() {
-    const worldParent = getElement("world")
-    const locationContainer = getElement("location-container")
+export function loadWorldView(segments: string[]) {
+    const container = getElementById("world-container")
 
-    // const forestBattle = document.createElement("x-button")
-    // forestBattle.setAttribute("class", "black")
-    // forestBattle.innerHTML = "Forest Battle"
-    // forestBattle.onclick = () => startBattle("test_battle")
-    // worldParent.appendChild(forestBattle)
+    for (const key in LocationConfigs) {
+        const locationId = key as LocationId
 
-    for (const locationId in LocationConfigs) {
-        const location = LocationService.get(locationId as LocationId)
-        const element = document.createElement("location-card")
-        element.id = `location-${locationId}`
-        if (location) {
-            element.setAttribute("location", locationId)
-        }
-        locationContainer.appendChild(element)
+        const locationCard = document.createElement("location-card")
+        locationCard.id = `location-${locationId}`
+        locationCard.setAttribute("location", locationId)
+        locationCard.onclick = () => WorldService.goToLocation(locationId)
+        container.appendChild(locationCard)
     }
 
-    subscribe("location-updated", update)
-    subscribe("location-removed", remove)
+    subscribe("location-updated", updateWorldView)
+    subscribe("exploration-started", updateExploration)
+    subscribe("exploration-ended", updateExploration)
+
+    const locationId = segments[0] as LocationId
+    if (locationId) {
+        WorldService.goToLocation(locationId)
+    }
+
+    updateExploration()
 }
 
 export function unloadWorldView() {
-    removeAllChildren("world")
-    removeAllChildren("location-container")
-
-    unsubscribe("location-updated", update)
-    unsubscribe("location-removed", remove)
+    removeAllChildren("world-container")
+    unsubscribe("location-updated", updateWorldView)
+    unsubscribe("exploration-started", updateExploration)
+    unsubscribe("exploration-ended", updateExploration)
 }
 
-function update(locationId: LocationId) {
-    const location = LocationService.get(locationId)
-    if (!location) {
-        console.error(`Missing location: ${locationId}`)
-        return
-    }
+function updateWorldView(locationId: LocationId) {
+    const locationCards = document.querySelectorAll<LocationCard>("location-card")
+    locationCards.forEach((locationCard) => {
+        const location = locationCard.getAttribute("location") as LocationId
+        locationCard.toggleAttr("data-active", WorldService.isSelected(location))
+    })
 
-    const element = getElement(`location-${locationId}`) as LocationCard
-    element.update()
-
-    const parent = getElement("entities-container")
-    const missingEntities = location.entities.length - parent.children.length
-
-    for (let n = 0; n < missingEntities; n += 1) {
-        const entityCard = document.createElement("entity-card")
-        parent.appendChild(entityCard)
-    }
-
-    for (let n = 0; n < location.entities.length; n += 1) {
-        const entity = location.entities[n]
-        const entityCard = parent.children[n] as EntityCard
-        entityCard.id = `entity-${entity.uid}`
-        entityCard.update(entity)
-    }
+    // getElement<ExploreWilderness>("explore-wilderness").update(locationId)
 }
 
-function remove(uid: number) {
-    removeElement(`entity-${uid}`)
+const updateExploration = () => {
+    const exploreWilderness = getElement<ExploreWilderness>("explore-wilderness")
+    exploreWilderness.update()
 }

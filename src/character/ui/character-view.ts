@@ -1,7 +1,7 @@
 import { AbilitySlotElement } from "../../abilities/ui/ability-slot"
 import { StatsTableEntry } from "../../components/stats-table"
 import { EquipmentSlot } from "../../config/item-configs"
-import { getElement, toggleClassName } from "../../dom"
+import { getElementById, toggleClassName } from "../../dom"
 import "../../equipment/ui/equipment-slot"
 import { subscribe, unsubscribe } from "../../events"
 import { ItemSlot } from "../../inventory/ui/item-slot"
@@ -61,7 +61,7 @@ export function updateCharacterView() {
         },
     ]
 
-    const statsTable = getElement("stats")
+    const statsTable = getElementById("stats")
     statsTable.setAttribute("data", JSON.stringify(statsData))
 
     const equipmentElements = document.querySelectorAll<EquipmentSlotElement>("equipment-slot")
@@ -86,10 +86,10 @@ export function updateCharacterView() {
 function updateJobs() {
     const { player, jobs } = getState()
 
-    getElement("select-primary-job").onclick = () => {
+    getElementById("select-primary-job").onclick = () => {
         goTo("/jobs/primary")
     }
-    getElement("select-secondary-job").onclick = () => {
+    getElementById("select-secondary-job").onclick = () => {
         goTo("/jobs/secondary")
     }
 
@@ -102,7 +102,7 @@ function updateJobs() {
     setText("primary-job-name", i18n(jobPrimary.id))
     setText("primary-job-level", `${i18n("level")} ${jobPrimary.level}`)
 
-    const primaryProgressBar = getElement("primary-job-exp") as ProgressBar
+    const primaryProgressBar = getElementById("primary-job-exp") as ProgressBar
     primaryProgressBar.setAttrib("value", jobPrimary.exp)
     primaryProgressBar.setAttrib("value-max", LevelConfig[jobPrimary.level])
 

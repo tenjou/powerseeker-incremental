@@ -1,6 +1,6 @@
 import { goTo } from "../../view"
 import { JobConfigs, JobId } from "./../../config/job-configs"
-import { getElement, removeAllChildren, setText } from "./../../dom"
+import { getElementById, removeAllChildren, setText } from "./../../dom"
 import "./job-slot"
 import { JobsService } from "./../jobs-service"
 
@@ -12,11 +12,11 @@ export function loadJobsView(segments: string[]) {
     }
 
     setText("category-jobs", segment)
-    getElement("close-jobs").onclick = () => {
+    getElementById("close-jobs").onclick = () => {
         goTo("/character")
     }
 
-    const parent = getElement("jobs")
+    const parent = getElementById("jobs")
     const isPrimary = segment === "primary"
 
     const jobs = Object.keys(JobConfigs).map((jobId) => {

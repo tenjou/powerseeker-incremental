@@ -1,4 +1,4 @@
-export function getElement(id: string) {
+export function getElementById(id: string) {
     const element = document.getElementById(id)
     if (!element) {
         console.error(`Could get element with id: "${id}"`)
@@ -6,6 +6,16 @@ export function getElement(id: string) {
     }
 
     return element
+}
+
+export function getElement<T>(query: string) {
+    const element = document.querySelector(query)
+    if (!element) {
+        console.error(`Could get element: "${query}"`)
+        return document.createElement("div") as T
+    }
+
+    return element as T
 }
 
 export function removeElement(id: string) {
@@ -71,7 +81,7 @@ export function setOnClick(id: string, func: () => void) {
 }
 
 export function toggleClassName(id: string, className: string, add: boolean, parent: HTMLElement | null = null) {
-    const element = parent && parent.shadowRoot ? parent.shadowRoot.querySelector(`#${id}`) : document.getElementById(id)
+    const element = parent ? parent.querySelector(`#${id}`) : document.getElementById(id)
     if (!element) {
         return
     }
@@ -98,30 +108,40 @@ export function setShow(id: string, show: boolean) {
 }
 
 export class HTMLComponent extends HTMLElement {
-    constructor(template: HTMLTemplateElement) {
+    constructor(template?: HTMLTemplateElement) {
         super()
-
-        const shadowRoot = this.attachShadow({ mode: "open" })
-        shadowRoot.append(template.content.cloneNode(true))
     }
 
-    getElement(query: string): HTMLElement {
-        if (!this.shadowRoot) {
-            console.error(`Missing shadowRoot`)
-            return document.createElement("div")
+    connectedCallback(template: HTMLTemplateElement) {
+        if (template) {
+            const outerClasses = this.getAttribute("class")
+            const classes = outerClasses ? outerClasses + " " + template.getAttribute("class") : template.getAttribute("class")
+            this.setAttribute("class", classes || "")
+            this.append(template.content.cloneNode(true))
         }
+    }
 
+    attributeChangedCallback() {
+        if (this.children.length === 0) {
+            return
+        }
+        this.update()
+    }
+
+    update(props?: unknown) {}
+
+    getElement(query: string): HTMLComponent {
         if (!query) {
             return this
         }
 
-        const element = this.shadowRoot.querySelector(query) as HTMLElement
+        const element = this.querySelector(query) as HTMLElement
         if (!element) {
             console.error(`Could not find child element with query: ${query}`)
-            return document.createElement("div")
+            return document.createElement("div") as unknown as HTMLComponent
         }
 
-        return element
+        return element as unknown as HTMLComponent
     }
 
     setText(query: string, text: string | number | null) {
@@ -139,11 +159,23 @@ export class HTMLComponent extends HTMLElement {
         this.setAttribute(key, String(value))
     }
 
+    getAttrib(key: string) {
+        return this.getAttribute(key)
+    }
+
     toggleClassName(className: string, add: boolean, query: string = "") {
         if (add) {
             this.getElement(query).classList.add(className)
         } else {
             this.getElement(query).classList.remove(className)
+        }
+    }
+
+    toggleAttr(attr: string, add: boolean, query: string = "") {
+        if (add) {
+            this.getElement(query).setAttribute(attr, "")
+        } else {
+            this.getElement(query).removeAttribute(attr)
         }
     }
 

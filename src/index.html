@@ -25,7 +25,7 @@
     </head>
 
     <body>
-        <navbar>
+        <!-- <navbar>
             <x-column>
                 <logo>
                     <cap>P</cap>
@@ -39,10 +39,10 @@
                 <currency-item currency="gold"></currency-item>
                 <currency-item currency="ap"></currency-item>
             </x-row>
-        </navbar>
+        </navbar> -->
 
         <container id="main-container">
-            <sidebar>
+            <!-- <sidebar>
                 <x-column>
                     <segment>Areas</segment>
                     <x-url id="nav-town" href="/town">Town</x-url>
@@ -56,10 +56,17 @@
                     <x-url id="nav-inventory" href="/inventory">Inventory</x-url>
                     <x-url id="nav-skills" href="/skills">Skills</x-url>
                 </x-column>
-            </sidebar>
+            </sidebar> -->
 
             <content-holder>
                 <content>
+                    <x-column id="view-world" class="hide">
+                        <div id="world-container" class="flex mb-2 pb-2 s-2 border-bottom"></div>
+                        <div id="location-container">
+                            <explore-wilderness></explore-wilderness>
+                        </div>
+                    </x-column>
+                    <!-- 
                     <x-column id="view-town" class="hide">
                         <x-header>Town</x-header>
                     </x-column>
@@ -70,6 +77,9 @@
                         <inventory-container id="location-container" class="grid-15"></inventory-container>
                         <x-text class="bold size12">Entities</x-text>
                         <inventory-container id="entities-container" class="grid-9"></inventory-container>
+                        <x-text class="bold size12">Exploration</x-text>
+                        <progress-bar value="40" value-max="100" label="Exploring" class="blue border"></progress-bar>
+                        <x-button class="black">Explore</x-button>
                     </x-column>
 
                     <x-column id="view-character" class="hide">
@@ -191,7 +201,7 @@
                         <x-column class="flex">
                             <inventory-container id="loadout-container"></inventory-container>
                         </x-column>
-                    </x-column>
+                    </x-column> -->
 
                     <!-- <x-column id="area-town" class="hide">
                         <x-text class="header">Town</x-text>
@@ -199,13 +209,13 @@
                         <area-transition></area-transition>
                     </x-column> -->
 
-                    <column id="area-dungeon" class="hide">
+                    <!-- <column id="area-dungeon" class="hide">
                         <text id="dungeon-name" class="header"></text>
                         <text id="dungeon-stage"></text>
                         <text id="dungeon-progress"></text>
                         <column id="dungeon-cards"></column>
                         <button id="dungeon-exit">Exit</button>
-                    </column>
+                    </column> -->
                 </content>
             </content-holder>
         </container>

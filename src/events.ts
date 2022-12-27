@@ -11,6 +11,8 @@ type EventType =
     | "location-added"
     | "location-removed"
     | "location-updated"
+    | "exploration-started"
+    | "exploration-ended"
 
 type CallbackFunc = (payload: unknown) => void
 

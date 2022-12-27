@@ -1,7 +1,7 @@
 import { EquipmentSlot, ItemConfigs } from "../../config/item-configs"
 import { i18n } from "../../local"
 import { goTo } from "../../view"
-import { getElement, removeAllChildren, setText } from "../../dom"
+import { getElementById, removeAllChildren, setText } from "../../dom"
 import { subscribe, unsubscribe } from "../../events"
 import { openItemPopup, sortInventory } from "../../inventory/ui/inventory-view"
 import { getState } from "../../state"
@@ -27,7 +27,7 @@ export function loadEquipmentView(segments: string[]) {
 
     sortInventory(items)
 
-    const parent = getElement("equipment-container")
+    const parent = getElementById("equipment-container")
 
     const itemSlot = document.createElement("item-slot")
     itemSlot.onclick = () => {
@@ -50,7 +50,7 @@ export function loadEquipmentView(segments: string[]) {
     setText("equipment-category", i18n(equipmentSlot))
 
     subscribe("close", goBack)
-    getElement("close-equipment").onclick = goBack
+    getElementById("close-equipment").onclick = goBack
 }
 
 export function unloadEquipmentView() {

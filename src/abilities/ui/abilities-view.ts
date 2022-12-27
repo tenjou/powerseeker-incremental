@@ -1,7 +1,7 @@
 import { AbilityConfig, AbilityConfigs, AbilityId } from "../../config/ability-configs"
 import { openPopup } from "../../popup"
 import { getState } from "../../state"
-import { getElement, removeAllChildren } from "../../dom"
+import { getElementById, removeAllChildren } from "../../dom"
 import { getAbilityEffectPower } from "../abilities-utils"
 import "./ability-popup"
 import "./ability-slot"
@@ -11,7 +11,7 @@ import { subscribe, unsubscribe } from "../../events"
 import { AbilityEffect } from "../ability-type"
 
 export function loadAbilitiesView() {
-    const parent = getElement("abilities-container")
+    const parent = getElementById("abilities-container")
 
     for (const abilityId in AbilityConfigs) {
         const abilitySlot = document.createElement("ability-card")
@@ -30,7 +30,7 @@ export function unloadAbilitiesView() {
 }
 
 function updateView() {
-    const parent = getElement("abilities-container")
+    const parent = getElementById("abilities-container")
     parent.childNodes.forEach((element) => {
         ;(element as AbilitySlotElement).update()
     })

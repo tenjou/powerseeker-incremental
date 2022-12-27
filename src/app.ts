@@ -4,10 +4,10 @@ import "./components/area-transition"
 import "./components/close-button"
 import "./components/popup-container"
 import "./components/progress-bar"
+import "./components/anim-progress-bar"
 import "./components/scrolling-text"
 import "./components/stats-table"
 import "./components/url"
-import "./components/x-button"
 import "./components/x-card"
 import "./components/x-column"
 import "./components/x-header"
@@ -17,13 +17,14 @@ import "./components/x-text"
 import "./currencies/currency-item"
 import { setShow } from "./dom"
 import { emit } from "./events"
+import { ExplorationService } from "./exploration/exploration-service"
 import { addItem } from "./inventory/inventory"
 import { equipAbility } from "./loadout/loadout"
 import { loadPopupSystem } from "./popup"
 import { getState, loadState } from "./state"
 import { loadTooltipSystem } from "./tooltip"
 import { updateView } from "./view"
-import { LocationService } from "./world/location-service"
+import { WorldService } from "./world/world-service"
 
 let tLast = 0
 
@@ -63,7 +64,7 @@ function createEmptyProfile() {
         amount: 5,
     })
 
-    LocationService.addLocation("forest")
+    ExplorationService.addLocation("forest")
 
     equipAbility("attack")
     equipAbility("bash")
@@ -88,8 +89,7 @@ function load() {
 
     if (state.battle.id) {
         loadBattle()
-    } else {
-        // setShow("area-town", true)
+        return
     }
 }
 
@@ -110,6 +110,7 @@ function update() {
         const tCurrent = Date.now()
         const tDelta = tCurrent - tLast
 
+        WorldService.update(tCurrent)
         updateBattle(tDelta)
 
         tLast = tCurrent

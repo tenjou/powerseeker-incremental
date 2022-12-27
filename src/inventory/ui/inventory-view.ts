@@ -1,5 +1,5 @@
 import { ItemConfigs, ItemType } from "../../config/item-configs"
-import { getElement, removeAllChildren, removeElement } from "../../dom"
+import { getElementById, removeAllChildren, removeElement } from "../../dom"
 import { getState } from "../../state"
 import { subscribe, unsubscribe } from "../../events"
 import { openPopup } from "../../popup"
@@ -31,7 +31,7 @@ export function unloadInventoryView() {
 }
 
 function updateInventoryView() {
-    const parent = getElement("inventory-container")
+    const parent = getElementById("inventory-container")
     if (!parent) {
         console.error(`Could not find inventory-container`)
         return
@@ -60,7 +60,7 @@ function removeItem(item: Item) {
 }
 
 function updateItem(item: Item) {
-    const element = getElement(`item-${item.uid}`) as ItemSlot
+    const element = getElementById(`item-${item.uid}`) as ItemSlot
     element.update()
 }
 

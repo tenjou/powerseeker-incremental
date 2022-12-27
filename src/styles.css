@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap");
 /* @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&display=swap"); */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Open+Sans:wght@400;500;600&display=swap");
 
 @font-face {
     font-family: JupiterProBold;
@@ -23,9 +24,10 @@ body {
     font-family: "Open Sans", sans-serif;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
-    background: linear-gradient(#d6d6d6, #ececec);
+    /* background: linear-gradient(#d6d6d6, #ececec);
     background-repeat: no-repeat;
-    background-attachment: fixed;
+    background-attachment: fixed; */
+    background-color: rgb(229 231 235);
 }
 
 navbar {
@@ -333,4 +335,147 @@ tooltip-container tooltip {
     background: #000000c7;
     font-size: 11px;
     z-index: 999;
+}
+
+.flex {
+    display: flex;
+}
+
+.bg-white {
+    background-color: rgb(255 255 255);
+}
+.p-2 {
+    padding: 0.5rem;
+}
+.pb-2 {
+    padding-bottom: 0.5rem;
+}
+.m-2 {
+    margin: 0.5rem;
+}
+.mb-2 {
+    margin-bottom: 0.5rem;
+}
+
+.s-2 > * {
+    margin-right: 0.5rem;
+}
+.s-2 > *:last-child {
+    margin-right: 0;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+.active\:outline[data-active] {
+    outline-width: 1px;
+    outline-style: solid;
+    outline-color: rgb(71 85 105);
+}
+.hover\:outline:hover {
+    outline-width: 1px;
+    outline-style: solid;
+    outline-color: rgb(148 163 184);
+}
+
+.border-bottom {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(203 213 225);
+}
+
+.border-radius-3 {
+    border-radius: 0.2rem;
+}
+.font-bold {
+    font-weight: bold;
+}
+
+x-button {
+    display: inline-block;
+    width: 100px;
+    padding: 6px;
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    text-align: center;
+    color: #222;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+x-button:active {
+    transform: translateY(1px);
+}
+x-button.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+x-button.black {
+    border: 1px solid #666;
+    border-radius: 3px;
+}
+x-button.black:hover {
+    border: 1px solid #000;
+    background: #f1f1f1;
+    color: #000;
+    outline: 2px solid #fff;
+}
+x-button.size50 {
+    width: 50px;
+}
+
+progress-bar,
+anim-progress-bar {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 16px;
+    background: black;
+    border-radius: 3px;
+}
+progress-bar.battle {
+    height: 14px;
+}
+progress-bar.border,
+anim-progress-bar.border {
+    border: 1px solid #383434;
+}
+progress-bar.bar,
+anim-progress-bar.bar {
+    position: absolute;
+    width: 0%;
+    height: 100%;
+    left: 0;
+    background: linear-gradient(#e0313d, #bb232d);
+    border-radius: 2px;
+    border-top: 1px solid #ff857c;
+    box-sizing: border-box;
+}
+progress-bar.blue .bar,
+anim-progress-bar.blue .bar {
+    background: linear-gradient(#369ce4, #2f87c5);
+    border-top: 1px solid #8db8db;
+}
+progress-bar.green .bar {
+    background: linear-gradient(#75c120, #63a718);
+    border-top: 1px solid #8fe729;
+    border-bottom: 1px solid #5d9d12;
+}
+progress-bar.shadow,
+anim-progress-bar.shadow {
+    width: 100%;
+    opacity: 0.35;
+}
+progress-bar .value,
+anim-progress-bar .value {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    color: #fff;
+    text-shadow: 0 0 2px #000;
+    font-size: 11px;
 }
