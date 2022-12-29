@@ -20,7 +20,7 @@ body {
     top: 0;
     left: 0;
     margin: 0;
-    font-size: 12px;
+    font-size: 11px;
     font-family: "Open Sans", sans-serif;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
@@ -95,8 +95,15 @@ green {
     pointer-events: none;
 }
 
-.child-events-none > * {
-    pointer-events: none;
+.color-gray {
+    color: #cbcbcb;
+}
+.color-gold {
+    color: #ffd100;
+}
+
+.spacing-6 {
+    margin: 6px;
 }
 
 text.header {
@@ -403,6 +410,19 @@ tooltip-container tooltip {
     font-size: 11px;
     z-index: 999;
 }
+item-tooltip {
+    position: absolute;
+    top: 300px;
+    left: 200px;
+    width: 200px;
+    padding: 4px 7px;
+    border-radius: 3px;
+    color: #fff;
+    background: #000000e3;
+    font-size: 11px;
+    z-index: 999;
+    transform: translate(0, -100%);
+}
 
 .block {
     display: block;
@@ -483,6 +503,10 @@ tooltip-container tooltip {
 }
 .uppercase {
     text-transform: uppercase;
+}
+
+.font-1 {
+    font-size: 1em;
 }
 
 popup-container {

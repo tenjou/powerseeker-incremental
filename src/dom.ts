@@ -109,14 +109,21 @@ export function setShow(id: string, show: boolean) {
 
 export class HTMLComponent extends HTMLElement {
     root: HTMLElement
+    rootClasses: string
 
     constructor(template: HTMLTemplateElement) {
         super()
 
         this.root = template.content.cloneNode(true) as HTMLElement
+        this.rootClasses = template.getAttribute("class") || ""
     }
 
     connectedCallback() {
+        if (this.rootClasses) {
+            const outerClasses = this.getAttribute("class")
+            this.setAttribute("class", outerClasses + " " + this.rootClasses)
+        }
+
         this.append(this.root)
         this.root = this
 

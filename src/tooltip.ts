@@ -1,8 +1,11 @@
 import { AbilityConfigs, AbilityId } from "./config/ability-configs"
 import { ItemConfigs, ItemId } from "./config/item-configs"
 import { i18n } from "./i18n"
+import "./tooltip/ui/ItemTooltip"
+import { ItemTooltip } from "./tooltip/ui/ItemTooltip"
 
 let tooltipElement: HTMLElement
+let itemTooltipElement: ItemTooltip
 
 export function loadTooltipSystem() {
     const element = document.querySelector("tooltip")
@@ -12,6 +15,7 @@ export function loadTooltipSystem() {
     }
 
     tooltipElement = element as HTMLElement
+    itemTooltipElement = document.querySelector("item-tooltip") as ItemTooltip
 
     window.onmousemove = handeMouseMoveTooltip
     window.onclick = () => {
@@ -34,11 +38,12 @@ export function handeMouseMoveTooltip(event: MouseEvent) {
         showTooltip(event, abilityConfig.id)
     } else {
         tooltipElement.classList.add("hide")
+        itemTooltipElement.classList.add("hide")
     }
 }
 
-function showTooltip(event: MouseEvent, id: string) {
-    tooltipElement.classList.remove("hide")
-    tooltipElement.setAttribute("style", `left: ${event.x}px; top: ${event.y - 20}px`)
-    tooltipElement.innerHTML = i18n(id)
+function showTooltip(event: MouseEvent, id: string, type: "item" | "other" = "other") {
+    itemTooltipElement.classList.remove("hide")
+    itemTooltipElement.setAttribute("style", `left: ${event.x}px; top: ${event.y}px`)
+    itemTooltipElement.update()
 }
