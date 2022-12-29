@@ -95,6 +95,10 @@ green {
     pointer-events: none;
 }
 
+.child-events-none > * {
+    pointer-events: none;
+}
+
 text.header {
     font-weight: bold;
     text-transform: uppercase;
@@ -330,10 +334,10 @@ item-slot {
 item-slot:hover {
     outline: 2px solid white;
 }
+item-slot > *,
 item-slot.inactive {
     pointer-events: none;
 }
-
 item-slot.rarity-0 {
     background: linear-gradient(#bdbdbd, #a0a0a0);
 }

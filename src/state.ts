@@ -158,14 +158,6 @@ let state: State = {
         items: [null],
     },
     locations: {},
-    // exploration: {
-    //     locationId: "forest",
-    //     tStart: 0,
-    //     tEnd: 1000,
-    //     result: {
-    //         type: "combat",
-    //     },
-    // },
     exploration: {
         locationId: "forest",
         tStart: 0,

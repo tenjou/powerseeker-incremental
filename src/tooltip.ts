@@ -23,7 +23,6 @@ export function handeMouseMoveTooltip(event: MouseEvent) {
     event.stopPropagation()
 
     const element = event.target as HTMLElement
-
     const itemId = element.getAttribute("item-id") as ItemId | null
     const abilityId = element.getAttribute("ability-id") as AbilityId | null
 
