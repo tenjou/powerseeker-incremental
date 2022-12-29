@@ -6,6 +6,7 @@ export class ScrollingText extends HTMLComponent {
     }
 
     setup(text: string, color: string, icon: string | null) {
+        console.log(icon)
         if (icon) {
             this.getElement("img").setAttribute("src", icon)
         } else {

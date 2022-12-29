@@ -337,6 +337,10 @@ tooltip-container tooltip {
     z-index: 999;
 }
 
+.block {
+    display: block;
+}
+
 .flex {
     display: flex;
 }
@@ -411,6 +415,21 @@ tooltip-container tooltip {
     font-weight: bold;
 }
 
+popup-container {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 6px;
+    width: 400px;
+    max-height: 96%;
+    box-sizing: border-box;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.83);
+    background: linear-gradient(#d6d6d6, #efefef);
+    border-radius: 3px;
+    border-left: 2px solid #fff;
+    border-right: 2px solid #fff;
+    cursor: initial;
+}
+
 battler-item {
     position: relative;
     display: flex;
@@ -455,6 +474,19 @@ battler-item:hover {
 battler-item:hover .row {
     background-color: #fff;
     color: #000;
+}
+battler-effect {
+    position: relative;
+    margin: 0 1px;
+    background: #bdbdbd;
+}
+battler-effect div {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    color: #fff;
+    background: #00000082;
+    font-size: 10px;
 }
 
 battler-ability {

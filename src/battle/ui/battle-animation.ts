@@ -98,7 +98,7 @@ function activateAnimation(animation: Animation) {
             break
 
         case "scrolling-text": {
-            const icon = animation.abilityId ? `assets/icon/ability/${animation.abilityId}.png` : null
+            const icon = animation.abilityId ? `/assets/icon/ability/${animation.abilityId}.png` : null
 
             let color
             if (animation.flags & BattleActionFlag.Energy) {

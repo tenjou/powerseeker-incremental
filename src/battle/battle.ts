@@ -39,9 +39,11 @@ const AttackAbility: LoadoutAbility = {
     cooldown: 0,
 }
 
-export function startBattle(encounterId: BattleId) {
-    createBattleInstance(encounterId)
-    loadBattle()
+export const BattleService = {
+    start(encounterId: BattleId) {
+        createBattleInstance(encounterId)
+        loadBattle()
+    },
 }
 
 function createBattleInstance(encounterId: BattleId) {

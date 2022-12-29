@@ -7,8 +7,8 @@ import { BattlerId } from "../../types"
 import { clamp } from "../../utils"
 import { useSelectedAbility } from "../battle"
 import { Battler } from "../battle-types"
-import "./battler-effect-element"
-import { BattlerEffectElement } from "./battler-effect-element"
+import "./battler-effect"
+import { BattlerEffect } from "./battler-effect"
 
 export function updateBattler(battler: Battler) {
     const element = document.getElementById(`battler:${battler.id}`) as BattlerItem
@@ -169,7 +169,7 @@ class BattlerItem extends HTMLComponent {
             const abilityConfig = AbilityConfigs[abilityId]
 
             this.getElement("#ability-name").innerText = i18n(abilityConfig.id)
-            this.getElement("#ability-icon").setAttribute("src", `assets/icon/ability/${abilityId}.png`)
+            this.getElement("#ability-icon").setAttribute("src", `/assets/icon/ability/${abilityId}.png`)
         }
     }
 
@@ -184,7 +184,7 @@ class BattlerItem extends HTMLComponent {
         if (effects.length > effectsParent.childElementCount) {
             const numMissing = effects.length - effectsParent.childElementCount
             for (let n = 0; n < numMissing; n += 1) {
-                const effectElement = document.createElement("battler-effect") as BattlerEffectElement
+                const effectElement = document.createElement("battler-effect") as BattlerEffect
                 effectElement.update(effects[0])
                 effectsParent.appendChild(effectElement)
             }
@@ -200,7 +200,7 @@ class BattlerItem extends HTMLComponent {
 
         for (let n = 0; n < effects.length; n += 1) {
             const effect = effects[n]
-            const child = effectsParent.children[n] as BattlerEffectElement
+            const child = effectsParent.children[n] as BattlerEffect
             child.update(effect)
         }
     }

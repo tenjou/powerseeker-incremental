@@ -1,9 +1,9 @@
 import { LocationId } from "../config/location-config"
 import { getState, updateState } from "../state"
 import { goTo } from "../view"
+import { BattleService } from "./../battle/battle"
 import { emit } from "./../events"
 import { ExplorationState } from "./world-types"
-import { startBattle } from "./../battle/battle"
 
 interface WorldCache {
     selectedLocationId: LocationId
@@ -92,7 +92,7 @@ export const WorldService = {
             return false
         }
 
-        startBattle(exploration.result.encounterId)
+        BattleService.start(exploration.result.encounterId)
 
         console.log("interactExplored", exploration.result)
     },
