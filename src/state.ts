@@ -154,7 +154,15 @@ let state: State = {
     //         type: "combat",
     //     },
     // },
-    exploration: null,
+    exploration: {
+        locationId: "forest",
+        tStart: 0,
+        tEnd: 1000,
+        result: {
+            type: "combat",
+            encounterId: "test_battle",
+        },
+    },
     cache: {
         lastItemIndex: 1,
         lastEntityIndex: 1,

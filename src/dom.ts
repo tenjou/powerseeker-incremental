@@ -108,17 +108,26 @@ export function setShow(id: string, show: boolean) {
 }
 
 export class HTMLComponent extends HTMLElement {
-    constructor(template?: HTMLTemplateElement) {
+    root: HTMLElement
+    rootClasses: string
+
+    constructor(template: HTMLTemplateElement) {
         super()
+
+        this.root = template.content.cloneNode(true) as HTMLElement
+        this.rootClasses = template.getAttribute("class") || ""
     }
 
-    connectedCallback(template: HTMLTemplateElement) {
-        if (template) {
+    connectedCallback() {
+        if (this.rootClasses) {
             const outerClasses = this.getAttribute("class")
-            const classes = outerClasses ? outerClasses + " " + template.getAttribute("class") : template.getAttribute("class")
-            this.setAttribute("class", classes || "")
-            this.append(template.content.cloneNode(true))
+            this.setAttribute("class", outerClasses + " " + this.rootClasses)
         }
+
+        this.append(this.root)
+        this.root = this
+
+        this.update()
     }
 
     attributeChangedCallback() {
@@ -135,7 +144,7 @@ export class HTMLComponent extends HTMLElement {
             return this
         }
 
-        const element = this.querySelector(query) as HTMLElement
+        const element = this.root.querySelector(query) as HTMLElement
         if (!element) {
             console.error(`Could not find child element with query: ${query}`)
             return document.createElement("div") as unknown as HTMLComponent

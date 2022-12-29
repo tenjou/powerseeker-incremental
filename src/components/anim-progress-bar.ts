@@ -4,6 +4,7 @@ export class AnimProgressBar extends ProgressBar {
     interval: number = -1
     tStart: number = 0
     tEnd: number = 0
+    prevPercents: number = 0
 
     connectedCallback() {
         super.connectedCallback()
@@ -32,12 +33,14 @@ export class AnimProgressBar extends ProgressBar {
             const tCurrent = Date.now()
             const tElapsed = tCurrent - this.tStart
             const percentsPerMs = 100 / (this.tEnd - this.tStart)
-            const percents = percentsPerMs * tElapsed
+            const percents = Math.min(percentsPerMs * tElapsed, 100)
 
-            this.setAttrib("value", percents)
+            if (this.prevPercents !== percents) {
+                this.prevPercents = percents
+                this.setAttrib("value", percents)
+                super.update()
+            }
         }
-
-        super.update()
     }
 
     static get observedAttributes() {

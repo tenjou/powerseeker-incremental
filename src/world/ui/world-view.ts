@@ -29,6 +29,7 @@ export function loadWorldView(segments: string[]) {
         WorldService.goToLocation(locationId)
     }
 
+    updateWorldView()
     updateExploration()
 }
 
@@ -39,7 +40,7 @@ export function unloadWorldView() {
     unsubscribe("exploration-ended", updateExploration)
 }
 
-function updateWorldView(locationId: LocationId) {
+function updateWorldView() {
     const locationCards = document.querySelectorAll<LocationCard>("location-card")
     locationCards.forEach((locationCard) => {
         const location = locationCard.getAttribute("location") as LocationId

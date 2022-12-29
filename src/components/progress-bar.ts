@@ -8,9 +8,8 @@ template.innerHTML = html`
 `
 
 export class ProgressBar extends HTMLComponent {
-    connectedCallback() {
-        super.connectedCallback(template)
-        this.update()
+    constructor() {
+        super(template)
     }
 
     update() {

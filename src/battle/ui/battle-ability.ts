@@ -20,7 +20,7 @@ export function loadAbilities() {
             continue
         }
 
-        const element = document.createElement("battler-ability-slot") as BattlerAbilitySlot
+        const element = document.createElement("battler-ability") as BattlerAbilityElement
         element.setup(loadoutAbility)
         parent.appendChild(element)
     }
@@ -30,7 +30,7 @@ export function renderAbilities() {
     const { battle } = getState()
 
     const element = getElementById("battle-abilities")
-    const children = element.children as unknown as BattlerAbilitySlot[]
+    const children = element.children as unknown as BattlerAbilityElement[]
 
     toggleClassName("battle-abilities", "inactive", battle.status !== "waiting")
 
@@ -71,7 +71,7 @@ const defaultLoadoutAbility: LoadoutAbility = {
     cooldown: 0,
 }
 
-class BattlerAbilitySlot extends HTMLComponent {
+class BattlerAbilityElement extends HTMLComponent {
     ability: LoadoutAbility = defaultLoadoutAbility
 
     constructor() {
@@ -83,7 +83,7 @@ class BattlerAbilitySlot extends HTMLComponent {
 
         const abilityConfig = AbilityConfigs[ability.id] as InstantAbilityConfig
 
-        this.getElement("img").setAttribute("src", `assets/icon/ability/${ability.id}.png`)
+        this.getElement("img").setAttribute("src", `/assets/icon/ability/${ability.id}.png`)
         if (abilityConfig.energy > 0) {
             this.setText("#energy", getEnergyNeeded(ability))
         }
@@ -110,71 +110,11 @@ class BattlerAbilitySlot extends HTMLComponent {
     }
 }
 
-customElements.define("battler-ability-slot", BattlerAbilitySlot)
+customElements.define("battler-ability", BattlerAbilityElement)
 
 const template = document.createElement("template")
 template.innerHTML = html`
-    <style>
-        :host {
-            position: relative;
-            padding: 4px;
-            margin: 0 3px;
-            border: 2px solid #000;
-            border-radius: 3px;
-            cursor: pointer;
-            background: linear-gradient(#dad8d8, #c3c2c2);
-            box-shadow: 0 0 2px #696969;
-        }
-        :host > img {
-            display: block;
-            zoom: 2;
-            image-rendering: pixelated;
-        }
-        :host(:hover),
-        :host(.selected) {
-            border: 2px solid #fff;
-        }
-        :host(:active) {
-            transform: translateY(1px);
-        }
-        :host(.inactive) {
-            opacity: 0.5;
-            pointer-events: none;
-        }
-
-        #cooldown {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: #000000ad;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 22px;
-            font-weight: bold;
-            pointer-events: none;
-        }
-
-        #energy {
-            position: absolute;
-            padding: 0 1px 0 2px;
-            right: 0;
-            bottom: 0;
-            background: #000;
-            color: #fff;
-            font-size: 10px;
-            border-top-left-radius: 3px;
-        }
-
-        .hide {
-            display: none !important;
-        }
-    </style>
-
     <img />
-    <div id="cooldown"></div>
-    <div id="energy"></div>
+    <div id="cooldown" class="cooldown"></div>
+    <div id="energy" class="energy"></div>
 `

@@ -3,6 +3,7 @@ import { getState, updateState } from "../state"
 import { goTo } from "../view"
 import { emit } from "./../events"
 import { ExplorationState } from "./world-types"
+import { startBattle } from "./../battle/battle"
 
 interface WorldCache {
     selectedLocationId: LocationId
@@ -25,12 +26,11 @@ export const WorldService = {
             return
         }
 
-        console.log("ended")
-
         const explorationNew: ExplorationState = {
             ...exploration,
             result: {
                 type: "combat",
+                encounterId: "test_battle",
             },
         }
 
@@ -82,6 +82,19 @@ export const WorldService = {
         emit("exploration-started", explorationNew)
 
         return true
+    },
+
+    interactExplored() {
+        const { exploration } = getState()
+
+        if (!exploration || !exploration.result) {
+            console.error("Nothing has been explored")
+            return false
+        }
+
+        startBattle(exploration.result.encounterId)
+
+        console.log("interactExplored", exploration.result)
     },
 
     getSelectedLocationId() {

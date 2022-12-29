@@ -220,8 +220,8 @@
             </content-holder>
         </container>
 
-        <container id="battle-container" class="hide">
-            <x-column class="flex">
+        <container id="battle-container" class="hide flex flex-column align-items-center">
+            <div class="flex flex-column content align-items-center">
                 <x-row class="center-h">
                     <battle-status>
                         <row class="flex">
@@ -237,9 +237,9 @@
                 </x-row>
 
                 <battle-arena>
-                    <x-row class="center-h">
-                        <x-row id="battle-column-b"></x-row>
-                    </x-row>
+                    <div class="flex flex-row justify-content-center">
+                        <div id="battle-column-b"></div>
+                    </div>
 
                     <row class="flex center-h center-v">
                         <battle-hint id="battle-hint"></battle-hint>
@@ -249,9 +249,9 @@
                         </column>
                     </row>
 
-                    <x-row class="center-h">
-                        <x-row id="battle-column-a"></x-row>
-                    </x-row>
+                    <div class="flex flex-row justify-content-center">
+                        <div id="battle-column-a"></div>
+                    </div>
                 </battle-arena>
 
                 <x-row class="center-h">
@@ -260,7 +260,7 @@
                 <x-row class="center-h">
                     <x-button id="battle-auto" class="black size50"></x-button>
                 </x-row>
-            </x-column>
+            </div>
         </container>
 
         <popups id="popups"></popups>

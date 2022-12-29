@@ -144,7 +144,7 @@ class BattlerItem extends HTMLComponent {
     addScrollingText(text: string, color: string, icon: string | null) {
         const scrollingText = new ScrollingText()
         scrollingText.setup(text, color, icon)
-        this.shadowRoot?.appendChild(scrollingText)
+        this.appendChild(scrollingText)
     }
 
     update(battlerId: BattlerId, abilityId?: AbilityId) {
@@ -209,61 +209,8 @@ class BattlerItem extends HTMLComponent {
 customElements.define("battler-item", BattlerItem)
 
 const template = document.createElement("template")
-template.innerHTML = html`<style>
-        :host {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            width: 110px;
-            margin: 2px;
-            padding-bottom: 1px;
-            background-color: #000;
-            border: 2px solid #000;
-            border-radius: 3px;
-            color: #fff;
-            transition: transform 0.2s ease;
-            cursor: pointer;
-        }
-
-        :host(.forward_top) {
-            transform: translate(0, 10px);
-        }
-        :host(.forward_top) .row {
-            background-color: white;
-            color: black;
-        }
-
-        :host(.forward_bottom) {
-            transform: translate(0, -10px);
-        }
-        :host(.forward_bottom) .row {
-            background-color: white;
-            color: black;
-        }
-
-        :host(.shake) {
-            animation-name: battler-shake;
-            animation-duration: 0.2s;
-            animation-iteration-count: 1;
-        }
-        :host(.inactive) .container {
-            opacity: 0.5;
-            pointer-events: none;
-        }
-        :host-context(x-row.inactive) {
-            opacity: 0.25;
-            pointer-events: none;
-        }
-
-        :host(:hover) {
-            outline: 3px solid white;
-        }
-        :host(:hover) .row {
-            background-color: #fff;
-            color: #000;
-        }
-
+template.innerHTML = html`
+    <style>
         .container {
             display: flex;
             flex-direction: column;
@@ -376,7 +323,8 @@ template.innerHTML = html`<style>
                 <div id="level"></div>
                 <div id="name"></div>
             </div>
-            <progress-bar id="health" value="10" value-max="30" class="battle"></progress-bar>
+            <progress-bar id="health" value="10" value-max="30" class="battle red"></progress-bar>
             <progress-bar id="energy" value="10" value-max="30" class="battle blue"></progress-bar>
         </div>
-    </div>`
+    </div>
+`

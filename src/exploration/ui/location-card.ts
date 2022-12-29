@@ -21,9 +21,8 @@ template.innerHTML = html`
 `
 
 export class LocationCard extends HTMLComponent {
-    connectedCallback() {
-        super.connectedCallback(template)
-        this.update()
+    constructor() {
+        super(template)
     }
 
     update() {

@@ -25,5 +25,4 @@ export type Brand<T, FlavorT> = T & {
     _type?: FlavorT
 }
 
-export type BattleId = Brand<number, "BattleId">
 export type BattlerId = Brand<number, "BattlerId">

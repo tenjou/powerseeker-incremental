@@ -17,8 +17,8 @@ template.innerHTML = html`
 export class EntityCard extends HTMLComponent {
     entity: Entity = {} as Entity
 
-    connectedCallback() {
-        super.connectedCallback(template)
+    constructor() {
+        super(template)
     }
 
     update(entity: Entity) {
