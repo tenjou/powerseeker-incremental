@@ -1,7 +1,7 @@
 import { HTMLComponent } from "../../dom"
 import { openPopup } from "../../popup"
 import { LocationConfigs, LocationId } from "../../config/location-config"
-import { i18n } from "../../local"
+import { i18n } from "../../i18n"
 import { ExplorationService } from "../exploration-service"
 
 const template = document.createElement("template")

@@ -2,16 +2,17 @@ import { HTMLComponent } from "../../dom"
 import { openItemPopup } from "../../inventory/ui/inventory-view"
 import { getState } from "../../state"
 import { handeMouseMoveTooltip } from "../../tooltip"
-import { i18n } from "./../../local"
+import { i18n } from "../../i18n"
 
 const template = document.createElement("template")
-template.innerHTML = html`<popup-container>
+template.innerHTML = html`
+    <popup-container>
         <x-row class="center-h">
             <x-text id="result" class="header size30"></x-text>
         </x-row>
 
         <x-row class="center-h">
-            <x-text class="bold">${i18n("exp")}: </x-text>
+            <x-text class="bold">${i18n("exp")}:</x-text>
             <x-text id="exp"></x-text>
         </x-row>
         <x-row class="center-h">
@@ -30,7 +31,8 @@ template.innerHTML = html`<popup-container>
         inventory-container > * {
             margin: 3px;
         }
-    </style>`
+    </style>
+`
 
 export class BattleResultPopup extends HTMLComponent {
     constructor() {

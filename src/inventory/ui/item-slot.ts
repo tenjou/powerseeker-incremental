@@ -4,89 +4,15 @@ import { getState } from "../../state"
 import { Item } from "../../types"
 
 const template = document.createElement("template")
-template.innerHTML = html`<style>
-        :host {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            border-radius: 3px;
-            width: 40px;
-            min-height: 40px;
-            background: #b5b5b5;
-            cursor: pointer;
-        }
-        :host(:hover) {
-            outline: 2px solid white;
-        }
-        :host(.inactive) {
-            pointer-events: none;
-        }
-
-        :host(.rarity-0) {
-            background: linear-gradient(#bdbdbd, #a0a0a0);
-        }
-        :host(.rarity-1) {
-            background: linear-gradient(#9bd459, #73a737);
-        }
-        :host(.rarity-2) {
-            background: linear-gradient(#94acbf, #03a9f4);
-        }
-        :host(.rarity-3) {
-            background: linear-gradient(#be8ec5, #b43fc7);
-        }
-        :host(.rarity-4) {
-            background: linear-gradient(#d0c56a, #eca235);
-        }
-
-        img {
-            padding: 4px;
-            width: 32px;
-            height: 32px;
-            image-rendering: pixelated;
-        }
-
-        power {
-            width: 100%;
-            flex: 1;
-            padding: 0 4px;
-            box-sizing: border-box;
-            font-size: 9px;
-            text-align: left;
-            text-shadow: 0 0 2px black;
-            color: #fff;
-            border-bottom-left-radius: 3px;
-            border-bottom-right-radius: 3px;
-            background: #727272;
-        }
-
-        amount {
-            position: absolute;
-            right: 0;
-            top: 29px;
-            color: #fff;
-            background: #000000ad;
-            padding: 0 3px;
-            font-size: 10px;
-            border-radius: 2px;
-            text-shadow: 0 0 2px black;
-        }
-
-        .hide {
-            display: none;
-        }
-    </style>
-
+template.innerHTML = html`
     <img />
-    <power></power>
-    <amount></amount>`
+    <div id="power"></div>
+    <div id="amount"></div>
+`
 
 export class ItemSlot extends HTMLComponent {
     constructor() {
         super(template)
-    }
-
-    connectedCallback() {
-        this.update()
     }
 
     update() {
@@ -137,16 +63,12 @@ export class ItemSlot extends HTMLComponent {
         }
         this.classList.add(`rarity-${rarity}`)
 
-        this.setText("amount", amount)
-        this.toggleClassName("hide", amount <= 1, "amount")
+        this.setText("#amount", amount)
+        this.toggleClassName("hide", amount <= 1, "#amount")
 
         const hidePower = this.haveAttribute("hide-power")
-        this.setText("power", power)
-        this.toggleClassName("hide", hidePower || power <= 0, "power")
-    }
-
-    attributeChangedCallback() {
-        this.update()
+        this.setText("#power", power)
+        this.toggleClassName("hide", hidePower || power <= 0, "#power")
     }
 
     static get observedAttributes() {

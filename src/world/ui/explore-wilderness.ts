@@ -1,5 +1,5 @@
 import { HTMLComponent } from "../../dom"
-import { i18n } from "../../local"
+import { i18n } from "../../i18n"
 import { getState } from "../../state"
 import { WorldService } from "./../world-service"
 

@@ -1,7 +1,7 @@
 import { ScrollingText } from "../../components/scrolling-text"
 import { AbilityConfigs, AbilityId } from "../../config/ability-configs"
 import { addChild, HTMLComponent, toggleClassName } from "../../dom"
-import { i18n } from "../../local"
+import { i18n } from "../../i18n"
 import { getState } from "../../state"
 import { BattlerId } from "../../types"
 import { clamp } from "../../utils"

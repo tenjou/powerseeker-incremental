@@ -1,5 +1,5 @@
 import { EquipmentSlot, ItemConfigs } from "../../config/item-configs"
-import { i18n } from "../../local"
+import { i18n } from "../../i18n"
 import { goTo } from "../../view"
 import { getElementById, removeAllChildren, setText } from "../../dom"
 import { subscribe, unsubscribe } from "../../events"

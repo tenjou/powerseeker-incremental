@@ -1,6 +1,6 @@
 import { AbilityConfigs, AbilityId } from "../../config/ability-configs"
 import { HTMLComponent } from "../../dom"
-import { i18n } from "../../local"
+import { i18n } from "../../i18n"
 import { getState } from "../../state"
 import { haveCurrency } from "../../currencies/currencies"
 import { subscribe, unsubscribe } from "../../events"
@@ -9,7 +9,8 @@ import { getAbilityDescription } from "./abilities-view"
 import { closePopup } from "./../../popup"
 
 const template = document.createElement("template")
-template.innerHTML = html`<style>
+template.innerHTML = html`
+    <style>
         rank {
             margin-left: 3px;
             margin-right: 4px;
@@ -48,13 +49,20 @@ template.innerHTML = html`<style>
             </x-column>
         </x-row>
 
-        <div id="description"><rank>Rank 1</rank><x-text></x-text></div>
+        <div id="description">
+            <rank>Rank 1</rank>
+            <x-text></x-text>
+        </div>
         <x-column class="center-h"><x-icon icon="fa-angle-down"></x-icon></x-column>
-        <div id="description2"><rank>Rank 2</rank><x-text></x-text></div>
+        <div id="description2">
+            <rank>Rank 2</rank>
+            <x-text></x-text>
+        </div>
         <stats-table></stats-table>
 
         <x-row class="center-h" id="actions"><x-button class="black">Learn</x-button></x-row>
-    </popup-container>`
+    </popup-container>
+`
 
 export class AbilityPopup extends HTMLComponent {
     updateCallback: () => void

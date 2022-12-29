@@ -30,6 +30,7 @@ import { calculatePower, getActionSpeed } from "./battle-utils"
 import { addBattler, createMonsterBattler, loadBattlers } from "./battler"
 import { loadAbilities, renderAbilities } from "./ui/battle-ability"
 import { addAnimationsFromLogs, addRegenAnimations, updateBattleAnimation } from "./ui/battle-animation"
+import "./ui/battle-result"
 import "./ui/battle-result-popup"
 import { updateBattlerEffects } from "./ui/battler-item"
 

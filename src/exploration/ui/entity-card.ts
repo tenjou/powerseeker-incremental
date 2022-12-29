@@ -1,5 +1,5 @@
 import { HTMLComponent } from "../../dom"
-import { i18n } from "../../local"
+import { i18n } from "../../i18n"
 import { openPopup } from "../../popup"
 import { Entity } from "../exploration-types"
 import { ExplorationService } from "../exploration-service"

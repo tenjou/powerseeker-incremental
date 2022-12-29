@@ -2,12 +2,13 @@ import { ItemConfig, ItemConfigs, ItemEffect, ItemId } from "../../config/item-c
 import { HTMLComponent } from "../../dom"
 import { getState } from "../../state"
 import { StatsTableEntry } from "../../components/stats-table"
-import { i18n } from "../../local"
+import { i18n } from "../../i18n"
 import { closePopup } from "../../popup"
 import { handleItemUse } from "../inventory"
 
 const template = document.createElement("template")
-template.innerHTML = html`<style>
+template.innerHTML = html`
+    <style>
         power {
             margin-left: 3px;
             margin-right: 4px;
@@ -52,8 +53,9 @@ template.innerHTML = html`<style>
         <!-- <div id="description"></div> -->
         <stats-table></stats-table>
 
-        <x-row class="center-h" id="actions"> </x-row>
-    </popup-container>`
+        <x-row class="center-h" id="actions"></x-row>
+    </popup-container>
+`
 
 export class ItemPopup extends HTMLComponent {
     constructor() {

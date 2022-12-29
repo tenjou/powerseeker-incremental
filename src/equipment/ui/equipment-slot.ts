@@ -1,11 +1,12 @@
 import { EquipmentSlot, ItemConfigs } from "../../config/item-configs"
 import { HTMLComponent } from "../../dom"
-import { i18n } from "../../local"
+import { i18n } from "../../i18n"
 import { getState } from "../../state"
 import { goTo } from "../../view"
 
 const template = document.createElement("template")
-template.innerHTML = html`<style>
+template.innerHTML = html`
+    <style>
         :host {
             display: flex;
             flex: 1;
@@ -40,7 +41,11 @@ template.innerHTML = html`<style>
     </style>
 
     <item-slot inactive hide-power></item-slot>
-    <x-column class="center-v space2"><x-text id="name" class="bold"></x-text><x-text id="power"></x-text></x-column>`
+    <x-column class="center-v space2">
+        <x-text id="name" class="bold"></x-text>
+        <x-text id="power"></x-text>
+    </x-column>
+`
 
 export class EquipmentSlotElement extends HTMLComponent {
     constructor() {

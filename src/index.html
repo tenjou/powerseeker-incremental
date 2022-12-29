@@ -12,7 +12,7 @@
             function html(str, ...values) {
                 if (values.length) {
                     const zipped = str.map((entry, n) => {
-                        return entry.concat(values[n])
+                        return entry.concat(values[n] || "")
                     })
 
                     return zipped.join("")
@@ -66,6 +66,10 @@
                             <explore-wilderness></explore-wilderness>
                         </div>
                     </x-column>
+
+                    <div id="view-battle">
+                        <battle-result></battle-result>
+                    </div>
                     <!-- 
                     <x-column id="view-town" class="hide">
                         <x-header>Town</x-header>

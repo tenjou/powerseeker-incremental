@@ -1,10 +1,11 @@
 import { AbilityId } from "../../config/ability-configs"
 import { HTMLComponent } from "../../dom"
-import { i18n } from "../../local"
+import { i18n } from "../../i18n"
 import { getState } from "../../state"
 
 const template = document.createElement("template")
-template.innerHTML = html`<style>
+template.innerHTML = html`
+    <style>
         :host {
             position: relative;
             display: flex;
@@ -74,7 +75,11 @@ template.innerHTML = html`<style>
     </style>
 
     <img />
-    <x-column class="center-v m-1"><x-text id="name" class="bold"></x-text><x-text id="rank" class="tertiary"></x-text></x-column> `
+    <x-column class="center-v m-1">
+        <x-text id="name" class="bold"></x-text>
+        <x-text id="rank" class="tertiary"></x-text>
+    </x-column>
+`
 
 export class AbilityCard extends HTMLComponent {
     constructor() {

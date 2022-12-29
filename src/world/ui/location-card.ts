@@ -1,6 +1,6 @@
 import { LocationConfigs, LocationId } from "../../config/location-config"
 import { HTMLComponent } from "../../dom"
-import { i18n } from "./../../local"
+import { i18n } from "../../i18n"
 
 const template = document.createElement("template")
 template.setAttribute("class", "p-2 bg-white hover:outline active:outline border-radius-3 cursor-pointer")

@@ -169,6 +169,9 @@ const local: Record<string, LocalEntry> = {
     treasure: {
         en: "Treasure",
     },
+    continue: {
+        en: "Continue",
+    },
 }
 
 export function i18n(key: string | undefined | null) {
