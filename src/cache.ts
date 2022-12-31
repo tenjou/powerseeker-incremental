@@ -1,4 +1,4 @@
-import { Item } from "./types"
+import { Item } from "./inventory/item-types"
 
 interface Cache {
     selectedItem: Item | null

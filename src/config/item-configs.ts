@@ -32,11 +32,12 @@ interface ItemConfigCurrency extends ItemConfigBasic {
     type: "currency"
 }
 
-interface ItemConfigEquipment extends ItemConfigBasic {
+export interface ItemConfigEquipment extends ItemConfigBasic {
     id: ItemId
     type: "equipment"
     slot: EquipmentSlot
     equipmentType: EquipmentType
+    level: number
     stats: ItemStat[]
 }
 
@@ -72,6 +73,7 @@ export const ItemConfigs: Record<ItemId, ItemConfig> = {
         type: "equipment",
         slot: "body",
         equipmentType: "armor",
+        level: 1,
         stats: [
             { type: "defense", value: 10 },
             { type: "accuracy", value: 2 },
@@ -92,6 +94,7 @@ export const ItemConfigs: Record<ItemId, ItemConfig> = {
         type: "equipment",
         slot: "main_hand",
         equipmentType: "axe",
+        level: 1,
         stats: [{ type: "attack", value: 4 }],
     },
     sword: {
@@ -99,6 +102,7 @@ export const ItemConfigs: Record<ItemId, ItemConfig> = {
         type: "equipment",
         slot: "main_hand",
         equipmentType: "sword",
+        level: 1,
         stats: [{ type: "attack", value: 2 }],
     },
 }

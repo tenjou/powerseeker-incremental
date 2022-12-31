@@ -2,8 +2,8 @@ import { addHp } from "../character/status"
 import { ItemConfigs, ItemEffect, ItemId } from "../config/item-configs"
 import { equipItem } from "../equipment/equipment"
 import { getState } from "../state"
-import { Item } from "../types"
 import { emit } from "./../events"
+import { Item } from "./item-types"
 import "./ui/item-popup"
 
 interface ItemProps {
@@ -25,11 +25,12 @@ export function addItem(itemId: ItemId, props: ItemProps) {
         emit("item-update", item)
     } else {
         const newItem: Item = {
-            uid: cache.lastItemIndex++,
+            uid: String(cache.lastItemIndex++),
             id: itemId,
             power,
             rarity,
             amount,
+            stats: [],
         }
 
         inventory.push(newItem)
@@ -83,4 +84,10 @@ function resolveItemEffects(effects: ItemEffect[]) {
                 break
         }
     }
+}
+
+export function getItemById(itemId: ItemId) {
+    const { inventory } = getState()
+
+    return inventory.find((item) => item.id === itemId)
 }

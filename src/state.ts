@@ -10,9 +10,10 @@ import { CurrencyType } from "./currencies/currency-types"
 import { JobsService } from "./jobs/jobs-service"
 import { Job } from "./jobs/jobs-types"
 import { LoadoutAbility } from "./loadout/loadout-types"
-import { Card, Item, Skill } from "./types"
+import { Card, Skill } from "./types"
 import { LocationState } from "./exploration/exploration-types"
 import { ExplorationState } from "./world/world-types"
+import { Item } from "./inventory/item-types"
 
 interface TownStatus {
     cards: Card[]
@@ -116,7 +117,27 @@ let state: State = {
             level: 1,
         },
     ],
-    inventory: [],
+    inventory: [
+        {
+            uid: "1",
+            id: "axe",
+            power: 10,
+            rarity: 1,
+            amount: 1,
+            stats: [{ type: "attack", value: 10 }],
+        },
+        {
+            uid: "1",
+            id: "leather_clothing",
+            power: 4,
+            rarity: 2,
+            amount: 1,
+            stats: [
+                { type: "defense", value: 3 },
+                { type: "healing", value: 5 },
+            ],
+        },
+    ],
     town: {
         cards: [],
     },
@@ -140,6 +161,12 @@ let state: State = {
                 amount: 2,
                 power: 10,
                 rarity: 1,
+            },
+            {
+                id: "leather_clothing",
+                amount: 2,
+                power: 10,
+                rarity: 2,
             },
         ],
     },

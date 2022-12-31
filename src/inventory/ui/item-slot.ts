@@ -1,12 +1,12 @@
 import { EquipmentSlot, ItemConfigs, ItemId } from "../../config/item-configs"
 import { HTMLComponent } from "../../dom"
 import { getState } from "../../state"
-import { Item } from "../../types"
+import { Item } from "../item-types"
 
 const template = document.createElement("template")
 template.innerHTML = html`
     <img />
-    <div id="power"></div>
+    <!-- <div id="power"></div> -->
     <div id="amount"></div>
 `
 
@@ -23,7 +23,7 @@ export class ItemSlot extends HTMLComponent {
 
         this.className = ""
 
-        const uid = Number(this.getAttribute("uid"))
+        const uid = this.getAttribute("uid")
         if (uid) {
             const { inventory, equipment } = getState()
 
@@ -63,12 +63,12 @@ export class ItemSlot extends HTMLComponent {
         }
         this.classList.add(`rarity-${rarity}`)
 
-        this.setText("#amount", amount)
-        this.toggleClassName("hide", amount <= 1, "#amount")
+        this.setText("#amount", power)
+        this.toggleClassName("hide", power <= 1, "#amount")
 
-        const hidePower = this.haveAttribute("hide-power")
-        this.setText("#power", power)
-        this.toggleClassName("hide", hidePower || power <= 0, "#power")
+        // const hidePower = this.haveAttribute("hide-power")
+        // this.setText("#power", power)
+        // this.toggleClassName("hide", hidePower || power <= 0, "#power")
     }
 
     static get observedAttributes() {

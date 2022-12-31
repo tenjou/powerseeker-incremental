@@ -42,7 +42,7 @@ class BattleResult extends HTMLComponent {
         for (const loot of battleResult.loot) {
             const itemSlot = document.createElement("item-slot")
             itemSlot.setAttribute("item-id", loot.id)
-            itemSlot.setAttribute("amount", String(loot.amount))
+            // itemSlot.setAttribute("amount", String(loot.amount))
             itemSlot.setAttribute("power", String(loot.power))
             itemSlot.setAttribute("rarity", String(loot.rarity))
             lootContainer.appendChild(itemSlot)

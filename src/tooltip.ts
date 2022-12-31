@@ -1,11 +1,12 @@
 import { AbilityConfigs, AbilityId } from "./config/ability-configs"
-import { ItemConfigs, ItemId } from "./config/item-configs"
-import { i18n } from "./i18n"
-import "./tooltip/ui/ItemTooltip"
-import { ItemTooltip } from "./tooltip/ui/ItemTooltip"
+import { ItemId } from "./config/item-configs"
+import { getItemById } from "./inventory/inventory"
+import "./tooltip/ui/item-tooltip"
+import { ItemTooltip } from "./tooltip/ui/item-tooltip"
 
 let tooltipElement: HTMLElement
 let itemTooltipElement: ItemTooltip
+let prevHoverElement: HTMLElement | null = null
 
 export function loadTooltipSystem() {
     const element = document.querySelector("tooltip")
@@ -27,23 +28,53 @@ export function handeMouseMoveTooltip(event: MouseEvent) {
     event.stopPropagation()
 
     const element = event.target as HTMLElement
-    const itemId = element.getAttribute("item-id") as ItemId | null
-    const abilityId = element.getAttribute("ability-id") as AbilityId | null
+    const tagName = element.tagName
+    // const abilityId = element.getAttribute("ability-id") as AbilityId | null
 
-    if (itemId && element.tagName === "ITEM-SLOT") {
-        const itemConfig = ItemConfigs[itemId]
-        showTooltip(event, itemConfig.id)
-    } else if (abilityId && element.tagName === "ABILITY-SLOT") {
-        const abilityConfig = AbilityConfigs[abilityId]
-        showTooltip(event, abilityConfig.id)
+    if (tagName === "ITEM-SLOT" || tagName === "ABILITY-SLOT") {
+        itemTooltipElement.classList.remove("hide")
+        itemTooltipElement.setAttribute("style", `left: ${event.x}px; top: ${event.y}px`)
     } else {
         tooltipElement.classList.add("hide")
         itemTooltipElement.classList.add("hide")
     }
+
+    if (prevHoverElement !== element) {
+        switch (element.tagName) {
+            case "ITEM-SLOT": {
+                const itemId = element.getAttribute("item-id") as ItemId | null
+                if (itemId) {
+                    showItemTooltip(itemId)
+                }
+                break
+            }
+        }
+    }
+
+    // if (itemId && element.tagName === "ITEM-SLOT") {
+    //     showItemTooltip(event, itemId)
+    // } else if (abilityId && element.tagName === "ABILITY-SLOT") {
+    //     const abilityConfig = AbilityConfigs[abilityId]
+    //     showTooltip(event, abilityConfig.id)
+    // } else {
+    //     tooltipElement.classList.add("hide")
+    //     itemTooltipElement.classList.add("hide")
+    // }
+
+    prevHoverElement = element
 }
 
-function showTooltip(event: MouseEvent, id: string, type: "item" | "other" = "other") {
+function showTooltip(event: MouseEvent, id: string) {
     itemTooltipElement.classList.remove("hide")
     itemTooltipElement.setAttribute("style", `left: ${event.x}px; top: ${event.y}px`)
-    itemTooltipElement.update()
+}
+
+function showItemTooltip(itemId: ItemId) {
+    const item = getItemById(itemId)
+    if (!item) {
+        console.error(`Could not find item with id ${itemId}`)
+        return
+    }
+
+    itemTooltipElement.updateItem(item)
 }

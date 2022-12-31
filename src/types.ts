@@ -1,5 +1,3 @@
-import { ItemId } from "./config/item-configs"
-
 export type SkillId = "woodcutting" | "mining" | "fishing"
 
 export interface Skill {
@@ -7,14 +5,6 @@ export interface Skill {
     level: number
     xp: number
     xpMax: number
-}
-
-export interface Item {
-    uid: number
-    id: ItemId
-    power: number
-    rarity: number
-    amount: number
 }
 
 export interface Card {

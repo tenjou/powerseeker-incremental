@@ -101,6 +101,21 @@ green {
 .color-gold {
     color: #ffd100;
 }
+.color-0 {
+    color: #fff;
+}
+.color-1 {
+    color: #aadf6c;
+}
+.color-2 {
+    color: #6cbdfd;
+}
+.color-3 {
+    color: #c97aff;
+}
+.color-4 {
+    color: #ff9223;
+}
 
 .spacing-6 {
     margin: 6px;

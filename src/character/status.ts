@@ -1,9 +1,8 @@
-import { AbilityId } from "../config/ability-configs"
 import { EquipmentSlot, ItemConfigs } from "../config/item-configs"
 import { getState } from "../state"
-import { CharacterStats } from "./character-types"
-import { AbilityConfigs } from "./../config/ability-configs"
 import { Ability } from "./../abilities/ability-type"
+import { AbilityConfigs } from "./../config/ability-configs"
+import { CharacterStats } from "./character-types"
 
 export function addHp(value: number) {
     const { battler } = getState()

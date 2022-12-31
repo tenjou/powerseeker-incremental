@@ -3,9 +3,9 @@ import { getElementById, removeAllChildren, removeElement } from "../../dom"
 import { getState } from "../../state"
 import { subscribe, unsubscribe } from "../../events"
 import { openPopup } from "../../popup"
-import { Item } from "../../types"
 import "./item-slot"
 import { ItemSlot } from "./item-slot"
+import { Item } from "../item-types"
 
 const ItemTypeSortWeight: Record<ItemType, number> = {
     equipment: 100,
@@ -87,7 +87,7 @@ export function openItemPopup(event: MouseEvent, onClose?: () => void) {
 
     const element = event.target as HTMLElement
 
-    const uid = Number(element.getAttribute("uid"))
+    const uid = element.getAttribute("uid")
     const item = inventory.find((entry) => entry.uid === uid)
     if (!item) {
         const itemId = element.getAttribute("item-id")

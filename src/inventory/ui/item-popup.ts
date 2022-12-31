@@ -63,7 +63,7 @@ export class ItemPopup extends HTMLComponent {
     }
 
     connectedCallback() {
-        const uid = Number(this.getAttribute("uid"))
+        const uid = this.getAttribute("uid")
         if (uid) {
             const { inventory } = getState()
 
@@ -97,7 +97,7 @@ export class ItemPopup extends HTMLComponent {
 
         const itemSlot = this.getElement("item-slot")
 
-        const uid = Number(this.getAttribute("uid"))
+        const uid = this.getAttribute("uid")
         let itemId = this.getAttribute("item-id")
         let itemPower = 0
 

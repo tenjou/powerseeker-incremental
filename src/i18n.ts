@@ -172,6 +172,21 @@ const local: Record<string, LocalEntry> = {
     continue: {
         en: "Continue",
     },
+    common: {
+        en: "Common",
+    },
+    uncommon: {
+        en: "Uncommon",
+    },
+    rare: {
+        en: "Rare",
+    },
+    epic: {
+        en: "Epic",
+    },
+    legendary: {
+        en: "Legendary",
+    },
 }
 
 export function i18n(key: string | undefined | null) {
