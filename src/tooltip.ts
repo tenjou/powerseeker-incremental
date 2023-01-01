@@ -1,6 +1,6 @@
 import { AbilityConfigs, AbilityId } from "./config/ability-configs"
 import { ItemId } from "./config/item-configs"
-import { getItemById } from "./inventory/inventory"
+import { getItemByUId } from "./inventory/inventory"
 import "./tooltip/ui/item-tooltip"
 import { ItemTooltip } from "./tooltip/ui/item-tooltip"
 
@@ -42,9 +42,9 @@ export function handeMouseMoveTooltip(event: MouseEvent) {
     if (prevHoverElement !== element) {
         switch (element.tagName) {
             case "ITEM-SLOT": {
-                const itemId = element.getAttribute("item-id") as ItemId | null
-                if (itemId) {
-                    showItemTooltip(itemId)
+                const itemUId = element.getAttribute("uid")
+                if (itemUId) {
+                    showItemTooltip(itemUId)
                 }
                 break
             }
@@ -69,10 +69,10 @@ function showTooltip(event: MouseEvent, id: string) {
     itemTooltipElement.setAttribute("style", `left: ${event.x}px; top: ${event.y}px`)
 }
 
-function showItemTooltip(itemId: ItemId) {
-    const item = getItemById(itemId)
+function showItemTooltip(itemUId: string) {
+    const item = getItemByUId(itemUId)
     if (!item) {
-        console.error(`Could not find item with id ${itemId}`)
+        console.error(`Could not find item with uid ${itemUId}`)
         return
     }
 

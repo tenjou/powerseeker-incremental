@@ -6,36 +6,30 @@ import { emit } from "./../events"
 import { Item } from "./item-types"
 import "./ui/item-popup"
 
-interface ItemProps {
-    power?: number
-    rarity?: number
-    amount?: number
-}
-
-export function addItem(itemId: ItemId, props: ItemProps) {
+export function addItem(item: Item) {
     const { inventory, cache } = getState()
 
-    const amount = props.amount || 1
-    const power = props.power || 1
-    const rarity = props.rarity || 0
+    // const amount = props.amount || 1
+    // const power = props.power || 1
+    // const rarity = props.rarity || 0
 
-    const item = inventory.find((entry) => entry.id === itemId && entry.power === power && entry.rarity === rarity)
-    if (item) {
-        item.amount += amount
-        emit("item-update", item)
-    } else {
-        const newItem: Item = {
-            uid: String(cache.lastItemIndex++),
-            id: itemId,
-            power,
-            rarity,
-            amount,
-            stats: [],
-        }
+    // const item = inventory.find((entry) => entry.id === itemId && entry.power === power && entry.rarity === rarity)
+    // if (item) {
+    //     item.amount += amount
+    //     emit("item-update", item)
+    // } else {
+    //     const newItem: Item = {
+    //         uid: String(cache.lastItemIndex++),
+    //         id: itemId,
+    //         power,
+    //         rarity,
+    //         amount,
+    //         stats: [],
+    //     }
 
-        inventory.push(newItem)
-        emit("item-add", newItem)
-    }
+    //     inventory.push(newItem)
+    //     emit("item-add", newItem)
+    // }
 }
 
 export function removeItem(item: Item, amount: number = 1) {
@@ -86,8 +80,30 @@ function resolveItemEffects(effects: ItemEffect[]) {
     }
 }
 
-export function getItemById(itemId: ItemId) {
+export function getItemByUId(uid: string) {
     const { inventory } = getState()
 
-    return inventory.find((item) => item.id === itemId)
+    return inventory.find((item) => item.uid === uid)
+}
+
+export function generateLootItem(itemId: ItemId, maxLevel: number, luck: number) {
+    const itemConfig = ItemConfigs[itemId]
+    if (!itemConfig) {
+        throw new Error(`Could not find item config for id: ${itemId}`)
+    }
+
+    const level = 1
+    const power = 1
+    const rarity = 1
+
+    const item: Item = {
+        uid: String(getState().cache.lastItemIndex++),
+        id: itemId,
+        power,
+        rarity,
+        amount: 1,
+        stats: [],
+    }
+
+    return item
 }

@@ -38,9 +38,5 @@ export function unequipItem(slotType: EquipmentSlot) {
     emit("unequip", slotType)
     recalculateStats()
 
-    addItem(item.id, {
-        power: item.power,
-        rarity: item.rarity,
-        amount: 1,
-    })
+    addItem(item)
 }

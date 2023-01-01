@@ -1,6 +1,7 @@
 import { HTMLComponent } from "../../dom"
 import { i18n } from "../../i18n"
 import { getState } from "../../state"
+import { ItemSlot } from "./../../inventory/ui/item-slot"
 
 const template = document.createElement("template")
 template.innerHTML = html`
@@ -22,7 +23,7 @@ template.innerHTML = html`
     <x-button class="black">${i18n("continue")}</x-button>
 `
 
-class BattleResult extends HTMLComponent {
+export class BattleResultElement extends HTMLComponent {
     constructor() {
         super(template)
     }
@@ -37,17 +38,15 @@ class BattleResult extends HTMLComponent {
         this.setText("#exp", battleResult.exp)
         this.setText("#gold", battleResult.gold)
 
-        const lootContainer = this.getElement("#loot")
+        const lootContainer = this.getElement("#loot", true)
 
-        for (const loot of battleResult.loot) {
-            const itemSlot = document.createElement("item-slot")
-            itemSlot.setAttribute("item-id", loot.id)
-            // itemSlot.setAttribute("amount", String(loot.amount))
-            itemSlot.setAttribute("power", String(loot.power))
-            itemSlot.setAttribute("rarity", String(loot.rarity))
+        for (const item of battleResult.loot) {
+            const itemSlot = document.createElement("item-slot") as ItemSlot
+            itemSlot.setAttribute("uid", item.uid)
+            itemSlot.updateByItem(item)
             lootContainer.appendChild(itemSlot)
         }
     }
 }
 
-customElements.define("battle-result", BattleResult)
+customElements.define("battle-result", BattleResultElement)

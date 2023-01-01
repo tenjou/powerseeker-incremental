@@ -3,9 +3,14 @@
     "source": "src/index.html",
     "scripts": {
         "start": "parcel",
-        "build": "parcel build"
+        "build": "parcel build",
+        "version": "parcel -V"
     },
     "devDependencies": {
+        "@types/node": "^18.11.18",
         "parcel": "latest"
+    },
+    "dependencies": {
+        "@types/parcel-env": "^0.0.1"
     }
 }

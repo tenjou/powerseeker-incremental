@@ -8,11 +8,11 @@ export function getElementById(id: string) {
     return element
 }
 
-export function getElement<T>(query: string) {
+export function getElement<T extends HTMLElement>(query: string) {
     const element = document.querySelector(query)
     if (!element) {
         console.error(`Could get element: "${query}"`)
-        return document.createElement("div") as T
+        return document.createElement("div") as unknown as T
     }
 
     return element as T
@@ -139,7 +139,7 @@ export class HTMLComponent extends HTMLElement {
 
     update(props?: unknown) {}
 
-    getElement(query: string): HTMLComponent {
+    getElement(query: string, clear = false): HTMLComponent {
         if (!query) {
             return this
         }
@@ -148,6 +148,12 @@ export class HTMLComponent extends HTMLElement {
         if (!element) {
             console.error(`Could not find child element with query: ${query}`)
             return document.createElement("div") as unknown as HTMLComponent
+        }
+
+        if (clear) {
+            while (element.firstChild) {
+                element.removeChild(element.firstChild)
+            }
         }
 
         return element as unknown as HTMLComponent

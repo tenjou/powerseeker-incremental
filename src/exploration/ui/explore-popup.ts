@@ -52,7 +52,7 @@ template.innerHTML = html`
 `
 
 export class ExplorePopup extends HTMLComponent {
-    timer: number = -1
+    timer: NodeJS.Timer | null = null
 
     constructor() {
         super(template)
@@ -76,7 +76,7 @@ export class ExplorePopup extends HTMLComponent {
     disconnectedCallback() {
         if (this.timer) {
             clearInterval(this.timer)
-            this.timer = -1
+            this.timer = null
         }
     }
 

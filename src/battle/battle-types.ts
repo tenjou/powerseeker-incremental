@@ -3,6 +3,7 @@ import { AbilityId } from "../config/ability-configs"
 import { BattleId } from "../config/battle-configs"
 import { ItemId } from "../config/item-configs"
 import { MonsterId } from "../config/monster-configs"
+import { Item } from "../inventory/item-types"
 import { BattlerId } from "../types"
 import { CharacterStats } from "./../character/character-types"
 import { LoadoutAbility } from "./../loadout/loadout-types"
@@ -119,16 +120,9 @@ export interface BattleBattlerLogs {
     energy: number
 }
 
-export interface BattleLootItem {
-    id: ItemId
-    amount: number
-    power?: number
-    rarity?: number
-}
-
 export interface BattleResult {
     isVictory: boolean
     exp: number
     gold: number
-    loot: BattleLootItem[]
+    loot: Item[]
 }

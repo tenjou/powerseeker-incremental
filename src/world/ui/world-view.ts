@@ -6,6 +6,10 @@ import { WorldService } from "./../world-service"
 import "./explore-wilderness"
 import { ExploreWilderness } from "./explore-wilderness"
 import "./location-card"
+import { generateLootItem } from "./../../inventory/inventory"
+import { getState } from "../../state"
+import { BattleResult } from "./../../battle/battle-types"
+import { BattleResultElement } from "./../../battle/ui/battle-result"
 
 export function loadWorldView(segments: string[]) {
     const container = getElementById("world-container")
@@ -31,6 +35,18 @@ export function loadWorldView(segments: string[]) {
 
     updateWorldView()
     updateExploration()
+
+    getElement("#create-item-button").onclick = () => {
+        const { battleResult } = getState()
+
+        const newItem = generateLootItem("leather_clothing", 1, 0)
+
+        if (battleResult) {
+            battleResult.loot.push(newItem)
+        }
+
+        getElement<BattleResultElement>("battle-result").update()
+    }
 }
 
 export function unloadWorldView() {

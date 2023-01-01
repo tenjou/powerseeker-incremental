@@ -61,7 +61,7 @@ function removeItem(item: Item) {
 
 function updateItem(item: Item) {
     const element = getElementById(`item-${item.uid}`) as ItemSlot
-    element.update()
+    // element.update()
 }
 
 export function sortInventory(inventory: Item[]) {

@@ -10,7 +10,7 @@ import { BattlerId } from "../types"
 import { randomItem, randomNumber, roll } from "../utils"
 import { InstantAbilityConfig } from "./../config/ability-configs"
 import { addCurrency } from "./../currencies/currencies"
-import { addItem } from "./../inventory/inventory"
+import { addItem, generateLootItem } from "./../inventory/inventory"
 import { LoadoutAbility } from "./../loadout/loadout-types"
 import { openPopup } from "./../popup"
 import { shuffle } from "./../utils"
@@ -20,7 +20,6 @@ import {
     BattleActionFlag,
     BattleBattlerLogs,
     BattleLog,
-    BattleLootItem,
     Battler,
     BattlerAbilityEffect,
     BattleResult,
@@ -33,6 +32,7 @@ import { addAnimationsFromLogs, addRegenAnimations, updateBattleAnimation } from
 import "./ui/battle-result"
 import "./ui/battle-result-popup"
 import { updateBattlerEffects } from "./ui/battler-item"
+import { Item } from "./../inventory/item-types"
 
 const AttackAbility: LoadoutAbility = {
     id: "attack",
@@ -135,7 +135,7 @@ function generateBattleResult(): BattleResult {
 
     let exp = 0
     let gold = 0
-    const loot: BattleLootItem[] = []
+    const loot: Item[] = []
     const opponentIsTeamA = !battle.isTeamA
 
     for (const battler of battle.battlers) {
@@ -149,12 +149,8 @@ function generateBattleResult(): BattleResult {
 
         for (const monsterDrop of monsterConfig.loot) {
             if (roll(monsterDrop.chance)) {
-                loot.push({
-                    id: monsterDrop.id,
-                    amount: randomNumber(monsterDrop.amountMin, monsterDrop.amountMax),
-                    power: randomNumber(1, 100),
-                    rarity: randomNumber(0, 4),
-                })
+                const newItem = generateLootItem(monsterDrop.id, 1, 0)
+                loot.push(newItem)
             }
         }
     }
@@ -178,11 +174,7 @@ function rewardPlayer() {
     addCurrency("gold", battleResult.gold)
 
     for (const itemReward of battleResult.loot) {
-        addItem(itemReward.id, {
-            amount: itemReward.amount,
-            power: itemReward.power,
-            rarity: itemReward.rarity,
-        })
+        addItem(itemReward)
     }
 }
 

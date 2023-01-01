@@ -155,20 +155,7 @@ let state: State = {
         isVictory: true,
         exp: 123,
         gold: 14,
-        loot: [
-            {
-                id: "axe",
-                amount: 2,
-                power: 10,
-                rarity: 1,
-            },
-            {
-                id: "leather_clothing",
-                amount: 2,
-                power: 10,
-                rarity: 2,
-            },
-        ],
+        loot: [],
     },
     abilities: {
         attack: { id: "attack", rank: 1 },

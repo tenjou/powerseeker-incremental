@@ -1,7 +1,7 @@
 import { ProgressBar } from "./progress-bar"
 
 export class AnimProgressBar extends ProgressBar {
-    interval: number = -1
+    interval: NodeJS.Timer | null = null
     tStart: number = 0
     tEnd: number = 0
     prevPercents: number = 0
@@ -15,9 +15,9 @@ export class AnimProgressBar extends ProgressBar {
     }
 
     disconnectedCallback() {
-        if (this.interval > -1) {
+        if (this.interval) {
             clearInterval(this.interval)
-            this.interval = -1
+            this.interval = null
         }
     }
 
