@@ -1,6 +1,6 @@
 import { ItemId } from "../config/item-configs"
 
-export type ItemStatType = "attack" | "healing" | "defense"
+export type ItemStatType = "attack" | "healing" | "defense" | "accuracy"
 
 export interface ItemStat {
     type: ItemStatType
@@ -14,4 +14,10 @@ export interface Item {
     rarity: number
     amount: number
     stats: ItemStat[]
+}
+
+export enum ItemSlotType {
+    Inventory = "inventory",
+    Equipment = "equipment",
+    BattleResult = "battle-result",
 }

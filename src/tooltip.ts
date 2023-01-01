@@ -1,6 +1,8 @@
 import { AbilityConfigs, AbilityId } from "./config/ability-configs"
 import { ItemId } from "./config/item-configs"
 import { getItemByUId } from "./inventory/inventory"
+import { Item, ItemSlotType } from "./inventory/item-types"
+import { getState } from "./state"
 import "./tooltip/ui/item-tooltip"
 import { ItemTooltip } from "./tooltip/ui/item-tooltip"
 
@@ -43,8 +45,9 @@ export function handeMouseMoveTooltip(event: MouseEvent) {
         switch (element.tagName) {
             case "ITEM-SLOT": {
                 const itemUId = element.getAttribute("uid")
-                if (itemUId) {
-                    showItemTooltip(itemUId)
+                const itemSlotType = element.getAttribute("slot-type") as ItemSlotType | null
+                if (itemUId && itemSlotType) {
+                    showItemTooltip(itemUId, itemSlotType)
                 }
                 break
             }
@@ -69,8 +72,23 @@ function showTooltip(event: MouseEvent, id: string) {
     itemTooltipElement.setAttribute("style", `left: ${event.x}px; top: ${event.y}px`)
 }
 
-function showItemTooltip(itemUId: string) {
-    const item = getItemByUId(itemUId)
+function showItemTooltip(itemUId: string, slotType: ItemSlotType) {
+    let buffer: Item[]
+
+    switch (slotType) {
+        case ItemSlotType.Inventory:
+            buffer = getState().inventory
+            break
+        case ItemSlotType.BattleResult:
+            buffer = getState().battleResult?.loot || []
+            break
+
+        default:
+            console.error(`Unknown slot type ${slotType}`)
+            return
+    }
+
+    const item = buffer.find((item) => item.uid === itemUId)
     if (!item) {
         console.error(`Could not find item with uid ${itemUId}`)
         return

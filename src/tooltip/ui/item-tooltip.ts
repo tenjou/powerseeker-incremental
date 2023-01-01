@@ -63,7 +63,7 @@ export class ItemTooltip extends HTMLComponent {
             stats.removeChild(stats.firstChild)
         }
 
-        for (const stat of itemConfig.stats) {
+        for (const stat of item.stats) {
             const div = document.createElement("div")
             const span1 = document.createElement("span")
             const span2 = document.createElement("span")

@@ -1,4 +1,4 @@
-import { CharacterStatType } from "../character/character-types"
+import { ItemStat } from "../inventory/item-types"
 
 export type ItemId = "gold" | "carp" | "copper_ore" | "maple_log" | "leather_clothing" | "health_potion" | "axe" | "sword"
 
@@ -10,11 +10,6 @@ export type EffectType = "restore_hp"
 
 export interface ItemEffect {
     type: EffectType
-    value: number
-}
-
-export interface ItemStat {
-    type: CharacterStatType
     value: number
 }
 

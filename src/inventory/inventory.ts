@@ -91,6 +91,9 @@ export function generateLootItem(itemId: ItemId, maxLevel: number, luck: number)
     if (!itemConfig) {
         throw new Error(`Could not find item config for id: ${itemId}`)
     }
+    if (itemConfig.type !== "equipment") {
+        throw new Error(`Item is not equipment: ${itemId}`)
+    }
 
     const level = 1
     const power = 1
@@ -102,7 +105,7 @@ export function generateLootItem(itemId: ItemId, maxLevel: number, luck: number)
         power,
         rarity,
         amount: 1,
-        stats: [],
+        stats: [...itemConfig.stats],
     }
 
     return item

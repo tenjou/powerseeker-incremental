@@ -118,25 +118,25 @@ let state: State = {
         },
     ],
     inventory: [
-        {
-            uid: "1",
-            id: "axe",
-            power: 10,
-            rarity: 1,
-            amount: 1,
-            stats: [{ type: "attack", value: 10 }],
-        },
-        {
-            uid: "1",
-            id: "leather_clothing",
-            power: 4,
-            rarity: 2,
-            amount: 1,
-            stats: [
-                { type: "defense", value: 3 },
-                { type: "healing", value: 5 },
-            ],
-        },
+        // {
+        //     uid: "1",
+        //     id: "axe",
+        //     power: 10,
+        //     rarity: 1,
+        //     amount: 1,
+        //     stats: [{ type: "attack", value: 10 }],
+        // },
+        // {
+        //     uid: "1",
+        //     id: "leather_clothing",
+        //     power: 4,
+        //     rarity: 2,
+        //     amount: 1,
+        //     stats: [
+        //         { type: "defense", value: 3 },
+        //         { type: "healing", value: 5 },
+        //     ],
+        // },
     ],
     town: {
         cards: [],

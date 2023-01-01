@@ -35,10 +35,6 @@ export class ItemSlot extends HTMLComponent {
         // this.setText("#power", power)
         // this.toggleClassName("hide", hidePower || power <= 0, "#power")
     }
-
-    static get observedAttributes() {
-        return ["uid", "item-id"]
-    }
 }
 
 customElements.define("item-slot", ItemSlot)

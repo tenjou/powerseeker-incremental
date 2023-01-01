@@ -1,5 +1,6 @@
 import { HTMLComponent } from "../../dom"
 import { i18n } from "../../i18n"
+import { ItemSlotType } from "../../inventory/item-types"
 import { getState } from "../../state"
 import { ItemSlot } from "./../../inventory/ui/item-slot"
 
@@ -43,6 +44,7 @@ export class BattleResultElement extends HTMLComponent {
         for (const item of battleResult.loot) {
             const itemSlot = document.createElement("item-slot") as ItemSlot
             itemSlot.setAttribute("uid", item.uid)
+            itemSlot.setAttribute("slot-type", ItemSlotType.BattleResult)
             itemSlot.updateByItem(item)
             lootContainer.appendChild(itemSlot)
         }
