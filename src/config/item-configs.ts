@@ -33,7 +33,7 @@ export interface ItemConfigEquipment extends ItemConfigBasic {
     slot: EquipmentSlot
     equipmentType: EquipmentType
     level: number
-    stats: ItemStat[]
+    stats: ItemStatType[]
 }
 
 interface ItemConfigConsumable extends ItemConfigBasic {
@@ -69,10 +69,7 @@ export const ItemConfigs: Record<ItemId, ItemConfig> = {
         slot: "body",
         equipmentType: "armor",
         level: 1,
-        stats: [
-            { type: "defense", value: 10 },
-            { type: "accuracy", value: 2 },
-        ],
+        stats: ["defense", "accuracy"],
     },
     health_potion: {
         id: "health_potion",
@@ -90,7 +87,7 @@ export const ItemConfigs: Record<ItemId, ItemConfig> = {
         slot: "main_hand",
         equipmentType: "axe",
         level: 1,
-        stats: [{ type: "attack", value: 4 }],
+        stats: ["attack"],
     },
     sword: {
         id: "sword",
@@ -98,6 +95,62 @@ export const ItemConfigs: Record<ItemId, ItemConfig> = {
         slot: "main_hand",
         equipmentType: "sword",
         level: 1,
-        stats: [{ type: "attack", value: 2 }],
+        stats: ["attack"],
     },
 }
+
+export interface ItemStatConfig {
+    weight: number
+}
+
+export const ItemStatsConfig = {
+    attack: {
+        weight: 1,
+    },
+    healing: {
+        weight: 1,
+    },
+    defense: {
+        weight: 1,
+    },
+    accuracy: {
+        weight: 1,
+    },
+    evasion: {
+        weight: 1,
+    },
+    speed: {
+        weight: 1,
+    },
+    health: {
+        weight: 1,
+    },
+    mana: {
+        weight: 1,
+    },
+    health_regen: {
+        weight: 1,
+    },
+    mana_regen: {
+        weight: 1,
+    },
+    aggro: {
+        weight: 1,
+    },
+    increase_fire_damage: {
+        weight: 1,
+    },
+    increase_water_damage: {
+        weight: 1,
+    },
+    increase_earth_damage: {
+        weight: 1,
+    },
+    increase_wind_damage: {
+        weight: 1,
+    },
+} satisfies Record<string, ItemStatConfig>
+
+export type ItemStatType = keyof typeof ItemStatsConfig
+
+export const ItemStatTypes = Object.keys(ItemStatsConfig) as ItemStatType[]

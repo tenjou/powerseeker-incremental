@@ -3,8 +3,10 @@ import { ItemConfigs, ItemEffect, ItemId } from "../config/item-configs"
 import { equipItem } from "../equipment/equipment"
 import { getState } from "../state"
 import { emit } from "./../events"
-import { Item } from "./item-types"
+import { Item, ItemStat } from "./item-types"
 import "./ui/item-popup"
+import { randomNumber, shuffle } from "./../utils"
+import { ItemStatTypes } from "./../config/item-configs"
 
 export function addItem(item: Item) {
     const { inventory, cache } = getState()
@@ -95,17 +97,42 @@ export function generateLootItem(itemId: ItemId, maxLevel: number, luck: number)
         throw new Error(`Item is not equipment: ${itemId}`)
     }
 
-    const level = 1
-    const power = 1
-    const rarity = 1
+    const level = randomNumber(1, maxLevel)
+    const rarity = randomNumber(0, 4)
+    let power = 0
+
+    const stats: ItemStat[] = new Array(itemConfig.stats.length + rarity)
+    for (let n = 0; n < itemConfig.stats.length; n++) {
+        const statType = itemConfig.stats[n]
+        stats[n] = {
+            type: statType,
+            value: level,
+        }
+
+        power += level
+    }
+
+    shuffle(ItemStatTypes)
+
+    for (let n = itemConfig.stats.length; n < stats.length; n++) {
+        const statType = ItemStatTypes[n]
+        const statValue = randomNumber(1, level)
+        stats[n] = {
+            type: statType,
+            value: statValue,
+        }
+
+        power += statValue
+    }
 
     const item: Item = {
         uid: String(getState().cache.lastItemIndex++),
         id: itemId,
+        level,
         power,
         rarity,
         amount: 1,
-        stats: [...itemConfig.stats],
+        stats,
     }
 
     return item

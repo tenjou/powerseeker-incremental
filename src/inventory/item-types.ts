@@ -1,6 +1,4 @@
-import { ItemId } from "../config/item-configs"
-
-export type ItemStatType = "attack" | "healing" | "defense" | "accuracy"
+import { ItemId, ItemStatType } from "../config/item-configs"
 
 export interface ItemStat {
     type: ItemStatType
@@ -10,6 +8,7 @@ export interface ItemStat {
 export interface Item {
     uid: string
     id: ItemId
+    level: number
     power: number
     rarity: number
     amount: number

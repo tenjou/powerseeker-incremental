@@ -6,7 +6,7 @@ type Languages = "en"
 
 const lang: Languages = "en"
 
-const local: Record<string, LocalEntry> = {
+const I18nValues = {
     body: {
         en: "Body",
     },
@@ -63,6 +63,9 @@ const local: Record<string, LocalEntry> = {
     },
     health: {
         en: "Health",
+    },
+    mana: {
+        en: "Mana",
     },
     power: {
         en: "Power",
@@ -187,14 +190,64 @@ const local: Record<string, LocalEntry> = {
     legendary: {
         en: "Legendary",
     },
-}
+    level_up: {
+        en: "Level Up",
+    },
+    healing: {
+        en: "Healing",
+    },
+    aggro: {
+        en: "Aggro",
+    },
+    health_regen: {
+        en: "Health Regen",
+    },
+    mana_regen: {
+        en: "Mana Regen",
+    },
+    increase_fire_damage: {
+        en: "Increase Fire Damage",
+    },
+    increase_water_damage: {
+        en: "Increase Water Damage",
+    },
+    increase_earth_damage: {
+        en: "Increase Earth Damage",
+    },
+    increase_wind_damage: {
+        en: "Increase Wind Damage",
+    },
+    copper_ore_description: {
+        en: "A common ore found in the forest.",
+    },
+    carp_description: {
+        en: "A common fish found in the forest.",
+    },
+    maple_log_description: {
+        en: "A common wood found in the forest.",
+    },
+    leather_clothing_description: {
+        en: "A common clothing found in the forest.",
+    },
+    gold_description: {
+        en: "A common currency found in the forest.",
+    },
+    axe_description: {
+        en: "A common weapon found in the forest.",
+    },
+    sword_description: {
+        en: "A common weapon found in the forest.",
+    },
+} satisfies Record<string, LocalEntry>
 
-export function i18n(key: string | undefined | null) {
+type I18nKey = keyof typeof I18nValues
+
+export function i18n(key: I18nKey) {
     if (!key) {
         return "undefined"
     }
 
-    const entry = local[key]
+    const entry = I18nValues[key]
     if (!entry) {
         return `__${key}__`
     }

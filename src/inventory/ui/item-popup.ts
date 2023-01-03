@@ -98,7 +98,7 @@ export class ItemPopup extends HTMLComponent {
         const itemSlot = this.getElement("item-slot")
 
         const uid = this.getAttribute("uid")
-        let itemId = this.getAttribute("item-id")
+        let itemId = this.getAttribute("item-id") as ItemId
         let itemPower = 0
 
         if (uid) {
@@ -136,13 +136,13 @@ export class ItemPopup extends HTMLComponent {
 
         if (itemConfig.type === "equipment") {
             const xAttribute = this.getElement("stats-table")
-            const data = itemConfig.stats.map<StatsTableEntry>((entry) => {
-                return {
-                    key: i18n(entry.type),
-                    value: entry.value,
-                }
-            })
-            xAttribute.setAttribute("data", JSON.stringify(data))
+            // const data = itemConfig.stats.map<StatsTableEntry>((entry) => {
+            //     return {
+            //         key: i18n(entry.type),
+            //         value: entry.value,
+            //     }
+            // })
+            // xAttribute.setAttribute("data", JSON.stringify(data))
         }
     }
 

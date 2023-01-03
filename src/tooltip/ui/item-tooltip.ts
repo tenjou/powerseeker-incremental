@@ -54,7 +54,7 @@ export class ItemTooltip extends HTMLComponent {
         this.setText("#equipment-slot", i18n(itemConfig.slot))
         this.setText("#equipment-type", i18n(itemConfig.equipmentType))
         this.setText("#power", `${i18n("power")} ${item.power}`)
-        this.setText("#level", `${i18n("level")} ${itemConfig.level}`)
+        this.setText("#level", `${i18n("level")} ${item.level}`)
 
         this.getElement("#rarity").setAttribute("class", `color-${item.rarity}`)
 

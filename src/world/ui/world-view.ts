@@ -39,7 +39,7 @@ export function loadWorldView(segments: string[]) {
     getElement("#create-item-button").onclick = () => {
         const { battleResult } = getState()
 
-        const newItem = generateLootItem("leather_clothing", 1, 0)
+        const newItem = generateLootItem("axe", 1, 0)
 
         if (battleResult) {
             battleResult.loot.push(newItem)
