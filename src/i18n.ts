@@ -58,6 +58,9 @@ const I18nValues = {
     level: {
         en: "Level",
     },
+    weight: {
+        en: "Weight",
+    },
     exp: {
         en: "Experience",
     },

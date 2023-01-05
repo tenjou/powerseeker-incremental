@@ -2,6 +2,7 @@ import { HTMLComponent } from "../../dom"
 import { i18n } from "../../i18n"
 import { ItemSlotType } from "../../inventory/item-types"
 import { getState } from "../../state"
+import { ItemIconSlot } from "../../inventory/ui/item-icon-slot"
 import { ItemSlot } from "./../../inventory/ui/item-slot"
 
 const template = document.createElement("template")
@@ -41,8 +42,16 @@ export class BattleResultElement extends HTMLComponent {
 
         const lootContainer = this.getElement("#loot", true)
 
+        battleResult.loot.sort((a, b) => {
+            if (a.rarity === b.rarity) {
+                return b.power - a.power
+            }
+
+            return b.rarity - a.rarity
+        })
+
         for (const item of battleResult.loot) {
-            const itemSlot = document.createElement("item-slot") as ItemSlot
+            const itemSlot = new ItemIconSlot()
             itemSlot.setAttribute("uid", item.uid)
             itemSlot.setAttribute("slot-type", ItemSlotType.BattleResult)
             itemSlot.updateByItem(item)

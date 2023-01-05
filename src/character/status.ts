@@ -62,9 +62,9 @@ export function recalculateStats() {
             }
         }
 
-        for (const stat of itemConfig.stats) {
-            battler.stats[stat.type] += stat.value
-        }
+        // for (const stat of itemConfig.stats) {
+        //     battler.stats[stat.type] += stat.value
+        // }
 
         player.power += item.power
     }

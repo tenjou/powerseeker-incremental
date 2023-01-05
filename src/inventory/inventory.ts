@@ -2,11 +2,13 @@ import { addHp } from "../character/status"
 import { ItemConfigs, ItemEffect, ItemId } from "../config/item-configs"
 import { equipItem } from "../equipment/equipment"
 import { getState } from "../state"
-import { emit } from "./../events"
-import { Item, ItemStat } from "./item-types"
-import "./ui/item-popup"
-import { randomNumber, shuffle } from "./../utils"
 import { ItemStatTypes } from "./../config/item-configs"
+import { emit } from "./../events"
+import { randomNumber, shuffle } from "./../utils"
+import { Item, ItemStat } from "./item-types"
+import "./ui/item-icon-slot"
+import "./ui/item-popup"
+import "./ui/item-slot"
 
 export function addItem(item: Item) {
     const { inventory, cache } = getState()

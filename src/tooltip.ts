@@ -33,7 +33,8 @@ export function handeMouseMoveTooltip(event: MouseEvent) {
     const tagName = element.tagName
     // const abilityId = element.getAttribute("ability-id") as AbilityId | null
 
-    if (tagName === "ITEM-SLOT" || tagName === "ABILITY-SLOT") {
+    console.log(tagName)
+    if (tagName === "ITEM-ICON-SLOT" || tagName === "ABILITY-SLOT") {
         itemTooltipElement.classList.remove("hide")
         itemTooltipElement.setAttribute("style", `left: ${event.x}px; top: ${event.y}px`)
     } else {
@@ -43,7 +44,8 @@ export function handeMouseMoveTooltip(event: MouseEvent) {
 
     if (prevHoverElement !== element) {
         switch (element.tagName) {
-            case "ITEM-SLOT": {
+            case "ITEM-SLOT":
+            case "ITEM-ICON-SLOT": {
                 const itemUId = element.getAttribute("uid")
                 const itemSlotType = element.getAttribute("slot-type") as ItemSlotType | null
                 if (itemUId && itemSlotType) {

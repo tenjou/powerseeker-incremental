@@ -19,13 +19,18 @@ template.innerHTML = html`
     </div>
 
     <div class="spacing-6"></div>
-    <div id="power" class="color-gold"></div>
+
+    <div class="flex flex-row ">
+        <div id="power" class="color-gold"></div>
+    </div>
+
     <div class="spacing-6"></div>
+
     <div id="stats"></div>
 
     <div class="flex flex-row ">
         <span class="flex-1"></span>
-        <span id="level"></span>
+        <div id="level"></div>
     </div>
 
     <div class="spacing-6"></div>

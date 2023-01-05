@@ -4,7 +4,7 @@ import { getState } from "../../state"
 import { subscribe, unsubscribe } from "../../events"
 import { openPopup } from "../../popup"
 import "./item-slot"
-import { ItemSlot } from "./item-slot"
+import { ItemIconSlot } from "./item-icon-slot"
 import { Item } from "../item-types"
 
 const ItemTypeSortWeight: Record<ItemType, number> = {
@@ -48,7 +48,7 @@ function updateInventoryView() {
 
     for (let n = 0; n < inventory.length; n += 1) {
         const item = inventory[n]
-        const itemSlot = parent.children[n] as ItemSlot
+        const itemSlot = parent.children[n] as ItemIconSlot
         itemSlot.id = `item-${item.uid}`
         itemSlot.setAttribute("uid", String(item.uid))
         itemSlot.setAttribute("item-id", item.id)
@@ -60,7 +60,7 @@ function removeItem(item: Item) {
 }
 
 function updateItem(item: Item) {
-    const element = getElementById(`item-${item.uid}`) as ItemSlot
+    const element = getElementById(`item-${item.uid}`) as ItemIconSlot
     // element.update()
 }
 

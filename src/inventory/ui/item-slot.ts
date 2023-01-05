@@ -1,39 +1,28 @@
-import { EquipmentSlot, ItemConfigs, ItemId } from "../../config/item-configs"
-import { HTMLComponent } from "../../dom"
-import { getState } from "../../state"
-import { getItemByUId } from "../inventory"
+import { i18n } from "../../i18n"
 import { Item } from "../item-types"
+import { ItemIconSlot } from "./item-icon-slot"
 
 const template = document.createElement("template")
+template.setAttribute("class", "flex flex-row hover-outline inactive-children")
 template.innerHTML = html`
-    <img />
-    <!-- <div id="power"></div> -->
-    <div id="amount"></div>
+    <div class="icon-slot">
+        <img />
+        <div id="amount"></div>
+    </div>
+    <div class="flex-100px rounded-r bg-white">
+        <div id="name"></div>
+    </div>
 `
 
-export class ItemSlot extends HTMLComponent {
+export class ItemSlot extends ItemIconSlot {
     constructor() {
         super(template)
     }
 
     updateByItem(item: Item) {
-        const itemConfig = ItemConfigs[item.id]
+        super.updateByItem(item)
 
-        const imgElement = this.getElement("img")
-        imgElement.setAttribute("src", `/assets/icon/${itemConfig.type}/${item.id}.png`)
-        imgElement.classList.remove("hide")
-
-        if (this.getAttribute("inactive") !== null) {
-            this.classList.add("inactive")
-        }
-        this.classList.add(`rarity-${item.rarity}`)
-
-        this.setText("#amount", item.power)
-        this.toggleClassName("hide", item.power <= 1, "#amount")
-
-        // const hidePower = this.haveAttribute("hide-power")
-        // this.setText("#power", power)
-        // this.toggleClassName("hide", hidePower || power <= 0, "#power")
+        this.setText("#name", i18n(item.id))
     }
 }
 

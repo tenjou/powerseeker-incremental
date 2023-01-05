@@ -10,7 +10,7 @@ import { unequipItem } from "../equipment"
 export function loadEquipmentView(segments: string[]) {
     const { inventory } = getState()
 
-    const equipmentSlot = segments.pop()
+    const equipmentSlot = segments.pop() as EquipmentSlot
     if (!equipmentSlot) {
         goBack()
         return

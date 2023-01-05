@@ -59,4 +59,4 @@ export class LocationCard extends HTMLComponent {
     }
 }
 
-customElements.define("location-card", LocationCard)
+// customElements.define("location-card", LocationCard)

@@ -1,7 +1,6 @@
 import { LocationConfigs, LocationId } from "../../config/location-config"
 import { getElement, getElementById, removeAllChildren } from "./../../dom"
 import { subscribe, unsubscribe } from "./../../events"
-import { LocationCard } from "./../../exploration/ui/location-card"
 import { WorldService } from "./../world-service"
 import "./explore-wilderness"
 import { ExploreWilderness } from "./explore-wilderness"
@@ -10,6 +9,7 @@ import { generateLootItem } from "./../../inventory/inventory"
 import { getState } from "../../state"
 import { BattleResult } from "./../../battle/battle-types"
 import { BattleResultElement } from "./../../battle/ui/battle-result"
+import { LocationCard } from "./location-card"
 
 export function loadWorldView(segments: string[]) {
     const container = getElementById("world-container")
@@ -17,7 +17,7 @@ export function loadWorldView(segments: string[]) {
     for (const key in LocationConfigs) {
         const locationId = key as LocationId
 
-        const locationCard = document.createElement("location-card")
+        const locationCard = new LocationCard()
         locationCard.id = `location-${locationId}`
         locationCard.setAttribute("location", locationId)
         locationCard.onclick = () => WorldService.goToLocation(locationId)

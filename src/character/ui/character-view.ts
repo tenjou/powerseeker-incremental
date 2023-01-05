@@ -4,7 +4,7 @@ import { EquipmentSlot } from "../../config/item-configs"
 import { getElementById, toggleClassName } from "../../dom"
 import "../../equipment/ui/equipment-slot"
 import { subscribe, unsubscribe } from "../../events"
-import { ItemSlot } from "../../inventory/ui/item-slot"
+import { ItemIconSlot } from "../../inventory/ui/item-icon-slot"
 import { i18n } from "../../i18n"
 import { getState } from "../../state"
 import { goTo } from "../../view"
@@ -75,7 +75,7 @@ export function updateCharacterView() {
         element.onclick = () => goTo(`loadout/ability`)
     })
 
-    const itemSlots = document.querySelectorAll<ItemSlot>("item-slot")
+    const itemSlots = document.querySelectorAll<ItemIconSlot>("item-slot")
     itemSlots.forEach((element) => {
         element.update()
     })
