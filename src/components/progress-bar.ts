@@ -12,6 +12,16 @@ export class ProgressBar extends HTMLComponent {
         super(template)
     }
 
+    connectedCallback(): void {
+        super.connectedCallback()
+
+        this.update()
+    }
+
+    attributeChangedCallback(): void {
+        this.update()
+    }
+
     update() {
         const value = Number(this.getAttribute("value"))
         const valueMax = Number(this.getAttribute("value-max"))

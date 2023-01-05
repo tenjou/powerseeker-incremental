@@ -16,7 +16,7 @@ export function updateBattler(battler: Battler) {
 }
 
 export function loadBattler(battler: Battler) {
-    const element = document.createElement("battler-item") as BattlerItem
+    const element = new BattlerItem()
     element.id = `battler:${battler.id}`
     element.update(battler.id)
     element.onclick = () => useSelectedAbility(battler.id)

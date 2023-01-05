@@ -20,7 +20,7 @@ export function loadAbilities() {
             continue
         }
 
-        const element = document.createElement("battler-ability") as BattlerAbilityElement
+        const element = new BattlerAbilityElement()
         element.setup(loadoutAbility)
         parent.appendChild(element)
     }

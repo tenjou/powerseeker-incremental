@@ -13,6 +13,12 @@ export class LocationCard extends HTMLComponent {
         super(template)
     }
 
+    connectedCallback() {
+        super.connectedCallback()
+
+        this.update()
+    }
+
     update() {
         const location = this.getAttribute("location") as LocationId
 

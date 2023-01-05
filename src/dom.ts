@@ -123,15 +123,12 @@ export class HTMLComponent extends HTMLElement {
             const outerClasses = this.getAttribute("class")
             this.setAttribute("class", outerClasses + " " + this.rootClasses)
         }
-
-        this.update()
     }
 
     attributeChangedCallback() {
         if (this.children.length === 0) {
             return
         }
-        this.update()
     }
 
     update(props?: unknown) {}

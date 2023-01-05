@@ -33,7 +33,6 @@ export function handeMouseMoveTooltip(event: MouseEvent) {
     const tagName = element.tagName
     // const abilityId = element.getAttribute("ability-id") as AbilityId | null
 
-    console.log(tagName)
     if (tagName === "ITEM-ICON-SLOT" || tagName === "ABILITY-SLOT") {
         itemTooltipElement.classList.remove("hide")
         itemTooltipElement.setAttribute("style", `left: ${event.x}px; top: ${event.y}px`)
