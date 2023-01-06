@@ -1,6 +1,4 @@
-import { AbilityConfigs, AbilityId } from "./config/ability-configs"
 import { ItemId } from "./config/item-configs"
-import { getItemByUId } from "./inventory/inventory"
 import { Item, ItemSlotType } from "./inventory/item-types"
 import { getState } from "./state"
 import "./tooltip/ui/item-tooltip"
@@ -31,7 +29,6 @@ export function handeMouseMoveTooltip(event: MouseEvent) {
 
     const element = event.target as HTMLElement
     const tagName = element.tagName
-    // const abilityId = element.getAttribute("ability-id") as AbilityId | null
 
     if (tagName === "ITEM-ICON-SLOT" || tagName === "ABILITY-SLOT") {
         itemTooltipElement.classList.remove("hide")
@@ -45,35 +42,26 @@ export function handeMouseMoveTooltip(event: MouseEvent) {
         switch (element.tagName) {
             case "ITEM-SLOT":
             case "ITEM-ICON-SLOT": {
-                const itemUId = element.getAttribute("uid")
-                const itemSlotType = element.getAttribute("slot-type") as ItemSlotType | null
-                if (itemUId && itemSlotType) {
-                    showItemTooltip(itemUId, itemSlotType)
+                const itemId = element.getAttribute("item-id") as ItemId | null
+                if (itemId) {
+                    const amount = Number(element.getAttribute("amount"))
+                    showItemTooltipByItemId(itemId, amount)
+                } else {
+                    const itemUId = element.getAttribute("uid")
+                    const itemSlotType = element.getAttribute("slot-type") as ItemSlotType | null
+                    if (itemUId && itemSlotType) {
+                        showItemTooltipByUId(itemUId, itemSlotType)
+                    }
                 }
                 break
             }
         }
     }
 
-    // if (itemId && element.tagName === "ITEM-SLOT") {
-    //     showItemTooltip(event, itemId)
-    // } else if (abilityId && element.tagName === "ABILITY-SLOT") {
-    //     const abilityConfig = AbilityConfigs[abilityId]
-    //     showTooltip(event, abilityConfig.id)
-    // } else {
-    //     tooltipElement.classList.add("hide")
-    //     itemTooltipElement.classList.add("hide")
-    // }
-
     prevHoverElement = element
 }
 
-function showTooltip(event: MouseEvent, id: string) {
-    itemTooltipElement.classList.remove("hide")
-    itemTooltipElement.setAttribute("style", `left: ${event.x}px; top: ${event.y}px`)
-}
-
-function showItemTooltip(itemUId: string, slotType: ItemSlotType) {
+function showItemTooltipByUId(itemUId: string, slotType: ItemSlotType) {
     let buffer: Item[]
 
     switch (slotType) {
@@ -95,5 +83,9 @@ function showItemTooltip(itemUId: string, slotType: ItemSlotType) {
         return
     }
 
-    itemTooltipElement.updateItem(item)
+    itemTooltipElement.updateByItem(item)
+}
+
+function showItemTooltipByItemId(itemId: ItemId, amount: number) {
+    itemTooltipElement.updateByItemId(itemId, amount)
 }

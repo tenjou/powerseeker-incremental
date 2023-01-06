@@ -1,6 +1,4 @@
-import { ItemStat } from "../inventory/item-types"
-
-export type ItemId = "gold" | "carp" | "copper_ore" | "maple_log" | "leather_clothing" | "health_potion" | "axe" | "sword"
+export type ItemId = "xp" | "gold" | "carp" | "copper_ore" | "maple_log" | "leather_clothing" | "health_potion" | "axe" | "sword"
 
 export type EquipmentSlot = "body" | "main_hand"
 
@@ -18,17 +16,14 @@ interface ItemConfigBasic {
 }
 
 interface ItemConfigResource extends ItemConfigBasic {
-    id: ItemId
     type: "resource"
 }
 
 interface ItemConfigCurrency extends ItemConfigBasic {
-    id: ItemId
     type: "currency"
 }
 
 export interface ItemConfigEquipment extends ItemConfigBasic {
-    id: ItemId
     type: "equipment"
     slot: EquipmentSlot
     equipmentType: EquipmentType
@@ -37,7 +32,6 @@ export interface ItemConfigEquipment extends ItemConfigBasic {
 }
 
 interface ItemConfigConsumable extends ItemConfigBasic {
-    id: ItemId
     type: "consumable"
     effects: ItemEffect[]
 }
@@ -49,6 +43,10 @@ export type ItemType = ItemConfig["type"]
 export const ItemConfigs: Record<ItemId, ItemConfig> = {
     gold: {
         id: "gold",
+        type: "currency",
+    },
+    xp: {
+        id: "xp",
         type: "currency",
     },
     copper_ore: {

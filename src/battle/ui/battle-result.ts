@@ -11,15 +11,6 @@ template.innerHTML = html`
         <div id="result" class="bold uppercase"></div>
     </div>
 
-    <div class="flex flex-row align-items-center">
-        <div class="bold">${i18n("exp")}:</div>
-        <div id="exp"></div>
-    </div>
-    <div class="flex flex-row align-items-center">
-        <img src="/assets/icon/currency/gold.png" />
-        <div id="gold"></div>
-    </div>
-
     <inventory-container id="loot"></inventory-container>
 
     <x-button class="black">${i18n("continue")}</x-button>
@@ -37,8 +28,6 @@ export class BattleResultElement extends HTMLComponent {
         }
 
         this.setText("#result", battleResult.isVictory ? "Victory!" : "Defeat!")
-        this.setText("#exp", battleResult.exp)
-        this.setText("#gold", battleResult.gold)
 
         const lootContainer = this.getElement("#loot", true)
 
@@ -50,10 +39,22 @@ export class BattleResultElement extends HTMLComponent {
             return b.rarity - a.rarity
         })
 
+        const xpSlot = new ItemIconSlot()
+        xpSlot.setAttrib("item-id", "xp")
+        xpSlot.setAttrib("amount", battleResult.xp)
+        xpSlot.updateByItemId("xp", battleResult.xp)
+        lootContainer.appendChild(xpSlot)
+
+        const goldSlot = new ItemIconSlot()
+        goldSlot.setAttrib("item-id", "gold")
+        goldSlot.setAttrib("amount", battleResult.gold)
+        goldSlot.updateByItemId("gold", battleResult.gold)
+        lootContainer.appendChild(goldSlot)
+
         for (const item of battleResult.loot) {
             const itemSlot = new ItemIconSlot()
-            itemSlot.setAttribute("uid", item.uid)
-            itemSlot.setAttribute("slot-type", ItemSlotType.BattleResult)
+            itemSlot.setAttrib("uid", item.uid)
+            itemSlot.setAttrib("slot-type", ItemSlotType.BattleResult)
             itemSlot.updateByItem(item)
             lootContainer.appendChild(itemSlot)
         }

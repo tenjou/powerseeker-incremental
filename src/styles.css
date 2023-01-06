@@ -81,10 +81,6 @@ green {
     font-weight: bold;
 }
 
-.white {
-    color: #fff;
-}
-
 .hide,
 .hidden {
     display: none !important;
@@ -95,6 +91,9 @@ green {
     pointer-events: none;
 }
 
+.color-white {
+    color: #fff;
+}
 .color-gray {
     color: #cbcbcb;
 }
@@ -115,6 +114,10 @@ green {
 }
 .color-4 {
     color: #ff9223;
+}
+
+.text-shadow-5 {
+    text-shadow: 0 0 5px black;
 }
 
 .spacing-6 {
@@ -373,7 +376,7 @@ inventory-container > * {
     position: absolute;
     right: 0;
     bottom: 0;
-    background: #000000ad;
+    background: #0000008a;
     padding: 0 3px;
     font-size: 10px;
     border-radius: 2px;
@@ -394,6 +397,9 @@ inventory-container > * {
 }
 .rarity-4 {
     background: linear-gradient(#d0c56a, #eca235);
+}
+.rarity-xp {
+    background: linear-gradient(#9c27b0, #673ab7);
 }
 
 tooltip-container {
@@ -420,7 +426,7 @@ item-tooltip {
     top: 300px;
     left: 200px;
     width: 200px;
-    padding: 4px 7px;
+    padding: 4px 7px 5px;
     border-radius: 3px;
     color: #fff;
     background: #000000e3;
@@ -447,6 +453,10 @@ item-tooltip {
 }
 .flex-100px {
     flex: 0 0 100px;
+}
+
+.height-100 {
+    height: 100%;
 }
 
 .align-items-center {
@@ -520,6 +530,9 @@ item-tooltip {
 
 .font-1 {
     font-size: 1em;
+}
+.font-2 {
+    font-size: 2em;
 }
 
 popup-container {

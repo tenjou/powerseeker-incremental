@@ -127,7 +127,7 @@ function generateBattleResult(): BattleResult {
     if (!isVictory) {
         return {
             isVictory,
-            exp: 0,
+            xp: 0,
             gold: 0,
             loot: [],
         }
@@ -157,7 +157,7 @@ function generateBattleResult(): BattleResult {
 
     return {
         isVictory,
-        exp,
+        xp: exp,
         gold,
         loot,
     }
@@ -170,7 +170,7 @@ function rewardPlayer() {
         return
     }
 
-    PlayerService.addExp(battleResult.exp)
+    PlayerService.addExp(battleResult.xp)
     addCurrency("gold", battleResult.gold)
 
     for (const itemReward of battleResult.loot) {

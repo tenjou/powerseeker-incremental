@@ -153,7 +153,7 @@ let state: State = {
     battle: createBattle(),
     battleResult: {
         isVictory: true,
-        exp: 123,
+        xp: 123,
         gold: 14,
         loot: [],
     },

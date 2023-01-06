@@ -77,7 +77,7 @@ export function updateCharacterView() {
 
     const itemSlots = document.querySelectorAll<ItemIconSlot>("item-slot")
     itemSlots.forEach((element) => {
-        element.update()
+        // element.update()
     })
 
     // upadateLoadoutWidget()

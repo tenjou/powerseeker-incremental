@@ -1,4 +1,4 @@
-import { ItemConfigEquipment, ItemConfigs } from "../../config/item-configs"
+import { ItemConfigEquipment, ItemConfigs, ItemId } from "../../config/item-configs"
 import { HTMLComponent } from "../../dom"
 import { Item } from "../../inventory/item-types"
 import { getRarityText } from "../../inventory/item-utils"
@@ -12,30 +12,32 @@ template.innerHTML = html`
         <span id="rarity"></span>
     </div>
 
-    <div class="flex flex-row color-gray">
-        <span id="equipment-slot"></span>
-        <span class="flex-1"></span>
-        <span id="equipment-type"></span>
+    <div id="details">
+        <div class="flex flex-row color-gray">
+            <span id="equipment-slot"></span>
+            <span class="flex-1"></span>
+            <span id="equipment-type"></span>
+        </div>
+
+        <div class="spacing-6"></div>
+
+        <div class="flex flex-row ">
+            <div id="power" class="color-gold"></div>
+        </div>
+
+        <div class="spacing-6"></div>
+
+        <div id="stats"></div>
+
+        <div class="flex flex-row ">
+            <span class="flex-1"></span>
+            <div id="level"></div>
+        </div>
     </div>
 
     <div class="spacing-6"></div>
 
-    <div class="flex flex-row ">
-        <div id="power" class="color-gold"></div>
-    </div>
-
-    <div class="spacing-6"></div>
-
-    <div id="stats"></div>
-
-    <div class="flex flex-row ">
-        <span class="flex-1"></span>
-        <div id="level"></div>
-    </div>
-
-    <div class="spacing-6"></div>
-
-    <div class="color-gray">An axe is a powerful weapon and tool that can be wielded one or two-handed.</div>
+    <div id="description" class="color-gray"></div>
 `
 
 export class ItemTooltip extends HTMLComponent {
@@ -43,7 +45,7 @@ export class ItemTooltip extends HTMLComponent {
         super(template)
     }
 
-    updateItem(item: Item) {
+    updateByItem(item: Item) {
         const itemConfig = ItemConfigs[item.id]
 
         switch (itemConfig.type) {
@@ -53,6 +55,18 @@ export class ItemTooltip extends HTMLComponent {
         }
     }
 
+    updateByItemId(itemId: ItemId, amount: number) {
+        const itemConfig = ItemConfigs[itemId]
+
+        this.setText("#name", i18n(itemConfig.id))
+        this.setText("#rarity", i18n(itemConfig.type))
+
+        this.getElement("#rarity").setAttribute("class", `color-gray`)
+        this.setText("#description", i18n(`${itemConfig.id}_description`))
+
+        this.toggleClass("#details", "hide", true)
+    }
+
     updateEquipment(item: Item, itemConfig: ItemConfigEquipment) {
         this.setText("#name", i18n(itemConfig.id))
         this.setText("#rarity", getRarityText(item.rarity))
@@ -60,14 +74,13 @@ export class ItemTooltip extends HTMLComponent {
         this.setText("#equipment-type", i18n(itemConfig.equipmentType))
         this.setText("#power", `${i18n("power")} ${item.power}`)
         this.setText("#level", `${i18n("level")} ${item.level}`)
+        this.setText("#description", i18n(`${itemConfig.id}_description`))
 
         this.getElement("#rarity").setAttribute("class", `color-${item.rarity}`)
 
-        const stats = this.getElement("#stats")
-        while (stats.firstChild) {
-            stats.removeChild(stats.firstChild)
-        }
+        this.toggleClass("#details", "hide", false)
 
+        const stats = this.getElement("#stats", true)
         for (const stat of item.stats) {
             const div = document.createElement("div")
             const span1 = document.createElement("span")

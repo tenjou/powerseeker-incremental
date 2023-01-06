@@ -12,13 +12,7 @@ export class ProgressBar extends HTMLComponent {
         super(template)
     }
 
-    connectedCallback(): void {
-        super.connectedCallback()
-
-        this.update()
-    }
-
-    attributeChangedCallback(): void {
+    attributeChangedCallback() {
         this.update()
     }
 
@@ -40,6 +34,7 @@ export class ProgressBar extends HTMLComponent {
         } else {
             this.setText("#value", showMax ? `${value} / ${valueMax}` : `${value}`)
         }
+
         this.getElement("#progress").style.width = `${percents}%`
     }
 

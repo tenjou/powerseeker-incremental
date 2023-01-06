@@ -10,6 +10,7 @@ import { getState } from "../../state"
 import { BattleResult } from "./../../battle/battle-types"
 import { BattleResultElement } from "./../../battle/ui/battle-result"
 import { LocationCard } from "./location-card"
+import { openPopup } from "../../popup"
 
 export function loadWorldView(segments: string[]) {
     const container = getElementById("world-container")
@@ -43,9 +44,13 @@ export function loadWorldView(segments: string[]) {
 
         if (battleResult) {
             battleResult.loot.push(newItem)
+            battleResult.xp = 100
+            battleResult.gold = 213
         }
 
         getElement<BattleResultElement>("battle-result").update()
+
+        openPopup("battle-result-popup")
     }
 }
 

@@ -167,6 +167,14 @@ export class HTMLComponent extends HTMLElement {
         return this.getAttribute(key)
     }
 
+    toggleClass(query: string, className: string, add: boolean) {
+        if (add) {
+            this.getElement(query).classList.add(className)
+        } else {
+            this.getElement(query).classList.remove(className)
+        }
+    }
+
     toggleClassName(className: string, add: boolean, query: string = "") {
         if (add) {
             this.getElement(query).classList.add(className)

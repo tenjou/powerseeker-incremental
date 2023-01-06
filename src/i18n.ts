@@ -61,8 +61,11 @@ const I18nValues = {
     weight: {
         en: "Weight",
     },
-    exp: {
+    xp: {
         en: "Experience",
+    },
+    xp_description: {
+        en: "Experience is gained by defeating enemies. Gaining experience levels up your character.",
     },
     health: {
         en: "Health",
@@ -233,13 +236,16 @@ const I18nValues = {
         en: "A common clothing found in the forest.",
     },
     gold_description: {
-        en: "A common currency found in the forest.",
+        en: "Gold coins are often found as loot after defeating enemies, and can also be earned by completing quests or selling items to merchants.",
     },
     axe_description: {
-        en: "A common weapon found in the forest.",
+        en: "An axe is a powerful weapon and tool that can be wielded one or two-handed.",
     },
     sword_description: {
         en: "A common weapon found in the forest.",
+    },
+    amount: {
+        en: "Amount",
     },
 } satisfies Record<string, LocalEntry>
 

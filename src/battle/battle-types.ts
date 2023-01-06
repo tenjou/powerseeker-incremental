@@ -122,7 +122,7 @@ export interface BattleBattlerLogs {
 
 export interface BattleResult {
     isVictory: boolean
-    exp: number
+    xp: number
     gold: number
     loot: Item[]
 }

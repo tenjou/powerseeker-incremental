@@ -12,8 +12,8 @@ template.innerHTML = html`
         </x-row>
 
         <x-row class="center-h">
-            <x-text class="bold">${i18n("exp")}:</x-text>
-            <x-text id="exp"></x-text>
+            <x-text class="bold">${i18n("xp")}:</x-text>
+            <x-text id="xp"></x-text>
         </x-row>
         <x-row class="center-h">
             <img src="/assets/icon/currency/gold.png" />
@@ -44,7 +44,7 @@ export class BattleResultPopup extends HTMLComponent {
         }
 
         this.setText("#result", battleResult.isVictory ? "Victory!" : "Defeat!")
-        this.setText("#exp", battleResult.exp)
+        this.setText("#xp", battleResult.xp)
         this.setText("#gold", battleResult.gold)
 
         const lootContainer = this.getElement("#loot")
