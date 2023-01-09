@@ -2,6 +2,7 @@ import { HTMLComponent } from "../../dom"
 import { i18n } from "../../i18n"
 import { ItemSlotType } from "../../inventory/item-types"
 import { ItemIconSlot } from "../../inventory/ui/item-icon-slot"
+import { closePopup } from "../../popup"
 import { getState } from "../../state"
 
 const template = document.createElement("template")
@@ -12,10 +13,10 @@ template.innerHTML = html`
 
         <div class="uppercase color-secondary text-center border-bottom width-60 pb-1">Rewards</div>
 
-        <div id="loot" class="flex align-center sr-1"></div>
+        <div class="width-100"><div id="loot" class="justify-center item-slot-grid"></div></div>
         <div id="none" class="uppercase color-gray">None</div>
 
-        <div><x-button class="black m-2">${i18n("continue")}</x-button></div>
+        <div><x-button id="continue" class="black m-2">${i18n("continue")}</x-button></div>
     </div>
 `
 
@@ -27,6 +28,7 @@ export class BattleResultPopup extends HTMLComponent {
     connectedCallback() {
         super.connectedCallback()
 
+        this.getElement("#continue").addEventListener("click", closePopup)
         this.update()
     }
 

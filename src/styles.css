@@ -352,6 +352,11 @@ inventory-container.grid-15 {
 inventory-container > * {
     margin: 3px;
 }
+.item-slot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(2rem, 40px));
+    grid-gap: 4px;
+}
 
 .inactive {
     pointer-events: none;
@@ -455,6 +460,9 @@ item-tooltip {
 .flex-column {
     flex-direction: column;
 }
+.flex-wrap {
+    flex-wrap: wrap;
+}
 .flex-1 {
     flex: 1;
 }
@@ -513,6 +521,13 @@ item-tooltip {
 .sr-1 > *:last-child {
     margin-right: 0;
 }
+.sb-1 > *,
+.sb-1-all > * {
+    margin-bottom: 0.25rem;
+}
+.sb-1 > *:last-child {
+    margin-bottom: 0;
+}
 
 .sr-2 > * {
     margin-right: 0.5rem;
@@ -520,7 +535,6 @@ item-tooltip {
 .sr-2 > *:last-child {
     margin-right: 0;
 }
-
 .sb-2 > * {
     margin-bottom: 0.5rem;
 }

@@ -49,7 +49,9 @@ export function loadWorldView(segments: string[]) {
 
         getElement<BattleResultElement>("battle-result").update()
 
-        openPopup("battle-result-popup")
+        openPopup("battle-result-popup", {}, () => {
+            console.log("popup closed")
+        })
     }
 }
 
