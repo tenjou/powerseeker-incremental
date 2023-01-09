@@ -1,7 +1,11 @@
 import { ItemConfigEquipment, ItemConfigs, ItemId, ItemStatTypes } from "../config/item-configs"
+import { addCurrency } from "../currencies/currencies"
+import { PlayerService } from "../player/player-service"
 import { getState } from "../state"
 import { randomNumber, shuffle } from "../utils"
+import { addItem } from "./inventory"
 import { Item, ItemStat } from "./item-types"
+import { updateState } from "./../state"
 
 export const LootService = {
     generateEquipment(equipmentConfig: ItemConfigEquipment, maxLevel: number, luck: number): Item {
@@ -67,6 +71,25 @@ export const LootService = {
         }
 
         return item
+    },
+
+    consumeBattleResult() {
+        const { battleResult } = getState()
+        if (!battleResult) {
+            console.error("No battle result to consume")
+            return
+        }
+
+        PlayerService.addExp(battleResult.xp)
+        addCurrency("gold", battleResult.gold)
+
+        for (const itemReward of battleResult.loot) {
+            addItem(itemReward)
+        }
+
+        updateState({
+            battleResult: null,
+        })
     },
 }
 

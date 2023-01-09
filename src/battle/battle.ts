@@ -4,16 +4,13 @@ import { AbilityConfigs, AbilityFlag } from "../config/ability-configs"
 import { BattleConfigs, BattleId } from "../config/battle-configs"
 import { MonsterConfigs } from "../config/monster-configs"
 import { removeAllChildren, setOnClick, setShow, setText } from "../dom"
-import { PlayerService } from "../player/player-service"
 import { getState } from "../state"
 import { BattlerId } from "../types"
 import { randomItem, roll } from "../utils"
 import { InstantAbilityConfig } from "./../config/ability-configs"
-import { addCurrency } from "./../currencies/currencies"
-import { addItem } from "./../inventory/inventory"
 import { Item } from "./../inventory/item-types"
+import { LootService } from "./../inventory/loot-service"
 import { LoadoutAbility } from "./../loadout/loadout-types"
-import { openPopup } from "./../popup"
 import { shuffle } from "./../utils"
 import {
     Battle,
@@ -33,7 +30,7 @@ import { addAnimationsFromLogs, addRegenAnimations, updateBattleAnimation } from
 import "./ui/battle-result"
 import "./ui/battle-result-popup"
 import { updateBattlerEffects } from "./ui/battler-item"
-import { LootService } from "./../inventory/loot-service"
+import { emit } from "./../events"
 
 const AttackAbility: LoadoutAbility = {
     id: "attack",
@@ -84,22 +81,6 @@ export function loadBattle() {
     setShow("main-container", false)
 }
 
-export function unloadBattle() {
-    const state = getState()
-
-    rewardPlayer()
-
-    state.battle = createBattle()
-    state.battleResult = null
-
-    removeAllChildren("battle-column-a")
-    removeAllChildren("battle-column-b")
-    removeAllChildren("battle-abilities")
-
-    setShow("main-container", true)
-    setShow("battle-container", false)
-}
-
 function endBattle() {
     const state = getState()
 
@@ -107,8 +88,8 @@ function endBattle() {
         removeEffects(battler, false)
     }
 
-    state.battle.status = "ended"
     state.battleResult = generateBattleResult()
+    state.battle = createBattle()
 
     for (const ability of state.loadout.abilities) {
         if (ability) {
@@ -116,9 +97,14 @@ function endBattle() {
         }
     }
 
-    openPopup("battle-result-popup", {}, () => {
-        unloadBattle()
-    })
+    removeAllChildren("battle-column-a")
+    removeAllChildren("battle-column-b")
+    removeAllChildren("battle-abilities")
+
+    setShow("main-container", true)
+    setShow("battle-container", false)
+
+    emit("battle-ended")
 }
 
 function generateBattleResult(): BattleResult {
@@ -161,21 +147,6 @@ function generateBattleResult(): BattleResult {
         xp: exp,
         gold,
         loot,
-    }
-}
-
-function rewardPlayer() {
-    const { battleResult } = getState()
-
-    if (!battleResult || !battleResult.isVictory) {
-        return
-    }
-
-    PlayerService.addExp(battleResult.xp)
-    addCurrency("gold", battleResult.gold)
-
-    for (const itemReward of battleResult.loot) {
-        addItem(itemReward)
     }
 }
 

@@ -27,6 +27,7 @@ export function loadWorldView(segments: string[]) {
     subscribe("location-updated", updateWorldView)
     subscribe("exploration-started", updateExploration)
     subscribe("exploration-ended", updateExploration)
+    subscribe("battle-ended", updateWorldView)
 
     const locationId = segments[0] as LocationId
     if (locationId) {
@@ -60,14 +61,23 @@ export function unloadWorldView() {
     unsubscribe("location-updated", updateWorldView)
     unsubscribe("exploration-started", updateExploration)
     unsubscribe("exploration-ended", updateExploration)
+    unsubscribe("battle-ended", updateWorldView)
 }
 
 function updateWorldView() {
+    const { battleResult } = getState()
+
     const locationCards = document.querySelectorAll<LocationCard>("location-card")
     locationCards.forEach((locationCard) => {
         const location = locationCard.getAttribute("location") as LocationId
         locationCard.toggleAttr("data-active", WorldService.isSelected(location))
     })
+
+    if (battleResult) {
+        openPopup("battle-result-popup", {}, () => {
+            LootService.consumeBattleResult()
+        })
+    }
 
     // getElement<ExploreWilderness>("explore-wilderness").update(locationId)
 }

@@ -13,6 +13,7 @@ type EventType =
     | "location-updated"
     | "exploration-started"
     | "exploration-ended"
+    | "battle-ended"
 
 type CallbackFunc = (payload: unknown) => void
 
@@ -42,7 +43,7 @@ export function unsubscribe<T>(type: EventType, callback: (payload: T) => void) 
     funcs.pop()
 }
 
-export function emit(type: EventType, payload: unknown) {
+export function emit(type: EventType, payload: unknown = undefined) {
     const funcs = subscribers[type]
     if (!funcs || !funcs.length) {
         return
