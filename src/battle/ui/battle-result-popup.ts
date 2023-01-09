@@ -13,6 +13,7 @@ template.innerHTML = html`
         <div class="uppercase color-secondary text-center border-bottom width-60 pb-1">Rewards</div>
 
         <div id="loot" class="flex align-center sr-1"></div>
+        <div id="none" class="uppercase color-gray">None</div>
 
         <div><x-button class="black m-2">${i18n("continue")}</x-button></div>
     </div>
@@ -35,36 +36,46 @@ export class BattleResultPopup extends HTMLComponent {
             return
         }
 
-        this.setText("#result", battleResult.isVictory ? "Victory!" : "Defeat!")
+        const haveLoot = battleResult.loot.length > 0 || battleResult.xp > 0 || battleResult.gold > 0
 
         const lootContainer = this.getElement("#loot", true)
 
-        battleResult.loot.sort((a, b) => {
-            if (a.rarity === b.rarity) {
-                return b.power - a.power
+        this.setText("#result", battleResult.isVictory ? "Victory!" : "Defeat!")
+        this.toggleClass("#loot", "hidden", !haveLoot)
+        this.toggleClass("#none", "hidden", haveLoot)
+
+        if (haveLoot) {
+            battleResult.loot.sort((a, b) => {
+                if (a.rarity === b.rarity) {
+                    return b.power - a.power
+                }
+
+                return b.rarity - a.rarity
+            })
+
+            if (battleResult.xp > 0) {
+                const xpSlot = new ItemIconSlot()
+                xpSlot.setAttrib("item-id", "xp")
+                xpSlot.setAttrib("amount", battleResult.xp)
+                xpSlot.updateByItemId("xp", battleResult.xp)
+                lootContainer.appendChild(xpSlot)
             }
 
-            return b.rarity - a.rarity
-        })
+            if (battleResult.gold > 0) {
+                const goldSlot = new ItemIconSlot()
+                goldSlot.setAttrib("item-id", "gold")
+                goldSlot.setAttrib("amount", battleResult.gold)
+                goldSlot.updateByItemId("gold", battleResult.gold)
+                lootContainer.appendChild(goldSlot)
+            }
 
-        const xpSlot = new ItemIconSlot()
-        xpSlot.setAttrib("item-id", "xp")
-        xpSlot.setAttrib("amount", battleResult.xp)
-        xpSlot.updateByItemId("xp", battleResult.xp)
-        lootContainer.appendChild(xpSlot)
-
-        const goldSlot = new ItemIconSlot()
-        goldSlot.setAttrib("item-id", "gold")
-        goldSlot.setAttrib("amount", battleResult.gold)
-        goldSlot.updateByItemId("gold", battleResult.gold)
-        lootContainer.appendChild(goldSlot)
-
-        for (const item of battleResult.loot) {
-            const itemSlot = new ItemIconSlot()
-            itemSlot.setAttrib("uid", item.uid)
-            itemSlot.setAttrib("slot-type", ItemSlotType.BattleResult)
-            itemSlot.updateByItem(item)
-            lootContainer.appendChild(itemSlot)
+            for (const item of battleResult.loot) {
+                const itemSlot = new ItemIconSlot()
+                itemSlot.setAttrib("uid", item.uid)
+                itemSlot.setAttrib("slot-type", ItemSlotType.BattleResult)
+                itemSlot.updateByItem(item)
+                lootContainer.appendChild(itemSlot)
+            }
         }
     }
 }
