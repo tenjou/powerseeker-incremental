@@ -3,7 +3,7 @@
         "skipLibCheck": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
-        "strict": true,
+        "strict": false,
         "noFallthroughCasesInSwitch": true,
         "noEmit": true,
         "target": "esnext",

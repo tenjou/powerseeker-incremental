@@ -70,6 +70,7 @@ export function sortInventory(inventory: Item[]) {
             if (b.rarity !== a.rarity) {
                 return b.rarity - a.rarity
             }
+
             return b.power - a.power
         }
 

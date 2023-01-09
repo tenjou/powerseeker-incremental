@@ -89,7 +89,7 @@ export function createEmptyStats(): CharacterStats {
         health: 10,
         energy: 20,
         accuracy: 1,
-        attack: 30,
+        attack: 300,
         critical: 1,
         defense: 1,
         evasion: 1,

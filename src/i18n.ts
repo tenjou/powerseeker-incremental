@@ -251,7 +251,7 @@ const I18nValues = {
 
 type I18nKey = keyof typeof I18nValues
 
-export function i18n(key: I18nKey) {
+export function i18n(key: I18nKey | null) {
     if (!key) {
         return "undefined"
     }

@@ -1,16 +1,15 @@
 import { LocationConfigs, LocationId } from "../../config/location-config"
+import { openPopup } from "../../popup"
+import { getState } from "../../state"
+import { BattleResultElement } from "./../../battle/ui/battle-result"
 import { getElement, getElementById, removeAllChildren } from "./../../dom"
 import { subscribe, unsubscribe } from "./../../events"
 import { WorldService } from "./../world-service"
 import "./explore-wilderness"
 import { ExploreWilderness } from "./explore-wilderness"
 import "./location-card"
-import { generateLootItem } from "./../../inventory/inventory"
-import { getState } from "../../state"
-import { BattleResult } from "./../../battle/battle-types"
-import { BattleResultElement } from "./../../battle/ui/battle-result"
 import { LocationCard } from "./location-card"
-import { openPopup } from "../../popup"
+import { LootService } from "./../../inventory/loot-service"
 
 export function loadWorldView(segments: string[]) {
     const container = getElementById("world-container")
@@ -40,7 +39,7 @@ export function loadWorldView(segments: string[]) {
     getElement("#create-item-button").onclick = () => {
         const { battleResult } = getState()
 
-        const newItem = generateLootItem("axe", 10, 0)
+        const newItem = LootService.generateItem("axe", 10, 0)
 
         if (battleResult) {
             battleResult.loot.push(newItem)

@@ -109,7 +109,7 @@ export class ItemPopup extends HTMLComponent {
             }
 
             itemId = item.id
-            itemPower = item.power
+            // itemPower = item.power
             itemSlot.setAttribute("uid", String(uid))
         } else {
             if (!itemId) {

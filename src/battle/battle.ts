@@ -7,10 +7,11 @@ import { removeAllChildren, setOnClick, setShow, setText } from "../dom"
 import { PlayerService } from "../player/player-service"
 import { getState } from "../state"
 import { BattlerId } from "../types"
-import { randomItem, randomNumber, roll } from "../utils"
+import { randomItem, roll } from "../utils"
 import { InstantAbilityConfig } from "./../config/ability-configs"
 import { addCurrency } from "./../currencies/currencies"
-import { addItem, generateLootItem } from "./../inventory/inventory"
+import { addItem } from "./../inventory/inventory"
+import { Item } from "./../inventory/item-types"
 import { LoadoutAbility } from "./../loadout/loadout-types"
 import { openPopup } from "./../popup"
 import { shuffle } from "./../utils"
@@ -32,7 +33,7 @@ import { addAnimationsFromLogs, addRegenAnimations, updateBattleAnimation } from
 import "./ui/battle-result"
 import "./ui/battle-result-popup"
 import { updateBattlerEffects } from "./ui/battler-item"
-import { Item } from "./../inventory/item-types"
+import { LootService } from "./../inventory/loot-service"
 
 const AttackAbility: LoadoutAbility = {
     id: "attack",
@@ -149,7 +150,7 @@ function generateBattleResult(): BattleResult {
 
         for (const monsterDrop of monsterConfig.loot) {
             if (roll(monsterDrop.chance)) {
-                const newItem = generateLootItem(monsterDrop.id, 1, 0)
+                const newItem = LootService.generateItem(monsterDrop.id, 1, 0)
                 loot.push(newItem)
             }
         }

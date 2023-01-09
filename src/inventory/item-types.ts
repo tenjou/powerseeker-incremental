@@ -10,8 +10,8 @@ export interface Item {
     id: ItemId
     level: number
     power: number
-    rarity: number
     amount: number
+    rarity: number
     stats: ItemStat[]
 }
 

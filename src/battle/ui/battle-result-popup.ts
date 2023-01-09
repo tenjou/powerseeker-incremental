@@ -1,63 +1,69 @@
 import { HTMLComponent } from "../../dom"
-import { openItemPopup } from "../../inventory/ui/inventory-view"
-import { getState } from "../../state"
-import { handeMouseMoveTooltip } from "../../tooltip"
 import { i18n } from "../../i18n"
+import { ItemSlotType } from "../../inventory/item-types"
+import { ItemIconSlot } from "../../inventory/ui/item-icon-slot"
+import { getState } from "../../state"
 
 const template = document.createElement("template")
+template.setAttribute("class", "popup")
 template.innerHTML = html`
-    <popup-container>
-        <x-row class="center-h">
-            <x-text id="result" class="header size30"></x-text>
-        </x-row>
+    <div class="flex flex-column align-center sb-2">
+        <div id="result" class="bold uppercase font-2 "></div>
 
-        <x-row class="center-h">
-            <x-text class="bold">${i18n("xp")}:</x-text>
-            <x-text id="xp"></x-text>
-        </x-row>
-        <x-row class="center-h">
-            <img src="/assets/icon/currency/gold.png" />
-            <x-text id="gold"></x-text>
-        </x-row>
+        <div class="uppercase color-secondary text-center border-bottom width-60 pb-1">Rewards</div>
 
-        <inventory-container id="loot"></inventory-container>
-    </popup-container>
+        <div id="loot" class="flex align-center sr-1"></div>
 
-    <style>
-        inventory-container {
-            display: flex;
-            flex-direction: row;
-        }
-        inventory-container > * {
-            margin: 3px;
-        }
-    </style>
+        <div><x-button class="black m-2">${i18n("continue")}</x-button></div>
+    </div>
 `
 
 export class BattleResultPopup extends HTMLComponent {
     constructor() {
         super(template)
+    }
 
+    connectedCallback() {
+        super.connectedCallback()
+
+        this.update()
+    }
+
+    update() {
         const { battleResult } = getState()
         if (!battleResult) {
             return
         }
 
         this.setText("#result", battleResult.isVictory ? "Victory!" : "Defeat!")
-        this.setText("#xp", battleResult.xp)
-        this.setText("#gold", battleResult.gold)
 
-        const lootContainer = this.getElement("#loot")
-        lootContainer.onmousemove = handeMouseMoveTooltip
+        const lootContainer = this.getElement("#loot", true)
 
-        for (const loot of battleResult.loot) {
-            const itemSlot = document.createElement("item-slot")
-            itemSlot.setAttribute("item-id", loot.id)
-            itemSlot.setAttribute("amount", String(loot.amount))
-            itemSlot.setAttribute("power", String(loot.power))
-            itemSlot.setAttribute("rarity", String(loot.rarity))
-            itemSlot.onclick = openItemPopup
+        battleResult.loot.sort((a, b) => {
+            if (a.rarity === b.rarity) {
+                return b.power - a.power
+            }
 
+            return b.rarity - a.rarity
+        })
+
+        const xpSlot = new ItemIconSlot()
+        xpSlot.setAttrib("item-id", "xp")
+        xpSlot.setAttrib("amount", battleResult.xp)
+        xpSlot.updateByItemId("xp", battleResult.xp)
+        lootContainer.appendChild(xpSlot)
+
+        const goldSlot = new ItemIconSlot()
+        goldSlot.setAttrib("item-id", "gold")
+        goldSlot.setAttrib("amount", battleResult.gold)
+        goldSlot.updateByItemId("gold", battleResult.gold)
+        lootContainer.appendChild(goldSlot)
+
+        for (const item of battleResult.loot) {
+            const itemSlot = new ItemIconSlot()
+            itemSlot.setAttrib("uid", item.uid)
+            itemSlot.setAttrib("slot-type", ItemSlotType.BattleResult)
+            itemSlot.updateByItem(item)
             lootContainer.appendChild(itemSlot)
         }
     }

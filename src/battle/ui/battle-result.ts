@@ -1,13 +1,12 @@
 import { HTMLComponent } from "../../dom"
 import { i18n } from "../../i18n"
 import { ItemSlotType } from "../../inventory/item-types"
-import { getState } from "../../state"
 import { ItemIconSlot } from "../../inventory/ui/item-icon-slot"
-import { ItemSlot } from "./../../inventory/ui/item-slot"
+import { getState } from "../../state"
 
 const template = document.createElement("template")
 template.innerHTML = html`
-    <div class="flex flex-row align-items-center">
+    <div class="flex flex-row align-center">
         <div id="result" class="bold uppercase"></div>
     </div>
 

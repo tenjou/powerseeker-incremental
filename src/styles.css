@@ -91,6 +91,10 @@ green {
     pointer-events: none;
 }
 
+.text-center {
+    text-align: center;
+}
+
 .color-white {
     color: #fff;
 }
@@ -114,6 +118,9 @@ green {
 }
 .color-4 {
     color: #ff9223;
+}
+.color-secondary {
+    color: #5c5c5c;
 }
 
 .text-shadow-5 {
@@ -459,11 +466,18 @@ item-tooltip {
     height: 100%;
 }
 
-.align-items-center {
+.align-center {
     align-items: center;
 }
-.justify-content-center {
+.justify-center {
     justify-content: center;
+}
+
+.width-100 {
+    width: 100%;
+}
+.width-60 {
+    width: 60%;
 }
 
 .content {
@@ -477,21 +491,41 @@ item-tooltip {
 .p-2 {
     padding: 0.5rem;
 }
+.pb-1 {
+    padding-bottom: 0.25rem;
+}
 .pb-2 {
     padding-bottom: 0.5rem;
 }
 .m-2 {
     margin: 0.5rem;
 }
+.mt-2 {
+    margin-top: 0.5rem;
+}
 .mb-2 {
     margin-bottom: 0.5rem;
 }
 
-.s-2 > * {
+.sr-1 > * {
+    margin-right: 0.25rem;
+}
+.sr-1 > *:last-child {
+    margin-right: 0;
+}
+
+.sr-2 > * {
     margin-right: 0.5rem;
 }
-.s-2 > *:last-child {
+.sr-2 > *:last-child {
     margin-right: 0;
+}
+
+.sb-2 > * {
+    margin-bottom: 0.5rem;
+}
+.sb-2 > *:last-child {
+    margin-bottom: 0;
 }
 
 .cursor-pointer {
@@ -511,7 +545,7 @@ item-tooltip {
 .border-bottom {
     border-bottom-width: 1px;
     border-bottom-style: solid;
-    border-bottom-color: rgb(203 213 225);
+    border-bottom-color: #d1d1d1;
 }
 
 .border-radius-3 {
@@ -535,7 +569,7 @@ item-tooltip {
     font-size: 2em;
 }
 
-popup-container {
+.popup {
     display: flex;
     flex-direction: column;
     padding: 8px 6px;
