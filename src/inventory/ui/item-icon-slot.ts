@@ -28,7 +28,7 @@ export class ItemIconSlot extends HTMLComponent {
 
         this.classList.add(`rarity-${item.rarity}`)
         this.setText("#value", item.power)
-        this.getElement("#value").setAttribute("class", "color-gold")
+        this.getElement("#value").setAttribute("class", itemConfig.type === "equipment" ? "color-gold" : "color-white")
     }
 
     updateByItemId(itemId: ItemId, amount: number) {
@@ -45,7 +45,7 @@ export class ItemIconSlot extends HTMLComponent {
         }
 
         this.setText("#value", amount)
-        this.getElement("#value").setAttribute("class", "color-white")
+        this.getElement("#value").setAttribute("class", itemConfig.type === "equipment" ? "color-gold" : "color-white")
     }
 }
 

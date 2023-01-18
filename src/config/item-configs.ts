@@ -15,7 +15,7 @@ interface ItemConfigBasic {
     id: ItemId
 }
 
-interface ItemConfigResource extends ItemConfigBasic {
+export interface ItemConfigResource extends ItemConfigBasic {
     type: "resource"
 }
 

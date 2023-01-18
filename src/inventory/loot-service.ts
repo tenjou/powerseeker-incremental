@@ -61,7 +61,7 @@ export const LootService = {
         }
 
         const item: Item = {
-            uid: "",
+            uid: generateUId(),
             id: itemId,
             rarity: 0,
             amount: 1,

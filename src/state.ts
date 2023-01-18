@@ -151,12 +151,7 @@ let state: State = {
         reachedEnd: false,
     },
     battle: createBattle(),
-    battleResult: {
-        isVictory: true,
-        xp: 0,
-        gold: 0,
-        loot: [],
-    },
+    battleResult: null,
     abilities: {
         attack: { id: "attack", rank: 1 },
         bash: { id: "bash", rank: 1 },

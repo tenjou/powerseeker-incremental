@@ -1,6 +1,6 @@
 import { LocationConfigs, LocationId } from "../../config/location-config"
 import { openPopup } from "../../popup"
-import { getState } from "../../state"
+import { getState, updateState } from "../../state"
 import { BattleResultElement } from "./../../battle/ui/battle-result"
 import { getElement, getElementById, removeAllChildren } from "./../../dom"
 import { subscribe, unsubscribe } from "./../../events"
@@ -38,21 +38,22 @@ export function loadWorldView(segments: string[]) {
     updateExploration()
 
     getElement("#create-item-button").onclick = () => {
-        const { battleResult } = getState()
+        const newItem = LootService.generateItem("copper_ore", 10, 0)
 
-        const newItem = LootService.generateItem("axe", 10, 0)
-
-        if (battleResult) {
-            battleResult.loot.push(newItem)
-            battleResult.xp = 100
-            battleResult.gold = 213
-        }
+        updateState({
+            battleResult: {
+                isVictory: true,
+                loot: [newItem],
+                xp: 100,
+                gold: 213,
+            },
+        })
 
         getElement<BattleResultElement>("battle-result").update()
 
-        openPopup("battle-result-popup", {}, () => {
-            console.log("popup closed")
-        })
+        // openPopup("battle-result-popup", {}, () => {
+        //     console.log("popup closed")
+        // })
     }
 }
 

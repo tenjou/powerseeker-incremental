@@ -1,4 +1,4 @@
-import { ItemConfigEquipment, ItemConfigs, ItemId } from "../../config/item-configs"
+import { ItemConfigEquipment, ItemConfigResource, ItemConfigs, ItemId } from "../../config/item-configs"
 import { HTMLComponent } from "../../dom"
 import { Item } from "../../inventory/item-types"
 import { getRarityText } from "../../inventory/item-utils"
@@ -52,6 +52,9 @@ export class ItemTooltip extends HTMLComponent {
             case "equipment":
                 this.updateEquipment(item, itemConfig)
                 break
+            case "resource":
+                this.updateResource(item, itemConfig)
+                break
         }
     }
 
@@ -95,6 +98,16 @@ export class ItemTooltip extends HTMLComponent {
 
             stats.appendChild(div)
         }
+    }
+
+    updateResource(item: Item, itemConfig: ItemConfigResource) {
+        this.setText("#name", i18n(itemConfig.id))
+        this.setText("#rarity", getRarityText(item.rarity))
+        this.setText("#description", i18n(`${itemConfig.id}_description`))
+
+        this.getElement("#rarity").setAttribute("class", `color-${item.rarity}`)
+
+        this.toggleClass("#details", "hide", true)
     }
 }
 

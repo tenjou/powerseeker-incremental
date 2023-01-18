@@ -13,7 +13,7 @@ template.innerHTML = html`
 
         <div class="uppercase color-secondary text-center border-bottom width-60 pb-1">Rewards</div>
 
-        <div class="width-100"><div id="loot" class="justify-center item-slot-grid"></div></div>
+        <div id="loot-container" class="width-100"><div id="loot" class="justify-center item-slot-grid"></div></div>
         <div id="none" class="uppercase color-gray">None</div>
 
         <div><x-button id="continue" class="black m-2">${i18n("continue")}</x-button></div>
@@ -43,7 +43,7 @@ export class BattleResultPopup extends HTMLComponent {
         const lootContainer = this.getElement("#loot", true)
 
         this.setText("#result", battleResult.isVictory ? "Victory!" : "Defeat!")
-        this.toggleClass("#loot", "hidden", !haveLoot)
+        this.toggleClass("#loot-container", "hidden", !haveLoot)
         this.toggleClass("#none", "hidden", haveLoot)
 
         if (haveLoot) {
