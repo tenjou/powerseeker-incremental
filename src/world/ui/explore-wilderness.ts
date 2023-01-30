@@ -46,7 +46,7 @@ export class ExploreWilderness extends HTMLComponent {
             console.log(exploration)
         }
 
-        const selectedLocationId = WorldService.getSelectedLocationId()
+        const selectedLocationId = WorldService.getSelectedAreaId()
 
         this.setText("#name", i18n(selectedLocationId))
     }

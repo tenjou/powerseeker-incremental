@@ -1,8 +1,5 @@
-import { LocationId } from "../../config/location-config"
 import { HTMLComponent } from "../../dom"
 import { getState } from "../../state"
-import { ExplorationService } from "./../exploration-service"
-import { subscribe } from "./../../events"
 
 const template = document.createElement("template")
 template.innerHTML = html`

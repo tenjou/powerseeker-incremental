@@ -16,7 +16,6 @@ import "./components/x-text"
 import "./currencies/currency-item"
 import { setShow } from "./dom"
 import { emit } from "./events"
-import { ExplorationService } from "./exploration/exploration-service"
 import { addItem } from "./inventory/inventory"
 import { equipAbility } from "./loadout/loadout"
 import { loadPopupSystem } from "./popup"
@@ -24,6 +23,7 @@ import { getState, loadState } from "./state"
 import { loadTooltipSystem } from "./tooltip"
 import { updateView } from "./view"
 import { WorldService } from "./world/world-service"
+import { ExplorationService } from "./exploration/exploration-service"
 
 let tLast = 0
 
@@ -63,7 +63,7 @@ function createEmptyProfile() {
     //     amount: 5,
     // })
 
-    ExplorationService.addLocation("forest")
+    ExplorationService.addArea("forest")
 
     equipAbility("attack")
     equipAbility("bash")

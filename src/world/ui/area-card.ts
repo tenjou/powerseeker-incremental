@@ -1,6 +1,6 @@
-import { LocationConfigs, LocationId } from "../../config/location-config"
 import { HTMLComponent } from "../../dom"
 import { i18n } from "../../i18n"
+import { AreaConfigs, AreaId } from "../../config/area-configs"
 
 const template = document.createElement("template")
 template.setAttribute("class", "p-2 bg-white hover:outline active:outline border-radius-3 cursor-pointer")
@@ -8,7 +8,7 @@ template.innerHTML = html`
     <div id="name" clas="font-bold"></div>
 `
 
-export class LocationCard extends HTMLComponent {
+export class AreaCard extends HTMLComponent {
     constructor() {
         super(template)
     }
@@ -20,12 +20,12 @@ export class LocationCard extends HTMLComponent {
     }
 
     update() {
-        const location = this.getAttribute("location") as LocationId
+        const area = this.getAttribute("area") as AreaId
 
-        const locationConfig = LocationConfigs[location]
+        const areaConfig = AreaConfigs[area]
 
-        this.setText("#name", i18n(locationConfig.id))
+        this.setText("#name", i18n(areaConfig.id))
     }
 }
 
-customElements.define("location-card", LocationCard)
+customElements.define("area-card", AreaCard)

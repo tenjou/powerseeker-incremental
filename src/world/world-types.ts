@@ -1,5 +1,5 @@
+import { AreaId } from "../config/area-configs"
 import { BattleId } from "../config/battle-configs"
-import { LocationId } from "../config/location-config"
 
 interface ExplorationResultCombat {
     type: "combat"
@@ -9,7 +9,7 @@ interface ExplorationResultCombat {
 type ExplorationResult = ExplorationResultCombat
 
 export interface ExplorationState {
-    locationId: LocationId
+    areaId: AreaId
     result: ExplorationResult | null
     tStart: number
     tEnd: number

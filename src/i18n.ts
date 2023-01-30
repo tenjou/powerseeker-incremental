@@ -166,11 +166,20 @@ const I18nValues = {
     forest: {
         en: "Forest",
     },
+    forest_description: {
+        en: "A forest is a place where you can find resources, and fight enemies.",
+    },
     desert: {
         en: "Desert",
     },
+    desert_description: {
+        en: "A desert is a place where you can find resources, and fight enemies.",
+    },
     town: {
         en: "Town",
+    },
+    town_description: {
+        en: "A town is a place where you can buy and sell items, and talk to NPCs.",
     },
     fight: {
         en: "Fight",

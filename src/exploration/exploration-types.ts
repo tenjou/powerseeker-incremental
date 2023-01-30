@@ -1,5 +1,5 @@
+import { LocationId } from "../config/area-configs"
 import { EntityId } from "../config/entity-configs"
-import { LocationId } from "../config/location-config"
 
 export interface Entity {
     uid: number

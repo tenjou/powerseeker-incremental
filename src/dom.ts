@@ -1,5 +1,5 @@
-export function getElementById(id: string) {
-    const element = document.getElementById(id)
+export function getElementById(id: string, parent?: Element) {
+    const element = parent ? parent.querySelector(`#${id}`) : document.getElementById(id)
     if (!element) {
         console.error(`Could get element with id: "${id}"`)
         return document.createElement("div")
@@ -50,8 +50,8 @@ export function addChild(id: string, child: HTMLElement) {
     element.appendChild(child)
 }
 
-export function setText(id: string, text: string | number) {
-    const element = document.getElementById(id)
+export function setText(id: string, text: string | number, parent?: Element) {
+    const element = (parent ? parent.querySelector(`#${id}`) : document.getElementById(id)) as HTMLElement
     if (!element) {
         console.error(`Could set element: "${id}" text to: ${text}`)
         return

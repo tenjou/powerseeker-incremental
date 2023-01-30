@@ -1,65 +1,47 @@
-import { LocationConfigs, LocationId } from "../../config/location-config"
+import { AreaConfigs, AreaId } from "../../config/area-configs"
 import { openPopup } from "../../popup"
 import { getState, updateState } from "../../state"
 import { BattleResultElement } from "./../../battle/ui/battle-result"
-import { getElement, getElementById, removeAllChildren } from "./../../dom"
+import { getElement, getElementById, removeAllChildren, setText } from "./../../dom"
 import { subscribe, unsubscribe } from "./../../events"
+import { LootService } from "./../../inventory/loot-service"
 import { WorldService } from "./../world-service"
 import "./explore-wilderness"
 import { ExploreWilderness } from "./explore-wilderness"
-import "./location-card"
-import { LocationCard } from "./location-card"
-import { LootService } from "./../../inventory/loot-service"
+import "./area-card"
+import { AreaCard } from "./area-card"
+import { i18n } from "./../../i18n"
 
 export function loadWorldView(segments: string[]) {
-    const container = getElementById("world-container")
+    const parent = getElementById("view-world")
+    const areaMenu = getElementById("area-menu", parent)
 
-    for (const key in LocationConfigs) {
-        const locationId = key as LocationId
-
-        const locationCard = new LocationCard()
-        locationCard.id = `location-${locationId}`
-        locationCard.setAttribute("location", locationId)
-        locationCard.onclick = () => WorldService.goToLocation(locationId)
-        container.appendChild(locationCard)
+    for (const key in AreaConfigs) {
+        const areaId = key as AreaId
+        const locationCard = new AreaCard()
+        locationCard.id = `area-${areaId}`
+        locationCard.setAttribute("area", areaId)
+        locationCard.onclick = () => WorldService.goToArea(areaId)
+        areaMenu.appendChild(locationCard)
     }
 
-    subscribe("location-updated", updateWorldView)
-    subscribe("exploration-started", updateExploration)
-    subscribe("exploration-ended", updateExploration)
-    subscribe("battle-ended", updateWorldView)
+    subscribe("area-updated", updateWorldView)
+    // subscribe("exploration-started", updateExploration)
+    // subscribe("exploration-ended", updateExploration)
+    // subscribe("battle-ended", updateWorldView)
 
-    const locationId = segments[0] as LocationId
-    if (locationId) {
-        WorldService.goToLocation(locationId)
-    }
+    // const areaId = segments[0] as AreaId
+    // if (areaId) {
+    //     WorldService.goToArea(areaId)
+    // }
 
     updateWorldView()
-    updateExploration()
-
-    getElement("#create-item-button").onclick = () => {
-        const newItem = LootService.generateItem("copper_ore", 10, 0)
-
-        updateState({
-            battleResult: {
-                isVictory: true,
-                loot: [newItem],
-                xp: 100,
-                gold: 213,
-            },
-        })
-
-        getElement<BattleResultElement>("battle-result").update()
-
-        // openPopup("battle-result-popup", {}, () => {
-        //     console.log("popup closed")
-        // })
-    }
+    // updateExploration()
 }
 
 export function unloadWorldView() {
     removeAllChildren("world-container")
-    unsubscribe("location-updated", updateWorldView)
+    unsubscribe("area-updated", updateWorldView)
     unsubscribe("exploration-started", updateExploration)
     unsubscribe("exploration-ended", updateExploration)
     unsubscribe("battle-ended", updateWorldView)
@@ -68,10 +50,12 @@ export function unloadWorldView() {
 function updateWorldView() {
     const { battleResult } = getState()
 
-    const locationCards = document.querySelectorAll<LocationCard>("location-card")
-    locationCards.forEach((locationCard) => {
-        const location = locationCard.getAttribute("location") as LocationId
-        locationCard.toggleAttr("data-active", WorldService.isSelected(location))
+    const parent = getElementById("view-world")
+
+    const areaCards = parent.querySelectorAll<AreaCard>("area-card")
+    areaCards.forEach((areaCard) => {
+        const area = areaCard.getAttribute("area") as AreaId
+        areaCard.toggleAttr("data-active", WorldService.isSelected(area))
     })
 
     if (battleResult) {
@@ -79,6 +63,10 @@ function updateWorldView() {
             LootService.consumeBattleResult()
         })
     }
+
+    const selectedAreaId = WorldService.getSelectedAreaId()
+    setText("area-name", i18n(selectedAreaId))
+    setText("area-description", i18n(`${selectedAreaId}_description`))
 
     // getElement<ExploreWilderness>("explore-wilderness").update(locationId)
 }

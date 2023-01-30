@@ -1,4 +1,4 @@
-import { LocationId } from "../config/location-config"
+import { AreaId } from "../config/area-configs"
 import { getState, updateState } from "../state"
 import { goTo } from "../view"
 import { BattleService } from "./../battle/battle"
@@ -6,11 +6,11 @@ import { emit } from "./../events"
 import { ExplorationState } from "./world-types"
 
 interface WorldCache {
-    selectedLocationId: LocationId
+    selectedAreaId: AreaId
 }
 
 const cache: WorldCache = {
-    selectedLocationId: "town",
+    selectedAreaId: "town",
 }
 
 export const WorldService = {
@@ -41,35 +41,35 @@ export const WorldService = {
         emit("exploration-ended", explorationNew)
     },
 
-    goToLocation(locationId: LocationId) {
-        if (cache.selectedLocationId === locationId) {
+    goToArea(areaId: AreaId) {
+        if (cache.selectedAreaId === areaId) {
             return
         }
 
-        cache.selectedLocationId = locationId
+        cache.selectedAreaId = areaId
 
-        goTo(`/world/${locationId}`)
-        emit("location-updated", locationId)
+        goTo(`/world/${areaId}`)
+        emit("area-updated", areaId)
     },
 
     exploreSelected() {
         const { exploration } = getState()
 
-        const locationId = cache.selectedLocationId
-        if (!locationId) {
+        const areaId = cache.selectedAreaId
+        if (!areaId) {
             console.error("No location selected")
             return false
         }
 
         if (exploration) {
-            console.error(`Already exploring: ${exploration.locationId}`)
+            console.error(`Already exploring: ${exploration.areaId}`)
             return false
         }
 
         const tStart = Date.now()
         const tEnd = tStart + 2000
         const explorationNew: ExplorationState = {
-            locationId,
+            areaId,
             tStart,
             tEnd,
             result: null,
@@ -97,11 +97,11 @@ export const WorldService = {
         console.log("interactExplored", exploration.result)
     },
 
-    getSelectedLocationId() {
-        return cache.selectedLocationId
+    getSelectedAreaId() {
+        return cache.selectedAreaId
     },
 
-    isSelected(locationId: LocationId) {
-        return cache.selectedLocationId === locationId
+    isSelected(areaId: AreaId) {
+        return cache.selectedAreaId === areaId
     },
 }

@@ -60,20 +60,15 @@
 
             <content-holder>
                 <content>
-                    <x-column id="view-world" class="hide">
-                        <div id="world-container" class="flex mb-2 pb-2 sr-2 border-bottom"></div>
-                        <div id="location-container">
-                            <explore-wilderness></explore-wilderness>
+                    <div id="view-world" class="flex flex-column hide">
+                        <div id="area-menu" class="flex mb-2 pb-2 sr-2 border-bottom"></div>
+                        <div id="area-info" class="flex flex-column mb-2 pb-2 sr-2 border-bottom">
+                            <div id="area-name" class="bold mb-2"></div>
+                            <div id="area-description" class="mb-2"></div>
                         </div>
-                    </x-column>
-
-                    <div id="view-battle">
-                        <battle-result></battle-result>
+                        <!-- <div id="world-container" class="flex mb-2 pb-2 sr-2 border-bottom"></div> -->
                     </div>
 
-                    <div>
-                        <x-button class="black" id="create-item-button">Create Item</x-button>
-                    </div>
                     <!-- 
                     <x-column id="view-town" class="hide">
                         <x-header>Town</x-header>
