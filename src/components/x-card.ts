@@ -1,7 +1,8 @@
 import { HTMLComponent } from "../dom"
 
 const template = document.createElement("template")
-template.innerHTML = html`<style>
+template.innerHTML = html`
+    <style>
         :host {
             position: relative;
             display: flex;
@@ -28,7 +29,8 @@ template.innerHTML = html`<style>
 
     <x-column class="center-v ml-2 mr-2 flex">
         <slot></slot>
-    </x-column>`
+    </x-column>
+`
 
 export class XCard extends HTMLComponent {
     constructor() {

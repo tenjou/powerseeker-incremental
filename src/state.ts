@@ -3,17 +3,16 @@ import { createBattle } from "./battle/battle"
 import { Battle, Battler, BattleResult } from "./battle/battle-types"
 import { createEmptyStats } from "./character/status"
 import { AbilityId } from "./config/ability-configs"
-import { AreaId } from "./config/area-configs"
+import { AreaId, LocationId } from "./config/area-configs"
 import { EquipmentSlot, ItemId } from "./config/item-configs"
 import { JobId } from "./config/job-configs"
 import { CurrencyType } from "./currencies/currency-types"
-import { LocationState } from "./exploration/exploration-types"
 import { Item } from "./inventory/item-types"
 import { JobsService } from "./jobs/jobs-service"
 import { Job } from "./jobs/jobs-types"
 import { LoadoutAbility } from "./loadout/loadout-types"
 import { Card, Skill } from "./types"
-import { ExplorationState } from "./world/world-types"
+import { AreaState, ExplorationState, LocationState } from "./world/world-types"
 
 interface TownStatus {
     cards: Card[]
@@ -57,7 +56,8 @@ interface State {
         abilities: (LoadoutAbility | null)[]
         items: (ItemId | null)[]
     }
-    areas: Partial<Record<AreaId, LocationState>>
+    areas: Partial<Record<AreaId, AreaState>>
+    locations: Partial<Record<LocationId, LocationState>>
     town: TownStatus
     dungeon: DungeonStatus
     battle: Battle
@@ -167,6 +167,7 @@ let state: State = {
         items: [null],
     },
     areas: {},
+    locations: {},
     exploration: {
         areaId: "forest",
         tStart: 0,

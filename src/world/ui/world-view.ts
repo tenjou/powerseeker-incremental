@@ -1,16 +1,17 @@
-import { AreaConfigs, AreaId } from "../../config/area-configs"
+import { AreaConfigs, AreaId, LocationId } from "../../config/area-configs"
 import { openPopup } from "../../popup"
-import { getState, updateState } from "../../state"
-import { BattleResultElement } from "./../../battle/ui/battle-result"
+import { getState } from "../../state"
 import { getElement, getElementById, removeAllChildren, setText } from "./../../dom"
 import { subscribe, unsubscribe } from "./../../events"
+import { i18n } from "./../../i18n"
 import { LootService } from "./../../inventory/loot-service"
 import { WorldService } from "./../world-service"
-import "./explore-wilderness"
-import { ExploreWilderness } from "./explore-wilderness"
 import "./area-card"
 import { AreaCard } from "./area-card"
-import { i18n } from "./../../i18n"
+import "./explore-wilderness"
+import { ExploreWilderness } from "./explore-wilderness"
+import "./location-card"
+import { LocationCard } from "./location-card"
 
 export function loadWorldView(segments: string[]) {
     const parent = getElementById("view-world")
@@ -26,6 +27,7 @@ export function loadWorldView(segments: string[]) {
     }
 
     subscribe("area-updated", updateWorldView)
+    subscribe("location-updated", updateLocation)
     // subscribe("exploration-started", updateExploration)
     // subscribe("exploration-ended", updateExploration)
     // subscribe("battle-ended", updateWorldView)
@@ -40,7 +42,6 @@ export function loadWorldView(segments: string[]) {
 }
 
 export function unloadWorldView() {
-    removeAllChildren("world-container")
     unsubscribe("area-updated", updateWorldView)
     unsubscribe("exploration-started", updateExploration)
     unsubscribe("exploration-ended", updateExploration)
@@ -68,10 +69,53 @@ function updateWorldView() {
     setText("area-name", i18n(selectedAreaId))
     setText("area-description", i18n(`${selectedAreaId}_description`))
 
-    // getElement<ExploreWilderness>("explore-wilderness").update(locationId)
+    loadLocations()
 }
 
 const updateExploration = () => {
     const exploreWilderness = getElement<ExploreWilderness>("explore-wilderness")
     exploreWilderness.update()
+}
+
+const loadLocations = () => {
+    const { locations } = getState()
+
+    const parent = getElementById("view-world")
+
+    const areaConfig = getCurrAreaConfig()
+    const locationConfigs = areaConfig.locations
+
+    const locationMenu = getElementById("area-locations", parent)
+    removeAllChildren(locationMenu)
+
+    for (const locationId in locationConfigs) {
+        const locationState = locations[locationId]
+        if (!locationState) {
+            continue
+        }
+
+        const locationConfig = locationConfigs[locationId]
+
+        const locationCard = new LocationCard()
+        locationMenu.appendChild(locationCard)
+        locationCard.update(locationConfig, locationState)
+    }
+}
+
+const updateLocation = (locationId: LocationId) => {
+    const { locations } = getState()
+
+    const areaConfig = getCurrAreaConfig()
+    const locationConfig = areaConfig.locations[locationId]
+
+    const locationState = locations[locationId]
+    const locationCard = getElementById(`location-${locationId}`) as LocationCard
+    locationCard.update(locationConfig, locationState)
+}
+
+const getCurrAreaConfig = () => {
+    const selectedArea = WorldService.getSelectedArea()
+    const areaConfig = AreaConfigs[selectedArea.id]
+
+    return areaConfig
 }

@@ -343,12 +343,17 @@ inventory-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(2rem, 46px));
 }
-inventory-container.grid-9 {
-    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+}
+.grid-gap {
+    grid-gap: 0.5rem;
 }
 inventory-container.grid-15 {
     grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
 }
+
 inventory-container > * {
     margin: 3px;
 }
@@ -785,7 +790,7 @@ anim-progress-bar {
     position: relative;
     display: flex;
     width: 100%;
-    height: 16px;
+    height: 17px;
     background: black;
     border-radius: 3px;
 }

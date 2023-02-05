@@ -1,9 +1,10 @@
-import { AreaId } from "../config/area-configs"
+import { AreaConfigs, AreaId, LocationId } from "../config/area-configs"
 import { getState, updateState } from "../state"
 import { goTo } from "../view"
 import { BattleService } from "./../battle/battle"
 import { emit } from "./../events"
-import { ExplorationState } from "./world-types"
+import { AreaState, ExplorationState, LocationState } from "./world-types"
+import { LocationConfigs } from "./../config/area-configs"
 
 interface WorldCache {
     selectedAreaId: AreaId
@@ -97,6 +98,70 @@ export const WorldService = {
         console.log("interactExplored", exploration.result)
     },
 
+    progressLocation(locationId: LocationId, amount: number) {
+        const { locations } = getState()
+
+        const location = locations[locationId]
+        if (!location) {
+            throw new Error(`No location for ${locationId}`)
+        }
+
+        const locationConfig = LocationConfigs[locationId]
+
+        if (location.progress === locationConfig.progressMax) {
+            return
+        }
+
+        location.progress += amount
+        if (location.progress > locationConfig.progressMax) {
+            location.progress = locationConfig.progressMax
+        }
+
+        emit("location-updated", locationId)
+    },
+
+    addLocation(areaId: AreaId, locationId: LocationId) {
+        const { areas, locations } = getState()
+
+        const areaConfig = AreaConfigs[areaId]
+        if (!areaConfig) {
+            throw new Error(`No area config for ${areaId}`)
+        }
+
+        let area = areas[areaId]
+        if (!area) {
+            area = createArea(areaId)
+            areas[areaId] = area
+        }
+
+        const locationConfig = areaConfig.locations[locationId]
+        if (!locationConfig) {
+            throw new Error(`No location config for ${locationId}`)
+        }
+
+        let location = locations[locationId]
+        if (!location) {
+            location = createLocation(locationId)
+            locations[locationId] = location
+        }
+
+        return location
+    },
+
+    getSelectedArea() {
+        const { areas } = getState()
+
+        const areaId = cache.selectedAreaId
+
+        let area = areas[areaId]
+        if (!area) {
+            area = createArea(areaId)
+            areas[areaId] = area
+        }
+
+        return area
+    },
+
     getSelectedAreaId() {
         return cache.selectedAreaId
     },
@@ -104,4 +169,17 @@ export const WorldService = {
     isSelected(areaId: AreaId) {
         return cache.selectedAreaId === areaId
     },
+}
+
+const createArea = (areaId: AreaId): AreaState => {
+    return {
+        id: areaId,
+    }
+}
+
+const createLocation = (locationId: LocationId): LocationState => {
+    return {
+        id: locationId,
+        progress: 0,
+    }
 }

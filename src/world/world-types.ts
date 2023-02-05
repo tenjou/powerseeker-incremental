@@ -1,4 +1,4 @@
-import { AreaId } from "../config/area-configs"
+import { AreaId, LocationId } from "../config/area-configs"
 import { BattleId } from "../config/battle-configs"
 
 interface ExplorationResultCombat {
@@ -13,4 +13,13 @@ export interface ExplorationState {
     result: ExplorationResult | null
     tStart: number
     tEnd: number
+}
+
+export interface AreaState {
+    id: AreaId
+}
+
+export interface LocationState {
+    id: LocationId
+    progress: number
 }

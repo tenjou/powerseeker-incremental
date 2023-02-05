@@ -1,7 +1,8 @@
 import { HTMLComponent } from "../dom"
 
 const template = document.createElement("template")
-template.innerHTML = html`<style>
+template.innerHTML = html`
+    <style>
         :host {
             font-weight: 700;
             text-transform: uppercase;
@@ -17,7 +18,8 @@ template.innerHTML = html`<style>
         }
     </style>
 
-    <header-title><slot></slot></header-title>`
+    <header-title><slot></slot></header-title>
+`
 
 class Header extends HTMLComponent {
     constructor() {

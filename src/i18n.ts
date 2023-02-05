@@ -256,11 +256,12 @@ const I18nValues = {
     amount: {
         en: "Amount",
     },
+    battle: {
+        en: "Battle",
+    },
 } satisfies Record<string, LocalEntry>
 
-type I18nKey = keyof typeof I18nValues
-
-export function i18n(key: I18nKey | null) {
+export function i18n(key: string | null) {
     if (!key) {
         return "undefined"
     }

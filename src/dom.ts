@@ -5,7 +5,7 @@ export function getElementById(id: string, parent?: Element) {
         return document.createElement("div")
     }
 
-    return element
+    return element as HTMLElement
 }
 
 export function getElement<T extends HTMLElement>(query: string) {
@@ -28,11 +28,17 @@ export function removeElement(id: string) {
     element.remove()
 }
 
-export function removeAllChildren(id: string) {
-    const element = document.getElementById(id)
-    if (!element) {
-        console.error(`Could get element: "${id}"`)
-        return
+export function removeAllChildren(param: string | HTMLElement) {
+    let element: HTMLElement
+
+    if (typeof param === "string") {
+        element = document.getElementById(param)
+        if (!element) {
+            console.error(`Could get element: "${param}"`)
+            return
+        }
+    } else {
+        element = param
     }
 
     while (element.firstChild) {

@@ -4,7 +4,8 @@ import { CurrencyType } from "./currency-types"
 import { getState } from "./../state"
 
 const template = document.createElement("template")
-template.innerHTML = html`<style>
+template.innerHTML = html`
+    <style>
         :host {
             display: flex;
             align-items: center;
@@ -40,7 +41,8 @@ template.innerHTML = html`<style>
     </style>
 
     <icon></icon>
-    <span>0</span>`
+    <span>0</span>
+`
 
 export class CurrencyItem extends HTMLComponent {
     updateCallback: () => void

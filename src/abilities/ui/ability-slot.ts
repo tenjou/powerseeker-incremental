@@ -3,7 +3,8 @@ import { HTMLComponent } from "../../dom"
 import { getState } from "../../state"
 
 const template = document.createElement("template")
-template.innerHTML = html`<style>
+template.innerHTML = html`
+    <style>
         :host {
             position: relative;
             display: flex;
@@ -62,7 +63,8 @@ template.innerHTML = html`<style>
         }
     </style>
 
-    <img /> `
+    <img />
+`
 
 export class AbilitySlotElement extends HTMLComponent {
     constructor() {

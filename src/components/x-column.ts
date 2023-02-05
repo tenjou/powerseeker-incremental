@@ -1,7 +1,8 @@
 import { HTMLComponent } from "../dom"
 
 const template = document.createElement("template")
-template.innerHTML = html`<style>
+template.innerHTML = html`
+    <style>
         :host {
             display: flex;
             flex-direction: column;
@@ -51,7 +52,8 @@ template.innerHTML = html`<style>
         }
     </style>
 
-    <slot></slot>`
+    <slot></slot>
+`
 
 class Column extends HTMLComponent {
     constructor() {

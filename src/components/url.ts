@@ -2,7 +2,8 @@ import { HTMLComponent } from "../dom"
 import { goTo } from "../view"
 
 const template = document.createElement("template")
-template.innerHTML = html`<style>
+template.innerHTML = html`
+    <style>
         :host {
             padding: 4px 8px;
             margin: 1px 5px;
@@ -19,7 +20,8 @@ template.innerHTML = html`<style>
         }
     </style>
 
-    <slot></slot>`
+    <slot></slot>
+`
 
 class Url extends HTMLComponent {
     constructor() {

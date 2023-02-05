@@ -1,7 +1,8 @@
 import { HTMLComponent } from "../dom"
 
 const template = document.createElement("template")
-template.innerHTML = html`<link rel="stylesheet" href="/ext/font-awesome/all.min.css" />
+template.innerHTML = html`
+    <link rel="stylesheet" href="/ext/font-awesome/all.min.css" />
     <style>
         :host {
             display: flex;
@@ -13,7 +14,8 @@ template.innerHTML = html`<link rel="stylesheet" href="/ext/font-awesome/all.min
         }
     </style>
 
-    <i class="fa-solid"></i>`
+    <i class="fa-solid"></i>
+`
 
 class XIcon extends HTMLComponent {
     constructor() {

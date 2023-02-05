@@ -1,7 +1,8 @@
 import { HTMLComponent } from "../dom"
 
 const template = document.createElement("template")
-template.innerHTML = html`<link rel="stylesheet" href="/ext/font-awesome/all.min.css" />
+template.innerHTML = html`
+    <link rel="stylesheet" href="/ext/font-awesome/all.min.css" />
     <style>
         :host {
             cursor: pointer;
@@ -12,7 +13,8 @@ template.innerHTML = html`<link rel="stylesheet" href="/ext/font-awesome/all.min
         }
     </style>
 
-    <i class="fa-regular fa-circle-xmark"></i>`
+    <i class="fa-regular fa-circle-xmark"></i>
+`
 
 class CloseButtonElement extends HTMLComponent {
     constructor() {

@@ -7,21 +7,32 @@ template.innerHTML = html`
     <div id="value" class="value"></div>
 `
 
+interface ProgressBarProps {
+    value: number
+    valueMax: number
+    showMax?: boolean
+    label?: string
+}
+
 export class ProgressBar extends HTMLComponent {
     constructor() {
         super(template)
     }
 
     attributeChangedCallback() {
-        this.update()
+        this.updateFromAttrib()
     }
 
-    update() {
+    updateFromAttrib() {
         const value = Number(this.getAttribute("value"))
         const valueMax = Number(this.getAttribute("value-max"))
         const showMax = this.haveAttribute("show-max")
         const label = this.getAttribute("label")
 
+        this.update({ value, valueMax, showMax, label })
+    }
+
+    update({ value, valueMax, showMax, label }: ProgressBarProps) {
         let percents = ((100 / valueMax) * value) | 0
         if (percents > 100) {
             percents = 100

@@ -6,7 +6,8 @@ export interface StatsTableEntry {
 }
 
 const template = document.createElement("template")
-template.innerHTML = html`<style>
+template.innerHTML = html`
+    <style>
         :host {
             margin: 10px 0;
         }
@@ -36,7 +37,8 @@ template.innerHTML = html`<style>
         }
     </style>
 
-    <div id="content"></div>`
+    <div id="content"></div>
+`
 
 export class StatsTable extends HTMLComponent {
     constructor() {
