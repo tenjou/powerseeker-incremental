@@ -27,6 +27,7 @@ export class LocationCard extends HTMLComponent {
         progressBar.update({
             value: locationState.progress,
             valueMax: locationConfig.progressMax,
+            showPercents: true,
         })
 
         this.onclick = () => WorldService.progressLocation(locationConfig.id, 2)

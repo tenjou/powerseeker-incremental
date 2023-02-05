@@ -11,6 +11,7 @@ interface ProgressBarProps {
     value: number
     valueMax: number
     showMax?: boolean
+    showPercents?: boolean
     label?: string
 }
 
@@ -32,7 +33,7 @@ export class ProgressBar extends HTMLComponent {
         this.update({ value, valueMax, showMax, label })
     }
 
-    update({ value, valueMax, showMax, label }: ProgressBarProps) {
+    update({ value, valueMax, showMax, showPercents, label }: ProgressBarProps) {
         let percents = ((100 / valueMax) * value) | 0
         if (percents > 100) {
             percents = 100
@@ -43,7 +44,11 @@ export class ProgressBar extends HTMLComponent {
         if (label) {
             this.setText("#value", label)
         } else {
-            this.setText("#value", showMax ? `${value} / ${valueMax}` : `${value}`)
+            if (showPercents) {
+                this.setText("#value", `${percents}%`)
+            } else {
+                this.setText("#value", showMax ? `${value} / ${valueMax}` : `${value}`)
+            }
         }
 
         this.getElement("#progress").style.width = `${percents}%`

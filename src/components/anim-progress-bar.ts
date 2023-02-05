@@ -38,7 +38,7 @@ export class AnimProgressBar extends ProgressBar {
             if (this.prevPercents !== percents) {
                 this.prevPercents = percents
                 this.setAttrib("value", percents)
-                super.update()
+                super.updateFromAttrib()
             }
         }
     }
