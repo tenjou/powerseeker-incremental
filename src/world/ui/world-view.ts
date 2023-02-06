@@ -1,4 +1,5 @@
-import { AreaConfigs, AreaId, LocationId } from "../../config/area-configs"
+import { AreaConfigs, AreaId } from "../../config/area-configs"
+import { LocationId } from "../../config/location-configs"
 import { openPopup } from "../../popup"
 import { getState } from "../../state"
 import { getElement, getElementById, removeAllChildren, setText } from "./../../dom"

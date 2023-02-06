@@ -24,7 +24,7 @@ export class ExploreWilderness extends HTMLComponent {
         super(template)
 
         this.getElement("#explore").onclick = WorldService.exploreSelected
-        this.getElement("#explore-fight").onclick = WorldService.interactExplored
+        // this.getElement("#explore-fight").onclick = WorldService.interactExplored
     }
 
     update() {

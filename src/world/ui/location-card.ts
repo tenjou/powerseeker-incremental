@@ -1,9 +1,9 @@
-import { LocationConfig } from "../../config/area-configs"
 import { HTMLComponent } from "../../dom"
 import { i18n } from "../../i18n"
 import { LocationState } from "../world-types"
 import { WorldService } from "./../world-service"
 import { ProgressBar } from "./../../components/progress-bar"
+import { LocationConfig } from "../../config/location-configs"
 
 const template = document.createElement("template")
 template.setAttribute("class", "p-2 bg-white hover:outline active:outline border-radius-3 cursor-pointer")
@@ -30,7 +30,8 @@ export class LocationCard extends HTMLComponent {
             showPercents: true,
         })
 
-        this.onclick = () => WorldService.progressLocation(locationConfig.id, 2)
+        // this.onclick = () => WorldService.progressLocation(locationConfig.id, 2)
+        this.onclick = () => WorldService.interact(locationConfig.id)
     }
 }
 

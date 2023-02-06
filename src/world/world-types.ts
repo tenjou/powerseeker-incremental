@@ -1,5 +1,6 @@
-import { AreaId, LocationId } from "../config/area-configs"
+import { AreaId } from "../config/area-configs"
 import { BattleId } from "../config/battle-configs"
+import { LocationId } from "../config/location-configs"
 
 interface ExplorationResultCombat {
     type: "combat"

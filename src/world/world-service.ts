@@ -1,10 +1,10 @@
-import { AreaConfigs, AreaId, LocationId } from "../config/area-configs"
+import { BattleService } from "../battle/battle-service"
+import { AreaConfigs, AreaId } from "../config/area-configs"
+import { LocationId, LocationConfigs } from "../config/location-configs"
 import { getState, updateState } from "../state"
 import { goTo } from "../view"
-import { BattleService } from "./../battle/battle"
 import { emit } from "./../events"
 import { AreaState, ExplorationState, LocationState } from "./world-types"
-import { LocationConfigs } from "./../config/area-configs"
 
 interface WorldCache {
     selectedAreaId: AreaId
@@ -85,17 +85,23 @@ export const WorldService = {
         return true
     },
 
-    interactExplored() {
-        const { exploration } = getState()
+    interact(locationId: LocationId) {
+        const { locations } = getState()
 
-        if (!exploration || !exploration.result) {
-            console.error("Nothing has been explored")
-            return false
+        const location = locations[locationId]
+        if (!location) {
+            throw new Error(`No location for ${locationId}`)
         }
 
-        BattleService.start(exploration.result.encounterId)
+        const locationConfig = LocationConfigs[locationId]
+        switch (locationConfig.type) {
+            case "battle":
+                BattleService.startFromLocation(locationId)
+                break
 
-        console.log("interactExplored", exploration.result)
+            default:
+                throw new Error(`Unknown location type: ${locationConfig.type}`)
+        }
     },
 
     progressLocation(locationId: LocationId, amount: number) {

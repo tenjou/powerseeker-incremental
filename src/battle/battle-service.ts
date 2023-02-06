@@ -7,11 +7,11 @@ import { removeAllChildren, setOnClick, setShow, setText } from "../dom"
 import { getState } from "../state"
 import { BattlerId } from "../types"
 import { randomItem, roll } from "../utils"
-import { InstantAbilityConfig } from "./../config/ability-configs"
-import { Item } from "./../inventory/item-types"
-import { LootService } from "./../inventory/loot-service"
-import { LoadoutAbility } from "./../loadout/loadout-types"
-import { shuffle } from "./../utils"
+import { InstantAbilityConfig } from "../config/ability-configs"
+import { Item } from "../inventory/item-types"
+import { LootService } from "../inventory/loot-service"
+import { LoadoutAbility } from "../loadout/loadout-types"
+import { shuffle } from "../utils"
 import {
     Battle,
     BattleAction,
@@ -30,7 +30,8 @@ import { addAnimationsFromLogs, addRegenAnimations, updateBattleAnimation } from
 import "./ui/battle-result"
 import "./ui/battle-result-popup"
 import { updateBattlerEffects } from "./ui/battler-item"
-import { emit } from "./../events"
+import { emit } from "../events"
+import { LocationConfigs, LocationId } from "../config/location-configs"
 
 const AttackAbility: LoadoutAbility = {
     id: "attack",
@@ -41,6 +42,23 @@ const AttackAbility: LoadoutAbility = {
 export const BattleService = {
     start(encounterId: BattleId) {
         createBattleInstance(encounterId)
+        loadBattle()
+    },
+
+    startFromLocation(locationId: LocationId) {
+        const { locations } = getState()
+
+        const location = locations[locationId]
+        if (!location) {
+            throw new Error(`Location ${locationId} not found`)
+        }
+
+        const locationConfig = LocationConfigs[locationId]
+        if (locationConfig.type !== "battle") {
+            throw new Error(`Location ${locationId} is not a battle`)
+        }
+
+        createBattleInstance(locationConfig.battleId)
         loadBattle()
     },
 }
