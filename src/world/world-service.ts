@@ -126,21 +126,14 @@ export const WorldService = {
         emit("location-updated", locationId)
     },
 
-    addLocation(areaId: AreaId, locationId: LocationId) {
-        const { areas, locations } = getState()
+    addLocation(locationId: LocationId) {
+        const { locations } = getState()
 
-        const areaConfig = AreaConfigs[areaId]
-        if (!areaConfig) {
-            throw new Error(`No area config for ${areaId}`)
+        if (locations[locationId]) {
+            throw new Error(`Location already exists: ${locationId}`)
         }
 
-        let area = areas[areaId]
-        if (!area) {
-            area = createArea(areaId)
-            areas[areaId] = area
-        }
-
-        const locationConfig = areaConfig.locations[locationId]
+        const locationConfig = LocationConfigs[locationId]
         if (!locationConfig) {
             throw new Error(`No location config for ${locationId}`)
         }

@@ -1,4 +1,4 @@
-import { loadBattle, updateBattle } from "./battle/battle-service"
+import { BattleService, updateBattle } from "./battle/battle-service"
 import { recalculateStats } from "./character/status"
 import "./components/anim-progress-bar"
 import "./components/area-transition"
@@ -64,9 +64,9 @@ function createEmptyProfile() {
 
     ExplorationService.addArea("forest")
 
-    WorldService.addLocation("town", "foo")
-    WorldService.addLocation("town", "foo2")
-    WorldService.addLocation("forest", "bar")
+    WorldService.addLocation("foo")
+    WorldService.addLocation("foo2")
+    WorldService.addLocation("bar")
 
     equipAbility("attack")
     equipAbility("bash")
@@ -90,7 +90,7 @@ function load() {
     const state = getState()
 
     if (state.battle.id) {
-        loadBattle()
+        BattleService.loadBattle()
         return
     }
 }

@@ -2,6 +2,7 @@ import { AbilityEffect } from "../abilities/ability-type"
 import { AbilityId } from "../config/ability-configs"
 import { BattleId } from "../config/battle-configs"
 import { ItemId } from "../config/item-configs"
+import { LocationId } from "../config/location-configs"
 import { MonsterId } from "../config/monster-configs"
 import { Item } from "../inventory/item-types"
 import { BattlerId } from "../types"
@@ -17,7 +18,7 @@ export interface BattleAction {
 
 export interface Battle {
     id: number
-    encounterId: BattleId
+    battleId: BattleId
     status: "preparing" | "waiting" | "executing" | "regen" | "ended"
     battlers: Battler[]
     battlersView: BattlerView[]
@@ -35,6 +36,7 @@ export interface Battle {
     isEnding: boolean
     isAuto: boolean
     nextEffectId: number
+    locationId: LocationId | null
 }
 
 export interface BattlerAbilityEffect {
@@ -105,6 +107,11 @@ interface BattleLogDefeated {
     type: "defeated"
 }
 
+export interface LocationProgress {
+    locationId: LocationId
+    progress: number
+}
+
 export type BattleLog = BattleLogBasic | BattleLogEffectAdded | BattleLogEffectRemoved | BattleLogRegen | BattleLogDefeated
 
 export interface BattleTargetLog {
@@ -125,4 +132,5 @@ export interface BattleResult {
     xp: number
     gold: number
     loot: Item[]
+    locationProgress: LocationProgress[]
 }

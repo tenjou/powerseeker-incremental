@@ -1,5 +1,5 @@
 import { AreaConfigs, AreaId } from "../../config/area-configs"
-import { LocationId } from "../../config/location-configs"
+import { LocationConfigs, LocationId } from "../../config/location-configs"
 import { openPopup } from "../../popup"
 import { getState } from "../../state"
 import { getElement, getElementById, removeAllChildren, setText } from "./../../dom"
@@ -84,18 +84,18 @@ const loadLocations = () => {
     const parent = getElementById("view-world")
 
     const areaConfig = getCurrAreaConfig()
-    const locationConfigs = areaConfig.locations
+    const locationIds = areaConfig.locations
 
     const locationMenu = getElementById("area-locations", parent)
     removeAllChildren(locationMenu)
 
-    for (const locationId in locationConfigs) {
+    for (const locationId of locationIds) {
         const locationState = locations[locationId]
         if (!locationState) {
             continue
         }
 
-        const locationConfig = locationConfigs[locationId]
+        const locationConfig = LocationConfigs[locationId]
 
         const locationCard = new LocationCard()
         locationMenu.appendChild(locationCard)

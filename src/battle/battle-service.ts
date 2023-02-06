@@ -2,7 +2,7 @@ import { canUseAbility, getEnergyNeeded } from "../abilities/abilities-utils"
 import { AbilityEffect } from "../abilities/ability-type"
 import { AbilityConfigs, AbilityFlag } from "../config/ability-configs"
 import { BattleConfigs, BattleId } from "../config/battle-configs"
-import { MonsterConfigs } from "../config/monster-configs"
+import { MonsterConfigs, MonsterId } from "../config/monster-configs"
 import { removeAllChildren, setOnClick, setShow, setText } from "../dom"
 import { getState } from "../state"
 import { BattlerId } from "../types"
@@ -22,9 +22,10 @@ import {
     BattlerAbilityEffect,
     BattleResult,
     BattleTargetLog,
+    LocationProgress,
 } from "./battle-types"
 import { calculatePower, getActionSpeed } from "./battle-utils"
-import { addBattler, createMonsterBattler, loadBattlers } from "./battler"
+import { loadBattlers } from "./battler"
 import { loadAbilities, renderAbilities } from "./ui/battle-ability"
 import { addAnimationsFromLogs, addRegenAnimations, updateBattleAnimation } from "./ui/battle-animation"
 import "./ui/battle-result"
@@ -32,6 +33,7 @@ import "./ui/battle-result-popup"
 import { updateBattlerEffects } from "./ui/battler-item"
 import { emit } from "../events"
 import { LocationConfigs, LocationId } from "../config/location-configs"
+import { updateState } from "./../state"
 
 const AttackAbility: LoadoutAbility = {
     id: "attack",
@@ -40,11 +42,6 @@ const AttackAbility: LoadoutAbility = {
 }
 
 export const BattleService = {
-    start(encounterId: BattleId) {
-        createBattleInstance(encounterId)
-        loadBattle()
-    },
-
     startFromLocation(locationId: LocationId) {
         const { locations } = getState()
 
@@ -58,58 +55,113 @@ export const BattleService = {
             throw new Error(`Location ${locationId} is not a battle`)
         }
 
-        createBattleInstance(locationConfig.battleId)
-        loadBattle()
+        const battle = createBattleInstance(locationConfig.battleId)
+        battle.locationId = locationId
+
+        updateState({
+            battle,
+        })
+
+        BattleService.loadBattle()
+    },
+
+    loadBattle() {
+        setShow("battle-container", true)
+
+        updateBattleAuto()
+        setOnClick("battle-auto", toggleBattleAuto)
+
+        loadBattlers()
+        loadAbilities()
+
+        renderBattleStatus()
+
+        setShow("main-container", false)
     },
 }
 
-function createBattleInstance(encounterId: BattleId) {
+const createBattleInstance = (battleId: BattleId) => {
     const state = getState()
     const { battler, cache } = state
 
-    const encounter = BattleConfigs[encounterId]
+    const encounter = BattleConfigs[battleId]
 
     const battle = createBattle()
     battle.id = cache.lastBattleId++
-    battle.encounterId = encounterId
-    state.battle = battle
+    battle.battleId = battleId
 
     nextTurn()
-    addBattler(battler)
+    addBattler(battle, battler)
 
     battle.playerBattlerId = battler.id
 
     for (const monsterId of encounter.monsters) {
         const monsterBattler = createMonsterBattler(monsterId)
-        addBattler(monsterBattler)
+        addBattler(battle, monsterBattler)
+    }
+
+    return battle
+}
+
+const addBattler = (battle: Battle, battler: Battler) => {
+    battler.id = battle.battlers.push(battler) - 1
+
+    battle.battlersView.push({
+        health: battler.health,
+        healthMax: battler.stats.health,
+        energy: battler.energy,
+        energyMax: battler.stats.energy,
+        effects: [],
+    })
+
+    if (battler.isTeamA) {
+        battle.teamA.push(battler.id)
+    } else {
+        battle.teamB.push(battler.id)
     }
 }
 
-export function loadBattle() {
-    setShow("battle-container", true)
+const createMonsterBattler = (monsterId: MonsterId): Battler => {
+    const monsterConfig = MonsterConfigs[monsterId]
 
-    updateBattleAuto()
-    setOnClick("battle-auto", toggleBattleAuto)
-
-    loadBattlers()
-    loadAbilities()
-
-    renderBattleStatus()
-
-    setShow("main-container", false)
+    return {
+        id: 0,
+        level: monsterConfig.level,
+        name: monsterConfig.name,
+        health: monsterConfig.health,
+        energy: 1,
+        stats: {
+            health: monsterConfig.health,
+            energy: monsterConfig.energy,
+            accuracy: 0,
+            attack: monsterConfig.attack,
+            critical: 0,
+            defense: monsterConfig.defense,
+            evasion: 0,
+            healing: 0,
+            speed: monsterConfig.speed,
+            regenEnergy: 1,
+            regenHealth: 1,
+        },
+        effects: [],
+        isTeamA: false,
+        monsterId,
+    }
 }
 
-function endBattle() {
-    const state = getState()
+const endBattle = (battle: Battle) => {
+    const { loadout } = getState()
 
-    for (const battler of state.battle.battlers) {
+    for (const battler of battle.battlers) {
         removeEffects(battler, false)
     }
 
-    state.battleResult = generateBattleResult()
-    state.battle = createBattle()
+    updateState({
+        battle: createBattle(),
+        battleResult: generateBattleResult(battle),
+    })
 
-    for (const ability of state.loadout.abilities) {
+    for (const ability of loadout.abilities) {
         if (ability) {
             ability.cooldown = 0
         }
@@ -125,9 +177,7 @@ function endBattle() {
     emit("battle-ended")
 }
 
-function generateBattleResult(): BattleResult {
-    const { battle } = getState()
-
+const generateBattleResult = (battle: Battle): BattleResult => {
     const isVictory = isTeamDead(battle.isTeamA ? battle.teamB : battle.teamA)
     if (!isVictory) {
         return {
@@ -135,6 +185,7 @@ function generateBattleResult(): BattleResult {
             xp: 0,
             gold: 0,
             loot: [],
+            locationProgress: [],
         }
     }
 
@@ -160,11 +211,20 @@ function generateBattleResult(): BattleResult {
         }
     }
 
+    const locationProgress: LocationProgress[] = []
+    if (battle.locationId) {
+        locationProgress.push({
+            locationId: battle.locationId,
+            progress: 1,
+        })
+    }
+
     return {
         isVictory,
         xp: exp,
         gold,
         loot,
+        locationProgress,
     }
 }
 
@@ -284,7 +344,7 @@ function nextTurn() {
     const { battle } = getState()
 
     if (battle.isEnding) {
-        endBattle()
+        endBattle(battle)
         return
     }
 
@@ -605,7 +665,7 @@ export function createBattle(): Battle {
         teamA: [],
         teamB: [],
         actions: [],
-        encounterId: "test_battle",
+        battleId: "test_battle",
         id: 0,
         turn: 1,
         selectedAbility: null,
@@ -618,6 +678,7 @@ export function createBattle(): Battle {
         isEnding: false,
         isAuto: false,
         nextEffectId: 0,
+        locationId: null,
     }
 }
 

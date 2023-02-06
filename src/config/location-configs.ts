@@ -1,11 +1,10 @@
 import { Brand } from "../types"
-import { AreaConfigs, AreaId } from "./area-configs"
 import { BattleId } from "./battle-configs"
 
 export type LocationId = Brand<string, "LocationId">
 
 export interface BattleLocationConfig {
-    id: string
+    id: LocationId
     type: "battle"
     battleId: BattleId
     progressMax: number
@@ -13,12 +12,23 @@ export interface BattleLocationConfig {
 
 export type LocationConfig = BattleLocationConfig
 
-export const LocationConfigs: Record<LocationId, LocationConfig> = {}
-
-for (let areaId in AreaConfigs) {
-    const area = AreaConfigs[areaId as AreaId]
-    for (let locationId in area.locations) {
-        const location = area.locations[locationId]
-        LocationConfigs[location.id as LocationId] = location
-    }
+export const LocationConfigs: Record<LocationId, LocationConfig> = {
+    foo: {
+        id: "foo",
+        type: "battle",
+        battleId: "test_battle",
+        progressMax: 10,
+    },
+    foo2: {
+        id: "foo2",
+        type: "battle",
+        battleId: "test_battle",
+        progressMax: 4,
+    },
+    bar: {
+        id: "bar",
+        type: "battle",
+        battleId: "test_battle",
+        progressMax: 20,
+    },
 }
