@@ -42,14 +42,8 @@ export function loadWorldView(segments: string[]) {
     // updateExploration()
 }
 
-export function unloadWorldView() {
+export const unloadWorldView = () => {
     removeAllChildren("area-menu")
-
-    unsubscribe("area-updated", updateWorldView)
-    unsubscribe("location-updated", updateLocation)
-
-    // unsubscribe("exploration-started", updateExploration)
-    // unsubscribe("exploration-ended", updateExploration)
 }
 
 function updateWorldView() {

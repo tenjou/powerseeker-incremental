@@ -8,6 +8,7 @@ export interface BattleLocationConfig {
     type: "battle"
     battleId: BattleId
     progressMax: number
+    unlocks: LocationId[]
 }
 
 export type LocationConfig = BattleLocationConfig
@@ -17,18 +18,14 @@ export const LocationConfigs: Record<LocationId, LocationConfig> = {
         id: "foo",
         type: "battle",
         battleId: "test_battle",
-        progressMax: 10,
-    },
-    foo2: {
-        id: "foo2",
-        type: "battle",
-        battleId: "test_battle",
-        progressMax: 4,
+        progressMax: 1,
+        unlocks: ["foo2"],
     },
     bar: {
         id: "bar",
         type: "battle",
         battleId: "test_battle",
         progressMax: 20,
+        unlocks: [],
     },
 }

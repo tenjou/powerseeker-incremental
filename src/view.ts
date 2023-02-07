@@ -9,6 +9,7 @@ import { loadWorldView, unloadWorldView } from "./world/ui/world-view"
 import { loadTownView, unloadTownView } from "./town/town"
 import { loadJobsView, unloadJobsView } from "./jobs/ui/jobs-view"
 import { loadBattleView, unloadBattleView } from "./battle/ui/battle-view"
+import { EventCallbackInfo, unsubscribe, watchSubscribers } from "./events"
 
 interface View {
     onLoad: (segments: string[]) => void
@@ -65,6 +66,7 @@ const views: Record<ViewType, View> = {
 }
 
 let currView: ViewType | "" = ""
+let currSubscribers: EventCallbackInfo[] = []
 
 export function updateView(forceView?: ViewType) {
     const url = location.pathname
@@ -104,6 +106,14 @@ export function updateView(forceView?: ViewType) {
         }
 
         unloadView.onUnload()
+
+        if (currSubscribers.length > 0) {
+            for (const subscriber of currSubscribers) {
+                unsubscribe(subscriber.type, subscriber.callback)
+            }
+
+            currSubscribers.length = 0
+        }
     }
 
     currView = nextView
@@ -112,7 +122,10 @@ export function updateView(forceView?: ViewType) {
         toggleClassName(view.customContainer, "hide", false)
         toggleClassName(mainContainerId, "hide", true)
     }
+
+    watchSubscribers(registerViewSubscribers)
     view.onLoad(segments)
+    watchSubscribers(null)
 
     toggleClassName(`view-${nextView}`, "hide", false)
     toggleClassName(`nav-${nextView}`, "active", true)
@@ -125,4 +138,8 @@ export function goTo(url: string | null) {
 
     history.pushState({}, "", url)
     window.dispatchEvent(new Event("pushstate"))
+}
+
+const registerViewSubscribers = (info: EventCallbackInfo) => {
+    currSubscribers.push(info)
 }

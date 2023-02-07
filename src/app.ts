@@ -65,7 +65,6 @@ function createEmptyProfile() {
     ExplorationService.addArea("forest")
 
     WorldService.addLocation("foo")
-    WorldService.addLocation("foo2")
     WorldService.addLocation("bar")
 
     equipAbility("attack")

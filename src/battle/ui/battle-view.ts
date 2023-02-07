@@ -22,10 +22,6 @@ export const unloadBattleView = () => {
     removeAllChildren("battle-column-a")
     removeAllChildren("battle-column-b")
     removeAllChildren("battle-abilities")
-
-    unsubscribe("battle-start", showBattle)
-    unsubscribe("battle-next-turn", updateNextTurn)
-    unsubscribe("ability-selected", updateAbilityHint)
 }
 
 const showBattle = () => {

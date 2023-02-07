@@ -19,16 +19,26 @@ type EventType =
     | "ability-selected"
     | "ability-updated"
 
-type CallbackFunc = (payload: unknown) => void
+type EventCallbackFunc = (payload: unknown) => void
 
-const subscribers: Partial<Record<EventType, CallbackFunc[]>> = {}
+export interface EventCallbackInfo {
+    type: EventType
+    callback: EventCallbackFunc
+}
+
+const subscribers: Partial<Record<EventType, EventCallbackFunc[]>> = {}
+let subscriberWatcher: (info: EventCallbackInfo) => void | null = null
 
 export function subscribe<T>(type: EventType, callback: (payload: T) => void) {
     const funcs = subscribers[type]
     if (funcs) {
-        funcs.push(callback as CallbackFunc)
+        funcs.push(callback as EventCallbackFunc)
     } else {
-        subscribers[type] = [callback as CallbackFunc]
+        subscribers[type] = [callback as EventCallbackFunc]
+    }
+
+    if (subscriberWatcher) {
+        subscriberWatcher({ type, callback })
     }
 }
 
@@ -38,7 +48,7 @@ export function unsubscribe<T>(type: EventType, callback: (payload: T) => void) 
         return
     }
 
-    const index = funcs.indexOf(callback as CallbackFunc)
+    const index = funcs.indexOf(callback as EventCallbackFunc)
     if (index === -1) {
         return
     }
@@ -56,4 +66,8 @@ export function emit(type: EventType, payload: unknown = undefined) {
     for (const listener of funcs) {
         listener(payload)
     }
+}
+
+export const watchSubscribers = (func: (info: EventCallbackInfo) => void | null) => {
+    subscriberWatcher = func
 }
