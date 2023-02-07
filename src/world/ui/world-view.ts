@@ -28,6 +28,7 @@ export function loadWorldView(segments: string[]) {
     }
 
     subscribe("area-updated", updateWorldView)
+    subscribe("location-added", addLocation)
     subscribe("location-updated", updateLocation)
     // subscribe("exploration-started", updateExploration)
     // subscribe("exploration-ended", updateExploration)
@@ -93,6 +94,11 @@ const loadLocations = () => {
         locationMenu.appendChild(locationCard)
         locationCard.update(locationConfig, locationState)
     }
+}
+
+const addLocation = () => {
+    removeAllChildren("area-locations")
+    loadLocations()
 }
 
 const updateLocation = (locationId: LocationId) => {

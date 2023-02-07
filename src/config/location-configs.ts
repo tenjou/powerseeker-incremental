@@ -21,6 +21,13 @@ export const LocationConfigs: Record<LocationId, LocationConfig> = {
         progressMax: 1,
         unlocks: ["foo2"],
     },
+    foo2: {
+        id: "foo2",
+        type: "battle",
+        battleId: "test_battle",
+        progressMax: 1,
+        unlocks: [],
+    },
     bar: {
         id: "bar",
         type: "battle",

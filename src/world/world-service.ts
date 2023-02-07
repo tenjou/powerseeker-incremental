@@ -114,13 +114,18 @@ export const WorldService = {
 
         const locationConfig = LocationConfigs[locationId]
 
-        if (location.progress === locationConfig.progressMax) {
+        if (location.progress >= locationConfig.progressMax) {
             return
         }
 
         location.progress += amount
-        if (location.progress > locationConfig.progressMax) {
+        if (location.progress >= locationConfig.progressMax) {
             location.progress = locationConfig.progressMax
+
+            for (const unlockedLocationId of locationConfig.unlocks) {
+                this.addLocation(unlockedLocationId)
+                emit("location-added", unlockedLocationId)
+            }
         }
 
         emit("location-updated", locationId)

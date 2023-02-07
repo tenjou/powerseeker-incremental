@@ -24,10 +24,6 @@ export function loadInventoryView() {
 
 export function unloadInventoryView() {
     removeAllChildren("inventory-container")
-
-    unsubscribe("item-add", updateInventoryView)
-    unsubscribe("item-remove", removeItem)
-    unsubscribe("item-update", updateItem)
 }
 
 function updateInventoryView() {

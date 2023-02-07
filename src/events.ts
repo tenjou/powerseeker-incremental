@@ -10,6 +10,7 @@ type EventType =
     | "area-added"
     | "area-removed"
     | "area-updated"
+    | "location-added"
     | "location-updated"
     | "exploration-started"
     | "exploration-ended"
