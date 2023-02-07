@@ -43,10 +43,13 @@ export function loadWorldView(segments: string[]) {
 }
 
 export function unloadWorldView() {
+    removeAllChildren("area-menu")
+
     unsubscribe("area-updated", updateWorldView)
-    unsubscribe("exploration-started", updateExploration)
-    unsubscribe("exploration-ended", updateExploration)
-    unsubscribe("battle-ended", updateWorldView)
+    unsubscribe("location-updated", updateLocation)
+
+    // unsubscribe("exploration-started", updateExploration)
+    // unsubscribe("exploration-ended", updateExploration)
 }
 
 function updateWorldView() {
@@ -71,11 +74,6 @@ function updateWorldView() {
     setText("area-description", i18n(`${selectedAreaId}_description`))
 
     loadLocations()
-}
-
-const updateExploration = () => {
-    const exploreWilderness = getElement<ExploreWilderness>("explore-wilderness")
-    exploreWilderness.update()
 }
 
 const loadLocations = () => {
@@ -106,8 +104,7 @@ const loadLocations = () => {
 const updateLocation = (locationId: LocationId) => {
     const { locations } = getState()
 
-    const areaConfig = getCurrAreaConfig()
-    const locationConfig = areaConfig.locations[locationId]
+    const locationConfig = LocationConfigs[locationId]
 
     const locationState = locations[locationId]
     const locationCard = getElementById(`location-${locationId}`) as LocationCard

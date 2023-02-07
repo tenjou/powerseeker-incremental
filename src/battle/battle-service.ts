@@ -1,17 +1,18 @@
 import { canUseAbility, getEnergyNeeded } from "../abilities/abilities-utils"
 import { AbilityEffect } from "../abilities/ability-type"
-import { AbilityConfigs, AbilityFlag } from "../config/ability-configs"
+import { AbilityConfigs, AbilityFlag, InstantAbilityConfig } from "../config/ability-configs"
 import { BattleConfigs, BattleId } from "../config/battle-configs"
+import { LocationConfigs, LocationId } from "../config/location-configs"
 import { MonsterConfigs, MonsterId } from "../config/monster-configs"
-import { removeAllChildren, setOnClick, setShow, setText } from "../dom"
-import { getState } from "../state"
-import { BattlerId } from "../types"
-import { randomItem, roll } from "../utils"
-import { InstantAbilityConfig } from "../config/ability-configs"
+import { emit } from "../events"
 import { Item } from "../inventory/item-types"
 import { LootService } from "../inventory/loot-service"
 import { LoadoutAbility } from "../loadout/loadout-types"
-import { shuffle } from "../utils"
+import { getState } from "../state"
+import { BattlerId } from "../types"
+import { randomItem, roll, shuffle } from "../utils"
+import { updateState } from "./../state"
+import { updateView } from "./../view"
 import {
     Battle,
     BattleAction,
@@ -25,15 +26,10 @@ import {
     LocationProgress,
 } from "./battle-types"
 import { calculatePower, getActionSpeed } from "./battle-utils"
-import { loadBattlers } from "./battler"
-import { loadAbilities, renderAbilities } from "./ui/battle-ability"
 import { addAnimationsFromLogs, addRegenAnimations, updateBattleAnimation } from "./ui/battle-animation"
 import "./ui/battle-result"
 import "./ui/battle-result-popup"
 import { updateBattlerEffects } from "./ui/battler-item"
-import { emit } from "../events"
-import { LocationConfigs, LocationId } from "../config/location-configs"
-import { updateState } from "./../state"
 
 const AttackAbility: LoadoutAbility = {
     id: "attack",
@@ -57,26 +53,13 @@ export const BattleService = {
 
         const battle = createBattleInstance(locationConfig.battleId)
         battle.locationId = locationId
+        battle.status = "waiting"
 
         updateState({
             battle,
         })
 
-        BattleService.loadBattle()
-    },
-
-    loadBattle() {
-        setShow("battle-container", true)
-
-        updateBattleAuto()
-        setOnClick("battle-auto", toggleBattleAuto)
-
-        loadBattlers()
-        loadAbilities()
-
-        renderBattleStatus()
-
-        setShow("main-container", false)
+        emit("battle-start", battle)
     },
 }
 
@@ -167,14 +150,7 @@ const endBattle = (battle: Battle) => {
         }
     }
 
-    removeAllChildren("battle-column-a")
-    removeAllChildren("battle-column-b")
-    removeAllChildren("battle-abilities")
-
-    setShow("main-container", true)
-    setShow("battle-container", false)
-
-    emit("battle-ended")
+    emit("battle-end")
 }
 
 const generateBattleResult = (battle: Battle): BattleResult => {
@@ -228,20 +204,6 @@ const generateBattleResult = (battle: Battle): BattleResult => {
     }
 }
 
-function renderBattleStatus() {
-    const { battle } = getState()
-
-    setText("battle-name", "Dungeon Encounter")
-    setText("battle-round", `Turn  ${battle.turn}`)
-    setText("battle-level", "Level 1")
-
-    if (!battle.selectedAbility && battle.status === "waiting") {
-        setText("battle-hint", "Select your action")
-    } else {
-        setText("battle-hint", "")
-    }
-}
-
 export function selectAbility(ability: LoadoutAbility | null) {
     const { battle, battler } = getState()
 
@@ -252,8 +214,7 @@ export function selectAbility(ability: LoadoutAbility | null) {
 
     battle.selectedAbility = ability
 
-    renderBattleStatus()
-    renderAbilities()
+    emit("ability-selected", ability)
 }
 
 export function useSelectedAbility(targetId: BattlerId) {
@@ -350,8 +311,7 @@ function nextTurn() {
 
     battle.status = "waiting"
 
-    renderAbilities()
-    renderBattleStatus()
+    emit("battle-next-turn")
 }
 
 function regenTurn() {
@@ -680,20 +640,6 @@ export function createBattle(): Battle {
         nextEffectId: 0,
         locationId: null,
     }
-}
-
-function toggleBattleAuto() {
-    const { battle } = getState()
-
-    battle.isAuto = !battle.isAuto
-
-    updateBattleAuto()
-}
-
-function updateBattleAuto() {
-    const { battle } = getState()
-
-    setText("battle-auto", battle.isAuto ? "Auto" : "Manual")
 }
 
 function applyEffects(

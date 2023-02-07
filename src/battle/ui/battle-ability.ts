@@ -1,14 +1,13 @@
 import { getEnergyNeeded } from "../../abilities/abilities-utils"
 import { getAbilityDescription } from "../../abilities/ui/abilities-view"
-import { Ability } from "../../abilities/ability-type"
 import { AbilityConfigs, AbilityFlag } from "../../config/ability-configs"
 import { getElementById, HTMLComponent, setHTML, toggleClassName } from "../../dom"
 import { i18n } from "../../i18n"
 import { getState } from "../../state"
 import { selectAbility } from "../battle-service"
 import { InstantAbilityConfig } from "./../../config/ability-configs"
-import { toggleTeamInactive } from "./battler-item"
 import { LoadoutAbility } from "./../../loadout/loadout-types"
+import { toggleTeamInactive } from "./battler-item"
 
 export function loadAbilities() {
     const { loadout } = getState()
@@ -24,6 +23,8 @@ export function loadAbilities() {
         element.setup(loadoutAbility)
         parent.appendChild(element)
     }
+
+    renderAbilities()
 }
 
 export function renderAbilities() {

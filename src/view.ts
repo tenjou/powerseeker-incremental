@@ -8,13 +8,17 @@ import { loadLoadoutView, unloadLoadoutView } from "./loadout/ui/loadout-vew"
 import { loadWorldView, unloadWorldView } from "./world/ui/world-view"
 import { loadTownView, unloadTownView } from "./town/town"
 import { loadJobsView, unloadJobsView } from "./jobs/ui/jobs-view"
+import { loadBattleView, unloadBattleView } from "./battle/ui/battle-view"
 
 interface View {
     onLoad: (segments: string[]) => void
     onUnload: () => void
+    customContainer?: string
 }
 
-type ViewType = "town" | "world" | "character" | "inventory" | "skills" | "equipment" | "abilities" | "loadout" | "jobs"
+type ViewType = "town" | "world" | "character" | "inventory" | "skills" | "equipment" | "abilities" | "loadout" | "jobs" | "battle"
+
+const mainContainerId = "main-container"
 
 const views: Record<ViewType, View> = {
     town: {
@@ -53,16 +57,21 @@ const views: Record<ViewType, View> = {
         onLoad: loadJobsView,
         onUnload: unloadJobsView,
     },
+    battle: {
+        onLoad: loadBattleView,
+        onUnload: unloadBattleView,
+        customContainer: "battle-container",
+    },
 }
 
 let currView: ViewType | "" = ""
 
-export function updateView() {
+export function updateView(forceView?: ViewType) {
     const url = location.pathname
     const segments = url.split("/")
     segments.shift()
 
-    let nextView = segments.shift() as ViewType
+    let nextView = forceView ? forceView : (segments.shift() as ViewType)
     if (!nextView) {
         nextView = "world"
         history.replaceState({}, "", `/${nextView}`)
@@ -89,10 +98,20 @@ export function updateView() {
         toggleClassName(`view-${currView}`, "hide", true)
         toggleClassName(`nav-${currView}`, "active", false)
 
+        if (unloadView.customContainer) {
+            toggleClassName(mainContainerId, "hide", false)
+            toggleClassName(unloadView.customContainer, "hide", true)
+        }
+
         unloadView.onUnload()
     }
 
     currView = nextView
+
+    if (view.customContainer) {
+        toggleClassName(view.customContainer, "hide", false)
+        toggleClassName(mainContainerId, "hide", true)
+    }
     view.onLoad(segments)
 
     toggleClassName(`view-${nextView}`, "hide", false)

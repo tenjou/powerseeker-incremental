@@ -6,6 +6,7 @@ import { randomNumber, shuffle } from "../utils"
 import { addItem } from "./inventory"
 import { Item, ItemStat } from "./item-types"
 import { updateState } from "./../state"
+import { WorldService } from "./../world/world-service"
 
 export const LootService = {
     generateEquipment(equipmentConfig: ItemConfigEquipment, maxLevel: number, luck: number): Item {
@@ -75,6 +76,7 @@ export const LootService = {
 
     consumeBattleResult() {
         const { battleResult } = getState()
+
         if (!battleResult) {
             console.error("No battle result to consume")
             return
@@ -85,6 +87,10 @@ export const LootService = {
 
         for (const itemReward of battleResult.loot) {
             addItem(itemReward)
+        }
+
+        for (const locationProgress of battleResult.locationProgress) {
+            WorldService.progressLocation(locationProgress.locationId, locationProgress.progress)
         }
 
         updateState({

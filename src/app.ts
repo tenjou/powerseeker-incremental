@@ -15,7 +15,7 @@ import "./components/x-row"
 import "./components/x-text"
 import "./currencies/currency-item"
 import { setShow } from "./dom"
-import { emit } from "./events"
+import { emit, subscribe } from "./events"
 import { ExplorationService } from "./exploration/exploration-service"
 import { equipAbility } from "./loadout/loadout"
 import { loadPopupSystem } from "./popup"
@@ -82,17 +82,17 @@ function load() {
         }
     })
 
+    const state = getState()
+    const isBattle = !!state.battle.id
+
     recalculateStats()
-    updateView()
     loadTooltipSystem()
     loadPopupSystem()
 
-    const state = getState()
+    updateView(isBattle ? "battle" : undefined)
 
-    if (state.battle.id) {
-        BattleService.loadBattle()
-        return
-    }
+    subscribe("battle-start", onBattleStart)
+    subscribe("battle-end", onBattleEnd)
 }
 
 function loadSave() {
@@ -103,6 +103,14 @@ function loadSave() {
     } else {
         setShow("area-town", true)
     }
+}
+
+const onBattleStart = () => {
+    updateView("battle")
+}
+
+const onBattleEnd = () => {
+    updateView()
 }
 
 function update() {
@@ -141,9 +149,9 @@ window.onbeforeunload = () => {
     // localStorage.setItem("profile", JSON.stringify(state))
 }
 
-window.addEventListener("popstate", updateView)
-window.addEventListener("pushstate", updateView)
-window.addEventListener("hashchange", updateView)
+window.addEventListener("popstate", () => updateView)
+window.addEventListener("pushstate", () => updateView)
+window.addEventListener("hashchange", () => updateView)
 
 declare global {
     function html(str: TemplateStringsArray, ...values: unknown[]): string

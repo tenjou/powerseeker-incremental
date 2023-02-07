@@ -7,14 +7,17 @@ type EventType =
     | "skill-update"
     | "close"
     | "currency-updated"
-    | "ability-updated"
     | "area-added"
     | "area-removed"
     | "area-updated"
     | "location-updated"
     | "exploration-started"
     | "exploration-ended"
-    | "battle-ended"
+    | "battle-start"
+    | "battle-end"
+    | "battle-next-turn"
+    | "ability-selected"
+    | "ability-updated"
 
 type CallbackFunc = (payload: unknown) => void
 
