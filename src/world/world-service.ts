@@ -1,10 +1,12 @@
 import { BattleService } from "../battle/battle-service"
-import { AreaConfigs, AreaId } from "../config/area-configs"
-import { LocationId, LocationConfigs } from "../config/location-configs"
+import { AreaId } from "../config/area-configs"
+import { LocationConfigs, LocationId } from "../config/location-configs"
+import { LootService } from "../inventory/loot-service"
 import { getState, updateState } from "../state"
 import { goTo } from "../view"
 import { emit } from "./../events"
 import { AreaState, ExplorationState, LocationState } from "./world-types"
+import { InventoryService } from "./../inventory/inventory"
 
 interface WorldCache {
     selectedAreaId: AreaId
@@ -86,7 +88,7 @@ export const WorldService = {
     },
 
     interact(locationId: LocationId) {
-        const { locations } = getState()
+        const { locations, inventory } = getState()
 
         const location = locations[locationId]
         if (!location) {
@@ -94,13 +96,19 @@ export const WorldService = {
         }
 
         const locationConfig = LocationConfigs[locationId]
+
         switch (locationConfig.type) {
             case "battle":
                 BattleService.startFromLocation(locationId)
                 break
 
-            default:
-                throw new Error(`Unknown location type: ${locationConfig.type}`)
+            case "resource": {
+                const item = LootService.generateItem(locationConfig.dropItemId, 1, 0)
+                InventoryService.add(item)
+                WorldService.progressLocation(locationId, 1)
+                console.log(inventory)
+                break
+            }
         }
     },
 
@@ -113,6 +121,9 @@ export const WorldService = {
         }
 
         const locationConfig = LocationConfigs[locationId]
+        // if (locationConfig.type !== "battle") {
+        //     return
+        // }
 
         if (location.progress >= locationConfig.progressMax) {
             return
@@ -185,5 +196,6 @@ const createLocation = (locationId: LocationId): LocationState => {
     return {
         id: locationId,
         progress: 0,
+        completedAt: 0,
     }
 }

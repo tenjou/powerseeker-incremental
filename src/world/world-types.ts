@@ -23,4 +23,5 @@ export interface AreaState {
 export interface LocationState {
     id: LocationId
     progress: number
+    completedAt: number
 }

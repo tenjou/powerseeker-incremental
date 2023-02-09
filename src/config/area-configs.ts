@@ -1,4 +1,4 @@
-import { LocationConfig, LocationId } from "./location-configs"
+import { LocationId } from "./location-configs"
 
 export type AreaId = "town" | "forest" | "desert"
 
@@ -10,7 +10,7 @@ export interface AreaConfig {
 export const AreaConfigs: Record<AreaId, AreaConfig> = {
     town: {
         id: "town",
-        locations: ["foo", "foo2"],
+        locations: ["foo", "foo2", "copper_mine"],
     },
     forest: {
         id: "forest",

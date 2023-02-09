@@ -1,5 +1,5 @@
 import { addHp } from "../character/status"
-import { ItemConfigs, ItemEffect } from "../config/item-configs"
+import { ItemConfigs, ItemEffect, ItemId } from "../config/item-configs"
 import { equipItem } from "../equipment/equipment"
 import { getState } from "../state"
 import { emit } from "./../events"
@@ -8,30 +8,31 @@ import "./ui/item-icon-slot"
 import "./ui/item-popup"
 import "./ui/item-slot"
 
-export function addItem(item: Item) {
-    const { inventory, cache } = getState()
+export const InventoryService = {
+    add(newItem: Item) {
+        const { inventory } = getState()
 
-    // const amount = props.amount || 1
-    // const power = props.power || 1
-    // const rarity = props.rarity || 0
+        const itemConfig = ItemConfigs[newItem.id]
+        if (itemConfig.type === "equipment") {
+            inventory.push(newItem)
+            emit("item-added", newItem)
+            return
+        }
 
-    // const item = inventory.find((entry) => entry.id === itemId && entry.power === power && entry.rarity === rarity)
-    // if (item) {
-    //     item.amount += amount
-    //     emit("item-update", item)
-    // } else {
-    //     const newItem: Item = {
-    //         uid: String(cache.lastItemIndex++),
-    //         id: itemId,
-    //         power,
-    //         rarity,
-    //         amount,
-    //         stats: [],
-    //     }
+        const prevItem = inventory.find((entry) => entry.id === newItem.id)
+        if (prevItem) {
+            prevItem.amount += newItem.amount
+            emit("item-updated", newItem)
+            return
+        }
 
-    //     inventory.push(newItem)
-    //     emit("item-add", newItem)
-    // }
+        inventory.push(newItem)
+        emit("item-added", newItem)
+    },
+
+    generateUId() {
+        return String(getState().cache.lastItemIndex++)
+    },
 }
 
 export function removeItem(item: Item, amount: number = 1) {
@@ -53,7 +54,7 @@ export function removeItem(item: Item, amount: number = 1) {
         inventory.splice(itemIndex, 1)
         emit("item-remove", item)
     } else {
-        emit("item-update", item)
+        emit("item-updated", item)
     }
 }
 

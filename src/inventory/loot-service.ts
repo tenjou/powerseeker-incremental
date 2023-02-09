@@ -3,7 +3,7 @@ import { addCurrency } from "../currencies/currencies"
 import { PlayerService } from "../player/player-service"
 import { getState } from "../state"
 import { randomNumber, shuffle } from "../utils"
-import { addItem } from "./inventory"
+import { InventoryService } from "./inventory"
 import { Item, ItemStat } from "./item-types"
 import { updateState } from "./../state"
 import { WorldService } from "./../world/world-service"
@@ -39,7 +39,7 @@ export const LootService = {
         }
 
         const item: Item = {
-            uid: generateUId(),
+            uid: InventoryService.generateUId(),
             id: equipmentConfig.id,
             rarity,
             level,
@@ -62,7 +62,7 @@ export const LootService = {
         }
 
         const item: Item = {
-            uid: generateUId(),
+            uid: itemId,
             id: itemId,
             rarity: 0,
             amount: 1,
@@ -86,7 +86,7 @@ export const LootService = {
         addCurrency("gold", battleResult.gold)
 
         for (const itemReward of battleResult.loot) {
-            addItem(itemReward)
+            InventoryService.add(itemReward)
         }
 
         for (const locationProgress of battleResult.locationProgress) {
@@ -97,8 +97,4 @@ export const LootService = {
             battleResult: null,
         })
     },
-}
-
-function generateUId() {
-    return String(getState().cache.lastItemIndex++)
 }

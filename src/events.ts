@@ -1,7 +1,7 @@
 type EventType =
-    | "item-add"
+    | "item-added"
     | "item-remove"
-    | "item-update"
+    | "item-updated"
     | "equip"
     | "unequip"
     | "skill-update"

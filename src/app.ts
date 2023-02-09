@@ -66,6 +66,7 @@ function createEmptyProfile() {
 
     WorldService.addLocation("foo")
     WorldService.addLocation("bar")
+    WorldService.addLocation("copper_mine")
 
     equipAbility("attack")
     equipAbility("bash")

@@ -17,9 +17,9 @@ const ItemTypeSortWeight: Record<ItemType, number> = {
 export function loadInventoryView() {
     updateInventoryView()
 
-    subscribe("item-add", updateInventoryView)
+    subscribe("item-added", updateInventoryView)
     subscribe("item-remove", removeItem)
-    subscribe("item-update", updateItem)
+    subscribe("item-updated", updateItem)
 }
 
 export function unloadInventoryView() {
