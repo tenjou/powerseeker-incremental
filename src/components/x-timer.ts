@@ -26,12 +26,16 @@ export class XTimer extends HTMLComponent {
     updateFromTimer() {
         const tNow = Date.now()
         const tDiff = this.tEnd - tNow
-        const tDiffSec = Math.floor(tDiff / 1000)
-        const tDiffMs = tDiff % 1000
-        const tDiffMsStr = tDiffMs.toString().padStart(3, "0")
+        const tDiffSec = Math.ceil(tDiff / 1000)
+        const tDiffMin = Math.floor(tDiffSec / 60)
 
-        console.log("updateFromTimer", tDiffSec, tDiffMs, `${tDiffSec}.${tDiffMsStr}`)
-        this.innerHTML = `${tDiffSec}.${tDiffMsStr}`
+        const sec = (tDiffSec % 60).toString().padStart(2, "0")
+        const min = (tDiffMin % 60).toString().padStart(2, "0")
+        const hours = Math.floor(tDiffMin / 60)
+            .toString()
+            .padStart(2, "0")
+
+        this.innerHTML = `${hours}:${min}:${sec}`
 
         if (tDiff <= 0 && this.onEnd) {
             if (this.timer) {
