@@ -129,7 +129,7 @@ export class HTMLComponent extends HTMLElement {
     connectedCallback() {
         if (this.rootClasses) {
             const outerClasses = this.getAttribute("class")
-            this.setAttribute("class", outerClasses + " " + this.rootClasses)
+            this.setAttribute("class", outerClasses ? outerClasses + " " + this.rootClasses : this.rootClasses)
         }
 
         this.append(this.root)
