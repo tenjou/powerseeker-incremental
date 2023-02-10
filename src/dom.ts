@@ -117,11 +117,13 @@ export class HTMLComponent extends HTMLElement {
     root: HTMLElement
     rootClasses: string
 
-    constructor(template: HTMLTemplateElement) {
+    constructor(template?: HTMLTemplateElement) {
         super()
 
-        this.root = template.content.cloneNode(true) as HTMLElement
-        this.rootClasses = template.getAttribute("class") || ""
+        if (template) {
+            this.root = template.content.cloneNode(true) as HTMLElement
+            this.rootClasses = template.getAttribute("class") || ""
+        }
     }
 
     connectedCallback() {

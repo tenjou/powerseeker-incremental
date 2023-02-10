@@ -1,6 +1,6 @@
 import { BattleService } from "../battle/battle-service"
 import { AreaId } from "../config/area-configs"
-import { LocationConfigs, LocationId } from "../config/location-configs"
+import { LocationConfig, LocationConfigs, LocationId } from "../config/location-configs"
 import { LootService } from "../inventory/loot-service"
 import { getState, updateState } from "../state"
 import { goTo } from "../view"
@@ -88,7 +88,7 @@ export const WorldService = {
     },
 
     interact(locationId: LocationId) {
-        const { locations, inventory } = getState()
+        const { locations } = getState()
 
         const location = locations[locationId]
         if (!location) {
@@ -103,16 +103,16 @@ export const WorldService = {
                 break
 
             case "resource": {
-                const item = LootService.generateItem(locationConfig.dropItemId, 1, 0)
-                InventoryService.add(item)
-                WorldService.progressLocation(locationId, 1)
-                console.log(inventory)
+                if (WorldService.progressLocation(locationId, 3)) {
+                    const item = LootService.generateItem(locationConfig.dropItemId, 1, 0)
+                    InventoryService.add(item)
+                }
                 break
             }
         }
     },
 
-    progressLocation(locationId: LocationId, amount: number) {
+    updateLocation(locationId: LocationId, locationConfig: LocationConfig, updateLocation: boolean) {
         const { locations } = getState()
 
         const location = locations[locationId]
@@ -120,18 +120,36 @@ export const WorldService = {
             throw new Error(`No location for ${locationId}`)
         }
 
+        if (locationConfig.type === "resource" && location.progress > 0) {
+            const tElapsedFromStart = Date.now() - location.startedAt
+            if (tElapsedFromStart >= locationConfig.cooldown) {
+                location.progress = 0
+            }
+        }
+
+        if (updateLocation) {
+            emit("location-updated", locationId)
+        }
+
+        return location
+    },
+
+    progressLocation(locationId: LocationId, amount: number) {
         const locationConfig = LocationConfigs[locationId]
-        // if (locationConfig.type !== "battle") {
-        //     return
-        // }
+        const location = WorldService.updateLocation(locationId, locationConfig, false)
 
         if (location.progress >= locationConfig.progressMax) {
-            return
+            return false
+        }
+
+        if (location.progress === 0) {
+            location.startedAt = Date.now()
         }
 
         location.progress += amount
         if (location.progress >= locationConfig.progressMax) {
             location.progress = locationConfig.progressMax
+            location.completedAt = Date.now()
 
             for (const unlockedLocationId of locationConfig.unlocks) {
                 this.addLocation(unlockedLocationId)
@@ -140,6 +158,8 @@ export const WorldService = {
         }
 
         emit("location-updated", locationId)
+
+        return true
     },
 
     addLocation(locationId: LocationId) {
@@ -196,6 +216,7 @@ const createLocation = (locationId: LocationId): LocationState => {
     return {
         id: locationId,
         progress: 0,
+        startedAt: 0,
         completedAt: 0,
     }
 }

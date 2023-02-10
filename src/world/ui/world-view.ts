@@ -89,6 +89,7 @@ const loadLocations = () => {
         }
 
         const locationConfig = LocationConfigs[locationId]
+        WorldService.updateLocation(locationId, locationConfig, false)
 
         const locationCard = new LocationCard()
         locationMenu.appendChild(locationCard)

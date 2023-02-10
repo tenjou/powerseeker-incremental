@@ -2,8 +2,9 @@ import { EquipmentSlot, ItemConfigs } from "../config/item-configs"
 import { emit } from "../events"
 import { getState } from "../state"
 import { recalculateStats } from "../character/status"
-import { addItem, removeItem } from "../inventory/inventory"
+import { removeItem } from "../inventory/inventory"
 import { Item } from "../inventory/item-types"
+import { InventoryService } from "./../inventory/inventory"
 
 export function equipItem(item: Item) {
     const { equipment } = getState()
@@ -38,5 +39,5 @@ export function unequipItem(slotType: EquipmentSlot) {
     emit("unequip", slotType)
     recalculateStats()
 
-    addItem(item)
+    InventoryService.add(item)
 }
