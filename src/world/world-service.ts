@@ -103,7 +103,7 @@ export const WorldService = {
                 break
 
             case "resource": {
-                if (WorldService.progressLocation(locationId, 4)) {
+                if (WorldService.progressLocation(locationId, 3)) {
                     const item = LootService.generateItem(locationConfig.dropItemId, 1, 0)
                     InventoryService.add(item)
                 }

@@ -12,7 +12,7 @@ template.innerHTML = html`
     <div id="name" class="bold"></div>
     <div id="description" class="pb-2 color-secondary"></div>
     <div id="status"><x-timer /></div>
-    <progress-bar show-max class="blue border"></progress-bar>
+    <progress-bar show-max></progress-bar>
 `
 
 export class LocationCard extends HTMLComponent {
@@ -31,12 +31,12 @@ export class LocationCard extends HTMLComponent {
         switch (locationConfig.type) {
             case "battle": {
                 const progressBar = this.getElement<ProgressBar>("progress-bar")
+                progressBar.className = "border blue"
                 progressBar.update({
                     value: locationState.progress,
                     valueMax: locationConfig.progressMax,
                     showPercents: true,
                 })
-                this.toggleClassName("hide", false, "progress-bar")
                 break
             }
 
@@ -48,16 +48,15 @@ export class LocationCard extends HTMLComponent {
                         WorldService.updateLocation(locationConfig.id, locationConfig, true)
                     })
 
-                    // this.setText("#status", "Respawn 02:03:10")
                     this.toggleClassName("hide", false, "#status")
                 } else {
                     const progressBar = this.getElement<ProgressBar>("progress-bar")
+                    progressBar.className = "border green"
                     progressBar.update({
                         value: locationState.progress,
                         valueMax: locationConfig.progressMax,
                         showPercents: true,
                     })
-                    this.toggleClassName("hide", false, "progress-bar")
                 }
 
                 break
