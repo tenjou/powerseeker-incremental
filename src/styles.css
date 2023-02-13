@@ -840,3 +840,10 @@ anim-progress-bar .value {
     text-shadow: 0 0 2px #000;
     font-size: 11px;
 }
+
+progress-bar.width-anim .bar {
+    -webkit-transition: width 0.2s ease-out;
+    -moz-transition: width 0.2s ease-out;
+    -o-transition: width 0.2s ease-out;
+    transition: width 0.2s ease-out;
+}

@@ -43,7 +43,7 @@ export class LocationCard extends HTMLComponent {
         switch (locationConfig.type) {
             case "battle": {
                 const progressBar = this.getElement<ProgressBar>("progress-bar")
-                progressBar.className = "border blue"
+                progressBar.className = "border blue width-anim"
                 progressBar.update({
                     value: locationState.progress,
                     valueMax: locationConfig.progressMax,
@@ -68,10 +68,12 @@ export class LocationCard extends HTMLComponent {
                 if (locationState.progress >= locationConfig.progressMax) {
                     const tEnd = locationState.startedAt + locationConfig.cooldown
                     this.getElement<XTimer>("x-timer").update(tEnd)
+
                     this.toggleClassName("hide", false, "#status")
+                    this.toggleClassName("hide", false, "x-timer")
                 } else {
                     const progressBar = this.getElement<ProgressBar>("progress-bar")
-                    progressBar.className = "border green"
+                    progressBar.className = "border green width-anim"
                     progressBar.update({
                         value: locationState.progress,
                         valueMax: locationConfig.progressMax,
@@ -81,6 +83,7 @@ export class LocationCard extends HTMLComponent {
                 break
             }
         }
+
         this.onclick = () => WorldService.interact(locationConfig.id)
     }
 }
