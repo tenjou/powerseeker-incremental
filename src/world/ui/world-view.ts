@@ -2,15 +2,14 @@ import { AreaConfigs, AreaId } from "../../config/area-configs"
 import { LocationConfigs, LocationId } from "../../config/location-configs"
 import { openPopup } from "../../popup"
 import { getState } from "../../state"
-import { getElement, getElementById, removeAllChildren, setText } from "./../../dom"
-import { subscribe, unsubscribe } from "./../../events"
+import { getElementById, removeAllChildren, setText } from "./../../dom"
+import { subscribe } from "./../../events"
 import { i18n } from "./../../i18n"
 import { LootService } from "./../../inventory/loot-service"
 import { WorldService } from "./../world-service"
 import "./area-card"
 import { AreaCard } from "./area-card"
 import "./explore-wilderness"
-import { ExploreWilderness } from "./explore-wilderness"
 import "./location-card"
 import { LocationCard } from "./location-card"
 
@@ -89,7 +88,6 @@ const loadLocations = () => {
         }
 
         const locationConfig = LocationConfigs[locationId]
-        WorldService.updateLocation(locationId, locationConfig, false)
 
         const locationCard = new LocationCard()
         locationMenu.appendChild(locationCard)

@@ -2,7 +2,6 @@ import { HTMLComponent } from "../dom"
 
 export class XTimer extends HTMLComponent {
     tEnd: number = 0
-    onEnd: () => void
     timer: NodeJS.Timeout | null = null
 
     disconnectedCallback() {
@@ -12,9 +11,8 @@ export class XTimer extends HTMLComponent {
         }
     }
 
-    update(tEnd: number, onEnd: () => void) {
+    update(tEnd: number) {
         this.tEnd = tEnd
-        this.onEnd = onEnd
 
         if (!this.timer) {
             this.timer = setInterval(() => this.updateFromTimer(), 200)
@@ -37,12 +35,11 @@ export class XTimer extends HTMLComponent {
 
         this.innerHTML = `${hours}:${min}:${sec}`
 
-        if (tDiff <= 0 && this.onEnd) {
+        if (tDiff <= 0) {
             if (this.timer) {
                 clearInterval(this.timer)
                 this.timer = null
             }
-            this.onEnd()
         }
     }
 }

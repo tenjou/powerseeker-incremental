@@ -68,6 +68,7 @@ function createEmptyProfile() {
     WorldService.addLocation("foo")
     WorldService.addLocation("bar")
     WorldService.addLocation("copper_mine")
+    WorldService.addLocation("test_boss")
 
     equipAbility("attack")
     equipAbility("bash")
@@ -85,6 +86,8 @@ function load() {
 
     const state = getState()
     const isBattle = !!state.battle.id
+
+    WorldService.load()
 
     recalculateStats()
     loadTooltipSystem()

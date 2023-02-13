@@ -47,7 +47,7 @@ export const BattleService = {
         }
 
         const locationConfig = LocationConfigs[locationId]
-        if (locationConfig.type !== "battle") {
+        if (locationConfig.type !== "battle" && locationConfig.type !== "boss") {
             throw new Error(`Location ${locationId} is not a battle`)
         }
 
@@ -192,6 +192,7 @@ const generateBattleResult = (battle: Battle): BattleResult => {
         locationProgress.push({
             locationId: battle.locationId,
             progress: 1,
+            updatedAt: Date.now(),
         })
     }
 

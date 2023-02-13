@@ -110,6 +110,7 @@ interface BattleLogDefeated {
 export interface LocationProgress {
     locationId: LocationId
     progress: number
+    updatedAt: number
 }
 
 export type BattleLog = BattleLogBasic | BattleLogEffectAdded | BattleLogEffectRemoved | BattleLogRegen | BattleLogDefeated

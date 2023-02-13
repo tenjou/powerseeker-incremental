@@ -132,7 +132,9 @@ export class HTMLComponent extends HTMLElement {
             this.setAttribute("class", outerClasses ? outerClasses + " " + this.rootClasses : this.rootClasses)
         }
 
-        this.append(this.root)
+        if (this.root) {
+            this.append(this.root)
+        }
         this.root = this
     }
 

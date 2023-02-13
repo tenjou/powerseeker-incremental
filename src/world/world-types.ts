@@ -25,4 +25,5 @@ export interface LocationState {
     progress: number
     startedAt: number
     completedAt: number
+    resetAt: number
 }

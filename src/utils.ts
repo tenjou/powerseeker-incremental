@@ -19,7 +19,7 @@ export const roll = (chance: number) => {
     return randomNumber(1, 100) <= chance
 }
 
-export function clamp(value: number, min: number, max: number) {
+export const clamp = (value: number, min: number, max: number) => {
     if (value > max) {
         return max
     } else if (value < min) {
@@ -27,4 +27,10 @@ export function clamp(value: number, min: number, max: number) {
     }
 
     return value
+}
+
+export const assert = (expr: boolean, error: string) => {
+    if (expr) {
+        throw new Error(error)
+    }
 }

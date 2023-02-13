@@ -90,7 +90,7 @@ export const LootService = {
         }
 
         for (const locationProgress of battleResult.locationProgress) {
-            WorldService.progressLocation(locationProgress.locationId, locationProgress.progress)
+            WorldService.progressLocation(locationProgress.locationId, locationProgress.progress, locationProgress.updatedAt)
         }
 
         updateState({

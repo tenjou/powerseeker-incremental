@@ -1,47 +1,63 @@
 import { BattleService } from "../battle/battle-service"
 import { AreaId } from "../config/area-configs"
-import { LocationConfig, LocationConfigs, LocationId } from "../config/location-configs"
+import { LocationConfigs, LocationId } from "../config/location-configs"
 import { LootService } from "../inventory/loot-service"
 import { getState, updateState } from "../state"
 import { goTo } from "../view"
 import { emit } from "./../events"
-import { AreaState, ExplorationState, LocationState } from "./world-types"
 import { InventoryService } from "./../inventory/inventory"
+import { AreaState, ExplorationState, LocationState } from "./world-types"
 
 interface WorldCache {
     selectedAreaId: AreaId
+    locationsReseting: LocationState[]
+    locationsResetingRemove: LocationState[]
 }
 
 const cache: WorldCache = {
     selectedAreaId: "town",
+    locationsReseting: [],
+    locationsResetingRemove: [],
 }
 
 export const WorldService = {
-    update(tCurrent: number) {
-        const { exploration } = getState()
+    load() {
+        const { locations } = getState()
 
-        if (!exploration) {
-            return
+        for (const locationId in locations) {
+            const location = locations[locationId as LocationId]
+            if (location.resetAt > 0) {
+                cache.locationsReseting.push(location)
+            }
         }
 
-        const haveFinished = exploration.tEnd < tCurrent
-        if (!haveFinished || exploration.result) {
-            return
+        sortLocationsReseting()
+    },
+
+    update(tNow: number) {
+        for (const locationState of cache.locationsReseting) {
+            if (locationState.resetAt > tNow) {
+                break
+            }
+
+            locationState.progress = 0
+            locationState.startedAt = 0
+            locationState.resetAt = 0
+            emit("location-updated", locationState.id)
+
+            cache.locationsResetingRemove.push(locationState)
         }
 
-        const explorationNew: ExplorationState = {
-            ...exploration,
-            result: {
-                type: "combat",
-                encounterId: "test_battle",
-            },
+        if (cache.locationsResetingRemove.length > 0) {
+            for (const locationState of cache.locationsResetingRemove) {
+                const index = cache.locationsReseting.indexOf(locationState)
+                if (index >= 0) {
+                    cache.locationsReseting.splice(index, 1)
+                }
+            }
+
+            cache.locationsResetingRemove = []
         }
-
-        updateState({
-            exploration: explorationNew,
-        })
-
-        emit("exploration-ended", explorationNew)
     },
 
     goToArea(areaId: AreaId) {
@@ -88,7 +104,11 @@ export const WorldService = {
     },
 
     interact(locationId: LocationId) {
-        const { locations } = getState()
+        const { locations, battleResult } = getState()
+
+        if (battleResult) {
+            throw new Error("Cannot interact while battle result is shown")
+        }
 
         const location = locations[locationId]
         if (!location) {
@@ -102,6 +122,13 @@ export const WorldService = {
                 BattleService.startFromLocation(locationId)
                 break
 
+            case "boss": {
+                if (WorldService.progressLocation(locationId, 1)) {
+                    BattleService.startFromLocation(locationId)
+                }
+                break
+            }
+
             case "resource": {
                 if (WorldService.progressLocation(locationId, 3)) {
                     const item = LootService.generateItem(locationConfig.dropItemId, 1, 0)
@@ -112,7 +139,7 @@ export const WorldService = {
         }
     },
 
-    updateLocation(locationId: LocationId, locationConfig: LocationConfig, updateLocation: boolean) {
+    progressLocation(locationId: LocationId, amount: number, updatedAt: number = Date.now()) {
         const { locations } = getState()
 
         const location = locations[locationId]
@@ -120,41 +147,33 @@ export const WorldService = {
             throw new Error(`No location for ${locationId}`)
         }
 
-        if (locationConfig.type === "resource" && location.progress > 0) {
-            const tElapsedFromStart = Date.now() - location.startedAt
-            if (tElapsedFromStart >= locationConfig.cooldown) {
-                location.progress = 0
-            }
-        }
-
-        if (updateLocation) {
-            emit("location-updated", locationId)
-        }
-
-        return location
-    },
-
-    progressLocation(locationId: LocationId, amount: number) {
         const locationConfig = LocationConfigs[locationId]
-        const location = WorldService.updateLocation(locationId, locationConfig, false)
 
         if (location.progress >= locationConfig.progressMax) {
             return false
         }
 
-        if (location.progress === 0) {
-            location.startedAt = Date.now()
+        if (location.startedAt === 0) {
+            location.startedAt = updatedAt
         }
 
         location.progress += amount
+
         if (location.progress >= locationConfig.progressMax) {
             location.progress = locationConfig.progressMax
-            location.completedAt = Date.now()
+            location.completedAt = updatedAt
 
             for (const unlockedLocationId of locationConfig.unlocks) {
                 this.addLocation(unlockedLocationId)
                 emit("location-added", unlockedLocationId)
             }
+        }
+
+        if (location.resetAt === 0 && (locationConfig.type === "resource" || locationConfig.type === "boss")) {
+            location.resetAt = updatedAt + locationConfig.cooldown
+            cache.locationsReseting.push(location)
+            sortLocationsReseting()
+            console.log("location reset at", location.resetAt, location.id)
         }
 
         emit("location-updated", locationId)
@@ -174,11 +193,8 @@ export const WorldService = {
             throw new Error(`No location config for ${locationId}`)
         }
 
-        let location = locations[locationId]
-        if (!location) {
-            location = createLocation(locationId)
-            locations[locationId] = location
-        }
+        const location = createLocation(locationId)
+        locations[locationId] = location
 
         return location
     },
@@ -218,5 +234,10 @@ const createLocation = (locationId: LocationId): LocationState => {
         progress: 0,
         startedAt: 0,
         completedAt: 0,
+        resetAt: 0,
     }
+}
+
+const sortLocationsReseting = () => {
+    cache.locationsReseting.sort((a, b) => a.resetAt - b.resetAt)
 }

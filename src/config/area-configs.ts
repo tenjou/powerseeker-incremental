@@ -10,7 +10,7 @@ export interface AreaConfig {
 export const AreaConfigs: Record<AreaId, AreaConfig> = {
     town: {
         id: "town",
-        locations: ["foo", "foo2", "copper_mine"],
+        locations: ["foo", "foo2", "copper_mine", "test_boss"],
     },
     forest: {
         id: "forest",
