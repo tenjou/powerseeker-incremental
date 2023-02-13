@@ -356,6 +356,10 @@ export function addRegenAnimations(tCurrent: number, targets: BattleTargetLog[])
         }
     }
 
+    if (tWaitMax === tCurrent) {
+        tWaitMax = tCurrent + 1000
+    }
+
     animations.sort((a, b) => b.tStart - a.tStart)
 
     return tWaitMax

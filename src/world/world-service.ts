@@ -173,7 +173,6 @@ export const WorldService = {
             location.resetAt = updatedAt + locationConfig.cooldown
             cache.locationsReseting.push(location)
             sortLocationsReseting()
-            console.log("location reset at", location.resetAt, location.id)
         }
 
         emit("location-updated", locationId)

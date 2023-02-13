@@ -1,10 +1,10 @@
+import { XTimer } from "../../components/x-timer"
+import { LocationConfig } from "../../config/location-configs"
 import { HTMLComponent } from "../../dom"
 import { i18n } from "../../i18n"
 import { LocationState } from "../world-types"
-import { WorldService } from "./../world-service"
 import { ProgressBar } from "./../../components/progress-bar"
-import { LocationConfig } from "../../config/location-configs"
-import { XTimer } from "../../components/x-timer"
+import { WorldService } from "./../world-service"
 
 const template = document.createElement("template")
 template.setAttribute("class", "p-2 bg-white hover:outline active:outline border-radius-3 cursor-pointer")
@@ -14,7 +14,9 @@ template.innerHTML = html`
             <div id="name" class="bold"></div>
             <div id="description" class="pb-2 color-secondary"></div>
         </div>
-        <div class="flex flex-1 justify-center align-center"><div>Level 1</div></div>
+        <div class="flex flex-1 justify-center align-center">
+            <div>Level 1</div>
+        </div>
     </div>
     <div id="status">
         <div id="status-text"></div>
@@ -58,7 +60,6 @@ export class LocationCard extends HTMLComponent {
                     this.getElement<XTimer>("x-timer").update(tEnd)
                     this.toggleClassName("hide", false, "x-timer")
                 }
-
                 this.toggleClassName("hide", false, "#status")
                 break
             }
@@ -80,7 +81,6 @@ export class LocationCard extends HTMLComponent {
                 break
             }
         }
-
         this.onclick = () => WorldService.interact(locationConfig.id)
     }
 }
