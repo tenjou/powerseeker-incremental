@@ -6,6 +6,7 @@ export type LocationId = Brand<string, "LocationId">
 
 export interface BasicLocationConfig {
     id: LocationId
+    level: number
     progressMax: number
     unlocks: LocationId[]
 }
@@ -33,6 +34,7 @@ export const LocationConfigs: Record<LocationId, LocationConfig> = {
     foo: {
         id: "foo",
         type: "battle",
+        level: 1,
         battleId: "test_battle",
         progressMax: 1,
         unlocks: ["foo2"],
@@ -40,6 +42,7 @@ export const LocationConfigs: Record<LocationId, LocationConfig> = {
     copper_mine: {
         id: "copper_mine",
         type: "resource",
+        level: 2,
         dropItemId: "copper_ore",
         cooldown: 3000,
         progressMax: 4,
@@ -48,6 +51,7 @@ export const LocationConfigs: Record<LocationId, LocationConfig> = {
     test_boss: {
         id: "test_boss",
         type: "boss",
+        level: 1,
         battleId: "test_battle",
         cooldown: 10000,
         progressMax: 1,
@@ -56,6 +60,7 @@ export const LocationConfigs: Record<LocationId, LocationConfig> = {
     foo2: {
         id: "foo2",
         type: "battle",
+        level: 1,
         battleId: "test_battle",
         progressMax: 1,
         unlocks: [],
@@ -63,6 +68,7 @@ export const LocationConfigs: Record<LocationId, LocationConfig> = {
     bar: {
         id: "bar",
         type: "battle",
+        level: 1,
         battleId: "test_battle",
         progressMax: 20,
         unlocks: [],

@@ -485,6 +485,9 @@ item-tooltip {
 .justify-center {
     justify-content: center;
 }
+.justify-end {
+    justify-content: flex-end;
+}
 
 .width-100 {
     width: 100%;

@@ -14,8 +14,8 @@ template.innerHTML = html`
             <div id="name" class="bold"></div>
             <div id="description" class="pb-2 color-secondary"></div>
         </div>
-        <div class="flex flex-1 justify-center align-center">
-            <div>Level 1</div>
+        <div class="flex flex-1 justify-end">
+            <div id="level"></div>
         </div>
     </div>
     <div id="status">
@@ -35,6 +35,7 @@ export class LocationCard extends HTMLComponent {
         this.setText("#name", i18n(locationConfig.id))
         this.setText("#description", i18n(locationConfig.type))
         this.setText("#status-text", "")
+        this.setText("#level", `${i18n("level")} ${locationConfig.level}`)
 
         this.toggleClassName("hide", true, "#status")
         this.toggleClassName("hide", true, "progress-bar")
