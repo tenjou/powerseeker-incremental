@@ -54,16 +54,15 @@ export class LocationStatus extends HTMLComponent {
                 if (locationState.progress >= locationConfig.progressMax) {
                     const tEnd = locationState.startedAt + locationConfig.cooldown
                     this.getElement<XTimer>("x-timer").update(tEnd)
-
                     this.toggleClassName("hide", false, "#status")
                     this.toggleClassName("hide", false, "x-timer")
                 } else {
                     const progressBar = this.getElement<ProgressBar>("progress-bar")
                     progressBar.className = "border green width-anim"
                     progressBar.update({
-                        value: locationState.progress,
+                        value: locationConfig.progressMax - locationState.progress,
                         valueMax: locationConfig.progressMax,
-                        showPercents: true,
+                        showMax: true,
                     })
                 }
                 break
