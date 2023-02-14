@@ -277,8 +277,8 @@ const I18nValues = {
     gathering: {
         en: "Gathering",
     },
-    integrity: {
-        en: "Integrity",
+    attempts: {
+        en: "Attempts",
     },
 } satisfies Record<string, LocalEntry>
 

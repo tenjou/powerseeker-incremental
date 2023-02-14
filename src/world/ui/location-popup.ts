@@ -90,7 +90,7 @@ export class LocationPopup extends HTMLComponent {
         }
 
         const showRespawn = locationState.progress >= locationConfig.progressMax && locationState.resetAt > 0
-        const defaultProgressText = locationConfig.type === "gathering" ? "integrity" : "progress"
+        const defaultProgressText = locationConfig.type === "gathering" ? "attempts" : "progress"
         this.setText("#progress-text", i18n(showRespawn ? "respawn" : defaultProgressText))
 
         const locationStatus = this.getElement<LocationStatus>("location-status")
