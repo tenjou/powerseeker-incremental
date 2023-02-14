@@ -22,8 +22,8 @@ export interface BossLocationConfig extends BasicLocationConfig {
     cooldown: number
 }
 
-export interface ResourceLocationConfig extends BasicLocationConfig {
-    type: "resource"
+export interface GatheringLocationConfig extends BasicLocationConfig {
+    type: "gathering"
     cooldown: number
     loot: {
         itemId: ItemId
@@ -33,7 +33,7 @@ export interface ResourceLocationConfig extends BasicLocationConfig {
     }[]
 }
 
-export type LocationConfig = BattleLocationConfig | BossLocationConfig | ResourceLocationConfig
+export type LocationConfig = BattleLocationConfig | BossLocationConfig | GatheringLocationConfig
 
 export const LocationConfigs: Record<LocationId, LocationConfig> = {
     foo: {
@@ -46,7 +46,7 @@ export const LocationConfigs: Record<LocationId, LocationConfig> = {
     },
     copper_mine: {
         id: "copper_mine",
-        type: "resource",
+        type: "gathering",
         level: 2,
         cooldown: 10000,
         loot: [

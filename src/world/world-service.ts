@@ -133,7 +133,7 @@ export const WorldService = {
                 break
             }
 
-            case "resource": {
+            case "gathering": {
                 if (WorldService.progressLocation(locationId, 3)) {
                     for (const reward of locationConfig.loot) {
                         if (!roll(reward.chance)) {
@@ -180,7 +180,7 @@ export const WorldService = {
             }
         }
 
-        if (location.resetAt === 0 && (locationConfig.type === "resource" || locationConfig.type === "boss")) {
+        if (location.resetAt === 0 && (locationConfig.type === "gathering" || locationConfig.type === "boss")) {
             location.resetAt = updatedAt + locationConfig.cooldown
             cache.locationsReseting.push(location)
             sortLocationsReseting()

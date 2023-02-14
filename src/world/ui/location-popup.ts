@@ -2,18 +2,15 @@ import { HTMLComponent } from "../../dom"
 import { subscribe } from "../../events"
 import { ItemIconSlot } from "../../inventory/ui/item-icon-slot"
 import { getState } from "../../state"
-import { LocationConfig, LocationConfigs, LocationId } from "./../../config/location-configs"
+import { LocationConfigs, LocationId } from "./../../config/location-configs"
+import { unsubscribe } from "./../../events"
 import { i18n } from "./../../i18n"
+import { XpIconSlot } from "./../../inventory/ui/xp-icon-slot"
 import { WorldService } from "./../world-service"
 import { LocationStatus } from "./location-status"
-import { unsubscribe } from "./../../events"
-import { LocationState } from "../world-types"
-import { XpIconSlot } from "./../../inventory/ui/xp-icon-slot"
 
 const template = document.createElement("template")
 template.innerHTML = html`
-    <style></style>
-
     <div class="popup flex flex-column align-center">
         <div id="name" class="bold"></div>
         <div id="type" class="tertiary"></div>
@@ -75,7 +72,7 @@ export class LocationPopup extends HTMLComponent {
             this.setText("#description", i18n(`${locationConfig.id}_description`))
             this.setText("#level", `${i18n("level")} ${locationConfig.level}`)
 
-            if (locationConfig.type === "resource") {
+            if (locationConfig.type === "gathering") {
                 const rewardsElement = this.getElement("#rewards", true)
 
                 const xpIcon = new XpIconSlot()
@@ -98,7 +95,7 @@ export class LocationPopup extends HTMLComponent {
         const locationStatus = this.getElement<LocationStatus>("location-status")
         locationStatus.update(locationConfig, locationState)
 
-        const interactText = locationConfig.type === "resource" ? "gather" : "battle"
+        const interactText = locationConfig.type === "gathering" ? "gather" : "battle"
         this.setText("#interact", i18n(interactText))
         this.toggleClassName("disabled", showRespawn, "#interact")
     }

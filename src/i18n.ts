@@ -274,6 +274,9 @@ const I18nValues = {
     respawn: {
         en: "Respawn",
     },
+    gathering: {
+        en: "Gathering",
+    },
 } satisfies Record<string, LocalEntry>
 
 export function i18n(key: string | null) {

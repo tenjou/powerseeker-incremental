@@ -50,7 +50,7 @@ export class LocationStatus extends HTMLComponent {
                 break
             }
 
-            case "resource": {
+            case "gathering": {
                 if (locationState.progress >= locationConfig.progressMax) {
                     const tEnd = locationState.startedAt + locationConfig.cooldown
                     this.getElement<XTimer>("x-timer").update(tEnd)
