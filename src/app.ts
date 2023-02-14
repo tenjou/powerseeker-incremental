@@ -19,11 +19,11 @@ import { setShow } from "./dom"
 import { emit, subscribe } from "./events"
 import { ExplorationService } from "./exploration/exploration-service"
 import { equipAbility } from "./loadout/loadout"
-import { loadPopupSystem } from "./popup"
 import { getState, loadState } from "./state"
 import { loadTooltipSystem } from "./tooltip"
 import { updateView } from "./view"
 import { WorldService } from "./world/world-service"
+import { PopupService } from "./popup"
 
 let tLast = 0
 
@@ -88,10 +88,10 @@ function load() {
     const isBattle = !!state.battle.id
 
     WorldService.load()
+    PopupService.load()
 
     recalculateStats()
     loadTooltipSystem()
-    loadPopupSystem()
 
     updateView(isBattle ? "battle" : undefined)
 

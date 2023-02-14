@@ -1,6 +1,6 @@
 import { AreaConfigs, AreaId } from "../../config/area-configs"
 import { LocationConfigs, LocationId } from "../../config/location-configs"
-import { openPopup } from "../../popup"
+import { PopupService } from "../../popup"
 import { getState } from "../../state"
 import { getElementById, removeAllChildren, setText } from "./../../dom"
 import { subscribe } from "./../../events"
@@ -58,7 +58,7 @@ function updateWorldView() {
     })
 
     if (battleResult) {
-        openPopup("battle-result-popup", {}, () => {
+        PopupService.open("battle-result-popup", {}, () => {
             LootService.consumeBattleResult()
         })
     }

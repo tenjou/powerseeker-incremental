@@ -1,9 +1,9 @@
 import { LocationConfig } from "../../config/location-configs"
 import { HTMLComponent } from "../../dom"
 import { i18n } from "../../i18n"
-import { openPopup } from "../../popup"
 import { LocationState } from "../world-types"
 import { LocationStatus } from "./location-status"
+import { PopupService } from "./../../popup"
 
 const template = document.createElement("template")
 template.setAttribute("class", "p-2 bg-white hover:outline active:outline border-radius-3 cursor-pointer")
@@ -35,7 +35,7 @@ export class LocationCard extends HTMLComponent {
         element.update(locationConfig, locationState)
 
         this.onclick = () =>
-            openPopup("location-popup", {
+            PopupService.open("location-popup", {
                 locationId: locationConfig.id,
             })
     }

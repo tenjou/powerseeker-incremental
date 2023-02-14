@@ -5,7 +5,7 @@ import { LocationState } from "../world-types"
 import { ProgressBar } from "./../../components/progress-bar"
 
 const template = document.createElement("template")
-template.className = "width-100"
+template.className = "flex width-100"
 template.innerHTML = html`
     <div id="status">
         <div id="status-text"></div>

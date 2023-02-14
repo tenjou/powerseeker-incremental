@@ -2,8 +2,8 @@ import { HTMLComponent } from "../../dom"
 import { i18n } from "../../i18n"
 import { ItemSlotType } from "../../inventory/item-types"
 import { ItemIconSlot } from "../../inventory/ui/item-icon-slot"
-import { closePopup } from "../../popup"
 import { getState } from "../../state"
+import { PopupService } from "./../../popup"
 
 const template = document.createElement("template")
 template.setAttribute("class", "popup")
@@ -28,7 +28,7 @@ export class BattleResultPopup extends HTMLComponent {
     connectedCallback() {
         super.connectedCallback()
 
-        this.getElement("#continue").addEventListener("click", closePopup)
+        this.getElement("#continue").addEventListener("click", PopupService.close)
         this.update()
     }
 

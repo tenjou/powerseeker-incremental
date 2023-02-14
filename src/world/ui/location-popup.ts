@@ -23,7 +23,7 @@ template.innerHTML = html`
         </div>
         <div class="flex flex-column align-center width-60 mb-4">
             <div id="type" class="tertiary mb-1 bold">Progress</div>
-            <location-status></location-status>
+            <location-status class="justify-center"></location-status>
         </div>
 
         <div id="interact" class="button"></div>
@@ -31,7 +31,7 @@ template.innerHTML = html`
 `
 
 export class LocationPopup extends HTMLComponent {
-    onLocationUpdated: (locationId) => void
+    onLocationUpdated: (locationId: LocationId) => void
 
     constructor() {
         super(template)
@@ -75,7 +75,8 @@ export class LocationPopup extends HTMLComponent {
         const itemIcon = this.getElement<ItemIconSlot>("item-icon-slot")
         itemIcon.updateByItemId("copper_ore", 3)
 
-        this.setText("#interact", i18n("gather"))
+        const interactText = locationConfig.type === "resource" ? "gather" : "battle"
+        this.setText("#interact", i18n(interactText))
     }
 }
 

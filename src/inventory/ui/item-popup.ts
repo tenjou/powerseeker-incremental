@@ -1,9 +1,9 @@
 import { ItemConfig, ItemConfigs, ItemEffect, ItemId } from "../../config/item-configs"
 import { HTMLComponent } from "../../dom"
 import { i18n } from "../../i18n"
-import { closePopup } from "../../popup"
 import { getState } from "../../state"
 import { handleItemUse } from "../inventory"
+import { PopupService } from "./../../popup"
 
 const template = document.createElement("template")
 template.innerHTML = html`
@@ -74,7 +74,7 @@ export class ItemPopup extends HTMLComponent {
 
             const callback = () => {
                 handleItemUse(item)
-                closePopup()
+                PopupService.close()
             }
 
             const itemConfig = ItemConfigs[item.id]

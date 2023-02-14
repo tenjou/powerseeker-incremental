@@ -12,7 +12,6 @@ import { getState } from "../state"
 import { BattlerId } from "../types"
 import { randomItem, roll, shuffle } from "../utils"
 import { updateState } from "./../state"
-import { updateView } from "./../view"
 import {
     Battle,
     BattleAction,
@@ -30,6 +29,7 @@ import { addAnimationsFromLogs, addRegenAnimations, updateBattleAnimation } from
 import "./ui/battle-result"
 import "./ui/battle-result-popup"
 import { updateBattlerEffects } from "./ui/battler-item"
+import { PopupService } from "./../popup"
 
 const AttackAbility: LoadoutAbility = {
     id: "attack",
@@ -50,6 +50,8 @@ export const BattleService = {
         if (locationConfig.type !== "battle" && locationConfig.type !== "boss") {
             throw new Error(`Location ${locationId} is not a battle`)
         }
+
+        PopupService.closeAll()
 
         const battle = createBattleInstance(locationConfig.battleId)
         battle.locationId = locationId

@@ -1,11 +1,11 @@
 import { ItemConfigs, ItemType } from "../../config/item-configs"
 import { getElementById, removeAllChildren, removeElement } from "../../dom"
+import { subscribe } from "../../events"
 import { getState } from "../../state"
-import { subscribe, unsubscribe } from "../../events"
-import { openPopup } from "../../popup"
-import "./item-slot"
-import { ItemIconSlot } from "./item-icon-slot"
 import { Item } from "../item-types"
+import { ItemIconSlot } from "./item-icon-slot"
+import "./item-slot"
+import { PopupService } from "./../../popup"
 
 const ItemTypeSortWeight: Record<ItemType, number> = {
     equipment: 100,
@@ -89,7 +89,7 @@ export function openItemPopup(event: MouseEvent, onClose?: () => void) {
     if (!item) {
         const itemId = element.getAttribute("item-id")
         if (itemId) {
-            openPopup(
+            PopupService.open(
                 "item-popup",
                 {
                     "item-id": itemId,
@@ -105,7 +105,7 @@ export function openItemPopup(event: MouseEvent, onClose?: () => void) {
         return
     }
 
-    openPopup(
+    PopupService.open(
         "item-popup",
         {
             uid: item.uid,
