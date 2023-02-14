@@ -277,6 +277,9 @@ const I18nValues = {
     gathering: {
         en: "Gathering",
     },
+    integrity: {
+        en: "Integrity",
+    },
 } satisfies Record<string, LocalEntry>
 
 export function i18n(key: string | null) {
