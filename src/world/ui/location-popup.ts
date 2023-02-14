@@ -8,6 +8,7 @@ import { WorldService } from "./../world-service"
 import { LocationStatus } from "./location-status"
 import { unsubscribe } from "./../../events"
 import { LocationState } from "../world-types"
+import { XpIconSlot } from "./../../inventory/ui/xp-icon-slot"
 
 const template = document.createElement("template")
 template.innerHTML = html`
@@ -21,7 +22,7 @@ template.innerHTML = html`
 
         <div class="flex flex-column align-center width-60 mb-3">
             <div id="type" class="tertiary mb-1 bold">Rewards</div>
-            <div id="rewards" class="flex flex-row justify-center"></div>
+            <div id="rewards" class="flex flex-row gap-1 justify-center"></div>
         </div>
 
         <div class="flex flex-column align-center width-60 mb-5">
@@ -76,6 +77,10 @@ export class LocationPopup extends HTMLComponent {
 
             if (locationConfig.type === "resource") {
                 const rewardsElement = this.getElement("#rewards", true)
+
+                const xpIcon = new XpIconSlot()
+                xpIcon.updateByItemId(10)
+                rewardsElement.appendChild(xpIcon)
 
                 for (const reward of locationConfig.loot) {
                     const itemIcon = new ItemIconSlot()

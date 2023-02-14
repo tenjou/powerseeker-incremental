@@ -3,9 +3,10 @@ import { getElementById, removeAllChildren, removeElement } from "../../dom"
 import { subscribe } from "../../events"
 import { getState } from "../../state"
 import { Item } from "../item-types"
+import { PopupService } from "./../../popup"
 import { ItemIconSlot } from "./item-icon-slot"
 import "./item-slot"
-import { PopupService } from "./../../popup"
+import "./xp-icon-slot"
 
 const ItemTypeSortWeight: Record<ItemType, number> = {
     equipment: 100,
