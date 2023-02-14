@@ -268,6 +268,12 @@ const I18nValues = {
     gather: {
         en: "Gather",
     },
+    progress: {
+        en: "Progress",
+    },
+    respawn: {
+        en: "Respawn",
+    },
 } satisfies Record<string, LocalEntry>
 
 export function i18n(key: string | null) {

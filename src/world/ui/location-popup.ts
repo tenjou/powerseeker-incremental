@@ -2,11 +2,12 @@ import { HTMLComponent } from "../../dom"
 import { subscribe } from "../../events"
 import { ItemIconSlot } from "../../inventory/ui/item-icon-slot"
 import { getState } from "../../state"
-import { LocationConfigs, LocationId } from "./../../config/location-configs"
+import { LocationConfig, LocationConfigs, LocationId } from "./../../config/location-configs"
 import { i18n } from "./../../i18n"
 import { WorldService } from "./../world-service"
 import { LocationStatus } from "./location-status"
 import { unsubscribe } from "./../../events"
+import { LocationState } from "../world-types"
 
 const template = document.createElement("template")
 template.innerHTML = html`
@@ -24,7 +25,7 @@ template.innerHTML = html`
         </div>
 
         <div class="flex flex-column align-center width-60 mb-5">
-            <div id="type" class="tertiary mb-1 bold">Progress</div>
+            <div id="progress-text" class="tertiary mb-1 bold"></div>
             <location-status class="justify-center"></location-status>
         </div>
 
@@ -71,6 +72,9 @@ export class LocationPopup extends HTMLComponent {
         this.setText("#type", i18n(locationConfig.type))
         this.setText("#description", i18n(`${locationConfig.id}_description`))
         this.setText("#level", `${i18n("level")} ${locationConfig.level}`)
+
+        const showRespawn = locationState.progress >= locationConfig.progressMax && locationState.resetAt > 0
+        this.setText("#progress-text", i18n(showRespawn ? "respawn" : "progress"))
 
         const locationStatus = this.getElement<LocationStatus>("location-status")
         locationStatus.update(locationConfig, locationState)
