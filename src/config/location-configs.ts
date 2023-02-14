@@ -44,7 +44,7 @@ export const LocationConfigs: Record<LocationId, LocationConfig> = {
         type: "resource",
         level: 2,
         dropItemId: "copper_ore",
-        cooldown: 3000,
+        cooldown: 10000,
         progressMax: 4,
         unlocks: [],
     },

@@ -7,9 +7,9 @@ import { ProgressBar } from "./../../components/progress-bar"
 const template = document.createElement("template")
 template.className = "flex width-100"
 template.innerHTML = html`
-    <div id="status">
+    <div id="status" class="flex flex-column justify-center height-19px">
         <div id="status-text"></div>
-        <x-timer />
+        <x-timer class="font-1" />
     </div>
     <progress-bar show-max></progress-bar>
 `

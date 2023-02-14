@@ -15,18 +15,20 @@ template.innerHTML = html`
     <div class="popup flex flex-column align-center">
         <div id="name" class="bold"></div>
         <div id="type" class="tertiary"></div>
+        <div id="level" class="tertiary mb-2 font-1">Level 1</div>
         <div id="description" class="tertiary mb-2"></div>
 
-        <div class="flex flex-column align-center width-60 mb-4">
+        <div class="flex flex-column align-center width-60 mb-3">
             <div id="type" class="tertiary mb-1 bold">Rewards</div>
             <item-icon-slot></item-icon-slot>
         </div>
-        <div class="flex flex-column align-center width-60 mb-4">
+
+        <div class="flex flex-column align-center width-60 mb-5">
             <div id="type" class="tertiary mb-1 bold">Progress</div>
             <location-status class="justify-center"></location-status>
         </div>
 
-        <div id="interact" class="button"></div>
+        <div id="interact" class="button mb-2"></div>
     </div>
 `
 
@@ -68,6 +70,7 @@ export class LocationPopup extends HTMLComponent {
         this.setText("#name", i18n(locationConfig.id))
         this.setText("#type", i18n(locationConfig.type))
         this.setText("#description", i18n(`${locationConfig.id}_description`))
+        this.setText("#level", `${i18n("level")} ${locationConfig.level}`)
 
         const locationStatus = this.getElement<LocationStatus>("location-status")
         locationStatus.update(locationConfig, locationState)
