@@ -35,6 +35,7 @@ template.innerHTML = html`
 
 export class LocationPopup extends HTMLComponent {
     onLocationUpdated: (locationId: LocationId) => void
+    currLocationId: LocationId = ""
 
     constructor() {
         super(template)
@@ -43,17 +44,15 @@ export class LocationPopup extends HTMLComponent {
     connectedCallback(): void {
         super.connectedCallback()
 
-        const locationId = this.getAttrib("locationId")
-
-        this.update(locationId)
+        this.update()
 
         this.getElement("#interact").onclick = () => {
-            WorldService.interact(locationId)
+            WorldService.interact(this.currLocationId)
         }
 
         this.onLocationUpdated = subscribe("location-updated", (locationUpdatedId) => {
-            if (locationUpdatedId === locationId) {
-                this.update(locationId)
+            if (locationUpdatedId === this.currLocationId) {
+                this.update()
             }
         })
     }
@@ -62,16 +61,31 @@ export class LocationPopup extends HTMLComponent {
         unsubscribe("location-updated", this.onLocationUpdated)
     }
 
-    update(locationId: LocationId) {
+    update() {
         const { locations } = getState()
 
+        const locationId = this.getAttrib("locationId")
         const locationConfig = LocationConfigs[locationId]
         const locationState = locations[locationId]
 
-        this.setText("#name", i18n(locationConfig.id))
-        this.setText("#type", i18n(locationConfig.type))
-        this.setText("#description", i18n(`${locationConfig.id}_description`))
-        this.setText("#level", `${i18n("level")} ${locationConfig.level}`)
+        if (locationId !== this.currLocationId) {
+            this.setText("#name", i18n(locationConfig.id))
+            this.setText("#type", i18n(locationConfig.type))
+            this.setText("#description", i18n(`${locationConfig.id}_description`))
+            this.setText("#level", `${i18n("level")} ${locationConfig.level}`)
+
+            if (locationConfig.type === "resource") {
+                const rewardsElement = this.getElement("#rewards", true)
+
+                for (const reward of locationConfig.loot) {
+                    const itemIcon = new ItemIconSlot()
+                    itemIcon.updateByItemId(reward.itemId, reward.min, reward.max)
+                    rewardsElement.appendChild(itemIcon)
+                }
+            }
+
+            this.currLocationId = locationId
+        }
 
         const showRespawn = locationState.progress >= locationConfig.progressMax && locationState.resetAt > 0
         this.setText("#progress-text", i18n(showRespawn ? "respawn" : "progress"))
@@ -79,17 +93,9 @@ export class LocationPopup extends HTMLComponent {
         const locationStatus = this.getElement<LocationStatus>("location-status")
         locationStatus.update(locationConfig, locationState)
 
-        if (locationConfig.type === "resource") {
-            const rewardsElement = this.getElement("#rewards", true)
-            for (const reward of locationConfig.loot) {
-                const itemIcon = new ItemIconSlot()
-                itemIcon.updateByItemId(reward.itemId, reward.min, reward.max)
-                rewardsElement.appendChild(itemIcon)
-            }
-        }
-
         const interactText = locationConfig.type === "resource" ? "gather" : "battle"
         this.setText("#interact", i18n(interactText))
+        this.toggleClassName("disabled", showRespawn, "#interact")
     }
 }
 
