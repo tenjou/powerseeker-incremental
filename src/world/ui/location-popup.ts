@@ -21,7 +21,7 @@ template.innerHTML = html`
 
         <div class="flex flex-column align-center width-60 mb-3">
             <div id="type" class="tertiary mb-1 bold">Rewards</div>
-            <item-icon-slot></item-icon-slot>
+            <div id="rewards" class="flex flex-row justify-center"></div>
         </div>
 
         <div class="flex flex-column align-center width-60 mb-5">
@@ -79,8 +79,14 @@ export class LocationPopup extends HTMLComponent {
         const locationStatus = this.getElement<LocationStatus>("location-status")
         locationStatus.update(locationConfig, locationState)
 
-        const itemIcon = this.getElement<ItemIconSlot>("item-icon-slot")
-        itemIcon.updateByItemId("copper_ore", 3)
+        if (locationConfig.type === "resource") {
+            const rewardsElement = this.getElement("#rewards", true)
+            for (const reward of locationConfig.loot) {
+                const itemIcon = new ItemIconSlot()
+                itemIcon.updateByItemId(reward.itemId, reward.min, reward.max)
+                rewardsElement.appendChild(itemIcon)
+            }
+        }
 
         const interactText = locationConfig.type === "resource" ? "gather" : "battle"
         this.setText("#interact", i18n(interactText))

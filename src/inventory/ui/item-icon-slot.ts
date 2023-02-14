@@ -31,7 +31,7 @@ export class ItemIconSlot extends HTMLComponent {
         this.getElement("#value").setAttribute("class", itemConfig.type === "equipment" ? "color-gold" : "color-white")
     }
 
-    updateByItemId(itemId: ItemId, amount: number) {
+    updateByItemId(itemId: ItemId, min: number, max: number = min) {
         const itemConfig = ItemConfigs[itemId]
 
         const imgElement = this.getElement("img")
@@ -46,7 +46,12 @@ export class ItemIconSlot extends HTMLComponent {
             this.classList.add(`rarity-xp`)
         }
 
-        this.setText("#value", amount)
+        if (min === max) {
+            this.setText("#value", min)
+        } else {
+            this.setText("#value", `${min} - ${max}`)
+        }
+
         this.getElement("#value").setAttribute("class", itemConfig.type === "equipment" ? "color-gold" : "color-white")
     }
 }

@@ -3,12 +3,14 @@ import { AreaId } from "../config/area-configs"
 import { LocationConfigs, LocationId } from "../config/location-configs"
 import { LootService } from "../inventory/loot-service"
 import { getState, updateState } from "../state"
+import { roll } from "../utils"
 import { goTo } from "../view"
 import { emit } from "./../events"
 import { InventoryService } from "./../inventory/inventory"
 import "./ui/location-popup"
 import "./ui/location-status"
 import { AreaState, ExplorationState, LocationState } from "./world-types"
+import { randomNumber } from "./../utils"
 
 interface WorldCache {
     selectedAreaId: AreaId
@@ -133,8 +135,15 @@ export const WorldService = {
 
             case "resource": {
                 if (WorldService.progressLocation(locationId, 3)) {
-                    const item = LootService.generateItem(locationConfig.dropItemId, 1, 0)
-                    InventoryService.add(item)
+                    for (const reward of locationConfig.loot) {
+                        if (!roll(reward.chance)) {
+                            continue
+                        }
+
+                        const amount = randomNumber(reward.min, reward.max)
+                        const item = LootService.generateItem(reward.itemId, amount, 0)
+                        InventoryService.add(item)
+                    }
                 }
                 break
             }

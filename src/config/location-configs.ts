@@ -24,8 +24,13 @@ export interface BossLocationConfig extends BasicLocationConfig {
 
 export interface ResourceLocationConfig extends BasicLocationConfig {
     type: "resource"
-    dropItemId: ItemId
     cooldown: number
+    loot: {
+        itemId: ItemId
+        chance: number
+        min: number
+        max: number
+    }[]
 }
 
 export type LocationConfig = BattleLocationConfig | BossLocationConfig | ResourceLocationConfig
@@ -43,8 +48,15 @@ export const LocationConfigs: Record<LocationId, LocationConfig> = {
         id: "copper_mine",
         type: "resource",
         level: 2,
-        dropItemId: "copper_ore",
         cooldown: 10000,
+        loot: [
+            {
+                itemId: "copper_ore",
+                chance: 100,
+                min: 1,
+                max: 3,
+            },
+        ],
         progressMax: 4,
         unlocks: [],
     },
