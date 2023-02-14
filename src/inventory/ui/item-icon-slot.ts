@@ -36,6 +36,8 @@ export class ItemIconSlot extends HTMLComponent {
 
         const imgElement = this.getElement("img")
 
+        this.setAttrib("item-id", itemId)
+
         imgElement.setAttribute("src", `/assets/icon/${itemConfig.type}/${itemId}.png`)
         this.toggleClass("img", "hidden", itemId === "xp")
         this.toggleClass("#xp", "hidden", itemId !== "xp")

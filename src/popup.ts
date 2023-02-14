@@ -1,16 +1,17 @@
 import { getElementById } from "./dom"
 import { subscribe } from "./events"
 
-type PopupType = "item-popup" | "battle-result-popup" | "ability-popup" | "explore-popup"
+type PopupType = "item-popup" | "battle-result-popup" | "ability-popup" | "explore-popup" | "location-popup"
 
 interface Popup {
+    type: PopupType
     element: HTMLElement
     onClose?: () => void
 }
 
 const popups: Popup[] = []
 
-export function loadPopupSystem() {
+export const loadPopupSystem = () => {
     const popupElement = getElementById("popups")
 
     popupElement.addEventListener("click", tryClosePopup)
@@ -18,7 +19,7 @@ export function loadPopupSystem() {
     subscribe("close", closePopup)
 }
 
-export function openPopup(type: PopupType, attributes: Record<string, string | number> = {}, onClose?: () => void) {
+export const openPopup = (type: PopupType, attributes: Record<string, string | number> = {}, onClose?: () => void) => {
     const element = document.createElement(type)
 
     element.id = type
@@ -35,12 +36,13 @@ export function openPopup(type: PopupType, attributes: Record<string, string | n
     }
 
     popups.push({
+        type,
         element,
         onClose,
     })
 }
 
-function tryClosePopup(event: MouseEvent) {
+const tryClosePopup = (event: MouseEvent) => {
     const popupElement = getElementById("popups")
 
     if (event.target === popupElement) {
@@ -48,7 +50,7 @@ function tryClosePopup(event: MouseEvent) {
     }
 }
 
-export function closePopup() {
+export const closePopup = () => {
     const lastPopup = popups.pop()
     if (lastPopup) {
         lastPopup.element.remove()

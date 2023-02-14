@@ -1,9 +1,8 @@
 import { ItemConfig, ItemConfigs, ItemEffect, ItemId } from "../../config/item-configs"
 import { HTMLComponent } from "../../dom"
-import { getState } from "../../state"
-import { StatsTableEntry } from "../../components/stats-table"
 import { i18n } from "../../i18n"
 import { closePopup } from "../../popup"
+import { getState } from "../../state"
 import { handleItemUse } from "../inventory"
 
 const template = document.createElement("template")

@@ -262,6 +262,12 @@ const I18nValues = {
     copper_mine: {
         en: "Copper Mine",
     },
+    copper_mine_description: {
+        en: "A copper mine is a place where you can mine copper ore.",
+    },
+    gather: {
+        en: "Gather",
+    },
 } satisfies Record<string, LocalEntry>
 
 export function i18n(key: string | null) {

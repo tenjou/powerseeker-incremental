@@ -519,8 +519,14 @@ item-tooltip {
 .mt-2 {
     margin-top: 0.5rem;
 }
+.mb-1 {
+    margin-bottom: 0.25rem;
+}
 .mb-2 {
     margin-bottom: 0.5rem;
+}
+.mb-4 {
+    margin-bottom: 1rem;
 }
 
 .sr-1 > * {
@@ -755,7 +761,7 @@ scrolling-text {
     }
 }
 
-x-button {
+.button {
     display: inline-block;
     width: 100px;
     padding: 6px;
@@ -766,25 +772,24 @@ x-button {
     color: #222;
     text-transform: uppercase;
     cursor: pointer;
-}
-x-button:active {
-    transform: translateY(1px);
-}
-x-button.disabled {
-    opacity: 0.5;
-    pointer-events: none;
-}
-x-button.black {
+
     border: 1px solid #666;
     border-radius: 3px;
 }
-x-button.black:hover {
+.button:active {
+    transform: translateY(1px);
+}
+.button.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+.button:hover {
     border: 1px solid #000;
     background: #f1f1f1;
     color: #000;
     outline: 2px solid #fff;
 }
-x-button.size50 {
+.button.size50 {
     width: 50px;
 }
 

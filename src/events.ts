@@ -30,7 +30,7 @@ export interface EventCallbackInfo {
 const subscribers: Partial<Record<EventType, EventCallbackFunc[]>> = {}
 let subscriberWatcher: (info: EventCallbackInfo) => void | null = null
 
-export function subscribe<T>(type: EventType, callback: (payload: T) => void) {
+export function subscribe<T>(type: EventType, callback: (payload: T) => void): (payload: T) => void {
     const funcs = subscribers[type]
     if (funcs) {
         funcs.push(callback as EventCallbackFunc)
@@ -41,6 +41,8 @@ export function subscribe<T>(type: EventType, callback: (payload: T) => void) {
     if (subscriberWatcher) {
         subscriberWatcher({ type, callback })
     }
+
+    return callback
 }
 
 export function unsubscribe<T>(type: EventType, callback: (payload: T) => void) {

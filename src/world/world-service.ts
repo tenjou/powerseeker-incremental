@@ -6,6 +6,8 @@ import { getState, updateState } from "../state"
 import { goTo } from "../view"
 import { emit } from "./../events"
 import { InventoryService } from "./../inventory/inventory"
+import "./ui/location-popup"
+import "./ui/location-status"
 import { AreaState, ExplorationState, LocationState } from "./world-types"
 
 interface WorldCache {
