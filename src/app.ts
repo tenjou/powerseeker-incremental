@@ -17,7 +17,6 @@ import "./components/x-timer"
 import "./currencies/currency-item"
 import { setShow } from "./dom"
 import { emit, subscribe } from "./events"
-import { ExplorationService } from "./exploration/exploration-service"
 import { equipAbility } from "./loadout/loadout"
 import { getState, loadState } from "./state"
 import { loadTooltipSystem } from "./tooltip"
@@ -62,8 +61,6 @@ function createEmptyProfile() {
     //     rarity: 4,
     //     amount: 5,
     // })
-
-    ExplorationService.addArea("forest")
 
     WorldService.addLocation("foo")
     WorldService.addLocation("bar")

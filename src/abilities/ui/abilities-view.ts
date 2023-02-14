@@ -1,5 +1,4 @@
 import { AbilityConfig, AbilityConfigs, AbilityId } from "../../config/ability-configs"
-import { openPopup } from "../../popup"
 import { getState } from "../../state"
 import { getElementById, removeAllChildren } from "../../dom"
 import { getAbilityEffectPower } from "../abilities-utils"
@@ -9,6 +8,7 @@ import "./ability-card"
 import { AbilitySlotElement } from "./ability-slot"
 import { subscribe, unsubscribe } from "../../events"
 import { AbilityEffect } from "../ability-type"
+import { PopupService } from "./../../popup"
 
 export function loadAbilitiesView() {
     const parent = getElementById("abilities-container")
@@ -37,7 +37,7 @@ function updateView() {
 }
 
 function openAbilityPopup(abilityId: AbilityId) {
-    openPopup("ability-popup", {
+    PopupService.open("ability-popup", {
         "ability-id": abilityId,
     })
 }

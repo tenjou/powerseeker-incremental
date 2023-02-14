@@ -16,7 +16,7 @@ template.innerHTML = html`
         <div id="loot-container" class="width-100"><div id="loot" class="justify-center item-slot-grid"></div></div>
         <div id="none" class="uppercase color-gray">None</div>
 
-        <div><x-button id="continue" class="black m-2">${i18n("continue")}</x-button></div>
+        <div><div id="continue" class="button m-2">${i18n("continue")}</div></div>
     </div>
 `
 
