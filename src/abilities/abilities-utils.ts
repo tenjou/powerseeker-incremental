@@ -1,4 +1,3 @@
-import { type } from "os"
 import { Battler } from "../battle/battle-types"
 import { recalculateStats } from "../character/status"
 import { AbilityConfigs, AbilityId } from "../config/ability-configs"
