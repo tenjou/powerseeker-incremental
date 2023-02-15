@@ -1,7 +1,7 @@
 import { AbilityConfig, AbilityConfigs, AbilityId } from "../../config/ability-configs"
 import { getState } from "../../state"
 import { getElementById, removeAllChildren } from "../../dom"
-import { getAbilityEffectPower } from "../abilities-utils"
+import { getAbilityEffectColor, getAbilityEffectPower } from "../abilities-utils"
 import "./ability-popup"
 import "./ability-slot"
 import "./ability-card"
@@ -63,20 +63,10 @@ export function getAbilityDescription(abilityConfig: AbilityConfig, abilityRank?
         const effectId = Number(entry.slice(1))
         const effect = effects[effectId]
         const power = getAbilityEffectPower(effect, abilityRank)
-        const color = getAbilityEffectColor(effect, power)
+        const color = getAbilityEffectColor(effect.type, power)
 
         description = description.replace(entry, `<x-text class="${color} bold">${Math.abs(power)}</x-text>`)
     }
 
     return description
-}
-
-function getAbilityEffectColor(effect: AbilityEffect, power: number) {
-    switch (effect.type) {
-        case "health":
-            return power > 0 ? "green" : "red"
-
-        case "energy":
-            return power > 0 ? "energy-up" : "energy-down"
-    }
 }

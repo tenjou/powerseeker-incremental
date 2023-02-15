@@ -1,3 +1,4 @@
+import { getAbilityEffectColor } from "../../abilities/abilities-utils"
 import { ItemConfigEquipment, ItemConfigResource, ItemConfigs, ItemId } from "../../config/item-configs"
 import { HTMLComponent } from "../../dom"
 import { Item } from "../../inventory/item-types"
@@ -61,11 +62,27 @@ export class ItemTooltip extends HTMLComponent {
     updateByItemId(itemId: ItemId, amount: number) {
         const itemConfig = ItemConfigs[itemId]
 
+        let description = i18n(`${itemConfig.id}_description`)
+
+        if (itemConfig.type === "consumable") {
+            const effects = itemConfig.effects
+
+            const regex = /%[0-9]/gm
+            const regexDescription = regex.exec(description)
+            for (let n = 0; n < regexDescription.length; n++) {
+                const entry = regexDescription[n]
+                const power = effects[n].value
+                const color = getAbilityEffectColor("health", power)
+
+                description = description.replace(entry, `<span class="color-${color} bold">${power}</span>`)
+            }
+        }
+
         this.setText("#name", i18n(itemConfig.id))
         this.setText("#rarity", i18n(itemConfig.type))
 
         this.getElement("#rarity").setAttribute("class", `color-gray`)
-        this.setText("#description", i18n(`${itemConfig.id}_description`))
+        this.setHTML("#description", description)
 
         this.toggleClass("#details", "hide", true)
     }

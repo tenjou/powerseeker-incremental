@@ -1,3 +1,4 @@
+import { type } from "os"
 import { Battler } from "../battle/battle-types"
 import { recalculateStats } from "../character/status"
 import { AbilityConfigs, AbilityId } from "../config/ability-configs"
@@ -6,7 +7,7 @@ import { haveCurrency } from "./../currencies/currencies"
 import { emit } from "./../events"
 import { LoadoutAbility } from "./../loadout/loadout-types"
 import { getState } from "./../state"
-import { Ability, AbilityEffect } from "./ability-type"
+import { Ability, AbilityEffect, AbilityEffectType } from "./ability-type"
 
 export const getAbilityEffectPower = (effect: AbilityEffect, rank: number) => {
     // return (effect.power * stats[effect.stat]) | 0
@@ -67,4 +68,14 @@ export function getEnergyNeeded(ability: Ability) {
 
     const energyNeed = abilityConfig.energy + (ability.rank - 1)
     return energyNeed
+}
+
+export const getAbilityEffectColor = (effectType: AbilityEffectType, power: number) => {
+    switch (effectType) {
+        case "health":
+            return power > 0 ? "green" : "red"
+
+        case "energy":
+            return power > 0 ? "energy-up" : "energy-down"
+    }
 }

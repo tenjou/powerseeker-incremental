@@ -79,18 +79,12 @@ export class LocationPopup extends HTMLComponent {
             this.setText("#description", i18n(`${locationConfig.id}_description`))
             this.setText("#level", `${i18n("level")} ${locationConfig.level}`)
 
-            if (locationConfig.type === "gathering") {
-                const rewardsElement = this.getElement("#rewards", true)
+            const rewardsElement = this.getElement("#rewards", true)
 
-                const xpIcon = new XpIconSlot()
-                xpIcon.updateByItemId(10)
-                rewardsElement.appendChild(xpIcon)
-
-                for (const reward of locationConfig.loot) {
-                    const itemIcon = new ItemIconSlot()
-                    itemIcon.updateByItemId(reward.itemId, reward.min, reward.max)
-                    rewardsElement.appendChild(itemIcon)
-                }
+            for (const reward of locationConfig.loot) {
+                const itemIcon = new ItemIconSlot()
+                itemIcon.updateByItemId(reward.itemId, reward.min, reward.max)
+                rewardsElement.appendChild(itemIcon)
             }
 
             this.currLocationId = locationId

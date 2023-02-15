@@ -134,7 +134,7 @@ export const WorldService = {
             }
 
             case "gathering": {
-                if (WorldService.progressLocation(locationId, 3)) {
+                if (WorldService.progressLocation(locationId, 1)) {
                     for (const reward of locationConfig.loot) {
                         if (!roll(reward.chance)) {
                             continue

@@ -72,11 +72,11 @@ container {
     box-sizing: border-box;
 }
 
-red {
+.color-red {
     color: #ff0000;
     font-weight: bold;
 }
-green {
+.color-green {
     color: #4caf50;
     font-weight: bold;
 }
