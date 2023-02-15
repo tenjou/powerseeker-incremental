@@ -6,7 +6,7 @@ const template = document.createElement("template")
 template.setAttribute("class", "icon-slot hover-outline inactive-children")
 template.innerHTML = html`
     <img />
-    <div id="xp" class="flex flex-1 align-center justify-center height-100 font-2 bold text-shadow-5 color-white hidden">XP</div>
+    <div id="xp" class="flex flex-1 align-center justify-center height-100 font-8 bold text-shadow-5 color-white hidden">XP</div>
     <div id="value"></div>
 `
 

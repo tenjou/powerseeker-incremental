@@ -541,6 +541,9 @@ item-tooltip {
 .mb-5 {
     margin-bottom: 1.25rem;
 }
+.mb-6 {
+    margin-bottom: 1.5rem;
+}
 
 .sr-1 > * {
     margin-right: 0.25rem;
@@ -606,17 +609,20 @@ item-tooltip {
 .font-1 {
     font-size: 0.7rem;
 }
+.font-2 {
+    font-size: 0.8rem;
+}
 .font-4 {
     font-size: 1em;
 }
-.font-2 {
+.font-8 {
     font-size: 2em;
 }
 
 .popup {
     display: flex;
     flex-direction: column;
-    padding: 8px 6px;
+    padding: 8px 12px;
     width: 400px;
     max-height: 96%;
     box-sizing: border-box;

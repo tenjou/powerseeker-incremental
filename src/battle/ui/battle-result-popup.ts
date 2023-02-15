@@ -9,7 +9,7 @@ const template = document.createElement("template")
 template.setAttribute("class", "popup")
 template.innerHTML = html`
     <div class="flex flex-column align-center sb-2">
-        <div id="result" class="bold uppercase font-2 "></div>
+        <div id="result" class="bold uppercase font-8 "></div>
 
         <div class="uppercase color-secondary text-center border-bottom width-60 pb-1">Rewards</div>
 

@@ -11,23 +11,30 @@ import { LocationStatus } from "./location-status"
 
 const template = document.createElement("template")
 template.innerHTML = html`
-    <div class="popup flex flex-column align-center">
-        <div id="name" class="bold"></div>
-        <div id="type" class="tertiary"></div>
-        <div id="level" class="tertiary mb-2 font-1">Level 1</div>
+    <div class="popup flex flex-column">
+        <div class="flex flex-row mb-2">
+            <div class="flex flex-column flex-1">
+                <div id="name" class="font-2 bold"></div>
+                <div id="type" class="font-2 tertiary"></div>
+            </div>
+            <div id="level" class="tertiary font-2">Level 1</div>
+        </div>
+
         <div id="description" class="tertiary mb-2"></div>
 
-        <div class="flex flex-column align-center width-60 mb-3">
+        <div class="flex flex-column mb-3">
             <div id="type" class="tertiary mb-1 bold">Rewards</div>
-            <div id="rewards" class="flex flex-row gap-1 justify-center"></div>
+            <div id="rewards" class="flex flex-row gap-1"></div>
         </div>
 
-        <div class="flex flex-column align-center width-60 mb-5">
+        <div class="flex flex-column mb-6">
             <div id="progress-text" class="tertiary mb-1 bold"></div>
-            <location-status class="justify-center"></location-status>
+            <location-status></location-status>
         </div>
 
-        <div id="interact" class="button mb-2"></div>
+        <div class="flex justify-center">
+            <div id="interact" class="button mb-2"></div>
+        </div>
     </div>
 `
 
