@@ -15,7 +15,7 @@ template.innerHTML = html`
         <div class="flex flex-row mb-2">
             <div class="flex flex-column flex-1">
                 <div id="name" class="font-2 bold"></div>
-                <div id="type" class="font-2 tertiary"></div>
+                <div id="type" class="font-1 color-secondary"></div>
             </div>
             <div id="level" class="tertiary font-2">Level 1</div>
         </div>
