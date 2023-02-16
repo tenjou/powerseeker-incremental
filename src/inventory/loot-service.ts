@@ -51,13 +51,14 @@ export const LootService = {
         return item
     },
 
-    generateItem(itemId: ItemId, maxLevel: number, luck: number): Item {
+    generateItem(itemId: ItemId, amount: number, luck: number): Item {
         const itemConfig = ItemConfigs[itemId]
         if (!itemConfig) {
             throw new Error(`Could not find item config for id: ${itemId}`)
         }
 
         if (itemConfig.type === "equipment") {
+            const maxLevel = amount
             return LootService.generateEquipment(itemConfig, maxLevel, luck)
         }
 
@@ -65,7 +66,7 @@ export const LootService = {
             uid: itemId,
             id: itemId,
             rarity: 0,
-            amount: 1,
+            amount,
             level: 1,
             power: 1,
             stats: [],

@@ -1,6 +1,6 @@
 import { BattleService } from "../battle/battle-service"
 import { AreaId } from "../config/area-configs"
-import { LocationConfigs, LocationId } from "../config/location-configs"
+import { LocationConfig, LocationConfigs, LocationId } from "../config/location-configs"
 import { LootService } from "../inventory/loot-service"
 import { getState, updateState } from "../state"
 import { roll } from "../utils"
@@ -123,34 +123,23 @@ export const WorldService = {
 
         switch (locationConfig.type) {
             case "battle":
-                BattleService.startFromLocation(locationId)
-                break
-
             case "boss": {
-                if (WorldService.progressLocation(locationId, 1)) {
+                if (WorldService.canInteract(locationId)) {
                     BattleService.startFromLocation(locationId)
                 }
                 break
             }
 
             case "gathering": {
-                if (WorldService.progressLocation(locationId, 1)) {
-                    for (const reward of locationConfig.loot) {
-                        if (!roll(reward.chance)) {
-                            continue
-                        }
-
-                        const amount = randomNumber(reward.min, reward.max)
-                        const item = LootService.generateItem(reward.itemId, amount, 0)
-                        InventoryService.add(item)
-                    }
+                if (WorldService.canInteract(locationId)) {
+                    WorldService.progressLocation(locationId, 2)
                 }
                 break
             }
         }
     },
 
-    progressLocation(locationId: LocationId, amount: number, updatedAt: number = Date.now()) {
+    canInteract(locationId: LocationId) {
         const { locations } = getState()
 
         const location = locations[locationId]
@@ -160,8 +149,21 @@ export const WorldService = {
 
         const locationConfig = LocationConfigs[locationId]
 
-        if (location.progress >= locationConfig.progressMax) {
-            return false
+        return location.progress < locationConfig.progressMax || location.resetAt === 0
+    },
+
+    progressLocation(locationId: LocationId, amount: number, updatedAt: number = Date.now()) {
+        if (!this.canInteract(locationId)) {
+            return
+        }
+
+        const { locations } = getState()
+
+        const location = locations[locationId]
+        const locationCfg = LocationConfigs[locationId]
+
+        if (location.progress >= locationCfg.progressMax) {
+            return
         }
 
         if (location.startedAt === 0) {
@@ -170,25 +172,31 @@ export const WorldService = {
 
         location.progress += amount
 
-        if (location.progress >= locationConfig.progressMax) {
-            location.progress = locationConfig.progressMax
+        if (locationCfg.type === "gathering") {
+            rewardFromLocation(locationCfg)
+        }
+
+        if (location.progress >= locationCfg.progressMax) {
+            location.progress = locationCfg.progressMax
             location.completedAt = updatedAt
 
-            for (const unlockedLocationId of locationConfig.unlocks) {
+            if (locationCfg.type !== "gathering") {
+                rewardFromLocation(locationCfg)
+            }
+
+            for (const unlockedLocationId of locationCfg.unlocks) {
                 this.addLocation(unlockedLocationId)
                 emit("location-added", unlockedLocationId)
             }
         }
 
-        if (location.resetAt === 0 && (locationConfig.type === "gathering" || locationConfig.type === "boss")) {
-            location.resetAt = updatedAt + locationConfig.cooldown
+        if (location.resetAt === 0 && (locationCfg.type === "gathering" || locationCfg.type === "boss")) {
+            location.resetAt = updatedAt + locationCfg.cooldown
             cache.locationsReseting.push(location)
             sortLocationsReseting()
         }
 
         emit("location-updated", locationId)
-
-        return true
     },
 
     addLocation(locationId: LocationId) {
@@ -250,4 +258,17 @@ const createLocation = (locationId: LocationId): LocationState => {
 
 const sortLocationsReseting = () => {
     cache.locationsReseting.sort((a, b) => a.resetAt - b.resetAt)
+}
+
+const rewardFromLocation = (locationCfg: LocationConfig) => {
+    for (const reward of locationCfg.loot) {
+        if (!roll(reward.chance)) {
+            continue
+        }
+
+        const amount = randomNumber(reward.min, reward.max)
+        const item = LootService.generateItem(reward.itemId, amount, 0)
+        InventoryService.add(item)
+        console.log("reward", item)
+    }
 }
