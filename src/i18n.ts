@@ -280,6 +280,12 @@ const I18nValues = {
     attempts: {
         en: "Attempts",
     },
+    rewards: {
+        en: "Rewards",
+    },
+    received: {
+        en: "Received",
+    },
 } satisfies Record<string, LocalEntry>
 
 export function i18n(key: string | null) {

@@ -17,18 +17,22 @@ template.innerHTML = html`
                 <div id="name" class="font-2 bold"></div>
                 <div id="type" class="font-1 color-secondary"></div>
             </div>
-            <div id="level" class="tertiary font-2">Level 1</div>
+            <div id="level" class="font-2"></div>
         </div>
 
-        <div id="description" class="tertiary mb-2"></div>
+        <div id="description" class="mb-2"></div>
 
         <div class="flex flex-column mb-3">
-            <div id="type" class="tertiary mb-1 bold">Rewards</div>
+            <div class="mb-1">
+                <span class="bold">${i18n("rewards")}</span>
+                <span id="rewards-status" class="font-1 color-secondary">(${i18n("received")})</span>
+            </div>
+
             <div id="rewards" class="flex flex-row gap-1"></div>
         </div>
 
         <div class="flex flex-column mb-6">
-            <div id="progress-text" class="tertiary mb-1 bold"></div>
+            <div id="progress-text" class="mb-1 bold"></div>
             <location-status></location-status>
         </div>
 
@@ -70,18 +74,20 @@ export class LocationPopup extends HTMLComponent {
         const { locations } = getState()
 
         const locationId = this.getAttrib("locationId")
-        const locationConfig = LocationConfigs[locationId]
+        const locationCfg = LocationConfigs[locationId]
         const locationState = locations[locationId]
 
         if (locationId !== this.currLocationId) {
-            this.setText("#name", i18n(locationConfig.id))
-            this.setText("#type", i18n(locationConfig.type))
-            this.setText("#description", i18n(`${locationConfig.id}_description`))
-            this.setText("#level", `${i18n("level")} ${locationConfig.level}`)
+            this.setText("#name", i18n(locationCfg.id))
+            this.setText("#type", i18n(locationCfg.type))
+            this.setText("#description", i18n(`${locationCfg.id}_description`))
+            this.setText("#level", `${i18n("level")} ${locationCfg.level}`)
+
+            const receivedRewards = locationState.completedAt > 0 && locationCfg.type === "battle"
+            this.toggleClassName("hidden", !receivedRewards, "#rewards-status")
 
             const rewardsElement = this.getElement("#rewards", true)
-
-            for (const reward of locationConfig.loot) {
+            for (const reward of locationCfg.loot) {
                 const itemIcon = new ItemIconSlot()
                 itemIcon.updateByItemId(reward.itemId, reward.min, reward.max)
                 rewardsElement.appendChild(itemIcon)
@@ -90,14 +96,14 @@ export class LocationPopup extends HTMLComponent {
             this.currLocationId = locationId
         }
 
-        const showRespawn = locationState.progress >= locationConfig.progressMax && locationState.resetAt > 0
-        const defaultProgressText = locationConfig.type === "gathering" ? "attempts" : "progress"
+        const showRespawn = locationState.progress >= locationCfg.progressMax && locationState.resetAt > 0
+        const defaultProgressText = locationCfg.type === "gathering" ? "attempts" : "progress"
         this.setText("#progress-text", i18n(showRespawn ? "respawn" : defaultProgressText))
 
         const locationStatus = this.getElement<LocationStatus>("location-status")
-        locationStatus.update(locationConfig, locationState)
+        locationStatus.update(locationCfg, locationState)
 
-        const interactText = locationConfig.type === "gathering" ? "gather" : "battle"
+        const interactText = locationCfg.type === "gathering" ? "gather" : "battle"
         this.setText("#interact", i18n(interactText))
         this.toggleClassName("disabled", showRespawn, "#interact")
     }

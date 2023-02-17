@@ -269,6 +269,5 @@ const rewardFromLocation = (locationCfg: LocationConfig) => {
         const amount = randomNumber(reward.min, reward.max)
         const item = LootService.generateItem(reward.itemId, amount, 0)
         InventoryService.add(item)
-        console.log("reward", item)
     }
 }
