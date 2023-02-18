@@ -24,10 +24,9 @@ body {
     font-family: "Open Sans", sans-serif;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
-    /* background: linear-gradient(#d6d6d6, #ececec);
+    background: linear-gradient(#e5e7eb, #ececec);
     background-repeat: no-repeat;
-    background-attachment: fixed; */
-    background-color: rgb(229 231 235);
+    background-attachment: fixed;
 }
 
 navbar {
@@ -185,31 +184,6 @@ column.center-v {
 }
 column.flex {
     flex: 1;
-}
-
-card {
-    padding: 2px;
-    margin-bottom: 2px;
-    cursor: pointer;
-}
-card:hover {
-    background: black;
-    color: white;
-}
-card.disabled {
-    opacity: 0.5;
-    cursor: no-drop;
-}
-
-sidebar {
-    display: flex;
-    flex-direction: column;
-    flex: 0 0 180px;
-    padding: 10px 0;
-    border-right: 1px solid #cbcbcb;
-}
-sidebar > * {
-    margin-bottom: 8px;
 }
 
 content-holder {
@@ -502,6 +476,9 @@ item-tooltip {
 .width-60 {
     width: 60%;
 }
+.min-width-140px {
+    min-width: 140px;
+}
 
 .content {
     width: 600px;
@@ -511,21 +488,53 @@ item-tooltip {
 .bg-white {
     background-color: rgb(255 255 255);
 }
+
+.p-1 {
+    padding: 0.25rem;
+}
 .p-2 {
     padding: 0.5rem;
 }
+.p-5 {
+    padding: 1.25rem;
+}
+
+.pt-1 {
+    padding-top: 0.25rem;
+}
+.pt-5 {
+    padding-top: 1.25rem;
+}
+
 .pb-1 {
     padding-bottom: 0.25rem;
 }
 .pb-2 {
     padding-bottom: 0.5rem;
 }
+.pb-5 {
+    padding-bottom: 1.25rem;
+}
+
+.pl-2 {
+    padding-left: 0.5rem;
+}
+.pl-5 {
+    padding-left: 1.25rem;
+}
+
+.pr-2 {
+    padding-right: 0.5rem;
+}
+
 .m-2 {
     margin: 0.5rem;
 }
+
 .mt-2 {
     margin-top: 0.5rem;
 }
+
 .mb-1 {
     margin-bottom: 0.25rem;
 }
@@ -585,6 +594,9 @@ item-tooltip {
     outline-style: solid;
     outline-color: rgb(148 163 184);
 }
+.hover\:bg-white:hover {
+    background-color: rgb(255 255 255);
+}
 
 .border-bottom {
     border-bottom-width: 1px;
@@ -601,6 +613,10 @@ item-tooltip {
 }
 .bold {
     font-weight: bold;
+}
+.weight-500,
+.active\:weight-500[data-active] {
+    font-weight: 500;
 }
 .uppercase {
     text-transform: uppercase;
