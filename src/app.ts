@@ -6,7 +6,7 @@ import "./components/close-button"
 import "./components/progress-bar"
 import "./components/scrolling-text"
 import "./components/stats-table"
-import "./components/url"
+import "./components/x-url"
 import "./components/x-card"
 import "./components/x-column"
 import "./components/x-header"
@@ -15,7 +15,7 @@ import "./components/x-row"
 import "./components/x-text"
 import "./components/x-timer"
 import "./currencies/currency-item"
-import { setShow } from "./dom"
+import { getElement, removeAllChildren, setShow, setText } from "./dom"
 import { emit, subscribe } from "./events"
 import { equipAbility } from "./loadout/loadout"
 import { getState, loadState } from "./state"
@@ -23,45 +23,14 @@ import { loadTooltipSystem } from "./tooltip"
 import { updateView } from "./view"
 import { WorldService } from "./world/world-service"
 import { PopupService } from "./popup"
+import { i18n } from "./i18n"
+import { XUrl } from "./components/x-url"
+import { AreaConfigs, AreaId } from "./config/area-configs"
+import { updateUrl } from "./url"
 
 let tLast = 0
 
 function createEmptyProfile() {
-    // addCard("unknown_location")
-    // addCard("dungeon")
-    // addCard("encounter_boar")
-
-    // addItem("leather_clothing", {
-    //     power: 2,
-    //     rarity: 2,
-    //     amount: 1,
-    // })
-    // addItem("leather_clothing", {
-    //     power: 3,
-    //     rarity: 1,
-    //     amount: 2,
-    // })
-    // addItem("axe", {
-    //     power: 3,
-    //     rarity: 1,
-    //     amount: 1,
-    // })
-    // addItem("sword", {
-    //     power: 2,
-    //     rarity: 2,
-    //     amount: 1,
-    // })
-    // addItem("leather_clothing", {
-    //     power: 1,
-    //     rarity: 4,
-    //     amount: 2,
-    // })
-    // addItem("health_potion", {
-    //     power: 3,
-    //     rarity: 4,
-    //     amount: 5,
-    // })
-
     WorldService.addLocation("foo")
     WorldService.addLocation("bar")
     WorldService.addLocation("copper_mine")
@@ -87,6 +56,9 @@ function load() {
     WorldService.load()
     PopupService.load()
 
+    loadNav()
+    updateUrl()
+
     recalculateStats()
     loadTooltipSystem()
 
@@ -94,6 +66,36 @@ function load() {
 
     subscribe("battle-start", onBattleStart)
     subscribe("battle-end", onBattleEnd)
+}
+
+const loadNav = () => {
+    const generalNavItems: string[] = ["character", "inventory"]
+
+    setText("world-nav-title", i18n("world"))
+    setText("nav-title", i18n("menu"))
+
+    const navItemsElement = getElement("#nav-items")
+
+    for (const navId of generalNavItems) {
+        const navItem = new XUrl()
+        navItem.update(navId, `/${navId}`)
+        navItemsElement.appendChild(navItem)
+    }
+
+    upadateWorldNav()
+}
+
+const upadateWorldNav = () => {
+    const worldNavItemsElement = getElement("#world-nav-items")
+
+    removeAllChildren(worldNavItemsElement)
+
+    for (const key in AreaConfigs) {
+        const areaId = key as AreaId
+        const navItem = new XUrl()
+        navItem.update(areaId, `/world/${areaId}`)
+        worldNavItemsElement.appendChild(navItem)
+    }
 }
 
 function loadSave() {
@@ -150,9 +152,12 @@ window.onbeforeunload = () => {
     // localStorage.setItem("profile", JSON.stringify(state))
 }
 
-window.addEventListener("popstate", () => updateView)
-window.addEventListener("pushstate", () => updateView)
-window.addEventListener("hashchange", () => updateView)
+window.addEventListener("popstate", () => updateView())
+window.addEventListener("pushstate", () => {
+    updateUrl()
+    updateView()
+})
+window.addEventListener("hashchange", () => updateView())
 
 declare global {
     function html(str: TemplateStringsArray, ...values: unknown[]): string

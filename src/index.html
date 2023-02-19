@@ -60,16 +60,13 @@
 
             <div class="pt-5 pb-5 pl-5 pr-2 min-width-140px">
                 <div class="mb-4">
-                    <div class="mb-2 pl-2 bold uppercase font-1">World</div>
-                    <div class="pt-1 pb-1 pl-2 pr-2 cursor-pointer border-radius-3 hover:bg-white">Town</div>
-                    <div class="pt-1 pb-1 pl-2 pr-2 cursor-pointer border-radius-3 hover:bg-white">Forest</div>
-                    <div class="pt-1 pb-1 pl-2 pr-2 cursor-pointer border-radius-3 hover:bg-white">Desert</div>
+                    <div id="world-nav-title" class="mb-2 pl-2 bold uppercase font-1"></div>
+                    <div id="world-nav-items" class="flex flex-column"></div>
                 </div>
 
                 <div class="mb-4">
-                    <div class="mb-2 pl-2 bold uppercase font-1">Menu</div>
-                    <div class="pt-1 pb-1 pl-2 pr-2 cursor-pointer border-radius-3 hover:bg-white">Character</div>
-                    <div class="pt-1 pb-1 pl-2 pr-2 cursor-pointer border-radius-3 hover:bg-white">Inventory</div>
+                    <div id="nav-title" class="mb-2 pl-2 bold uppercase font-1"></div>
+                    <div id="nav-items" class="flex flex-column"></div>
                 </div>
             </div>
 
@@ -83,6 +80,11 @@
                         </div>
                         <div id="area-locations" class="grid grid-gap"></div>
                     </div>
+
+                    <x-column id="view-inventory" class="hide">
+                        <x-header>Inventory</x-header>
+                        <inventory-container id="inventory-container"></inventory-container>
+                    </x-column>
 
                     <!-- 
                     <x-column id="view-town" class="hide">
@@ -171,10 +173,7 @@
                         <inventory-container id="abilities-container"></inventory-container>
                     </x-column>
 
-                    <x-column id="view-inventory" class="hide">
-                        <x-header>Inventory</x-header>
-                        <inventory-container id="inventory-container"></inventory-container>
-                    </x-column>
+
 
                     <x-column id="view-equipment" class="hide flex">
                         <x-header>

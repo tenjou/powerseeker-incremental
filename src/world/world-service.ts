@@ -217,24 +217,6 @@ export const WorldService = {
         return location
     },
 
-    getSelectedArea() {
-        const { areas } = getState()
-
-        const areaId = cache.selectedAreaId
-
-        let area = areas[areaId]
-        if (!area) {
-            area = createArea(areaId)
-            areas[areaId] = area
-        }
-
-        return area
-    },
-
-    getSelectedAreaId() {
-        return cache.selectedAreaId
-    },
-
     isSelected(areaId: AreaId) {
         return cache.selectedAreaId === areaId
     },

@@ -286,6 +286,18 @@ const I18nValues = {
     received: {
         en: "Received",
     },
+    menu: {
+        en: "Menu",
+    },
+    world: {
+        en: "World",
+    },
+    character: {
+        en: "Character",
+    },
+    inventory: {
+        en: "Inventory",
+    },
 } satisfies Record<string, LocalEntry>
 
 export function i18n(key: string | null) {

@@ -1,19 +1,20 @@
+import { loadAbilitiesView, unloadAbilitiesView } from "./abilities/ui/abilities-view"
+import { loadBattleView, unloadBattleView } from "./battle/ui/battle-view"
 import { loadCharacterView, unloadCharacterView } from "./character/ui/character-view"
 import { toggleClassName } from "./dom"
-import { loadInventoryView, unloadInventoryView } from "./inventory/ui/inventory-view"
-import { loadSkillsView, unloadSkillsView } from "./skills/skills-view"
 import { loadEquipmentView, unloadEquipmentView } from "./equipment/ui/equipment-view"
-import { loadAbilitiesView, unloadAbilitiesView } from "./abilities/ui/abilities-view"
-import { loadLoadoutView, unloadLoadoutView } from "./loadout/ui/loadout-vew"
-import { loadWorldView, unloadWorldView } from "./world/ui/world-view"
-import { loadTownView, unloadTownView } from "./town/town"
-import { loadJobsView, unloadJobsView } from "./jobs/ui/jobs-view"
-import { loadBattleView, unloadBattleView } from "./battle/ui/battle-view"
 import { EventCallbackInfo, unsubscribe, watchSubscribers } from "./events"
+import { loadInventoryView, unloadInventoryView } from "./inventory/ui/inventory-view"
+import { loadJobsView, unloadJobsView } from "./jobs/ui/jobs-view"
+import { loadLoadoutView, unloadLoadoutView } from "./loadout/ui/loadout-vew"
+import { loadSkillsView, unloadSkillsView } from "./skills/skills-view"
+import { loadTownView, unloadTownView } from "./town/town"
+import { loadWorldView, unloadWorldView, updateWorldView } from "./world/ui/world-view"
 
 interface View {
     onLoad: (segments: string[]) => void
     onUnload: () => void
+    onUpdate?: (segments: string[]) => void
     customContainer?: string
 }
 
@@ -29,6 +30,7 @@ const views: Record<ViewType, View> = {
     world: {
         onLoad: loadWorldView,
         onUnload: unloadWorldView,
+        onUpdate: updateWorldView,
     },
     character: {
         onLoad: loadCharacterView,
@@ -80,6 +82,10 @@ export function updateView(forceView?: ViewType) {
     }
 
     if (currView === nextView) {
+        let view = views[currView]
+        if (view.onUpdate) {
+            view.onUpdate(segments)
+        }
         return
     }
 
@@ -125,6 +131,9 @@ export function updateView(forceView?: ViewType) {
 
     watchSubscribers(registerViewSubscribers)
     view.onLoad(segments)
+    if (view.onUpdate) {
+        view.onUpdate(segments)
+    }
     watchSubscribers(null)
 
     toggleClassName(`view-${nextView}`, "hide", false)
