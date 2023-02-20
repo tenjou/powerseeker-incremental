@@ -3,7 +3,7 @@ import { goTo } from "../view"
 import { i18n } from "./../i18n"
 
 const template = document.createElement("template")
-template.className = "pt-1 pb-1 pl-2 pr-2 m-px border-radius-3 hover:bg-white active:bg-white cursor-pointer"
+template.className = "py-1 px-2 m-px border-radius-3 hover:bg-white active:bg-white cursor-pointer"
 
 export class XUrl extends HTMLComponent {
     href: string
