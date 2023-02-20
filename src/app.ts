@@ -27,6 +27,8 @@ import { i18n } from "./i18n"
 import { XUrl } from "./components/x-url"
 import { AreaConfigs, AreaId } from "./config/area-configs"
 import { updateUrl } from "./url"
+import { InventoryService } from "./inventory/inventory"
+import { LootService } from "./inventory/loot-service"
 
 let tLast = 0
 
@@ -52,6 +54,11 @@ function load() {
 
     const state = getState()
     const isBattle = !!state.battle.id
+
+    const copperOre = LootService.generateItem("copper_ore", 3, 0)
+    InventoryService.add(copperOre)
+    const healthPots = LootService.generateItem("health_potion", 2, 0)
+    InventoryService.add(healthPots)
 
     WorldService.load()
     PopupService.load()

@@ -11,6 +11,8 @@ template.innerHTML = html`
 `
 
 export class ItemIconSlot extends HTMLComponent {
+    item: Item | null = null
+
     constructor(srcTemplate?: HTMLTemplateElement) {
         super(srcTemplate || template)
     }
@@ -27,17 +29,25 @@ export class ItemIconSlot extends HTMLComponent {
         }
 
         this.classList.add(`rarity-${item.rarity}`)
-        this.setText("#value", item.power)
-        this.getElement("#value").setAttribute("class", itemConfig.type === "equipment" ? "color-gold" : "color-white")
+        this.setAttrib("item-id", item.id)
+        this.item = item
+
+        if (itemConfig.type === "equipment") {
+            this.setText("#value", item.power)
+            this.getElement("#value").setAttribute("class", "color-gold")
+        } else {
+            this.setText("#value", item.amount)
+            this.getElement("#value").setAttribute("class", "color-white")
+        }
     }
 
     updateByItemId(itemId: ItemId, min: number, max: number = min) {
         const itemConfig = ItemConfigs[itemId]
 
-        const imgElement = this.getElement("img")
-
         this.setAttrib("item-id", itemId)
+        this.item = null
 
+        const imgElement = this.getElement("img")
         imgElement.setAttribute("src", `/assets/icon/${itemConfig.type}/${itemId}.png`)
         this.toggleClass("img", "hidden", itemId === "xp")
         this.toggleClass("#xp", "hidden", itemId !== "xp")

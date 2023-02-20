@@ -16,9 +16,7 @@ export function loadWorldView() {
     subscribe("location-updated", updateLocation)
 }
 
-export const unloadWorldView = () => {
-    removeAllChildren("area-menu")
-}
+export const unloadWorldView = () => {}
 
 export const updateWorldView = (segments: string[]) => {
     const { battleResult } = getState()

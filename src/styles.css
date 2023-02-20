@@ -313,16 +313,16 @@ segment {
     text-transform: uppercase;
 }
 
-inventory-container {
+.grid-3 {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(2rem, 46px));
+    grid-template-columns: repeat(auto-fit, minmax(2rem, 40px));
 }
-.grid {
+.grid-9 {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
 }
 .grid-gap {
-    grid-gap: 0.5rem;
+    grid-gap: 0.25rem;
 }
 inventory-container.grid-15 {
     grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));

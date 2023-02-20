@@ -15,7 +15,7 @@ const ItemTypeSortWeight: Record<ItemType, number> = {
     currency: 0,
 }
 
-export function loadInventoryView() {
+export const loadInventoryView = () => {
     updateInventoryView()
 
     subscribe("item-added", updateInventoryView)
@@ -23,22 +23,18 @@ export function loadInventoryView() {
     subscribe("item-updated", updateItem)
 }
 
-export function unloadInventoryView() {
+export const unloadInventoryView = () => {
     removeAllChildren("inventory-container")
 }
 
-function updateInventoryView() {
+const updateInventoryView = () => {
     const parent = getElementById("inventory-container")
-    if (!parent) {
-        console.error(`Could not find inventory-container`)
-        return
-    }
 
     const inventory = sortInventory(getState().inventory)
 
     const missingChildren = inventory.length - parent.children.length
     for (let n = 0; n < missingChildren; n += 1) {
-        const itemSlot = document.createElement("item-slot")
+        const itemSlot = new ItemIconSlot()
         itemSlot.onclick = openItemPopup
         parent.appendChild(itemSlot)
     }
@@ -46,9 +42,7 @@ function updateInventoryView() {
     for (let n = 0; n < inventory.length; n += 1) {
         const item = inventory[n]
         const itemSlot = parent.children[n] as ItemIconSlot
-        itemSlot.id = `item-${item.uid}`
-        itemSlot.setAttribute("uid", String(item.uid))
-        itemSlot.setAttribute("item-id", item.id)
+        itemSlot.updateByItem(item)
     }
 }
 
@@ -83,28 +77,33 @@ export function sortInventory(inventory: Item[]) {
 export function openItemPopup(event: MouseEvent, onClose?: () => void) {
     const { inventory } = getState()
 
-    const element = event.target as HTMLElement
+    const itemIconSlot = event.target as ItemIconSlot
+    const item = itemIconSlot.item
 
-    const uid = element.getAttribute("uid")
-    const item = inventory.find((entry) => entry.uid === uid)
     if (!item) {
-        const itemId = element.getAttribute("item-id")
-        if (itemId) {
-            PopupService.open(
-                "item-popup",
-                {
-                    "item-id": itemId,
-                    power: Number(element.getAttribute("power")),
-                    rarity: Number(element.getAttribute("rarity")),
-                },
-                onClose
-            )
-            return
-        }
-
-        console.error(`Could not find item with UID: ${uid}`)
         return
     }
+
+    // const uid = element.getAttribute("uid")
+    // const item = inventory.find((entry) => entry.uid === uid)
+    // if (!item) {
+    //     const itemId = element.getAttribute("item-id")
+    //     if (itemId) {
+    //         PopupService.open(
+    //             "item-popup",
+    //             {
+    //                 "item-id": itemId,
+    //                 power: Number(element.getAttribute("power")),
+    //                 rarity: Number(element.getAttribute("rarity")),
+    //             },
+    //             onClose
+    //         )
+    //         return
+    //     }
+
+    //     console.error(`Could not find item with UID: ${uid}`)
+    //     return
+    // }
 
     PopupService.open(
         "item-popup",
