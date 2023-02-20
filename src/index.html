@@ -80,10 +80,14 @@
                         <div id="area-locations" class="grid-9 grid-gap"></div>
                     </div>
 
-                    <x-column id="view-inventory" class="hide">
-                        <x-header>Inventory</x-header>
-                        <div id="inventory-container" class="grid-3 grid-gap"></div>
-                    </x-column>
+                    <div id="view-character" class="flex flex-column hide">
+                        <x-header title="character"></x-header>
+                    </div>
+
+                    <div id="view-inventory" class="flex flex-column hide">
+                        <x-header title="inventory"></x-header>
+                        <div id="inventory-container" class="grid-3 grid-gap" />
+                    </div>
 
                     <!-- 
                     <x-column id="view-town" class="hide">

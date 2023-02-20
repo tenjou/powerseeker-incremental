@@ -20,66 +20,56 @@ export function loadCharacterView() {
     subscribe("unequip", updateEquipmentSlot)
 }
 
-export function unloadCharacterView() {
-    unsubscribe("equip", updateEquipmentSlot)
-    unsubscribe("unequip", updateEquipmentSlot)
-}
+export function unloadCharacterView() {}
 
 export function updateCharacterView() {
-    const { player, battler } = getState()
-
-    updateJobs()
-
-    const statsData: StatsTableEntry[] = [
-        {
-            key: i18n("health"),
-            value: battler.stats.health,
-        },
-        {
-            key: i18n("power"),
-            value: player.power,
-        },
-        {
-            key: i18n("attack"),
-            value: battler.stats.attack,
-        },
-        {
-            key: i18n("defense"),
-            value: battler.stats.defense,
-        },
-        {
-            key: i18n("accuracy"),
-            value: battler.stats.accuracy,
-        },
-        {
-            key: i18n("evasion"),
-            value: battler.stats.evasion,
-        },
-        {
-            key: i18n("speed"),
-            value: battler.stats.speed,
-        },
-    ]
-
-    const statsTable = getElementById("stats")
-    statsTable.setAttribute("data", JSON.stringify(statsData))
-
-    const equipmentElements = document.querySelectorAll<EquipmentSlotElement>("equipment-slot")
-    equipmentElements.forEach((element) => {
-        element.update()
-    })
-
-    const abilitiesSlots = document.querySelectorAll<AbilitySlotElement>("ability-slot")
-    abilitiesSlots.forEach((element) => {
-        element.update()
-        element.onclick = () => goTo(`loadout/ability`)
-    })
-
-    const itemSlots = document.querySelectorAll<ItemIconSlot>("item-slot")
-    itemSlots.forEach((element) => {
-        // element.update()
-    })
-
+    // const { player, battler } = getState()
+    // updateJobs()
+    // const statsData: StatsTableEntry[] = [
+    //     {
+    //         key: i18n("health"),
+    //         value: battler.stats.health,
+    //     },
+    //     {
+    //         key: i18n("power"),
+    //         value: player.power,
+    //     },
+    //     {
+    //         key: i18n("attack"),
+    //         value: battler.stats.attack,
+    //     },
+    //     {
+    //         key: i18n("defense"),
+    //         value: battler.stats.defense,
+    //     },
+    //     {
+    //         key: i18n("accuracy"),
+    //         value: battler.stats.accuracy,
+    //     },
+    //     {
+    //         key: i18n("evasion"),
+    //         value: battler.stats.evasion,
+    //     },
+    //     {
+    //         key: i18n("speed"),
+    //         value: battler.stats.speed,
+    //     },
+    // ]
+    // const statsTable = getElementById("stats")
+    // statsTable.setAttribute("data", JSON.stringify(statsData))
+    // const equipmentElements = document.querySelectorAll<EquipmentSlotElement>("equipment-slot")
+    // equipmentElements.forEach((element) => {
+    //     element.update()
+    // })
+    // const abilitiesSlots = document.querySelectorAll<AbilitySlotElement>("ability-slot")
+    // abilitiesSlots.forEach((element) => {
+    //     element.update()
+    //     element.onclick = () => goTo(`loadout/ability`)
+    // })
+    // const itemSlots = document.querySelectorAll<ItemIconSlot>("item-slot")
+    // itemSlots.forEach((element) => {
+    //     // element.update()
+    // })
     // upadateLoadoutWidget()
 }
 

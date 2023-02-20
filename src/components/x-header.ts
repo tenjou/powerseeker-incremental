@@ -1,29 +1,21 @@
 import { HTMLComponent } from "../dom"
+import { i18n } from "../i18n"
 
 const template = document.createElement("template")
-template.innerHTML = html`
-    <style>
-        :host {
-            font-weight: 700;
-            text-transform: uppercase;
-            border-bottom: 1px solid #bfbfbf;
-            margin: 0px 5px 5px 2px;
-        }
-
-        header-title {
-            display: inline-flex;
-            padding: 7px 2px 6px;
-            margin-bottom: -1px;
-            border-bottom: 1px solid black;
-        }
-    </style>
-
-    <header-title><slot></slot></header-title>
-`
+template.className = "block pb-1 mb-2 border-bottom font-3 color-dark bold"
 
 class Header extends HTMLComponent {
     constructor() {
         super(template)
+    }
+
+    connectedCallback() {
+        super.connectedCallback()
+
+        const title = this.getAttribute("title")
+        if (title) {
+            this.innerText = i18n(title)
+        }
     }
 }
 

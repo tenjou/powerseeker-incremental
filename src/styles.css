@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap");
 /* @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&display=swap"); */
+
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Open+Sans:wght@400;500;600&display=swap");
 
 @font-face {
@@ -78,6 +79,9 @@ container {
 .color-green {
     color: #4caf50;
     font-weight: bold;
+}
+.color-dark {
+    color: 11ee1e;
 }
 
 .hide,
@@ -649,6 +653,9 @@ item-tooltip {
 }
 .font-2 {
     font-size: 0.8rem;
+}
+.font-3 {
+    font-size: 0.9rem;
 }
 .font-4 {
     font-size: 1em;
