@@ -495,7 +495,7 @@ item-tooltip {
 .bg-white {
     background-color: rgb(255 255 255);
 }
-.highlight-row > *:nth-child(even) {
+.highlight-row > *:nth-child(odd) {
     background: #ffffff3d;
     border-radius: 3px;
 }
@@ -945,4 +945,29 @@ progress-bar.width-anim .bar {
     -moz-transition: width 0.2s ease-out;
     -o-transition: width 0.2s ease-out;
     transition: width 0.2s ease-out;
+}
+
+.resistance-icon {
+    width: 6px;
+    height: 6px;
+    border: 1px solid #00000096;
+    margin-right: 4px;
+}
+.resistance-icon.fire {
+    background: #f14916;
+}
+.resistance-icon.water {
+    background: #60c0eb;
+}
+.resistance-icon.earth {
+    background: #abd975;
+}
+.resistance-icon.air {
+    background: #d473e5;
+}
+.resistance-icon.light {
+    background: #ffffff;
+}
+.resistance-icon.dark {
+    background: #939393;
 }

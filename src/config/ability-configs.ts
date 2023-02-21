@@ -4,6 +4,8 @@ export type AbilityId = "attack" | "bash" | "heal" | "magnum_break" | "sword_mas
 
 export type AbilityType = "instant" | "passive"
 
+export type ElementType = "neutral" | "fire" | "water" | "lightning" | "wind" | "light" | "dark"
+
 export enum AbilityFlag {
     Offensive = 1,
     AoE = 2,
@@ -20,6 +22,7 @@ interface BasicAbilityConfig {
 
 export interface InstantAbilityConfig extends BasicAbilityConfig {
     type: "instant"
+    element: ElementType
     flags: number
     energy: number
     cooldown: number
@@ -37,6 +40,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
     attack: {
         id: "attack",
         type: "instant",
+        element: "neutral",
         energy: 0,
         cooldown: 0,
         duration: 0,
@@ -54,6 +58,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
     bash: {
         id: "bash",
         type: "instant",
+        element: "fire",
         energy: 1,
         cooldown: 0,
         duration: 0,
@@ -71,6 +76,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
     heal: {
         id: "heal",
         type: "instant",
+        element: "light",
         energy: 8,
         cooldown: 0,
         duration: 0,
@@ -88,6 +94,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
     magnum_break: {
         id: "magnum_break",
         type: "instant",
+        element: "neutral",
         energy: 15,
         cooldown: 0,
         duration: 0,
@@ -129,6 +136,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
     berserk: {
         id: "berserk",
         type: "instant",
+        element: "neutral",
         description: "Increase damage with axes.",
         energy: 2,
         cooldown: 1,
@@ -146,6 +154,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
     poison: {
         id: "poison",
         type: "instant",
+        element: "dark",
         description: "Increase damage with axes.",
         energy: 4,
         cooldown: 0,

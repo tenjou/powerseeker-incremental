@@ -130,7 +130,7 @@ const createMonsterBattler = (monsterId: MonsterId): Battler => {
             fireResistance: 0,
             waterResistance: 0,
             earthResistance: 0,
-            windResistance: 0,
+            airResistance: 0,
             lightResistance: 0,
             darkResistance: 0,
         },

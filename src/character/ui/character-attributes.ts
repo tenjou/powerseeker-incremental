@@ -11,13 +11,15 @@ export interface StatsRowEntry {
 const template = document.createElement("template")
 template.className = "mb-3 mr-3 width-180px"
 template.innerHTML = html`
-    <div class="px-2 mb-1 bold font-2">${i18n("attributes")}</div>
-    <div class="highlight-row">
+    <div class="px-2 mb-2 bold font-2">${i18n("attributes")}</div>
+
+    <div class="highlight-row mb-2">
         <stats-row id="attribute-health"></stats-row>
         <stats-row id="attribute-mana"></stats-row>
         <stats-row id="attribute-health-regen"></stats-row>
         <stats-row id="attribute-mana-regen"></stats-row>
     </div>
+
     <div class="highlight-row">
         <stats-row id="attribute-attack"></stats-row>
         <stats-row id="attribute-defense"></stats-row>

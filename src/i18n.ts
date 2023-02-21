@@ -307,6 +307,24 @@ const I18nValues = {
     critical: {
         en: "Critical",
     },
+    fire: {
+        en: "Fire",
+    },
+    water: {
+        en: "Water",
+    },
+    earth: {
+        en: "Earth",
+    },
+    air: {
+        en: "Air",
+    },
+    light: {
+        en: "Light",
+    },
+    dark: {
+        en: "Dark",
+    },
 } satisfies Record<string, LocalEntry>
 
 export function i18n(key: string | null) {

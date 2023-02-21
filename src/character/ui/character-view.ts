@@ -13,10 +13,12 @@ import { setText } from "./../../dom"
 import "./character-attributes"
 import { CharacterAttributes } from "./character-attributes"
 import "./character-resistances"
+import { CharacterResistances } from "./character-resistances"
 import "./stats-row"
 
 export function loadCharacterView() {
     getElement<CharacterAttributes>("character-attributes").update()
+    getElement<CharacterResistances>("character-resistances").update()
 
     updateCharacterView()
 

@@ -11,8 +11,15 @@ export interface StatsRowEntry {
 const template = document.createElement("template")
 template.className = "mb-3 width-180px"
 template.innerHTML = html`
-    <div class="mb-1 px-2 bold font-2">${i18n("resistances")}</div>
-    <div class="highlight-row"></div>
+    <div class="mb-2 px-2 bold font-2">${i18n("resistances")}</div>
+    <div class="highlight-row">
+        <stats-row id="resistance-fire"><div class="resistance-icon fire"></div></stats-row>
+        <stats-row id="resistance-water"><div class="resistance-icon water"></div></stats-row>
+        <stats-row id="resistance-earth"><div class="resistance-icon earth"></div></stats-row>
+        <stats-row id="resistance-air"><div class="resistance-icon air"></div></stats-row>
+        <stats-row id="resistance-light"><div class="resistance-icon light"></div></stats-row>
+        <stats-row id="resistance-dark"><div class="resistance-icon dark"></div></stats-row>
+    </div>
 `
 
 export class CharacterResistances extends HTMLComponent {
@@ -22,6 +29,13 @@ export class CharacterResistances extends HTMLComponent {
 
     update() {
         const { battler } = getState()
+
+        this.getElement<StatsRow>("#resistance-fire").update("fire", battler.stats.fireResistance, "%")
+        this.getElement<StatsRow>("#resistance-water").update("water", battler.stats.waterResistance, "%")
+        this.getElement<StatsRow>("#resistance-earth").update("earth", battler.stats.earthResistance, "%")
+        this.getElement<StatsRow>("#resistance-air").update("air", battler.stats.airResistance, "%")
+        this.getElement<StatsRow>("#resistance-light").update("light", battler.stats.lightResistance, "%")
+        this.getElement<StatsRow>("#resistance-dark").update("dark", battler.stats.darkResistance, "%")
     }
 }
 

@@ -13,7 +13,7 @@ export interface CharacterStats {
     fireResistance: number
     waterResistance: number
     earthResistance: number
-    windResistance: number
+    airResistance: number
     lightResistance: number
     darkResistance: number
 }
