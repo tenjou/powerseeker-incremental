@@ -301,6 +301,12 @@ const I18nValues = {
     attributes: {
         en: "Attributes",
     },
+    resistances: {
+        en: "Resistances",
+    },
+    critical: {
+        en: "Critical",
+    },
 } satisfies Record<string, LocalEntry>
 
 export function i18n(key: string | null) {

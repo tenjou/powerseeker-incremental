@@ -513,6 +513,9 @@ item-tooltip {
 .pt-1 {
     padding-top: 0.25rem;
 }
+.pt-2 {
+    padding-top: 0.5rem;
+}
 .pt-5 {
     padding-top: 1.25rem;
 }
@@ -592,6 +595,12 @@ item-tooltip {
 
 .mr-1 {
     margin-right: 0.25rem;
+}
+.mr-2 {
+    margin-right: 0.5rem;
+}
+.mr-3 {
+    margin-right: 0.75rem;
 }
 
 .sr-1 > * {

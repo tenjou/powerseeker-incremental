@@ -10,6 +10,12 @@ export interface CharacterStats {
     critical: number
     regenHealth: number
     regenMana: number
+    fireResistance: number
+    waterResistance: number
+    earthResistance: number
+    windResistance: number
+    lightResistance: number
+    darkResistance: number
 }
 
 export type CharacterStatType = keyof CharacterStats

@@ -97,5 +97,11 @@ export function createEmptyStats(): CharacterStats {
         speed: 100,
         regenMana: 0,
         regenHealth: 0,
+        fireResistance: 0,
+        waterResistance: 0,
+        earthResistance: 0,
+        windResistance: 0,
+        lightResistance: 0,
+        darkResistance: 0,
     }
 }
