@@ -1,6 +1,6 @@
 export interface CharacterStats {
     health: number
-    energy: number
+    mana: number
     attack: number
     defense: number
     healing: number
@@ -9,7 +9,7 @@ export interface CharacterStats {
     speed: number
     critical: number
     regenHealth: number
-    regenEnergy: number
+    regenMana: number
 }
 
 export type CharacterStatType = keyof CharacterStats

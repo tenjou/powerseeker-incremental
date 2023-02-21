@@ -92,7 +92,7 @@ let state: State = {
         level: 1,
         name: "Player",
         health: 10,
-        energy: 20,
+        mana: 20,
         stats: createEmptyStats(),
         effects: [],
         isTeamA: true,

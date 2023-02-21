@@ -100,7 +100,7 @@ class BattlerAbilityElement extends HTMLComponent {
         const { battle, battler } = getState()
 
         const cooldown = this.ability.cooldown - (battle.turn - 1)
-        const isInactive = cooldown === 0 && battle.status === "waiting" && battler.energy < getEnergyNeeded(this.ability)
+        const isInactive = cooldown === 0 && battle.status === "waiting" && battler.mana < getEnergyNeeded(this.ability)
 
         this.toggleClassName("selected", battle.status === "waiting" && battle.selectedAbility?.id === this.ability.id)
         this.toggleClassName("inactive", isInactive)

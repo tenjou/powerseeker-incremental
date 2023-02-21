@@ -94,8 +94,8 @@ const addBattler = (battle: Battle, battler: Battler) => {
     battle.battlersView.push({
         health: battler.health,
         healthMax: battler.stats.health,
-        energy: battler.energy,
-        energyMax: battler.stats.energy,
+        energy: battler.mana,
+        energyMax: battler.stats.mana,
         effects: [],
     })
 
@@ -114,10 +114,10 @@ const createMonsterBattler = (monsterId: MonsterId): Battler => {
         level: monsterConfig.level,
         name: monsterConfig.name,
         health: monsterConfig.health,
-        energy: 1,
+        mana: 1,
         stats: {
             health: monsterConfig.health,
-            energy: monsterConfig.energy,
+            mana: monsterConfig.energy,
             accuracy: 0,
             attack: monsterConfig.attack,
             critical: 0,
@@ -125,7 +125,7 @@ const createMonsterBattler = (monsterId: MonsterId): Battler => {
             evasion: 0,
             healing: 0,
             speed: monsterConfig.speed,
-            regenEnergy: 1,
+            regenMana: 1,
             regenHealth: 1,
         },
         effects: [],
@@ -357,16 +357,16 @@ function regenTurn() {
         }
 
         if (battler.health > 0) {
-            if (battler.stats.regenEnergy) {
-                battler.energy += battler.stats.regenEnergy
+            if (battler.stats.regenMana) {
+                battler.mana += battler.stats.regenMana
                 targetLogs.push({
                     type: "regen",
-                    value: battler.stats.regenEnergy,
+                    value: battler.stats.regenMana,
                     isEnergy: true,
                 })
 
-                if (battler.energy > battler.stats.energy) {
-                    battler.energy = battler.stats.energy
+                if (battler.mana > battler.stats.mana) {
+                    battler.mana = battler.stats.mana
                 }
             }
 
@@ -426,7 +426,7 @@ function nextAction() {
     const abilityConfig = AbilityConfigs[action.ability.id] as InstantAbilityConfig
 
     const energyNeeded = getEnergyNeeded(action.ability)
-    caster.energy -= energyNeeded
+    caster.mana -= energyNeeded
 
     action.ability.cooldown = battle.turn + abilityConfig.cooldown
 

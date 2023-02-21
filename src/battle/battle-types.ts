@@ -52,7 +52,7 @@ export interface Battler {
     level: number
     name: string
     health: number
-    energy: number
+    mana: number
     stats: CharacterStats
     effects: BattlerAbilityEffect[]
     isTeamA: boolean

@@ -483,6 +483,9 @@ item-tooltip {
 .min-width-140px {
     min-width: 140px;
 }
+.width-180px {
+    width: 180px;
+}
 
 .content {
     width: 600px;
@@ -491,6 +494,10 @@ item-tooltip {
 
 .bg-white {
     background-color: rgb(255 255 255);
+}
+.highlight-row > *:nth-child(even) {
+    background: #ffffff3d;
+    border-radius: 3px;
 }
 
 .p-1 {
@@ -539,6 +546,10 @@ item-tooltip {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
 }
+.py-half {
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+}
 .py-1 {
     padding-top: 0.25rem;
     padding-bottom: 0.25rem;
@@ -577,6 +588,10 @@ item-tooltip {
 }
 .mb-6 {
     margin-bottom: 1.5rem;
+}
+
+.mr-1 {
+    margin-right: 0.25rem;
 }
 
 .sr-1 > * {

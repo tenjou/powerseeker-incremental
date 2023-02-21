@@ -87,7 +87,7 @@ function addStatsFromPassive(ability?: Ability) {
 export function createEmptyStats(): CharacterStats {
     return {
         health: 10,
-        energy: 20,
+        mana: 20,
         accuracy: 1,
         attack: 300,
         critical: 1,
@@ -95,7 +95,7 @@ export function createEmptyStats(): CharacterStats {
         evasion: 1,
         healing: 1,
         speed: 100,
-        regenEnergy: 0,
+        regenMana: 0,
         regenHealth: 0,
     }
 }

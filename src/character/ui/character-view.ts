@@ -1,7 +1,6 @@
 import { AbilitySlotElement } from "../../abilities/ui/ability-slot"
-import { StatsTableEntry } from "../../components/stats-table"
 import { EquipmentSlot } from "../../config/item-configs"
-import { getElementById, toggleClassName } from "../../dom"
+import { getElement, getElementById, toggleClassName } from "../../dom"
 import "../../equipment/ui/equipment-slot"
 import { subscribe, unsubscribe } from "../../events"
 import { ItemIconSlot } from "../../inventory/ui/item-icon-slot"
@@ -12,8 +11,13 @@ import { EquipmentSlotElement } from "../../equipment/ui/equipment-slot"
 import { setText } from "./../../dom"
 import { ProgressBar } from "./../../components/progress-bar"
 import { LevelConfig } from "../../config/level-config"
+import "./character-attributes"
+import "./stats-row"
+import { CharacterAttributes } from "./character-attributes"
 
 export function loadCharacterView() {
+    getElement<CharacterAttributes>("character-attributes").update()
+
     updateCharacterView()
 
     subscribe("equip", updateEquipmentSlot)

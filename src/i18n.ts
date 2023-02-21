@@ -298,6 +298,9 @@ const I18nValues = {
     inventory: {
         en: "Inventory",
     },
+    attributes: {
+        en: "Attributes",
+    },
 } satisfies Record<string, LocalEntry>
 
 export function i18n(key: string | null) {

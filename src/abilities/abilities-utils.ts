@@ -56,7 +56,7 @@ export function canUseAbility(battler: Battler, ability: LoadoutAbility) {
     }
 
     const energyNeed = getEnergyNeeded(ability)
-    return energyNeed <= battler.energy
+    return energyNeed <= battler.mana
 }
 
 export function getEnergyNeeded(ability: Ability) {
