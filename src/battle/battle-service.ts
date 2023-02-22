@@ -443,15 +443,20 @@ function nextAction() {
 
         for (const effect of abilityConfig.effects) {
             let power = 0
+            let powerModifier = 1.0
             let flags = 0
 
             switch (effect.type) {
                 case "health": {
-                    if (abilityConfig.flags & AbilityFlag.Missable) {
+                    const criticalChance = caster.stats.critical - target.stats.critical
+                    if (roll(criticalChance)) {
+                        flags |= BattleActionFlag.Critical
+                        powerModifier *= 1.25 | 0
+                    } else if (abilityConfig.flags & AbilityFlag.Missable) {
                         const hitChance = 100 + caster.stats.accuracy - target.stats.evasion
                         if (!roll(hitChance)) {
                             flags |= BattleActionFlag.Miss
-                            power = -1
+                            powerModifier = -1
                             break
                         }
                     }
@@ -462,14 +467,7 @@ function nextAction() {
                         elementalModifier = 0.25
                     }
 
-                    power = calculatePower(caster.stats, effect) * elementalModifier
-
-                    const criticalChance = caster.stats.critical - target.stats.critical
-                    if (roll(criticalChance)) {
-                        flags |= BattleActionFlag.Critical
-                        power *= 1.25 | 0
-                    }
-
+                    power = calculatePower(caster.stats, effect) * elementalModifier * powerModifier
                     power = Math.floor(power)
 
                     target.health += power
