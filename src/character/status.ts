@@ -80,6 +80,13 @@ function addStatsFromPassive(ability?: Ability) {
     const abilityConfig = AbilityConfigs[ability.id]
 
     for (const effect of abilityConfig.effects) {
+        if (effect.stat === "resistances") {
+            for (let i = 0; i < battler.stats.resistances.length; i++) {
+                battler.stats.resistances[i] += effect.power * ability.rank
+            }
+            continue
+        }
+
         battler.stats[effect.stat] += effect.power * ability.rank
     }
 }
@@ -97,11 +104,6 @@ export function createEmptyStats(): CharacterStats {
         speed: 100,
         regenMana: 0,
         regenHealth: 0,
-        fireResistance: 0,
-        waterResistance: 0,
-        earthResistance: 0,
-        airResistance: 0,
-        lightResistance: 0,
-        darkResistance: 0,
+        resistances: [0, 0, 0, 0, 0],
     }
 }

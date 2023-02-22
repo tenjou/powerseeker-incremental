@@ -1,3 +1,4 @@
+import { ElementType } from "../../abilities/ability-type"
 import { HTMLComponent } from "../../dom"
 import { i18n } from "../../i18n"
 import { getState } from "../../state"
@@ -17,8 +18,6 @@ template.innerHTML = html`
         <stats-row id="resistance-water"><div class="resistance-icon water"></div></stats-row>
         <stats-row id="resistance-earth"><div class="resistance-icon earth"></div></stats-row>
         <stats-row id="resistance-air"><div class="resistance-icon air"></div></stats-row>
-        <stats-row id="resistance-light"><div class="resistance-icon light"></div></stats-row>
-        <stats-row id="resistance-dark"><div class="resistance-icon dark"></div></stats-row>
     </div>
 `
 
@@ -30,12 +29,10 @@ export class CharacterResistances extends HTMLComponent {
     update() {
         const { battler } = getState()
 
-        this.getElement<StatsRow>("#resistance-fire").update("fire_resistance", battler.stats.fireResistance, "%")
-        this.getElement<StatsRow>("#resistance-water").update("water_resistance", battler.stats.waterResistance, "%")
-        this.getElement<StatsRow>("#resistance-earth").update("earth_resistance", battler.stats.earthResistance, "%")
-        this.getElement<StatsRow>("#resistance-air").update("air_resistance", battler.stats.airResistance, "%")
-        this.getElement<StatsRow>("#resistance-light").update("light_resistance", battler.stats.lightResistance, "%")
-        this.getElement<StatsRow>("#resistance-dark").update("dark_resistance", battler.stats.darkResistance, "%")
+        this.getElement<StatsRow>("#resistance-fire").update("fire_resistance", battler.stats.resistances[ElementType.Fire], "%")
+        this.getElement<StatsRow>("#resistance-water").update("water_resistance", battler.stats.resistances[ElementType.Water], "%")
+        this.getElement<StatsRow>("#resistance-earth").update("earth_resistance", battler.stats.resistances[ElementType.Earth], "%")
+        this.getElement<StatsRow>("#resistance-air").update("air_resistance", battler.stats.resistances[ElementType.Air], "%")
     }
 }
 

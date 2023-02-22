@@ -319,12 +319,6 @@ const I18nValues = {
     air_resistance: {
         en: "Air",
     },
-    light_resistance: {
-        en: "Light",
-    },
-    dark_resistance: {
-        en: "Dark",
-    },
     health_description: {
         en: "Health is a measure of how much damage a character can take before dying.",
     },
@@ -369,12 +363,6 @@ const I18nValues = {
     },
     air_resistance_description: {
         en: "Air Resistance is a measure of how much damage a character can reduce with air attacks.",
-    },
-    light_resistance_description: {
-        en: "Light Resistance is a measure of how much damage a character can reduce with light attacks.",
-    },
-    dark_resistance_description: {
-        en: "Dark Resistance is a measure of how much damage a character can reduce with dark attacks.",
     },
 } satisfies Record<string, LocalEntry>
 

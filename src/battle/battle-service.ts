@@ -1,5 +1,5 @@
 import { canUseAbility, getEnergyNeeded } from "../abilities/abilities-utils"
-import { AbilityEffect } from "../abilities/ability-type"
+import { AbilityEffect, ElementType } from "../abilities/ability-type"
 import { AbilityConfigs, AbilityFlag, InstantAbilityConfig } from "../config/ability-configs"
 import { BattleConfigs, BattleId } from "../config/battle-configs"
 import { LocationConfigs, LocationId } from "../config/location-configs"
@@ -11,6 +11,7 @@ import { LoadoutAbility } from "../loadout/loadout-types"
 import { getState } from "../state"
 import { BattlerId } from "../types"
 import { randomItem, roll, shuffle } from "../utils"
+import { PopupService } from "./../popup"
 import { updateState } from "./../state"
 import {
     Battle,
@@ -29,7 +30,6 @@ import { addAnimationsFromLogs, addRegenAnimations, updateBattleAnimation } from
 import "./ui/battle-result"
 import "./ui/battle-result-popup"
 import { updateBattlerEffects } from "./ui/battler-item"
-import { PopupService } from "./../popup"
 
 const AttackAbility: LoadoutAbility = {
     id: "attack",
@@ -127,12 +127,7 @@ const createMonsterBattler = (monsterId: MonsterId): Battler => {
             speed: monsterConfig.speed,
             regenMana: 1,
             regenHealth: 1,
-            fireResistance: 0,
-            waterResistance: 0,
-            earthResistance: 0,
-            airResistance: 0,
-            lightResistance: 0,
-            darkResistance: 0,
+            resistances: [0, 100, 0, 0, 0],
         },
         effects: [],
         isTeamA: false,
@@ -461,13 +456,21 @@ function nextAction() {
                         }
                     }
 
-                    power = calculatePower(caster.stats, effect)
+                    let elementalModifier = 1.0 - target.stats.resistances[abilityConfig.element] * 0.01
+                    // Elemental resistances can't go over 75%.
+                    if (elementalModifier < 0.25) {
+                        elementalModifier = 0.25
+                    }
+
+                    power = calculatePower(caster.stats, effect) * elementalModifier
 
                     const criticalChance = caster.stats.critical - target.stats.critical
                     if (roll(criticalChance)) {
                         flags |= BattleActionFlag.Critical
                         power *= 1.25 | 0
                     }
+
+                    power = Math.floor(power)
 
                     target.health += power
 
@@ -675,6 +678,10 @@ function applyEffects(
     let effect = target.effects.find((effect) => effect.casterId === caster.id && effect.abilityId === abilityConfig.id)
     if (effect) {
         for (const entry of effect.effects) {
+            if (entry.stat === "resistances") {
+                // TODO: Add support for resistances
+                continue
+            }
             target.stats[entry.stat] -= entry.power
         }
 
@@ -695,6 +702,10 @@ function applyEffects(
     target.effects.sort((a, b) => b.duration - a.duration)
 
     for (const effect of effects) {
+        if (effect.stat === "resistances") {
+            // TODO: Add support for resistances
+            continue
+        }
         target.stats[effect.stat] += effect.power
     }
 
@@ -730,6 +741,10 @@ function updateEffectsDuration(battler: Battler, targetLogs: BattleLog[], isActi
         }
 
         for (const effect of abilityEffect.effects) {
+            if (effect.stat === "resistances") {
+                // TODO: Add support for resistances
+                continue
+            }
             battler.stats[effect.stat] -= effect.power
         }
 
@@ -751,6 +766,10 @@ function removeEffects(battler: Battler, updateUI = true) {
         const abilityEffect = abilityEffects[n]
 
         for (const effect of abilityEffect.effects) {
+            if (effect.stat === "resistances") {
+                // TODO: Add support for resistances
+                continue
+            }
             battler.stats[effect.stat] -= effect.power
         }
 
