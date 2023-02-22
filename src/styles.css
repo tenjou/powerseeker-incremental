@@ -86,7 +86,11 @@ container {
 
 .hide,
 .hidden {
+    opacity: 0;
     display: none !important;
+}
+.show {
+    opacity: 1;
 }
 
 .inactive {
@@ -405,18 +409,10 @@ tooltip-container {
     height: 100%;
     pointer-events: none;
 }
-tooltip-container tooltip {
-    position: absolute;
-    top: 300px;
-    left: 200px;
-    padding: 3px 5px;
-    border-radius: 3px;
-    color: #fff;
-    background: #000000c7;
-    font-size: 11px;
-    z-index: 999;
-}
+
+tooltip-container tooltip,
 item-tooltip {
+    display: block;
     position: absolute;
     top: 300px;
     left: 200px;
@@ -428,6 +424,8 @@ item-tooltip {
     font-size: 11px;
     z-index: 999;
     transform: translate(0, -100%);
+    opacity: 0;
+    transition: opacity 0.15s ease-out;
 }
 
 .block {
@@ -485,6 +483,10 @@ item-tooltip {
 }
 .width-180px {
     width: 180px;
+}
+
+.max-width-100px {
+    max-width: 240px;
 }
 
 .content {

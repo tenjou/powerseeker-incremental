@@ -307,23 +307,74 @@ const I18nValues = {
     critical: {
         en: "Critical",
     },
-    fire: {
+    fire_resistance: {
         en: "Fire",
     },
-    water: {
+    water_resistance: {
         en: "Water",
     },
-    earth: {
+    earth_resistance: {
         en: "Earth",
     },
-    air: {
+    air_resistance: {
         en: "Air",
     },
-    light: {
+    light_resistance: {
         en: "Light",
     },
-    dark: {
+    dark_resistance: {
         en: "Dark",
+    },
+    health_description: {
+        en: "Health is a measure of how much damage a character can take before dying.",
+    },
+    mana_description: {
+        en: "Mana is a measure of how much magic a character can use before running out of energy.",
+    },
+    health_regen_description: {
+        en: "Health Regen is a measure of how much health a character regenerates over time.",
+    },
+    mana_regen_description: {
+        en: "Mana Regen is a measure of how much mana a character regenerates over time.",
+    },
+    attack_description: {
+        en: "Attack is a measure of how much damage a character can deal with physical attacks.",
+    },
+    defense_description: {
+        en: "Defense is a measure of how much damage a character can reduce with physical attacks.",
+    },
+    healing_description: {
+        en: "Healing is a measure of how much health a character can restore with healing spells.",
+    },
+    accuracy_description: {
+        en: "Accuracy is a measure of how likely a character is to hit an enemy with physical attacks.",
+    },
+    evasion_description: {
+        en: "Evasion is a measure of how likely a character is to avoid an enemy's physical attacks.",
+    },
+    critical_description: {
+        en: "Critical is a measure of how likely a character is to deal critical damage with physical attacks.",
+    },
+    speed_description: {
+        en: "Speed is a measure of how quickly a character can perform actions.",
+    },
+    fire_resistance_description: {
+        en: "Fire Resistance is a measure of how much damage a character can reduce with fire attacks.",
+    },
+    water_resistance_description: {
+        en: "Water Resistance is a measure of how much damage a character can reduce with water attacks.",
+    },
+    earth_resistance_description: {
+        en: "Earth Resistance is a measure of how much damage a character can reduce with earth attacks.",
+    },
+    air_resistance_description: {
+        en: "Air Resistance is a measure of how much damage a character can reduce with air attacks.",
+    },
+    light_resistance_description: {
+        en: "Light Resistance is a measure of how much damage a character can reduce with light attacks.",
+    },
+    dark_resistance_description: {
+        en: "Dark Resistance is a measure of how much damage a character can reduce with dark attacks.",
     },
 } satisfies Record<string, LocalEntry>
 

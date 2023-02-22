@@ -1,14 +1,16 @@
 import { ItemId } from "./config/item-configs"
+import { i18n } from "./i18n"
 import { Item, ItemSlotType } from "./inventory/item-types"
 import { getState } from "./state"
 import "./tooltip/ui/item-tooltip"
 import { ItemTooltip } from "./tooltip/ui/item-tooltip"
 
-const validTags: string[] = ["ITEM-ICON-SLOT", "XP-ICON-SLOT", "ABILITY-SLOT"]
+const validTags: string[] = ["ITEM-ICON-SLOT", "XP-ICON-SLOT", "ABILITY-SLOT", "STATS-ROW"]
 
 let tooltipElement: HTMLElement
 let itemTooltipElement: ItemTooltip
 let prevHoverElement: HTMLElement | null = null
+let prevTooltipElement: HTMLElement | null = null
 
 export function loadTooltipSystem() {
     const element = document.querySelector("tooltip")
@@ -22,7 +24,11 @@ export function loadTooltipSystem() {
 
     window.onmousemove = handeMouseMoveTooltip
     window.onclick = () => {
-        tooltipElement.classList.add("hide")
+        prevHoverElement = null
+        if (prevTooltipElement) {
+            prevTooltipElement.classList.remove("show")
+            prevTooltipElement = null
+        }
     }
 }
 
@@ -31,19 +37,24 @@ export function handeMouseMoveTooltip(event: MouseEvent) {
 
     const element = event.target as HTMLElement
 
-    if (validTags.includes(element.tagName)) {
-        itemTooltipElement.classList.remove("hide")
-        itemTooltipElement.setAttribute("style", `left: ${event.x}px; top: ${event.y}px`)
-    } else {
-        tooltipElement.classList.add("hide")
-        itemTooltipElement.classList.add("hide")
-    }
-
     if (prevHoverElement !== element) {
+        const isTooltip = validTags.includes(element.tagName)
+        if (!isTooltip) {
+            prevHoverElement = null
+
+            if (prevTooltipElement) {
+                prevTooltipElement.classList.remove("show")
+                prevTooltipElement = null
+            }
+            return
+        }
+
         switch (element.tagName) {
             case "ITEM-SLOT":
             case "ITEM-ICON-SLOT":
             case "XP-ICON-SLOT": {
+                prevTooltipElement = itemTooltipElement
+
                 const itemId = element.getAttribute("item-id") as ItemId | null
                 if (itemId) {
                     const amount = Number(element.getAttribute("amount"))
@@ -57,7 +68,18 @@ export function handeMouseMoveTooltip(event: MouseEvent) {
                 }
                 break
             }
+
+            case "STATS-ROW":
+                prevTooltipElement = tooltipElement
+                prevTooltipElement.innerText = i18n(element.getAttribute("tooltip") || "")
+                break
         }
+
+        prevTooltipElement.classList.add("show")
+    }
+
+    if (prevTooltipElement) {
+        prevTooltipElement.setAttribute("style", `left: ${event.x}px; top: ${event.y}px`)
     }
 
     prevHoverElement = element

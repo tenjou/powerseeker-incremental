@@ -30,12 +30,12 @@ export class CharacterResistances extends HTMLComponent {
     update() {
         const { battler } = getState()
 
-        this.getElement<StatsRow>("#resistance-fire").update("fire", battler.stats.fireResistance, "%")
-        this.getElement<StatsRow>("#resistance-water").update("water", battler.stats.waterResistance, "%")
-        this.getElement<StatsRow>("#resistance-earth").update("earth", battler.stats.earthResistance, "%")
-        this.getElement<StatsRow>("#resistance-air").update("air", battler.stats.airResistance, "%")
-        this.getElement<StatsRow>("#resistance-light").update("light", battler.stats.lightResistance, "%")
-        this.getElement<StatsRow>("#resistance-dark").update("dark", battler.stats.darkResistance, "%")
+        this.getElement<StatsRow>("#resistance-fire").update("fire_resistance", battler.stats.fireResistance, "%")
+        this.getElement<StatsRow>("#resistance-water").update("water_resistance", battler.stats.waterResistance, "%")
+        this.getElement<StatsRow>("#resistance-earth").update("earth_resistance", battler.stats.earthResistance, "%")
+        this.getElement<StatsRow>("#resistance-air").update("air_resistance", battler.stats.airResistance, "%")
+        this.getElement<StatsRow>("#resistance-light").update("light_resistance", battler.stats.lightResistance, "%")
+        this.getElement<StatsRow>("#resistance-dark").update("dark_resistance", battler.stats.darkResistance, "%")
     }
 }
 
