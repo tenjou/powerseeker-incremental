@@ -12,6 +12,8 @@ import { ProgressBar } from "./../../components/progress-bar"
 import { setText } from "./../../dom"
 import "./character-attributes"
 import { CharacterAttributes } from "./character-attributes"
+import "./character-info"
+import { CharacterInfo } from "./character-info"
 import "./character-powers"
 import { CharacterPowers } from "./character-powers"
 import "./character-resistances"
@@ -19,6 +21,7 @@ import { CharacterResistances } from "./character-resistances"
 import "./stats-row"
 
 export function loadCharacterView() {
+    getElement<CharacterInfo>("character-info").update()
     getElement<CharacterAttributes>("character-attributes").update()
     getElement<CharacterPowers>("character-powers").update()
     getElement<CharacterResistances>("character-resistances").update()
@@ -82,44 +85,44 @@ export function updateCharacterView() {
     // upadateLoadoutWidget()
 }
 
-function updateJobs() {
-    const { player, jobs } = getState()
+// function updateJobs() {
+//     const { player, jobs } = getState()
 
-    getElementById("select-primary-job").onclick = () => {
-        goTo("/jobs/primary")
-    }
-    getElementById("select-secondary-job").onclick = () => {
-        goTo("/jobs/secondary")
-    }
+//     getElementById("select-primary-job").onclick = () => {
+//         goTo("/jobs/primary")
+//     }
+//     getElementById("select-secondary-job").onclick = () => {
+//         goTo("/jobs/secondary")
+//     }
 
-    const jobPrimary = jobs[player.jobPrimary]
-    if (!jobPrimary) {
-        console.error(`Could not find job: ${player.jobPrimary}`)
-        return
-    }
+//     const jobPrimary = jobs[player.jobPrimary]
+//     if (!jobPrimary) {
+//         console.error(`Could not find job: ${player.jobPrimary}`)
+//         return
+//     }
 
-    setText("primary-job-name", i18n(jobPrimary.id))
-    setText("primary-job-level", `${i18n("level")} ${jobPrimary.level}`)
+//     setText("primary-job-name", i18n(jobPrimary.id))
+//     setText("primary-job-level", `${i18n("level")} ${jobPrimary.level}`)
 
-    const primaryProgressBar = getElementById("primary-job-exp") as ProgressBar
-    primaryProgressBar.setAttrib("value", jobPrimary.exp)
-    primaryProgressBar.setAttrib("value-max", LevelConfig[jobPrimary.level])
+//     const primaryProgressBar = getElementById("primary-job-exp") as ProgressBar
+//     primaryProgressBar.setAttrib("value", jobPrimary.exp)
+//     primaryProgressBar.setAttrib("value-max", LevelConfig[jobPrimary.level])
 
-    if (player.jobSecondary) {
-        const jobSecondary = jobs[player.jobSecondary]
-        if (!jobSecondary) {
-            console.error(`Could not find job: ${player.jobSecondary}`)
-            return
-        }
+//     if (player.jobSecondary) {
+//         const jobSecondary = jobs[player.jobSecondary]
+//         if (!jobSecondary) {
+//             console.error(`Could not find job: ${player.jobSecondary}`)
+//             return
+//         }
 
-        toggleClassName("secondary-job-name", "hidden", false)
-        setText("secondary-job-name", i18n(jobSecondary.id))
-        setText("secondary-job-level", `${i18n("level")} ${jobPrimary.level}`)
-    } else {
-        toggleClassName("secondary-job-name", "hidden", true)
-        setText("secondary-job-level", i18n("none"))
-    }
-}
+//         toggleClassName("secondary-job-name", "hidden", false)
+//         setText("secondary-job-name", i18n(jobSecondary.id))
+//         setText("secondary-job-level", `${i18n("level")} ${jobPrimary.level}`)
+//     } else {
+//         toggleClassName("secondary-job-name", "hidden", true)
+//         setText("secondary-job-level", i18n("none"))
+//     }
+// }
 
 function updateEquipmentSlot(slotType: EquipmentSlot) {
     const equipmentElement = document.querySelector<EquipmentSlotElement>(`[slot-type=${slotType}`)

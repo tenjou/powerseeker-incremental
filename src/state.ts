@@ -1,16 +1,16 @@
 import { Ability } from "./abilities/ability-type"
+import { AspectService } from "./aspects/aspect-service"
+import { Aspect } from "./aspects/aspect-types"
 import { createBattle } from "./battle/battle-service"
 import { Battle, Battler, BattleResult } from "./battle/battle-types"
 import { createEmptyStats } from "./character/status"
 import { AbilityId } from "./config/ability-configs"
 import { AreaId } from "./config/area-configs"
+import { AspectId } from "./config/aspect-configs"
 import { EquipmentSlot, ItemId } from "./config/item-configs"
-import { JobId } from "./config/job-configs"
 import { LocationId } from "./config/location-configs"
 import { CurrencyType } from "./currencies/currency-types"
 import { Item } from "./inventory/item-types"
-import { JobsService } from "./jobs/jobs-service"
-import { Job } from "./jobs/jobs-types"
 import { LoadoutAbility } from "./loadout/loadout-types"
 import { Card, Skill } from "./types"
 import { AreaState, ExplorationState, LocationState } from "./world/world-types"
@@ -21,8 +21,7 @@ interface TownStatus {
 
 interface PlayerStatus {
     name: string
-    jobPrimary: JobId
-    jobSecondary: JobId | null
+    aspectId: AspectId
     power: number
     stamina: number
     staminaMax: number
@@ -46,7 +45,7 @@ interface Cache {
 
 interface State {
     player: PlayerStatus
-    jobs: Partial<Record<JobId, Job>>
+    aspects: Partial<Record<AspectId, Aspect>>
     currencies: Record<CurrencyType, number>
     equipment: Record<EquipmentSlot, Item | null>
     battler: Battler
@@ -69,16 +68,13 @@ interface State {
 
 let state: State = {
     player: {
-        name: "Player",
-        jobPrimary: "warrior",
-        jobSecondary: null,
+        name: "Tenjou",
+        aspectId: "novice",
         power: 0,
         stamina: 10,
         staminaMax: 10,
     },
-    jobs: {
-        warrior: JobsService.createJob("warrior"),
-    },
+    aspects: {},
     currencies: {
         ap: 1,
         gold: 134,

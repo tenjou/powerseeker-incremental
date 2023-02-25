@@ -1,7 +1,7 @@
-import { JobId } from "../../config/job-configs"
+import { AspectId } from "../../config/aspect-configs"
 import { HTMLComponent } from "../../dom"
 import { goTo } from "../../view"
-import { JobsService } from "../jobs-service"
+import { JobsService } from "../aspect-service"
 import { i18n } from "../../i18n"
 import { LevelConfig } from "./../../config/level-config"
 
@@ -31,7 +31,7 @@ export class JobSlot extends HTMLComponent {
     }
 
     update() {
-        const jobId = this.getAttribute("job-id") as JobId
+        const jobId = this.getAttribute("job-id") as AspectId
         const job = JobsService.getJob(jobId)
 
         if (jobId) {

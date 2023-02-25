@@ -93,7 +93,7 @@ export function createEmptyStats(): CharacterStats {
         speed: 100,
         regenMana: 0,
         regenHealth: 0,
-        firePower: 5,
+        firePower: 500,
         waterPower: 5,
         airPower: 5,
         earthPower: 5,

@@ -495,6 +495,9 @@ item-tooltip {
 .width-60 {
     width: 60%;
 }
+.width-250px {
+    width: 250px;
+}
 .min-width-140px {
     min-width: 140px;
 }
@@ -610,6 +613,13 @@ item-tooltip {
 }
 .mb-6 {
     margin-bottom: 1.5rem;
+}
+
+.ml-1 {
+    margin-left: 0.25rem;
+}
+.ml-2 {
+    margin-left: 0.5rem;
 }
 
 .mr-1 {

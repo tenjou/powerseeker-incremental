@@ -5,7 +5,6 @@ import { toggleClassName } from "./dom"
 import { loadEquipmentView, unloadEquipmentView } from "./equipment/ui/equipment-view"
 import { EventCallbackInfo, unsubscribe, watchSubscribers } from "./events"
 import { loadInventoryView, unloadInventoryView } from "./inventory/ui/inventory-view"
-import { loadJobsView, unloadJobsView } from "./jobs/ui/jobs-view"
 import { loadLoadoutView, unloadLoadoutView } from "./loadout/ui/loadout-vew"
 import { loadSkillsView, unloadSkillsView } from "./skills/skills-view"
 import { loadTownView, unloadTownView } from "./town/town"
@@ -18,7 +17,7 @@ interface View {
     customContainer?: string
 }
 
-type ViewType = "town" | "world" | "character" | "inventory" | "skills" | "equipment" | "abilities" | "loadout" | "jobs" | "battle"
+type ViewType = "town" | "world" | "character" | "inventory" | "skills" | "equipment" | "abilities" | "loadout" | "battle"
 
 const mainContainerId = "main-container"
 
@@ -55,10 +54,6 @@ const views: Record<ViewType, View> = {
     loadout: {
         onLoad: loadLoadoutView,
         onUnload: unloadLoadoutView,
-    },
-    jobs: {
-        onLoad: loadJobsView,
-        onUnload: unloadJobsView,
     },
     battle: {
         onLoad: loadBattleView,

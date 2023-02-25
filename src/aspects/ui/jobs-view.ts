@@ -1,8 +1,8 @@
 import { goTo } from "../../view"
-import { JobConfigs, JobId } from "./../../config/job-configs"
+import { AspectConfigs, AspectId } from "../../config/aspect-configs"
 import { getElementById, removeAllChildren, setText } from "./../../dom"
 import "./job-slot"
-import { JobsService } from "./../jobs-service"
+import { JobsService } from "../aspect-service"
 
 export function loadJobsView(segments: string[]) {
     const segment = segments.pop()
@@ -19,8 +19,8 @@ export function loadJobsView(segments: string[]) {
     const parent = getElementById("jobs")
     const isPrimary = segment === "primary"
 
-    const jobs = Object.keys(JobConfigs).map((jobId) => {
-        return JobsService.getJob(jobId as JobId)
+    const jobs = Object.keys(AspectConfigs).map((jobId) => {
+        return JobsService.getJob(jobId as AspectId)
     })
     jobs.sort((a, b) => b.level - a.level)
 

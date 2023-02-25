@@ -19,6 +19,7 @@ type EventType =
     | "battle-next-turn"
     | "ability-selected"
     | "ability-updated"
+    | "aspect-selected"
 
 type EventCallbackFunc = (payload: unknown) => void
 

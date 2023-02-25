@@ -29,10 +29,13 @@ import { AreaConfigs, AreaId } from "./config/area-configs"
 import { updateUrl } from "./url"
 import { InventoryService } from "./inventory/inventory"
 import { LootService } from "./inventory/loot-service"
+import { AspectService } from "./aspects/aspect-service"
 
 let tLast = 0
 
 function createEmptyProfile() {
+    AspectService.create("novice")
+
     WorldService.addLocation("foo")
     WorldService.addLocation("bar")
     WorldService.addLocation("copper_mine")

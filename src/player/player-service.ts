@@ -1,37 +1,34 @@
 import { getState } from "../state"
 import { LevelConfig } from "../config/level-config"
 import { addCurrency } from "./../currencies/currencies"
+import { AspectService } from "../aspects/aspect-service"
 
 export const PlayerService = {
     addExp(exp: number) {
-        const { player, jobs } = getState()
+        const { player } = getState()
 
-        const job = jobs[player.jobPrimary]
-        if (!job) {
-            console.error(`Job not available: ${player.jobPrimary}`)
+        const aspect = AspectService.get(player.aspectId)
+
+        if (aspect.level >= LevelConfig.length) {
             return
         }
 
-        if (job.level >= LevelConfig.length) {
-            return
-        }
+        aspect.exp += exp
 
-        job.exp += exp
+        let expMax = LevelConfig[aspect.level - 1]
 
-        let expMax = LevelConfig[job.level - 1]
+        while (aspect.exp > expMax) {
+            aspect.level += 1
 
-        while (job.exp > expMax) {
-            job.level += 1
+            addCurrency("ap", aspect.level - 1)
 
-            addCurrency("ap", job.level - 1)
-
-            if (job.level >= LevelConfig.length) {
-                job.exp = 0
+            if (aspect.level >= LevelConfig.length) {
+                aspect.exp = 0
                 return
             }
 
-            job.exp -= expMax
-            expMax = LevelConfig[job.level - 1]
+            aspect.exp -= expMax
+            expMax = LevelConfig[aspect.level - 1]
         }
     },
 }
