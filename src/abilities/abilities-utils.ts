@@ -9,8 +9,11 @@ import { getState } from "./../state"
 import { Ability, AbilityEffect, AbilityEffectType } from "./ability-type"
 
 export const getAbilityEffectPower = (effect: AbilityEffect, rank: number) => {
-    // return (effect.power * stats[effect.stat]) | 0
-    return effect.power * rank
+    const { battle } = getState()
+
+    const battler = battle.battlers[battle.playerBattlerId]
+
+    return battler.stats[effect.stat] * effect.power * rank
 }
 
 export const getRequiredAp = (abilityId: AbilityId) => {

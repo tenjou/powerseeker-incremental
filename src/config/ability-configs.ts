@@ -15,7 +15,6 @@ export enum AbilityFlag {
 
 interface BasicAbilityConfig {
     id: AbilityId
-    description: string
     effects: AbilityEffect[]
 }
 
@@ -45,7 +44,6 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
         duration: 0,
         durationEffects: [],
         flags: AbilityFlag.Offensive | AbilityFlag.Missable,
-        description: "Attack an opponent, causing %0 <semibold>fire</semibold> damage.",
         effects: [
             {
                 type: "health",

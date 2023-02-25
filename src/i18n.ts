@@ -376,6 +376,9 @@ const I18nValues = {
     fire_attack: {
         en: "Fire Attack",
     },
+    fire_attack_description: {
+        en: `Attack an opponent, causing %0 <element-icon type="fire"></element-icon> damage.`,
+    },
 } satisfies Record<string, LocalEntry>
 
 export function i18n(key: string | null) {

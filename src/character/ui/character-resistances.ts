@@ -8,10 +8,10 @@ template.className = "mb-3 width-180px"
 template.innerHTML = html`
     <div class="mb-2 px-2 bold font-2">${i18n("resistances")}</div>
     <div class="highlight-row">
-        <stats-row id="resistance-fire"><div class="element-icon fire"></div></stats-row>
-        <stats-row id="resistance-water"><div class="element-icon water"></div></stats-row>
-        <stats-row id="resistance-earth"><div class="element-icon earth"></div></stats-row>
-        <stats-row id="resistance-air"><div class="element-icon air"></div></stats-row>
+        <stats-row id="resistance-fire"><div class="element-icon fire mr-1"></div></stats-row>
+        <stats-row id="resistance-water"><div class="element-icon water mr-1"></div></stats-row>
+        <stats-row id="resistance-earth"><div class="element-icon earth mr-1"></div></stats-row>
+        <stats-row id="resistance-air"><div class="element-icon air mr-1"></div></stats-row>
     </div>
 `
 

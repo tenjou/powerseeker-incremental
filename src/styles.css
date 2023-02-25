@@ -60,6 +60,13 @@ navbar logo > cap {
     position: absolute;
 }
 
+.block {
+    display: block;
+}
+.inline-block {
+    display: inline-block;
+}
+
 .bottom-px {
     bottom: 1px;
 }
@@ -250,7 +257,7 @@ battle-hint {
 #battle-tooltip {
     display: flex;
     flex-direction: column;
-    flex: 0 0 200px;
+    flex: 0 0 280px;
     padding: 6px 6px 12px;
     border-radius: 3px;
     background: #f1f1f1;
@@ -440,10 +447,6 @@ item-tooltip {
     transform: translate(0, -100%);
     opacity: 0;
     transition: opacity 0.15s ease-out;
-}
-
-.block {
-    display: block;
 }
 
 .flex {
@@ -964,10 +967,10 @@ progress-bar.width-anim .bar {
 }
 
 .element-icon {
+    display: inline-block;
     width: 6px;
     height: 6px;
     border: 1px solid #00000096;
-    margin-right: 4px;
 }
 .element-icon.fire {
     background: #f14916;

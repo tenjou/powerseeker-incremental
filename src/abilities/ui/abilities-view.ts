@@ -9,6 +9,7 @@ import { AbilitySlotElement } from "./ability-slot"
 import { subscribe, unsubscribe } from "../../events"
 import { AbilityEffect } from "../ability-type"
 import { PopupService } from "./../../popup"
+import { i18n } from "../../i18n"
 
 export function loadAbilitiesView() {
     const parent = getElementById("abilities-container")
@@ -42,7 +43,7 @@ function openAbilityPopup(abilityId: AbilityId) {
     })
 }
 
-export function getAbilityDescription(abilityConfig: AbilityConfig, abilityRank?: number) {
+export const getAbilityDescription = (abilityConfig: AbilityConfig, abilityRank?: number) => {
     const { abilities } = getState()
 
     if (!abilityRank) {
@@ -50,13 +51,13 @@ export function getAbilityDescription(abilityConfig: AbilityConfig, abilityRank?
         abilityRank = ability ? ability.rank : 1
     }
 
-    const regex = /%[0-9]/gm
-    const regexDescription = regex.exec(abilityConfig.description)
-    if (!regexDescription) {
-        return abilityConfig.description
-    }
+    let abilityDescription = i18n(`${abilityConfig.id}_description`)
 
-    let description = abilityConfig.description
+    const regex = /%[0-9]/gm
+    const regexDescription = regex.exec(abilityDescription)
+    if (!regexDescription) {
+        return abilityDescription
+    }
 
     const effects = abilityConfig.effects
     for (const entry of regexDescription) {
@@ -65,8 +66,8 @@ export function getAbilityDescription(abilityConfig: AbilityConfig, abilityRank?
         const power = getAbilityEffectPower(effect, abilityRank)
         const color = getAbilityEffectColor(effect.type, power)
 
-        description = description.replace(entry, `<x-text class="${color} bold">${Math.abs(power)}</x-text>`)
+        abilityDescription = abilityDescription.replace(entry, `<x-text class="${color} bold">${Math.abs(power)}</x-text>`)
     }
 
-    return description
+    return abilityDescription
 }
