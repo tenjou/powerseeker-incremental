@@ -53,6 +53,20 @@ navbar logo > cap {
     font-size: 22px;
 }
 
+.relative {
+    position: relative;
+}
+.absolute {
+    position: absolute;
+}
+
+.bottom-px {
+    bottom: 1px;
+}
+.left-px {
+    left: 1px;
+}
+
 .button {
     cursor: pointer;
     font-size: 40px;

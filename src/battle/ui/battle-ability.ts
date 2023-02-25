@@ -92,6 +92,8 @@ class BattlerAbilityElement extends HTMLComponent {
             this.setText("#energy", getEnergyNeeded(ability))
         }
 
+        this.toggleClassName(abilityConfig.element, true, "#element")
+
         this.onclick = () => {
             selectAbility(ability)
         }
@@ -121,4 +123,5 @@ template.innerHTML = html`
     <img />
     <div id="cooldown" class="cooldown"></div>
     <div id="energy" class="energy"></div>
+    <div id="element" class="absolute left-px bottom-px element-icon"></div>
 `
