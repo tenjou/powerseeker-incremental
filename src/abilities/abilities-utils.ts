@@ -81,3 +81,16 @@ export const getAbilityEffectColor = (effectType: AbilityEffectType, power: numb
             return power > 0 ? "energy-up" : "energy-down"
     }
 }
+
+const iconMapping: Record<string, string> = {
+    fire_attack: "attack",
+    water_attack: "attack",
+    earth_attack: "attack",
+    air_attack: "attack",
+}
+
+export const getAbilityIconPath = (abilityId: AbilityId) => {
+    const mappedId = iconMapping[abilityId] || abilityId
+
+    return `/assets/icon/ability/${mappedId}.png`
+}

@@ -1,3 +1,4 @@
+import { getAbilityIconPath } from "../../abilities/abilities-utils"
 import { ScrollingText } from "../../components/scrolling-text"
 import { AbilityConfigs, AbilityId } from "../../config/ability-configs"
 import { addChild, HTMLComponent, toggleClassName } from "../../dom"
@@ -169,7 +170,7 @@ class BattlerItem extends HTMLComponent {
             const abilityConfig = AbilityConfigs[abilityId]
 
             this.getElement("#ability-name").innerText = i18n(abilityConfig.id)
-            this.getElement("#ability-icon").setAttribute("src", `/assets/icon/ability/${abilityId}.png`)
+            this.getElement("#ability-icon").setAttribute("src", getAbilityIconPath(abilityConfig.id))
         }
     }
 

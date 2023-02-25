@@ -5,6 +5,7 @@ import { getElementById, HTMLComponent, setHTML, toggleClassName } from "../../d
 import { i18n } from "../../i18n"
 import { getState } from "../../state"
 import { selectAbility } from "../battle-service"
+import { getAbilityIconPath } from "./../../abilities/abilities-utils"
 import { InstantAbilityConfig } from "./../../config/ability-configs"
 import { LoadoutAbility } from "./../../loadout/loadout-types"
 import { toggleTeamInactive } from "./battler-item"
@@ -66,13 +67,6 @@ function canTargetTeamA(abilityConfig: InstantAbilityConfig, isTeamA: boolean) {
     return isTeamA
 }
 
-const iconMapping: Record<string, string> = {
-    fire_attack: "attack",
-    water_attack: "attack",
-    earth_attack: "attack",
-    air_attack: "attack",
-}
-
 class BattlerAbilityElement extends HTMLComponent {
     ability: LoadoutAbility
 
@@ -83,11 +77,9 @@ class BattlerAbilityElement extends HTMLComponent {
     setup(ability: LoadoutAbility) {
         this.ability = ability
 
+        this.getElement("img").setAttribute("src", getAbilityIconPath(ability.id))
+
         const abilityConfig = AbilityConfigs[ability.id] as InstantAbilityConfig
-        const iconId = iconMapping[ability.id] || ability.id
-
-        this.getElement("img").setAttribute("src", `/assets/icon/ability/${iconId}.png`)
-
         if (abilityConfig.energy > 0) {
             this.setText("#energy", getEnergyNeeded(ability))
         }
