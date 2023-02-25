@@ -1,16 +1,20 @@
 export interface CharacterStats {
     health: number
     mana: number
-    attack: number
-    defense: number
-    healing: number
-    accuracy: number
-    evasion: number
-    speed: number
-    critical: number
     regenHealth: number
     regenMana: number
-    resistances: [number, number, number, number, number]
+    accuracy: number
+    evasion: number
+    critical: number
+    speed: number
+    firePower: number
+    waterPower: number
+    earthPower: number
+    airPower: number
+    fireResistance: number
+    waterResistance: number
+    earthResistance: number
+    airResistance: number
 }
 
 export type CharacterStatType = keyof CharacterStats

@@ -12,12 +12,15 @@ import { ProgressBar } from "./../../components/progress-bar"
 import { setText } from "./../../dom"
 import "./character-attributes"
 import { CharacterAttributes } from "./character-attributes"
+import "./character-powers"
+import { CharacterPowers } from "./character-powers"
 import "./character-resistances"
 import { CharacterResistances } from "./character-resistances"
 import "./stats-row"
 
 export function loadCharacterView() {
     getElement<CharacterAttributes>("character-attributes").update()
+    getElement<CharacterPowers>("character-powers").update()
     getElement<CharacterResistances>("character-resistances").update()
 
     updateCharacterView()

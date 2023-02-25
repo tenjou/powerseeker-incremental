@@ -51,15 +51,14 @@ export function recalculateStats() {
         }
 
         if (itemConfig.slot === "main_hand") {
-            switch (itemConfig.equipmentType) {
-                case "axe":
-                    addStatsFromPassive(abilities.axe_mastery)
-                    break
-
-                case "sword":
-                    addStatsFromPassive(abilities.sword_mastery)
-                    break
-            }
+            // switch (itemConfig.equipmentType) {
+            //     case "axe":
+            //         addStatsFromPassive(abilities.axe_mastery)
+            //         break
+            //     case "sword":
+            //         addStatsFromPassive(abilities.sword_mastery)
+            //         break
+            // }
         }
 
         // for (const stat of itemConfig.stats) {
@@ -80,14 +79,7 @@ function addStatsFromPassive(ability?: Ability) {
     const abilityConfig = AbilityConfigs[ability.id]
 
     for (const effect of abilityConfig.effects) {
-        if (effect.stat === "resistances") {
-            for (let i = 0; i < battler.stats.resistances.length; i++) {
-                battler.stats.resistances[i] += effect.power * ability.rank
-            }
-            continue
-        }
-
-        battler.stats[effect.stat] += effect.power * ability.rank
+        // battler.stats[effect.stat] += effect.power * ability.rank
     }
 }
 
@@ -96,14 +88,18 @@ export function createEmptyStats(): CharacterStats {
         health: 10,
         mana: 20,
         accuracy: 1,
-        attack: 300,
         critical: 1,
-        defense: 1,
         evasion: 1,
-        healing: 1,
         speed: 100,
         regenMana: 0,
         regenHealth: 0,
-        resistances: [0, 0, 0, 0, 0],
+        firePower: 5,
+        waterPower: 5,
+        airPower: 5,
+        earthPower: 5,
+        fireResistance: 0,
+        waterResistance: 0,
+        airResistance: 0,
+        earthResistance: 0,
     }
 }

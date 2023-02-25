@@ -949,27 +949,21 @@ progress-bar.width-anim .bar {
     transition: width 0.2s ease-out;
 }
 
-.resistance-icon {
+.element-icon {
     width: 6px;
     height: 6px;
     border: 1px solid #00000096;
     margin-right: 4px;
 }
-.resistance-icon.fire {
+.element-icon.fire {
     background: #f14916;
 }
-.resistance-icon.water {
+.element-icon.water {
     background: #60c0eb;
 }
-.resistance-icon.earth {
+.element-icon.earth {
     background: #abd975;
 }
-.resistance-icon.air {
+.element-icon.air {
     background: #d473e5;
-}
-.resistance-icon.light {
-    background: #ffffff;
-}
-.resistance-icon.dark {
-    background: #939393;
 }

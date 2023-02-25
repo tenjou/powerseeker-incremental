@@ -13,10 +13,12 @@ export class StatsRow extends HTMLComponent {
         super(template)
     }
 
-    update(key: string, value: string | number, postFix: string = "") {
-        this.setAttrib("tooltip", `${key}_description`)
+    update(key: string, value: string | number, tooltip: string = "", postFix: string = "") {
         this.getElement("#key").innerText = i18n(key)
         this.getElement("#value").innerText = `${value}${postFix}`
+        if (tooltip) {
+            this.setAttrib("tooltip", tooltip)
+        }
     }
 }
 

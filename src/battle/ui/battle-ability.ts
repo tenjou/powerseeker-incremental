@@ -66,14 +66,15 @@ function canTargetTeamA(abilityConfig: InstantAbilityConfig, isTeamA: boolean) {
     return isTeamA
 }
 
-const defaultLoadoutAbility: LoadoutAbility = {
-    id: "attack",
-    rank: 0,
-    cooldown: 0,
+const iconMapping: Record<string, string> = {
+    fire_attack: "attack",
+    water_attack: "attack",
+    earth_attack: "attack",
+    air_attack: "attack",
 }
 
 class BattlerAbilityElement extends HTMLComponent {
-    ability: LoadoutAbility = defaultLoadoutAbility
+    ability: LoadoutAbility
 
     constructor() {
         super(template)
@@ -83,8 +84,10 @@ class BattlerAbilityElement extends HTMLComponent {
         this.ability = ability
 
         const abilityConfig = AbilityConfigs[ability.id] as InstantAbilityConfig
+        const iconId = iconMapping[ability.id] || ability.id
 
-        this.getElement("img").setAttribute("src", `/assets/icon/ability/${ability.id}.png`)
+        this.getElement("img").setAttribute("src", `/assets/icon/ability/${iconId}.png`)
+
         if (abilityConfig.energy > 0) {
             this.setText("#energy", getEnergyNeeded(ability))
         }

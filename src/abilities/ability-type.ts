@@ -3,13 +3,7 @@ import { AbilityId } from "../config/ability-configs"
 
 export type AbilityEffectType = "health" | "energy" | "stat"
 
-export enum ElementType {
-    Neutral,
-    Fire,
-    Water,
-    Earth,
-    Air,
-}
+export type ElementType = "fire" | "water" | "earth" | "air"
 
 export interface AbilityEffect {
     type: AbilityEffectType

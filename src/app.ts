@@ -37,11 +37,11 @@ function createEmptyProfile() {
     WorldService.addLocation("copper_mine")
     WorldService.addLocation("test_boss")
 
-    equipAbility("attack")
-    equipAbility("bash")
-    equipAbility("heal")
-    equipAbility("berserk")
-    equipAbility("poison")
+    equipAbility("fire_attack")
+    // equipAbility("bash")
+    // equipAbility("heal")
+    // equipAbility("berserk")
+    // equipAbility("poison")
 }
 
 function load() {

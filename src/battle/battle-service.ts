@@ -25,17 +25,11 @@ import {
     BattleTargetLog,
     LocationProgress,
 } from "./battle-types"
-import { calculatePower, getActionSpeed } from "./battle-utils"
+import { getActionSpeed, getPower } from "./battle-utils"
 import { addAnimationsFromLogs, addRegenAnimations, updateBattleAnimation } from "./ui/battle-animation"
 import "./ui/battle-result"
 import "./ui/battle-result-popup"
 import { updateBattlerEffects } from "./ui/battler-item"
-
-const AttackAbility: LoadoutAbility = {
-    id: "attack",
-    rank: 1,
-    cooldown: 0,
-}
 
 export const BattleService = {
     startFromLocation(locationId: LocationId) {
@@ -103,35 +97,6 @@ const addBattler = (battle: Battle, battler: Battler) => {
         battle.teamA.push(battler.id)
     } else {
         battle.teamB.push(battler.id)
-    }
-}
-
-const createMonsterBattler = (monsterId: MonsterId): Battler => {
-    const monsterConfig = MonsterConfigs[monsterId]
-
-    return {
-        id: 0,
-        level: monsterConfig.level,
-        name: monsterConfig.name,
-        health: monsterConfig.health,
-        mana: 1,
-        stats: {
-            health: monsterConfig.health,
-            mana: monsterConfig.energy,
-            accuracy: 0,
-            attack: monsterConfig.attack,
-            critical: 0,
-            defense: monsterConfig.defense,
-            evasion: 0,
-            healing: 0,
-            speed: monsterConfig.speed,
-            regenMana: 1,
-            regenHealth: 1,
-            resistances: [0, 100, 0, 0, 0],
-        },
-        effects: [],
-        isTeamA: false,
-        monsterId,
     }
 }
 
@@ -268,12 +233,19 @@ function updateAI() {
             continue
         }
 
+        const monsterConfig = MonsterConfigs[battler.monsterId]
+        const firstOption = monsterConfig.ai[0]
+        const monsterAbility = monsterConfig.abilities[firstOption.abilityId]
         const targetId = randomItem(battle.teamA)
 
         battle.actions.push({
             casterId: battler.id,
             targetId,
-            ability: AttackAbility,
+            ability: {
+                id: monsterAbility.id,
+                rank: monsterAbility.rank,
+                cooldown: 0,
+            },
             speed: getActionSpeed(battler.stats.speed),
         })
     }
@@ -441,6 +413,8 @@ function nextAction() {
         const target = targets[n]
         const targetLogs: BattleLog[] = []
 
+        const resistance = calculateResistance(caster, target, abilityConfig.element)
+
         for (const effect of abilityConfig.effects) {
             let power = 0
             let powerModifier = 1.0
@@ -461,15 +435,12 @@ function nextAction() {
                         }
                     }
 
-                    let elementalModifier = 1.0 - target.stats.resistances[abilityConfig.element] * 0.01
-                    // Elemental resistances can't go over 75%.
-                    if (elementalModifier < 0.25) {
-                        elementalModifier = 0.25
+                    power = getPower(caster.stats[effect.stat]) * powerModifier * effect.power
+                    if (power < 0) {
+                        power *= resistance
                     }
 
-                    power = calculatePower(caster.stats, effect) * elementalModifier * powerModifier
                     power = Math.floor(power)
-
                     target.health += power
 
                     if (target.health <= 0) {
@@ -676,10 +647,6 @@ function applyEffects(
     let effect = target.effects.find((effect) => effect.casterId === caster.id && effect.abilityId === abilityConfig.id)
     if (effect) {
         for (const entry of effect.effects) {
-            if (entry.stat === "resistances") {
-                // TODO: Add support for resistances
-                continue
-            }
             target.stats[entry.stat] -= entry.power
         }
 
@@ -700,10 +667,6 @@ function applyEffects(
     target.effects.sort((a, b) => b.duration - a.duration)
 
     for (const effect of effects) {
-        if (effect.stat === "resistances") {
-            // TODO: Add support for resistances
-            continue
-        }
         target.stats[effect.stat] += effect.power
     }
 
@@ -739,10 +702,6 @@ function updateEffectsDuration(battler: Battler, targetLogs: BattleLog[], isActi
         }
 
         for (const effect of abilityEffect.effects) {
-            if (effect.stat === "resistances") {
-                // TODO: Add support for resistances
-                continue
-            }
             battler.stats[effect.stat] -= effect.power
         }
 
@@ -764,10 +723,6 @@ function removeEffects(battler: Battler, updateUI = true) {
         const abilityEffect = abilityEffects[n]
 
         for (const effect of abilityEffect.effects) {
-            if (effect.stat === "resistances") {
-                // TODO: Add support for resistances
-                continue
-            }
             battler.stats[effect.stat] -= effect.power
         }
 
@@ -776,5 +731,67 @@ function removeEffects(battler: Battler, updateUI = true) {
 
     if (updateUI) {
         updateBattlerEffects(battler.id)
+    }
+}
+
+const calculateResistance = (caster: Battler, target: Battler, elementType: ElementType): number => {
+    let targetResistance = 0
+
+    switch (elementType) {
+        case "fire":
+            targetResistance = target.stats.fireResistance
+            break
+        case "water":
+            targetResistance = target.stats.waterResistance
+            break
+        case "earth":
+            targetResistance = target.stats.earthResistance
+            break
+        case "air":
+            targetResistance = target.stats.airResistance
+            break
+    }
+
+    const level = target.level + (target.level - caster.level)
+    const resistancePerLevel = 5
+
+    let resistance = targetResistance / (targetResistance + level * resistancePerLevel)
+    if (resistance > 0.75) {
+        resistance = 0.75
+    }
+
+    return 1.0 - resistance
+}
+
+const createMonsterBattler = (monsterId: MonsterId): Battler => {
+    const monsterConfig = MonsterConfigs[monsterId]
+
+    return {
+        id: 0,
+        level: monsterConfig.level,
+        name: monsterConfig.name,
+        health: monsterConfig.health,
+        mana: 1,
+        stats: {
+            health: monsterConfig.health,
+            mana: monsterConfig.energy,
+            accuracy: 0,
+            critical: 0,
+            evasion: 0,
+            speed: monsterConfig.speed,
+            regenMana: 1,
+            regenHealth: 1,
+            firePower: monsterConfig.firePower,
+            waterPower: monsterConfig.waterPower,
+            earthPower: monsterConfig.earthPower,
+            airPower: monsterConfig.airPower,
+            fireResistance: monsterConfig.fireResistance,
+            waterResistance: monsterConfig.waterResistance,
+            earthResistance: monsterConfig.earthResistance,
+            airResistance: monsterConfig.airResistance,
+        },
+        effects: [],
+        isTeamA: false,
+        monsterId,
     }
 }

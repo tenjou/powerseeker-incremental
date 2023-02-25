@@ -76,12 +76,6 @@ const I18nValues = {
     power: {
         en: "Power",
     },
-    attack: {
-        en: "Attack",
-    },
-    defense: {
-        en: "Defense",
-    },
     accuracy: {
         en: "Accuracy",
     },
@@ -208,9 +202,6 @@ const I18nValues = {
     level_up: {
         en: "Level Up",
     },
-    healing: {
-        en: "Healing",
-    },
     aggro: {
         en: "Aggro",
     },
@@ -331,15 +322,6 @@ const I18nValues = {
     mana_regen_description: {
         en: "Mana Regen is a measure of how much mana a character regenerates over time.",
     },
-    attack_description: {
-        en: "Attack is a measure of how much damage a character can deal with physical attacks.",
-    },
-    defense_description: {
-        en: "Defense is a measure of how much damage a character can reduce with physical attacks.",
-    },
-    healing_description: {
-        en: "Healing is a measure of how much health a character can restore with healing spells.",
-    },
     accuracy_description: {
         en: "Accuracy is a measure of how likely a character is to hit an enemy with physical attacks.",
     },
@@ -352,6 +334,30 @@ const I18nValues = {
     speed_description: {
         en: "Speed is a measure of how quickly a character can perform actions.",
     },
+    fire: {
+        en: "Fire",
+    },
+    water: {
+        en: "Water",
+    },
+    earth: {
+        en: "Earth",
+    },
+    air: {
+        en: "Air",
+    },
+    fire_power_description: {
+        en: "Fire Power is a measure of how much damage a character can deal with fire attacks.",
+    },
+    water_power_description: {
+        en: "Water Power is a measure of how much damage a character can deal with water attacks.",
+    },
+    earth_power_description: {
+        en: "Earth Power is a measure of how much damage a character can deal with earth attacks.",
+    },
+    air_power_description: {
+        en: "Air Power is a measure of how much damage a character can deal with air attacks.",
+    },
     fire_resistance_description: {
         en: "Fire Resistance is a measure of how much damage a character can reduce with fire attacks.",
     },
@@ -363,6 +369,12 @@ const I18nValues = {
     },
     air_resistance_description: {
         en: "Air Resistance is a measure of how much damage a character can reduce with air attacks.",
+    },
+    powers: {
+        en: "Powers",
+    },
+    fire_attack: {
+        en: "Fire Attack",
     },
 } satisfies Record<string, LocalEntry>
 
