@@ -19,7 +19,7 @@ export const PlayerService = {
             evasion: aspect.level,
             critical: 1,
             speed: 100,
-            firePower: aspect.level,
+            firePower: aspect.level + 300,
             waterPower: aspect.level,
             earthPower: aspect.level,
             airPower: aspect.level,
@@ -28,6 +28,8 @@ export const PlayerService = {
             earthResistance: 0,
             airResistance: 0,
         }
+        battler.health = battler.stats.health
+        battler.mana = battler.stats.mana
 
         emit("attributes-updated", battler.stats)
     },
