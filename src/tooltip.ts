@@ -36,10 +36,13 @@ export function handeMouseMoveTooltip(event: MouseEvent) {
     event.stopPropagation()
 
     const element = event.target as HTMLElement
+    let tooltip
 
     if (prevHoverElement !== element) {
-        const isTooltip = validTags.includes(element.tagName)
-        if (!isTooltip) {
+        tooltip = element.getAttribute("tooltip")
+
+        const haveTooltip = tooltip || validTags.includes(element.tagName)
+        if (!haveTooltip) {
             prevHoverElement = null
 
             if (prevTooltipElement) {
@@ -69,10 +72,16 @@ export function handeMouseMoveTooltip(event: MouseEvent) {
                 break
             }
 
-            case "STATS-ROW":
+            default: {
+                const tooltip = element.getAttribute("tooltip")
+                if (!tooltip) {
+                    return
+                }
+
                 prevTooltipElement = tooltipElement
-                prevTooltipElement.innerText = i18n(element.getAttribute("tooltip") || "")
+                prevTooltipElement.innerHTML = i18n(element.getAttribute("tooltip") || "")
                 break
+            }
         }
 
         prevTooltipElement.classList.add("show")

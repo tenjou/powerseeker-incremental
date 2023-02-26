@@ -1,4 +1,4 @@
-export type CurrencyType = "gold" | "ap"
+export type CurrencyType = "gold"
 
 export interface Currency {
     value: number

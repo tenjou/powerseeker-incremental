@@ -119,8 +119,8 @@ export class AbilityPopup extends HTMLComponent {
         this.setHTML("#description2 x-text", description2)
 
         const needAp = getRequiredAp(abilityId)
-        const haveAp = haveCurrency("ap", needAp)
-        this.toggleClassName("disabled", !haveAp, "x-button")
+        // const haveAp = haveCurrency("ap", needAp)
+        // this.toggleClassName("disabled", !haveAp, "x-button")
         this.getElement("currency-item").setAttribute("need", String(needAp))
 
         // if (abilityConfig.type === "armor") {

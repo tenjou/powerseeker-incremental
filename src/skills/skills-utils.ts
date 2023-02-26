@@ -38,13 +38,13 @@ export const learnSkill = (skillId: SkillId) => {
     }
 
     const needAp = getRequiredAp(skillId)
-    if (!haveCurrency("ap", needAp)) {
-        console.error(`Does not have enough AP (${needAp}) to learn the skill (${skillId})`)
-        return
-    }
+    // if (!haveCurrency("ap", needAp)) {
+    //     console.error(`Does not have enough AP (${needAp}) to learn the skill (${skillId})`)
+    //     return
+    // }
 
     ability.rank += 1
-    removeCurrency("ap", needAp)
+    // removeCurrency("ap", needAp)
     PlayerService.calculateStats()
 
     emit("ability-updated", skillId)

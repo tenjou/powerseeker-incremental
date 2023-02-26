@@ -34,6 +34,14 @@ export const PlayerService = {
         emit("attributes-updated", battler.stats)
     },
 
+    addSp(sp: number) {
+        const { player } = getState()
+
+        player.sp += sp
+
+        emit("sp-updated", player.sp)
+    },
+
     addExp(exp: number) {
         const { player } = getState()
 
@@ -50,8 +58,6 @@ export const PlayerService = {
 
         while (aspect.exp > expMax) {
             aspect.level += 1
-
-            addCurrency("ap", aspect.level - 1)
 
             if (aspect.level > LevelConfig.length) {
                 aspect.exp = 0

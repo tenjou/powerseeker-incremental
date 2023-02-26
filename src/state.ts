@@ -16,6 +16,7 @@ import { Skill } from "./skills/skills-types"
 interface PlayerStatus {
     name: string
     aspectId: AspectId
+    sp: number
     power: number
     stamina: number
     staminaMax: number
@@ -51,6 +52,7 @@ let state: State = {
     player: {
         name: "Tenjou",
         aspectId: "novice",
+        sp: 167,
         power: 0,
         stamina: 10,
         staminaMax: 10,

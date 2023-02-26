@@ -19,11 +19,12 @@ export function loadCharacterView() {
     updateCharacterInfo()
     updateCharacterAttributes()
 
-    getElement("#add-exp").onclick = () => {
-        PlayerService.addExp(60)
+    getElement("#add-sp").onclick = () => {
+        PlayerService.addSp(60)
     }
 
     subscribe("exp-updated", updateCharacterInfo)
+    subscribe("sp-updated", updateCharacterInfo)
     subscribe("attributes-updated", updateCharacterAttributes)
 
     // subscribe("equip", updateEquipmentSlot)

@@ -1,12 +1,13 @@
 import { AspectService } from "../../aspects/aspect-service"
 import { ProgressBar } from "../../components/progress-bar"
+import { SpBar } from "../../components/sp-bar"
 import { LevelConfig } from "../../config/level-config"
 import { HTMLComponent } from "../../dom"
 import { getState } from "../../state"
 import { i18n } from "./../../i18n"
 
 const template = document.createElement("template")
-template.className = "mb-3 width-250px"
+template.className = "mb-3 width-350px"
 template.innerHTML = html`
     <div id="name" class="mb-2 px-2 bold font-2"></div>
 
@@ -18,11 +19,8 @@ template.innerHTML = html`
         <div class="flex flex-column flex-1 justify-center">
             <progress-bar value="24" value-max="100" class="green border"></progress-bar>
         </div>
-        <div>
-            <div>
-                <span>AP</span>
-                <span>154</span>
-            </div>
+        <div class="flex align-center m-2">
+            <sp-bar></sp-bar>
         </div>
     </div>
 `
@@ -47,6 +45,8 @@ export class CharacterInfo extends HTMLComponent {
         } else {
             this.getElement<ProgressBar>("progress-bar").update({ value: 1, valueMax: 1, label: i18n("max_level") })
         }
+
+        this.getElement<SpBar>("sp-bar").update(player.sp)
     }
 }
 
