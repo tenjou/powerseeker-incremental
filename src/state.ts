@@ -59,7 +59,6 @@ let state: State = {
     },
     aspects: {},
     currencies: {
-        ap: 1,
         gold: 134,
     },
     equipment: {

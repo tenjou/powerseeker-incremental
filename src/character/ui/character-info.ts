@@ -16,7 +16,7 @@ template.innerHTML = html`
             <div id="level" class="font-2 "></div>
             <div id="aspect" class="font-2 color-secondary"></div>
         </div>
-        <div class="flex flex-column flex-1 justify-center">
+        <div class="flex flex-column flex-1 justify-center mr-1">
             <progress-bar value="24" value-max="100" class="green border"></progress-bar>
         </div>
         <div class="flex align-center m-2">

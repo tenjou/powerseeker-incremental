@@ -4,7 +4,6 @@ import "../../equipment/ui/equipment-slot"
 import { EquipmentSlotElement } from "../../equipment/ui/equipment-slot"
 import { subscribe } from "../../events"
 import { AbilitySlotElement } from "../../skills/ui/ability-slot"
-import { PlayerService } from "./../../player/player-service"
 import "./character-attributes"
 import { CharacterAttributes } from "./character-attributes"
 import "./character-info"
@@ -18,10 +17,6 @@ import "./stats-row"
 export function loadCharacterView() {
     updateCharacterInfo()
     updateCharacterAttributes()
-
-    getElement("#add-sp").onclick = () => {
-        PlayerService.addSp(60)
-    }
 
     subscribe("exp-updated", updateCharacterInfo)
     subscribe("sp-updated", updateCharacterInfo)
