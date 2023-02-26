@@ -1,13 +1,13 @@
 import { HTMLComponent } from "../../dom"
-import { BattlerAbilityEffect } from "../battle-types"
+import { BattlerSkillEffect } from "../battle-types"
 
 export class BattlerEffect extends HTMLComponent {
     constructor() {
         super(template)
     }
 
-    update(effect: BattlerAbilityEffect) {
-        this.getElement("img").setAttribute("src", `/assets/icon/ability/${effect.abilityId}.png`)
+    update(effect: BattlerSkillEffect) {
+        this.getElement("img").setAttribute("src", `/assets/icon/ability/${effect.skillId}.png`)
         this.setText("#duration", (effect.duration + 0.5) | 0)
     }
 }

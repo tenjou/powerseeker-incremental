@@ -1,8 +1,8 @@
 import { EquipmentSlot, ItemConfigs } from "../config/item-configs"
 import { getState } from "../state"
-import { Ability } from "./../abilities/ability-type"
-import { AbilityConfigs } from "./../config/ability-configs"
+import { SkillConfigs } from "../config/skill-configs"
 import { CharacterStats } from "./character-types"
+import { Skill } from "../skills/skills-types"
 
 export function addHp(value: number) {
     const { battler } = getState()
@@ -33,14 +33,14 @@ export function restoreStatus() {
     player.stamina = player.staminaMax
 }
 
-function addStatsFromPassive(ability?: Ability) {
-    if (!ability || ability.rank === 0) {
+function addStatsFromPassive(skill?: Skill) {
+    if (!skill || skill.rank === 0) {
         return
     }
 
     const { battler } = getState()
 
-    const abilityConfig = AbilityConfigs[ability.id]
+    const abilityConfig = SkillConfigs[skill.id]
 
     for (const effect of abilityConfig.effects) {
         // battler.stats[effect.stat] += effect.power * ability.rank

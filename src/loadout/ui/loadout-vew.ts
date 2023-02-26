@@ -1,4 +1,4 @@
-import { AbilityConfigs } from "../../config/ability-configs"
+import { SkillConfigs } from "../../config/skill-configs"
 import { goTo } from "../../view"
 import { setText } from "../../dom"
 import { getState } from "../../state"
@@ -19,9 +19,9 @@ export function loadLoadoutView(segments: string[]) {
 
     setText("loadout-category", categoryId)
 
-    const { abilities } = getState()
+    const { skills: abilities } = getState()
     const equippableAbilities = Object.values(abilities).filter((entry) => {
-        const abilityConfig = AbilityConfigs[entry.id]
+        const abilityConfig = SkillConfigs[entry.id]
         return abilityConfig.type !== "passive"
     })
 }

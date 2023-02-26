@@ -1,14 +1,13 @@
-import { getEnergyNeeded } from "../../abilities/abilities-utils"
-import { getAbilityDescription } from "../../abilities/ui/abilities-view"
-import { AbilityConfigs, AbilityFlag } from "../../config/ability-configs"
-import { getElementById, HTMLComponent, setHTML, toggleClassName } from "../../dom"
+import { SkillConfigs, SkillFlag } from "../../config/skill-configs"
+import { getElement, getElementById, HTMLComponent, setHTML, toggleClassName } from "../../dom"
 import { i18n } from "../../i18n"
 import { getState } from "../../state"
-import { selectAbility } from "../battle-service"
-import { getAbilityIconPath } from "./../../abilities/abilities-utils"
-import { InstantAbilityConfig } from "./../../config/ability-configs"
-import { LoadoutAbility } from "./../../loadout/loadout-types"
+import { selectSkill } from "../battle-service"
+import { InstantSkillConfig } from "../../config/skill-configs"
+import { LoadoutSkill } from "../../loadout/loadout-types"
 import { toggleTeamInactive } from "./battler-item"
+import { getSkillIconPath, getEnergyNeeded } from "../../skills/skills-utils"
+import { getAbilityDescription } from "../../skills/ui/abilities-view"
 
 export function loadAbilities() {
     const { loadout } = getState()
@@ -20,19 +19,19 @@ export function loadAbilities() {
             continue
         }
 
-        const element = new BattlerAbilityElement()
+        const element = new BattlerSkillElement()
         element.setup(loadoutAbility)
         parent.appendChild(element)
     }
 
-    renderAbilities()
+    renderSkills()
 }
 
-export function renderAbilities() {
+export function renderSkills() {
     const { battle } = getState()
 
     const element = getElementById("battle-abilities")
-    const children = element.children as unknown as BattlerAbilityElement[]
+    const children = element.children as unknown as BattlerSkillElement[]
 
     toggleClassName("battle-abilities", "inactive", battle.status !== "waiting")
 
@@ -41,8 +40,8 @@ export function renderAbilities() {
         child.update()
     }
 
-    if (battle.selectedAbility) {
-        const abilityConfig = AbilityConfigs[battle.selectedAbility.id] as InstantAbilityConfig
+    if (battle.selectedSkill) {
+        const abilityConfig = SkillConfigs[battle.selectedSkill.id] as InstantSkillConfig
         const abilityTooltip = getAbilityDescription(abilityConfig)
 
         toggleClassName("battle-tooltip", "hide", false)
@@ -59,27 +58,27 @@ export function renderAbilities() {
     }
 }
 
-function canTargetTeamA(abilityConfig: InstantAbilityConfig, isTeamA: boolean) {
-    if (abilityConfig.flags & AbilityFlag.Offensive) {
+function canTargetTeamA(abilityConfig: InstantSkillConfig, isTeamA: boolean) {
+    if (abilityConfig.flags & SkillFlag.Offensive) {
         return !isTeamA
     }
 
     return isTeamA
 }
 
-class BattlerAbilityElement extends HTMLComponent {
-    ability: LoadoutAbility
+class BattlerSkillElement extends HTMLComponent {
+    ability: LoadoutSkill
 
     constructor() {
         super(template)
     }
 
-    setup(ability: LoadoutAbility) {
+    setup(ability: LoadoutSkill) {
         this.ability = ability
 
-        this.getElement("img").setAttribute("src", getAbilityIconPath(ability.id))
+        this.getElement("img").setAttribute("src", getSkillIconPath(ability.id))
 
-        const abilityConfig = AbilityConfigs[ability.id] as InstantAbilityConfig
+        const abilityConfig = SkillConfigs[ability.id] as InstantSkillConfig
         if (abilityConfig.energy > 0) {
             this.setText("#energy", getEnergyNeeded(ability))
         }
@@ -87,7 +86,7 @@ class BattlerAbilityElement extends HTMLComponent {
         this.toggleClassName(abilityConfig.element, true, "#element")
 
         this.onclick = () => {
-            selectAbility(ability)
+            selectSkill(ability)
         }
 
         this.update()
@@ -99,7 +98,7 @@ class BattlerAbilityElement extends HTMLComponent {
         const cooldown = this.ability.cooldown - (battle.turn - 1)
         const isInactive = cooldown === 0 && battle.status === "waiting" && battler.mana < getEnergyNeeded(this.ability)
 
-        this.toggleClassName("selected", battle.status === "waiting" && battle.selectedAbility?.id === this.ability.id)
+        this.toggleClassName("selected", battle.status === "waiting" && battle.selectedSkill?.id === this.ability.id)
         this.toggleClassName("inactive", isInactive)
 
         this.toggleClassName("hide", cooldown <= 0, "#cooldown")
@@ -108,7 +107,7 @@ class BattlerAbilityElement extends HTMLComponent {
     }
 }
 
-customElements.define("battler-ability", BattlerAbilityElement)
+customElements.define("battler-skill", BattlerSkillElement)
 
 const template = document.createElement("template")
 template.innerHTML = html`

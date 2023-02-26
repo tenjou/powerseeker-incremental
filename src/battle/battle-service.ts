@@ -1,13 +1,11 @@
-import { canUseAbility, getEnergyNeeded } from "../abilities/abilities-utils"
-import { AbilityEffect, ElementType } from "../abilities/ability-type"
-import { AbilityConfigs, AbilityFlag, InstantAbilityConfig } from "../config/ability-configs"
+import { SkillConfigs, SkillFlag, InstantSkillConfig } from "../config/skill-configs"
 import { BattleConfigs, BattleId } from "../config/battle-configs"
 import { LocationConfigs, LocationId } from "../config/location-configs"
 import { MonsterConfigs, MonsterId } from "../config/monster-configs"
 import { emit } from "../events"
 import { Item } from "../inventory/item-types"
 import { LootService } from "../inventory/loot-service"
-import { LoadoutAbility } from "../loadout/loadout-types"
+import { LoadoutSkill } from "../loadout/loadout-types"
 import { getState } from "../state"
 import { BattlerId } from "../types"
 import { randomItem, roll, shuffle } from "../utils"
@@ -20,7 +18,7 @@ import {
     BattleBattlerLogs,
     BattleLog,
     Battler,
-    BattlerAbilityEffect,
+    BattlerSkillEffect,
     BattleResult,
     BattleTargetLog,
     LocationProgress,
@@ -30,6 +28,9 @@ import { addAnimationsFromLogs, addRegenAnimations, updateBattleAnimation } from
 import "./ui/battle-result"
 import "./ui/battle-result-popup"
 import { updateBattlerEffects } from "./ui/battler-item"
+import { canUseSkill, getEnergyNeeded } from "../skills/skills-utils"
+import { ElementType } from "../skills/skills-types"
+import { SkillEffect } from "./../skills/skills-types"
 
 export const BattleService = {
     startFromLocation(locationId: LocationId) {
@@ -173,29 +174,29 @@ const generateBattleResult = (battle: Battle): BattleResult => {
     }
 }
 
-export function selectAbility(ability: LoadoutAbility | null) {
+export function selectSkill(skill: LoadoutSkill | null) {
     const { battle, battler } = getState()
 
-    if (ability && !canUseAbility(battler, ability)) {
-        battle.selectedAbility = null
+    if (skill && !canUseSkill(battler, skill)) {
+        battle.selectedSkill = null
         return
     }
 
-    battle.selectedAbility = ability
+    battle.selectedSkill = skill
 
-    emit("ability-selected", ability)
+    emit("ability-selected", skill)
 }
 
 export function useSelectedAbility(targetId: BattlerId) {
     const { battle, battler } = getState()
 
-    if (!battle.selectedAbility) {
+    if (!battle.selectedSkill) {
         return
     }
 
-    const abilityConfig = AbilityConfigs[battle.selectedAbility.id]
+    const abilityConfig = SkillConfigs[battle.selectedSkill.id]
     if (abilityConfig.type === "instant") {
-        const needTeamA = abilityConfig.flags & AbilityFlag.Offensive ? !battler.isTeamA : battler.isTeamA
+        const needTeamA = abilityConfig.flags & SkillFlag.Offensive ? !battler.isTeamA : battler.isTeamA
         const target = battle.battlers[targetId]
         if (target.isTeamA !== needTeamA) {
             return
@@ -205,7 +206,7 @@ export function useSelectedAbility(targetId: BattlerId) {
     battle.actions.push({
         casterId: battler.id,
         targetId,
-        ability: battle.selectedAbility,
+        skill: battle.selectedSkill,
         speed: getActionSpeed(battler.stats.speed),
     })
 
@@ -220,7 +221,7 @@ function executeAutoBattle() {
     const team = battle.isTeamA ? battle.teamB : battle.teamA
     const targetId = randomItem(team)
 
-    selectAbility(firstAbility)
+    selectSkill(firstAbility)
     useSelectedAbility(targetId)
 }
 
@@ -241,7 +242,7 @@ function updateAI() {
         battle.actions.push({
             casterId: battler.id,
             targetId,
-            ability: {
+            skill: {
                 id: monsterAbility.id,
                 rank: monsterAbility.rank,
                 cooldown: 0,
@@ -256,7 +257,7 @@ function startExecutingTurn() {
 
     battle.status = "executing"
 
-    selectAbility(null)
+    selectSkill(null)
 
     shuffle(battle.actions)
     battle.actions.sort((a, b) => a.speed - b.speed)
@@ -396,12 +397,12 @@ function nextAction() {
         return
     }
 
-    const abilityConfig = AbilityConfigs[action.ability.id] as InstantAbilityConfig
+    const abilityConfig = SkillConfigs[action.skill.id] as InstantSkillConfig
 
-    const energyNeeded = getEnergyNeeded(action.ability)
+    const energyNeeded = getEnergyNeeded(action.skill)
     caster.mana -= energyNeeded
 
-    action.ability.cooldown = battle.turn + abilityConfig.cooldown
+    action.skill.cooldown = battle.turn + abilityConfig.cooldown
 
     const targets = targetOpponent(caster, action.targetId, abilityConfig)
 
@@ -426,7 +427,7 @@ function nextAction() {
                     if (roll(criticalChance)) {
                         flags |= BattleActionFlag.Critical
                         powerModifier *= 1.25 | 0
-                    } else if (abilityConfig.flags & AbilityFlag.Missable) {
+                    } else if (abilityConfig.flags & SkillFlag.Missable) {
                         const hitChance = 100 + caster.stats.accuracy - target.stats.evasion
                         if (!roll(hitChance)) {
                             flags |= BattleActionFlag.Miss
@@ -465,7 +466,7 @@ function nextAction() {
         }
 
         if (abilityConfig.duration > 0) {
-            const effect = applyEffects(caster, target, action.ability, abilityConfig)
+            const effect = applyEffects(caster, target, action.skill, abilityConfig)
 
             targetLogs.push({
                 type: "effect-added",
@@ -481,7 +482,7 @@ function nextAction() {
     }
 
     const logEntry: BattleBattlerLogs = {
-        abilityId: action.ability.id,
+        skillId: action.skill.id,
         casterId: action.casterId,
         targets: targetsLogs,
         casterLogs: null,
@@ -509,7 +510,7 @@ function nextAction() {
     }
 }
 
-function targetOpponent(caster: Battler, targetId: BattlerId, abilityConfig: InstantAbilityConfig) {
+function targetOpponent(caster: Battler, targetId: BattlerId, abilityConfig: InstantSkillConfig) {
     const { battle } = getState()
 
     const targetBattler = battle.battlers[targetId]
@@ -517,13 +518,13 @@ function targetOpponent(caster: Battler, targetId: BattlerId, abilityConfig: Ins
         return []
     }
 
-    if (abilityConfig.flags & AbilityFlag.Self) {
+    if (abilityConfig.flags & SkillFlag.Self) {
         return [caster]
     }
 
-    if (abilityConfig.flags & AbilityFlag.AoE) {
+    if (abilityConfig.flags & SkillFlag.AoE) {
         const battlers: Battler[] = []
-        const targetTeam = caster.isTeamA && abilityConfig.flags & AbilityFlag.Offensive ? battle.teamB : battle.teamA
+        const targetTeam = caster.isTeamA && abilityConfig.flags & SkillFlag.Offensive ? battle.teamB : battle.teamA
         for (const battlerId of targetTeam) {
             const battler = battle.battlers[battlerId]
             if (battler && battler.health > 0) {
@@ -538,7 +539,7 @@ function targetOpponent(caster: Battler, targetId: BattlerId, abilityConfig: Ins
         return [targetBattler]
     }
 
-    const targetTeam = caster.isTeamA && abilityConfig.flags & AbilityFlag.Offensive ? battle.teamB : battle.teamA
+    const targetTeam = caster.isTeamA && abilityConfig.flags & SkillFlag.Offensive ? battle.teamB : battle.teamA
     for (const battlerId of targetTeam) {
         const battler = battle.battlers[battlerId]
         if (battler && battler.health > 0) {
@@ -609,7 +610,7 @@ export function createBattle(): Battle {
         battleId: "test_battle",
         id: 0,
         turn: 1,
-        selectedAbility: null,
+        selectedSkill: null,
         selectedBattlerId: -1,
         playerBattlerId: -1,
         log: [[]],
@@ -623,28 +624,23 @@ export function createBattle(): Battle {
     }
 }
 
-function applyEffects(
-    caster: Battler,
-    target: Battler,
-    ability: LoadoutAbility,
-    abilityConfig: InstantAbilityConfig
-): BattlerAbilityEffect {
+function applyEffects(caster: Battler, target: Battler, skill: LoadoutSkill, abilityConfig: InstantSkillConfig): BattlerSkillEffect {
     const { battle } = getState()
 
-    const effects = abilityConfig.durationEffects.map<AbilityEffect>((effect) => {
+    const effects = abilityConfig.durationEffects.map<SkillEffect>((effect) => {
         return {
-            power: ability.rank * effect.power,
+            power: skill.rank * effect.power,
             stat: effect.stat,
             type: effect.type,
         }
     })
 
     let duration = abilityConfig.duration
-    if (abilityConfig.flags & AbilityFlag.ExpiresAfterAction) {
+    if (abilityConfig.flags & SkillFlag.ExpiresAfterAction) {
         duration += 0.5
     }
 
-    let effect = target.effects.find((effect) => effect.casterId === caster.id && effect.abilityId === abilityConfig.id)
+    let effect = target.effects.find((effect) => effect.casterId === caster.id && effect.skillId === abilityConfig.id)
     if (effect) {
         for (const entry of effect.effects) {
             target.stats[entry.stat] -= entry.power
@@ -656,7 +652,7 @@ function applyEffects(
     } else {
         effect = {
             id: battle.nextEffectId++,
-            abilityId: abilityConfig.id,
+            skillId: abilityConfig.id,
             casterId: caster.id,
             duration,
             effects,
@@ -681,14 +677,14 @@ function updateEffectsDuration(battler: Battler, targetLogs: BattleLog[], isActi
 
     for (let n = 0; n < abilityEffects.length; n += 1) {
         const abilityEffect = abilityEffects[n]
-        const abilityConfig = AbilityConfigs[abilityEffect.abilityId] as InstantAbilityConfig
+        const abilityConfig = SkillConfigs[abilityEffect.skillId] as InstantSkillConfig
 
         if (isAction) {
-            if (abilityConfig.flags & AbilityFlag.ExpiresAfterAction) {
+            if (abilityConfig.flags & SkillFlag.ExpiresAfterAction) {
                 abilityEffect.duration -= 1
             }
         } else {
-            if ((abilityConfig.flags & AbilityFlag.ExpiresAfterAction) === 0) {
+            if ((abilityConfig.flags & SkillFlag.ExpiresAfterAction) === 0) {
                 abilityEffect.duration -= 1
             }
         }

@@ -1,8 +1,8 @@
-import { AbilityId } from "../config/ability-configs"
+import { SkillId } from "../config/skill-configs"
 import { getState } from "../state"
 
-export function equipAbility(abilityId: AbilityId) {
-    const { abilities, loadout } = getState()
+export function equipAbility(abilityId: SkillId) {
+    const { skills: abilities, loadout } = getState()
 
     const ability = abilities[abilityId]
     if (!ability) {

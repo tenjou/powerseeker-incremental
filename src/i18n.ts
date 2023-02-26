@@ -387,7 +387,7 @@ const I18nValues = {
     },
 } satisfies Record<string, LocalEntry>
 
-export function i18n(key: string | null) {
+export const i18n = (key: string | null) => {
     if (!key) {
         return "undefined"
     }

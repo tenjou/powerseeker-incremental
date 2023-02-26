@@ -1,8 +1,8 @@
-import { getAbilityEffectColor } from "../../abilities/abilities-utils"
 import { ItemConfigEquipment, ItemConfigResource, ItemConfigs, ItemId } from "../../config/item-configs"
 import { HTMLComponent } from "../../dom"
 import { Item } from "../../inventory/item-types"
 import { getRarityText } from "../../inventory/item-utils"
+import { getSkillEffectColor } from "../../skills/skills-utils"
 import { i18n } from "./../../i18n"
 
 const template = document.createElement("template")
@@ -72,7 +72,7 @@ export class ItemTooltip extends HTMLComponent {
             for (let n = 0; n < regexDescription.length; n++) {
                 const entry = regexDescription[n]
                 const power = effects[n].value
-                const color = getAbilityEffectColor("health", power)
+                const color = getSkillEffectColor("health", power)
 
                 description = description.replace(entry, `<span class="color-${color} bold">${power}</span>`)
             }

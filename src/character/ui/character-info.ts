@@ -18,6 +18,12 @@ template.innerHTML = html`
         <div class="flex flex-column flex-1 justify-center">
             <progress-bar value="24" value-max="100" class="green border"></progress-bar>
         </div>
+        <div>
+            <div>
+                <span>AP</span>
+                <span>154</span>
+            </div>
+        </div>
     </div>
 `
 

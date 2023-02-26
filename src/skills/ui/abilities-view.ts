@@ -1,23 +1,23 @@
-import { AbilityConfig, AbilityConfigs, AbilityId } from "../../config/ability-configs"
+import { SkillConfig, SkillConfigs, SkillId } from "../../config/skill-configs"
 import { getState } from "../../state"
 import { getElementById, removeAllChildren } from "../../dom"
-import { getAbilityEffectColor, getAbilityEffectPower } from "../abilities-utils"
+import { getSkillEffectColor, getSkillEffectPower } from "../skills-utils"
 import "./ability-popup"
 import "./ability-slot"
 import "./ability-card"
 import { AbilitySlotElement } from "./ability-slot"
 import { subscribe, unsubscribe } from "../../events"
-import { AbilityEffect } from "../ability-type"
+import { SkillEffect } from "../skills-types"
 import { PopupService } from "./../../popup"
 import { i18n } from "../../i18n"
 
 export function loadAbilitiesView() {
     const parent = getElementById("abilities-container")
 
-    for (const abilityId in AbilityConfigs) {
+    for (const abilityId in SkillConfigs) {
         const abilitySlot = document.createElement("ability-card")
         abilitySlot.setAttribute("ability-id", abilityId)
-        abilitySlot.onclick = () => openAbilityPopup(abilityId as AbilityId)
+        abilitySlot.onclick = () => openAbilityPopup(abilityId as SkillId)
         parent.appendChild(abilitySlot)
     }
 
@@ -37,14 +37,14 @@ function updateView() {
     })
 }
 
-function openAbilityPopup(abilityId: AbilityId) {
+function openAbilityPopup(abilityId: SkillId) {
     PopupService.open("ability-popup", {
         "ability-id": abilityId,
     })
 }
 
-export const getAbilityDescription = (abilityConfig: AbilityConfig, abilityRank?: number) => {
-    const { abilities } = getState()
+export const getAbilityDescription = (abilityConfig: SkillConfig, abilityRank?: number) => {
+    const { skills: abilities } = getState()
 
     if (!abilityRank) {
         const ability = abilities[abilityConfig.id]
@@ -63,8 +63,8 @@ export const getAbilityDescription = (abilityConfig: AbilityConfig, abilityRank?
     for (const entry of regexDescription) {
         const effectId = Number(entry.slice(1))
         const effect = effects[effectId]
-        const power = getAbilityEffectPower(effect, abilityRank)
-        const color = getAbilityEffectColor(effect.type, power)
+        const power = getSkillEffectPower(effect, abilityRank)
+        const color = getSkillEffectColor(effect.type, power)
 
         abilityDescription = abilityDescription.replace(entry, `<x-text class="${color} bold">${Math.abs(power)}</x-text>`)
     }

@@ -1,18 +1,17 @@
-import { AbilityEffect } from "../abilities/ability-type"
-import { AbilityId } from "../config/ability-configs"
 import { BattleId } from "../config/battle-configs"
-import { ItemId } from "../config/item-configs"
 import { LocationId } from "../config/location-configs"
 import { MonsterId } from "../config/monster-configs"
+import { SkillId } from "../config/skill-configs"
 import { Item } from "../inventory/item-types"
+import { LoadoutSkill } from "../loadout/loadout-types"
+import { SkillEffect } from "../skills/skills-types"
 import { BattlerId } from "../types"
 import { CharacterStats } from "./../character/character-types"
-import { LoadoutAbility } from "./../loadout/loadout-types"
 
 export interface BattleAction {
     casterId: BattlerId
     targetId: BattlerId
-    ability: LoadoutAbility
+    skill: LoadoutSkill
     speed: number
 }
 
@@ -26,7 +25,7 @@ export interface Battle {
     teamB: BattlerId[]
     actions: BattleAction[]
     turn: number
-    selectedAbility: LoadoutAbility | null
+    selectedSkill: LoadoutSkill | null
     selectedBattlerId: BattlerId
     playerBattlerId: BattlerId
     log: BattleBattlerLogs[][]
@@ -39,11 +38,11 @@ export interface Battle {
     locationId: LocationId | null
 }
 
-export interface BattlerAbilityEffect {
+export interface BattlerSkillEffect {
     id: number
-    abilityId: AbilityId
+    skillId: SkillId
     casterId: BattlerId
-    effects: AbilityEffect[]
+    effects: SkillEffect[]
     duration: number
 }
 
@@ -54,14 +53,14 @@ export interface Battler {
     health: number
     mana: number
     stats: CharacterStats
-    effects: BattlerAbilityEffect[]
+    effects: BattlerSkillEffect[]
     isTeamA: boolean
     monsterId: MonsterId | null
 }
 
 export interface BattlerViewEffect {
     id: number
-    abilityId: AbilityId
+    skillId: SkillId
     duration: number
     appliedOnTurn: number
 }
@@ -122,7 +121,7 @@ export interface BattleTargetLog {
 
 export interface BattleBattlerLogs {
     casterId: BattlerId
-    abilityId: AbilityId
+    skillId: SkillId
     targets: BattleTargetLog[]
     casterLogs: BattleTargetLog | null
     energy: number

@@ -1,4 +1,4 @@
-import { AbilityId } from "../../config/ability-configs"
+import { SkillId } from "../../config/skill-configs"
 import { BattlerId } from "../../types"
 import { BattleActionFlag, BattleBattlerLogs, BattleTargetLog } from "../battle-types"
 import {
@@ -35,20 +35,20 @@ interface AnimationShake extends BattleAnimationBasic {
 
 interface AnimationSkillUse extends BattleAnimationBasic {
     type: "ability-use"
-    abilityId: AbilityId
+    abilityId: SkillId
     energy: number
 }
 
 interface AnimationScrollingText extends BattleAnimationBasic {
     type: "scrolling-text"
-    abilityId: AbilityId | null
+    abilityId: SkillId | null
     value: number
     flags: BattleActionFlag
 }
 
 interface AnimationEffectAdd extends BattleAnimationBasic {
     type: "effect-add"
-    abilityId: AbilityId
+    abilityId: SkillId
     effectId: number
     duration: number
 }
@@ -184,7 +184,7 @@ export function addAnimationsFromLogs(tCurrent: number, battlerLogs: BattleBattl
         battlerId: battlerLogs.casterId,
         tStart: tStart,
         tEnd: tStart + 800,
-        abilityId: battlerLogs.abilityId,
+        abilityId: battlerLogs.skillId,
         energy: battlerLogs.energy,
     })
 
@@ -226,7 +226,7 @@ export function addAnimationsFromLogs(tCurrent: number, battlerLogs: BattleBattl
                     animations.push({
                         type: "scrolling-text",
                         battlerId: target.battlerId,
-                        abilityId: battlerLogs.abilityId,
+                        abilityId: battlerLogs.skillId,
                         tStart: tEffectStart,
                         tEnd: tEffectStart + attackAnimationLength,
                         flags: 0,
@@ -237,7 +237,7 @@ export function addAnimationsFromLogs(tCurrent: number, battlerLogs: BattleBattl
 
                     animations.push({
                         type: "effect-add",
-                        abilityId: battlerLogs.abilityId,
+                        abilityId: battlerLogs.skillId,
                         battlerId: target.battlerId,
                         duration: log.duration,
                         effectId: log.effectId,
@@ -277,7 +277,7 @@ export function addAnimationsFromLogs(tCurrent: number, battlerLogs: BattleBattl
                 case "effect-added":
                     animations.push({
                         type: "effect-add",
-                        abilityId: battlerLogs.abilityId,
+                        abilityId: battlerLogs.skillId,
                         battlerId: casterLogs.battlerId,
                         duration: log.duration,
                         effectId: log.effectId,

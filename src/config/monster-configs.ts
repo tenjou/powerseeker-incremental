@@ -1,11 +1,11 @@
-import { Ability } from "../abilities/ability-type"
-import { AbilityId } from "./ability-configs"
+import { SkillId } from "./skill-configs"
 import { ItemId } from "./item-configs"
+import { Skill } from "../skills/skills-types"
 
 export type MonsterId = "boar"
 
 interface AIOption {
-    abilityId: AbilityId
+    abilityId: SkillId
     chance: number
 }
 
@@ -25,7 +25,7 @@ interface MonsterConfig {
     airResistance: number
     xp: number
     gold: number
-    abilities: Record<AbilityId, Ability>
+    abilities: Record<SkillId, Skill>
     ai: AIOption[]
     loot: {
         id: ItemId

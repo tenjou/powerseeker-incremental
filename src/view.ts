@@ -1,4 +1,3 @@
-import { loadAbilitiesView, unloadAbilitiesView } from "./abilities/ui/abilities-view"
 import { loadBattleView, unloadBattleView } from "./battle/ui/battle-view"
 import { loadCharacterView, unloadCharacterView } from "./character/ui/character-view"
 import { toggleClassName } from "./dom"
@@ -6,7 +5,6 @@ import { loadEquipmentView, unloadEquipmentView } from "./equipment/ui/equipment
 import { EventCallbackInfo, unsubscribe, watchSubscribers } from "./events"
 import { loadInventoryView, unloadInventoryView } from "./inventory/ui/inventory-view"
 import { loadLoadoutView, unloadLoadoutView } from "./loadout/ui/loadout-vew"
-import { loadSkillsView, unloadSkillsView } from "./skills/skills-view"
 import { loadTownView, unloadTownView } from "./town/town"
 import { loadWorldView, unloadWorldView, updateWorldView } from "./world/ui/world-view"
 
@@ -17,7 +15,7 @@ interface View {
     customContainer?: string
 }
 
-type ViewType = "town" | "world" | "character" | "inventory" | "skills" | "equipment" | "abilities" | "loadout" | "battle"
+type ViewType = "town" | "world" | "character" | "inventory" | "equipment" | "loadout" | "battle"
 
 const mainContainerId = "main-container"
 
@@ -39,17 +37,9 @@ const views: Record<ViewType, View> = {
         onLoad: loadInventoryView,
         onUnload: unloadInventoryView,
     },
-    skills: {
-        onLoad: loadSkillsView,
-        onUnload: unloadSkillsView,
-    },
     equipment: {
         onLoad: loadEquipmentView,
         onUnload: unloadEquipmentView,
-    },
-    abilities: {
-        onLoad: loadAbilitiesView,
-        onUnload: unloadAbilitiesView,
     },
     loadout: {
         onLoad: loadLoadoutView,

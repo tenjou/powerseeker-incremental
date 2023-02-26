@@ -1,11 +1,11 @@
-import { AbilityEffect, ElementType } from "../abilities/ability-type"
+import { SkillEffect, ElementType } from "../skills/skills-types"
 
 // export type AbilityId = "attack" | "bash" | "heal" | "magnum_break" | "sword_mastery" | "axe_mastery" | "berserk" | "poison"
-export type AbilityId = "fire_attack"
+export type SkillId = "fire_attack"
 
 export type AbilityType = "instant" | "passive"
 
-export enum AbilityFlag {
+export enum SkillFlag {
     Offensive = 1,
     AoE = 2,
     Self = 4,
@@ -14,27 +14,27 @@ export enum AbilityFlag {
 }
 
 interface BasicAbilityConfig {
-    id: AbilityId
-    effects: AbilityEffect[]
+    id: SkillId
+    effects: SkillEffect[]
 }
 
-export interface InstantAbilityConfig extends BasicAbilityConfig {
+export interface InstantSkillConfig extends BasicAbilityConfig {
     type: "instant"
     element: ElementType
     flags: number
     energy: number
     cooldown: number
     duration: number
-    durationEffects: AbilityEffect[]
+    durationEffects: SkillEffect[]
 }
 
-interface PassiveAbilityConfig extends BasicAbilityConfig {
+interface PassiveSkillConfig extends BasicAbilityConfig {
     type: "passive"
 }
 
-export type AbilityConfig = InstantAbilityConfig | PassiveAbilityConfig
+export type SkillConfig = InstantSkillConfig | PassiveSkillConfig
 
-export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
+export const SkillConfigs: Record<SkillId, SkillConfig> = {
     fire_attack: {
         id: "fire_attack",
         type: "instant",
@@ -43,7 +43,7 @@ export const AbilityConfigs: Record<AbilityId, AbilityConfig> = {
         cooldown: 0,
         duration: 0,
         durationEffects: [],
-        flags: AbilityFlag.Offensive | AbilityFlag.Missable,
+        flags: SkillFlag.Offensive | SkillFlag.Missable,
         effects: [
             {
                 type: "health",

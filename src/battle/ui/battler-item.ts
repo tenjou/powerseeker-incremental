@@ -1,6 +1,6 @@
-import { getAbilityIconPath } from "../../abilities/abilities-utils"
+import { getSkillIconPath } from "../../skills/skills-utils"
 import { ScrollingText } from "../../components/scrolling-text"
-import { AbilityConfigs, AbilityId } from "../../config/ability-configs"
+import { SkillConfigs, SkillId } from "../../config/skill-configs"
 import { addChild, HTMLComponent, toggleClassName } from "../../dom"
 import { i18n } from "../../i18n"
 import { getState } from "../../state"
@@ -67,7 +67,7 @@ export function addBattlerHealth(battlerId: BattlerId, value: number) {
     element.update(battlerId)
 }
 
-export function addBattlerEnergy(battlerId: BattlerId, value: number, abilityId?: AbilityId) {
+export function addBattlerEnergy(battlerId: BattlerId, value: number, abilityId?: SkillId) {
     const { battle } = getState()
 
     const battlerView = battle.battlersView[battlerId]
@@ -78,7 +78,7 @@ export function addBattlerEnergy(battlerId: BattlerId, value: number, abilityId?
     element.update(battlerId, abilityId)
 }
 
-export function addBattlerEffect(battlerId: BattlerId, effectId: number, abilityId: AbilityId, duration: number) {
+export function addBattlerEffect(battlerId: BattlerId, effectId: number, abilityId: SkillId, duration: number) {
     const { battle } = getState()
 
     const battlerView = battle.battlersView[battlerId]
@@ -88,7 +88,7 @@ export function addBattlerEffect(battlerId: BattlerId, effectId: number, ability
     } else {
         battlerView.effects.push({
             id: effectId,
-            abilityId,
+            skillId: abilityId,
             duration,
             appliedOnTurn: battle.turn,
         })
@@ -148,7 +148,7 @@ class BattlerItem extends HTMLComponent {
         this.appendChild(scrollingText)
     }
 
-    update(battlerId: BattlerId, abilityId?: AbilityId) {
+    update(battlerId: BattlerId, abilityId?: SkillId) {
         const { battle } = getState()
 
         const battler = battle.battlers[battlerId]
@@ -167,10 +167,10 @@ class BattlerItem extends HTMLComponent {
         this.toggleClassName("hide", !!abilityId, "#effects")
 
         if (abilityId) {
-            const abilityConfig = AbilityConfigs[abilityId]
+            const abilityConfig = SkillConfigs[abilityId]
 
             this.getElement("#ability-name").innerText = i18n(abilityConfig.id)
-            this.getElement("#ability-icon").setAttribute("src", getAbilityIconPath(abilityConfig.id))
+            this.getElement("#ability-icon").setAttribute("src", getSkillIconPath(abilityConfig.id))
         }
     }
 

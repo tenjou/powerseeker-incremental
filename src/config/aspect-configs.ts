@@ -1,10 +1,10 @@
-import { AbilityId } from "./ability-configs"
+import { SkillId } from "./skill-configs"
 
 export type AspectId = "novice" | "warrior" | "cleric"
 
 export interface AspectConfig {
     id: AspectId
-    abilities: AbilityId[]
+    abilities: SkillId[]
 }
 
 export const AspectConfigs: Record<AspectId, AspectConfig> = {

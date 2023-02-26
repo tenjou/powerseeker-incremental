@@ -1,10 +1,10 @@
-import { AbilityConfigs, AbilityId } from "../../config/ability-configs"
+import { SkillConfigs, SkillId } from "../../config/skill-configs"
 import { HTMLComponent } from "../../dom"
 import { i18n } from "../../i18n"
 import { getState } from "../../state"
 import { haveCurrency } from "../../currencies/currencies"
 import { subscribe, unsubscribe } from "../../events"
-import { getRequiredAp, learnAbility } from "../abilities-utils"
+import { getRequiredAp, learnSkill } from "../skills-utils"
 import { getAbilityDescription } from "./abilities-view"
 import { PopupService } from "./../../popup"
 
@@ -77,12 +77,12 @@ export class AbilityPopup extends HTMLComponent {
         this.update()
 
         this.getElement("x-button").onclick = () => {
-            const abilityId = this.getAttribute("ability-id") as AbilityId | null
+            const abilityId = this.getAttribute("ability-id") as SkillId | null
             if (!abilityId) {
                 return
             }
 
-            learnAbility(abilityId)
+            learnSkill(abilityId)
             PopupService.close()
         }
 
@@ -94,12 +94,12 @@ export class AbilityPopup extends HTMLComponent {
     }
 
     update() {
-        const abilityId = this.getAttribute("ability-id") as AbilityId | null
+        const abilityId = this.getAttribute("ability-id") as SkillId | null
         if (!abilityId) {
             return
         }
 
-        const { abilities } = getState()
+        const { skills: abilities } = getState()
         const ability = abilities[abilityId]
         const abilityRank = ability ? ability.rank : 1
         // this.setText("#rank", abilityRank)
@@ -107,7 +107,7 @@ export class AbilityPopup extends HTMLComponent {
         const abilitySlot = this.getElement("ability-slot")
         abilitySlot.setAttribute("ability-id", abilityId)
 
-        const abilityConfig = AbilityConfigs[abilityId as AbilityId]
+        const abilityConfig = SkillConfigs[abilityId as SkillId]
         this.setText("#name", i18n(abilityId))
         this.setText("#type", i18n(abilityConfig.type))
         // this.setText("#type", i18n(abilityConfig.type))

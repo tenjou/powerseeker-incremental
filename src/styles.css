@@ -791,7 +791,7 @@ battler-effect div {
     font-size: 10px;
 }
 
-battler-ability {
+battler-skill {
     position: relative;
     padding: 4px;
     margin: 0 3px;
@@ -801,23 +801,23 @@ battler-ability {
     background: linear-gradient(#dad8d8, #c3c2c2);
     box-shadow: 0 0 2px #696969;
 }
-battler-ability > img {
+battler-skill > img {
     display: block;
     zoom: 2;
     image-rendering: pixelated;
 }
-battler-ability:hover,
-battler-ability.selected {
+battler-skill:hover,
+battler-skill.selected {
     border: 2px solid #fff;
 }
-battler-ability:active {
+battler-skill:active {
     transform: translateY(1px);
 }
-battler-ability.inactive {
+battler-skill.inactive {
     opacity: 0.5;
     pointer-events: none;
 }
-battler-ability .cooldown {
+battler-skill .cooldown {
     position: absolute;
     left: 0;
     top: 0;
@@ -832,7 +832,7 @@ battler-ability .cooldown {
     font-weight: bold;
     pointer-events: none;
 }
-battler-ability .energy {
+battler-skill .energy {
     position: absolute;
     padding: 0 1px 0 2px;
     right: 0;

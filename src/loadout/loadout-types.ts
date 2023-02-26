@@ -1,7 +1,7 @@
-import { AbilityId } from "../config/ability-configs"
+import { SkillId } from "../config/skill-configs"
 
-export interface LoadoutAbility {
-    id: AbilityId
+export interface LoadoutSkill {
+    id: SkillId
     rank: number
     cooldown: number
 }

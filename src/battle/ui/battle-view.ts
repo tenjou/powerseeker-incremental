@@ -1,6 +1,6 @@
 import { removeAllChildren, setOnClick, setText } from "../../dom"
 import { getState } from "../../state"
-import { loadAbilities, renderAbilities } from "./battle-ability"
+import { loadAbilities, renderSkills } from "./battle-skill"
 import { loadBattler } from "./battler-item"
 import { subscribe, unsubscribe } from "./../../events"
 import { updateView } from "./../../view"
@@ -53,17 +53,17 @@ const updateBattleAuto = () => {
 const updateAbilityHint = () => {
     const { battle } = getState()
 
-    if (!battle.selectedAbility && battle.status === "waiting") {
+    if (!battle.selectedSkill && battle.status === "waiting") {
         setText("battle-hint", "Select your action")
     } else {
         setText("battle-hint", "")
     }
 
-    renderAbilities()
+    renderSkills()
 }
 
 const updateNextTurn = () => {
-    renderAbilities()
+    renderSkills()
     updateStatus()
 }
 

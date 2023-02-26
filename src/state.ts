@@ -1,22 +1,17 @@
-import { Ability } from "./abilities/ability-type"
 import { Aspect } from "./aspects/aspect-types"
 import { createBattle } from "./battle/battle-service"
 import { Battle, Battler, BattleResult } from "./battle/battle-types"
 import { createEmptyStats } from "./character/status"
-import { AbilityId } from "./config/ability-configs"
+import { SkillId } from "./config/skill-configs"
 import { AreaId } from "./config/area-configs"
 import { AspectId } from "./config/aspect-configs"
 import { EquipmentSlot, ItemId } from "./config/item-configs"
 import { LocationId } from "./config/location-configs"
 import { CurrencyType } from "./currencies/currency-types"
 import { Item } from "./inventory/item-types"
-import { LoadoutAbility } from "./loadout/loadout-types"
-import { Card, Skill } from "./types"
+import { LoadoutSkill } from "./loadout/loadout-types"
 import { AreaState, ExplorationState, LocationState } from "./world/world-types"
-
-interface TownStatus {
-    cards: Card[]
-}
+import { Skill } from "./skills/skills-types"
 
 interface PlayerStatus {
     name: string
@@ -24,16 +19,6 @@ interface PlayerStatus {
     power: number
     stamina: number
     staminaMax: number
-}
-
-interface DungeonStatus {
-    id: string
-    parentCardId: number
-    stage: number
-    progress: number
-    cards: Card[]
-    stageCompleted: boolean
-    reachedEnd: boolean
 }
 
 interface Cache {
@@ -48,17 +33,14 @@ interface State {
     currencies: Record<CurrencyType, number>
     equipment: Record<EquipmentSlot, Item | null>
     battler: Battler
-    skills: Skill[]
     inventory: Item[]
-    abilities: Record<AbilityId, Ability>
+    skills: Record<SkillId, Skill>
     loadout: {
-        abilities: (LoadoutAbility | null)[]
+        abilities: (LoadoutSkill | null)[]
         items: (ItemId | null)[]
     }
     areas: Partial<Record<AreaId, AreaState>>
     locations: Partial<Record<LocationId, LocationState>>
-    town: TownStatus
-    dungeon: DungeonStatus
     battle: Battle
     battleResult: BattleResult | null
     exploration: ExplorationState | null
@@ -93,26 +75,6 @@ let state: State = {
         isTeamA: true,
         monsterId: null,
     },
-    skills: [
-        {
-            id: "woodcutting",
-            xp: 0,
-            xpMax: 100,
-            level: 1,
-        },
-        {
-            id: "mining",
-            xp: 0,
-            xpMax: 100,
-            level: 1,
-        },
-        {
-            id: "fishing",
-            xp: 0,
-            xpMax: 100,
-            level: 1,
-        },
-    ],
     inventory: [
         // {
         //     uid: "1",
@@ -134,21 +96,9 @@ let state: State = {
         //     ],
         // },
     ],
-    town: {
-        cards: [],
-    },
-    dungeon: {
-        id: "",
-        parentCardId: -1,
-        stage: -1,
-        progress: -1,
-        cards: [],
-        stageCompleted: false,
-        reachedEnd: false,
-    },
     battle: createBattle(),
     battleResult: null,
-    abilities: {
+    skills: {
         fire_attack: { id: "fire_attack", rank: 1 },
         // bash: { id: "bash", rank: 1 },
         // heal: { id: "heal", rank: 1 },
