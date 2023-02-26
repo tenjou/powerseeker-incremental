@@ -20,6 +20,8 @@ type EventType =
     | "ability-selected"
     | "ability-updated"
     | "aspect-selected"
+    | "attributes-updated"
+    | "exp-updated"
 
 type EventCallbackFunc = (payload: unknown) => void
 

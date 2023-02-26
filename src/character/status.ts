@@ -33,42 +33,6 @@ export function restoreStatus() {
     player.stamina = player.staminaMax
 }
 
-export function recalculateStats() {
-    const { abilities, battler, equipment, player } = getState()
-
-    battler.stats = createEmptyStats()
-    player.power = 0
-
-    for (const slotType in equipment) {
-        const item = equipment[slotType as EquipmentSlot]
-        if (!item) {
-            continue
-        }
-
-        const itemConfig = ItemConfigs[item.id]
-        if (itemConfig.type !== "equipment") {
-            continue
-        }
-
-        if (itemConfig.slot === "main_hand") {
-            // switch (itemConfig.equipmentType) {
-            //     case "axe":
-            //         addStatsFromPassive(abilities.axe_mastery)
-            //         break
-            //     case "sword":
-            //         addStatsFromPassive(abilities.sword_mastery)
-            //         break
-            // }
-        }
-
-        // for (const stat of itemConfig.stats) {
-        //     battler.stats[stat.type] += stat.value
-        // }
-
-        player.power += item.power
-    }
-}
-
 function addStatsFromPassive(ability?: Ability) {
     if (!ability || ability.rank === 0) {
         return
@@ -93,10 +57,10 @@ export function createEmptyStats(): CharacterStats {
         speed: 100,
         regenMana: 0,
         regenHealth: 0,
-        firePower: 500,
-        waterPower: 5,
-        airPower: 5,
-        earthPower: 5,
+        firePower: 1,
+        waterPower: 1,
+        airPower: 1,
+        earthPower: 1,
         fireResistance: 0,
         waterResistance: 0,
         airResistance: 0,

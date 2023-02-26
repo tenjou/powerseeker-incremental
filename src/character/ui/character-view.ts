@@ -1,15 +1,10 @@
 import { AbilitySlotElement } from "../../abilities/ui/ability-slot"
 import { EquipmentSlot } from "../../config/item-configs"
-import { LevelConfig } from "../../config/level-config"
-import { getElement, getElementById, toggleClassName } from "../../dom"
+import { getElement } from "../../dom"
 import "../../equipment/ui/equipment-slot"
 import { EquipmentSlotElement } from "../../equipment/ui/equipment-slot"
 import { subscribe } from "../../events"
-import { i18n } from "../../i18n"
-import { getState } from "../../state"
-import { goTo } from "../../view"
-import { ProgressBar } from "./../../components/progress-bar"
-import { setText } from "./../../dom"
+import { PlayerService } from "./../../player/player-service"
 import "./character-attributes"
 import { CharacterAttributes } from "./character-attributes"
 import "./character-info"
@@ -21,15 +16,29 @@ import { CharacterResistances } from "./character-resistances"
 import "./stats-row"
 
 export function loadCharacterView() {
+    updateCharacterInfo()
+    updateCharacterAttributes()
+
+    getElement("#add-exp").onclick = () => {
+        PlayerService.addExp(60)
+    }
+
+    subscribe("exp-updated", updateCharacterInfo)
+    subscribe("attributes-updated", updateCharacterAttributes)
+
+    // subscribe("equip", updateEquipmentSlot)
+    // subscribe("unequip", updateEquipmentSlot)
+    // updateCharacterView()
+}
+
+const updateCharacterInfo = () => {
     getElement<CharacterInfo>("character-info").update()
+}
+
+const updateCharacterAttributes = () => {
     getElement<CharacterAttributes>("character-attributes").update()
     getElement<CharacterPowers>("character-powers").update()
     getElement<CharacterResistances>("character-resistances").update()
-
-    updateCharacterView()
-
-    subscribe("equip", updateEquipmentSlot)
-    subscribe("unequip", updateEquipmentSlot)
 }
 
 export function unloadCharacterView() {}

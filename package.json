@@ -8,6 +8,7 @@
     },
     "devDependencies": {
         "@types/node": "^18.11.18",
+        "constants-browserify": "^1.0.0",
         "parcel": "^2.4.0",
         "process": "^0.11.10"
     },

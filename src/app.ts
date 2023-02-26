@@ -1,40 +1,41 @@
+import { AspectService } from "./aspects/aspect-service"
 import { updateBattle } from "./battle/battle-service"
-import { recalculateStats } from "./character/status"
 import "./components/anim-progress-bar"
 import "./components/area-transition"
 import "./components/close-button"
+import "./components/element-icon"
 import "./components/progress-bar"
 import "./components/scrolling-text"
-import "./components/x-url"
 import "./components/x-card"
 import "./components/x-column"
 import "./components/x-header"
 import "./components/x-icon"
 import "./components/x-row"
 import "./components/x-text"
-import "./components/element-icon"
 import "./components/x-timer"
+import "./components/x-url"
+import { XUrl } from "./components/x-url"
+import { AreaConfigs, AreaId } from "./config/area-configs"
 import "./currencies/currency-item"
 import { getElement, removeAllChildren, setShow, setText } from "./dom"
 import { emit, subscribe } from "./events"
-import { equipAbility } from "./loadout/loadout"
-import { getState, loadState } from "./state"
-import { loadTooltipSystem } from "./tooltip"
-import { updateView } from "./view"
-import { WorldService } from "./world/world-service"
-import { PopupService } from "./popup"
 import { i18n } from "./i18n"
-import { XUrl } from "./components/x-url"
-import { AreaConfigs, AreaId } from "./config/area-configs"
-import { updateUrl } from "./url"
 import { InventoryService } from "./inventory/inventory"
 import { LootService } from "./inventory/loot-service"
-import { AspectService } from "./aspects/aspect-service"
+import { equipAbility } from "./loadout/loadout"
+import { PlayerService } from "./player/player-service"
+import { PopupService } from "./popup"
+import { getState, loadState } from "./state"
+import { loadTooltipSystem } from "./tooltip"
+import { updateUrl } from "./url"
+import { updateView } from "./view"
+import { WorldService } from "./world/world-service"
 
 let tLast = 0
 
 function createEmptyProfile() {
     AspectService.create("novice")
+    PlayerService.calculateStats()
 
     WorldService.addLocation("foo")
     WorldService.addLocation("bar")
@@ -69,7 +70,6 @@ function load() {
     loadNav()
     updateUrl()
 
-    recalculateStats()
     loadTooltipSystem()
 
     updateView(isBattle ? "battle" : undefined)

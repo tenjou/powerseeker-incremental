@@ -382,6 +382,9 @@ const I18nValues = {
     novice: {
         en: "Novice",
     },
+    max_level: {
+        en: "Max Level",
+    },
 } satisfies Record<string, LocalEntry>
 
 export function i18n(key: string | null) {

@@ -23,10 +23,10 @@ export class CharacterResistances extends HTMLComponent {
     update() {
         const { battler } = getState()
 
-        this.getElement<StatsRow>("#resistance-fire").update("fire", battler.stats.fireResistance, "fire_resistance_description", "%")
-        this.getElement<StatsRow>("#resistance-water").update("water", battler.stats.waterResistance, "water_resistance_description", "%")
-        this.getElement<StatsRow>("#resistance-earth").update("earth", battler.stats.earthResistance, "earth_resistance_description", "%")
-        this.getElement<StatsRow>("#resistance-air").update("air", battler.stats.airResistance, "air_resistance_description", "%")
+        this.getElement<StatsRow>("#resistance-fire").update("fire", battler.stats.fireResistance, "fire_resistance_description")
+        this.getElement<StatsRow>("#resistance-water").update("water", battler.stats.waterResistance, "water_resistance_description")
+        this.getElement<StatsRow>("#resistance-earth").update("earth", battler.stats.earthResistance, "earth_resistance_description")
+        this.getElement<StatsRow>("#resistance-air").update("air", battler.stats.airResistance, "air_resistance_description")
     }
 }
 

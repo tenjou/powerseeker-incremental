@@ -35,13 +35,12 @@ export class CharacterInfo extends HTMLComponent {
         this.setText("#level", `${i18n("level")} ${aspect.level}`)
         this.setText("#aspect", i18n(player.aspectId))
 
-        const maxExp = LevelConfig[aspect.level]
-        this.getElement<ProgressBar>("progress-bar").update({ value: aspect.exp, valueMax: maxExp, showMax: true })
-
-        // this.getElement<StatsRow>("#power-fire").update("fire", battler.stats.firePower, "fire_power_description")
-        // this.getElement<StatsRow>("#power-water").update("water", battler.stats.waterPower, "water_power_description")
-        // this.getElement<StatsRow>("#power-earth").update("earth", battler.stats.earthPower, "earth_power_description")
-        // this.getElement<StatsRow>("#power-air").update("air", battler.stats.airPower, "air_power_description")
+        const maxExp = LevelConfig[aspect.level - 1]
+        if (maxExp) {
+            this.getElement<ProgressBar>("progress-bar").update({ value: aspect.exp, valueMax: maxExp, showMax: true })
+        } else {
+            this.getElement<ProgressBar>("progress-bar").update({ value: 1, valueMax: 1, label: i18n("max_level") })
+        }
     }
 }
 

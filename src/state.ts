@@ -1,5 +1,4 @@
 import { Ability } from "./abilities/ability-type"
-import { AspectService } from "./aspects/aspect-service"
 import { Aspect } from "./aspects/aspect-types"
 import { createBattle } from "./battle/battle-service"
 import { Battle, Battler, BattleResult } from "./battle/battle-types"
@@ -87,8 +86,8 @@ let state: State = {
         id: 0,
         level: 1,
         name: "Player",
-        health: 10,
-        mana: 20,
+        health: 1,
+        mana: 1,
         stats: createEmptyStats(),
         effects: [],
         isTeamA: true,

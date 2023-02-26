@@ -1,1 +1,1 @@
-export const LevelConfig: number[] = [...Array(10)].map((_, n) => 100 + n * 50)
+export const LevelConfig: number[] = [...Array(3)].map((_, n) => 100 + n * 50)
