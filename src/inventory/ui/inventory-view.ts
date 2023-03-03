@@ -5,7 +5,7 @@ import { getState } from "../../state"
 import { Item } from "../item-types"
 import { PopupService } from "./../../popup"
 import { ItemIconSlot } from "./item-icon-slot"
-import "./item-slot"
+import "./equipment-slot"
 import "./xp-icon-slot"
 
 const ItemTypeSortWeight: Record<ItemType, number> = {

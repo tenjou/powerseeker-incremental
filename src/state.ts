@@ -5,7 +5,7 @@ import { createEmptyStats } from "./character/status"
 import { SkillId } from "./config/skill-configs"
 import { AreaId } from "./config/area-configs"
 import { AspectId } from "./config/aspect-configs"
-import { EquipmentSlot, ItemId } from "./config/item-configs"
+import { EquipmentSlotType, ItemId } from "./config/item-configs"
 import { LocationId } from "./config/location-configs"
 import { CurrencyType } from "./currencies/currency-types"
 import { Item } from "./inventory/item-types"
@@ -32,7 +32,7 @@ interface State {
     player: PlayerStatus
     aspects: Partial<Record<AspectId, Aspect>>
     currencies: Record<CurrencyType, number>
-    equipment: Record<EquipmentSlot, Item | null>
+    equipment: Record<EquipmentSlotType, Item | null>
     battler: Battler
     inventory: Item[]
     skills: Record<SkillId, Skill>
@@ -62,8 +62,10 @@ let state: State = {
         gold: 134,
     },
     equipment: {
-        body: null,
         main_hand: null,
+        off_hand: null,
+        body: null,
+        accessory: null,
     },
     battler: {
         id: 0,

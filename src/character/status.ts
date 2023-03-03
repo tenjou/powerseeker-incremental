@@ -1,4 +1,4 @@
-import { EquipmentSlot, ItemConfigs } from "../config/item-configs"
+import { EquipmentSlotType, ItemConfigs } from "../config/item-configs"
 import { getState } from "../state"
 import { SkillConfigs } from "../config/skill-configs"
 import { CharacterStats } from "./character-types"

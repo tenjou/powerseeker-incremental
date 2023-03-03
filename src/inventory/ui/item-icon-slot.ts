@@ -3,11 +3,13 @@ import { HTMLComponent } from "../../dom"
 import { Item } from "../item-types"
 
 const template = document.createElement("template")
-template.setAttribute("class", "icon-slot hover-outline inactive-children")
+template.className = "hover-outline inactive-children"
 template.innerHTML = html`
-    <img />
-    <div id="xp" class="flex flex-1 align-center justify-center height-100 font-8 bold text-shadow-5 color-white hidden">XP</div>
-    <div id="value"></div>
+    <div id="icon" class="icon-slot">
+        <img />
+        <div id="xp" class="flex flex-1 align-center justify-center height-100 font-8 bold text-shadow-5 color-white hidden">XP</div>
+        <div id="value"></div>
+    </div>
 `
 
 export class ItemIconSlot extends HTMLComponent {
@@ -17,10 +19,20 @@ export class ItemIconSlot extends HTMLComponent {
         super(srcTemplate || template)
     }
 
-    updateByItem(item: Item) {
+    updateByItem(item: Item | undefined) {
+        const imgElement = this.getElement("img")
+        const icon = this.getElement("#icon")
+
+        if (!item) {
+            imgElement.classList.add("hide")
+            icon.className = `icon-slot`
+            this.removeAttribute("item-id")
+            this.item = null
+            return
+        }
+
         const itemConfig = ItemConfigs[item.id]
 
-        const imgElement = this.getElement("img")
         imgElement.setAttribute("src", `/assets/icon/${itemConfig.type}/${item.id}.png`)
         imgElement.classList.remove("hide")
 
@@ -28,7 +40,7 @@ export class ItemIconSlot extends HTMLComponent {
             this.classList.add("inactive")
         }
 
-        this.classList.add(`rarity-${item.rarity}`)
+        icon.className = `icon-slot rarity-${item.rarity}`
         this.setAttrib("item-id", item.id)
         this.item = item
 

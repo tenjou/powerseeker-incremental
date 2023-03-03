@@ -1,16 +1,16 @@
-import { EquipmentSlot, ItemConfigs } from "../../config/item-configs"
+import { EquipmentSlotType, ItemConfigs } from "../../config/item-configs"
 import { i18n } from "../../i18n"
 import { goTo } from "../../view"
 import { getElementById, removeAllChildren, setText } from "../../dom"
 import { subscribe, unsubscribe } from "../../events"
 import { openItemPopup, sortInventory } from "../../inventory/ui/inventory-view"
 import { getState } from "../../state"
-import { unequipItem } from "../equipment"
+import { EquipmentService } from "../equipment"
 
 export function loadEquipmentView(segments: string[]) {
     const { inventory } = getState()
 
-    const equipmentSlot = segments.pop() as EquipmentSlot
+    const equipmentSlot = segments.pop() as EquipmentSlotType
     if (!equipmentSlot) {
         goBack()
         return
@@ -31,7 +31,7 @@ export function loadEquipmentView(segments: string[]) {
 
     const itemSlot = document.createElement("item-slot")
     itemSlot.onclick = () => {
-        unequipItem(equipmentSlot as EquipmentSlot)
+        EquipmentService.unequip(equipmentSlot as EquipmentSlotType)
         goBack()
     }
     parent.appendChild(itemSlot)

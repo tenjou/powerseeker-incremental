@@ -13,6 +13,12 @@ const I18nValues = {
     main_hand: {
         en: "Main Hand",
     },
+    off_hand: {
+        en: "Off Hand",
+    },
+    accessory: {
+        en: "Accessory",
+    },
     copper_ore: {
         en: "Copper Ore",
     },

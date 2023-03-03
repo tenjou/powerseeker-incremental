@@ -1,12 +1,12 @@
 import { addHp } from "../character/status"
 import { ItemConfigs, ItemEffect, ItemId } from "../config/item-configs"
-import { equipItem } from "../equipment/equipment"
 import { getState } from "../state"
 import { emit } from "./../events"
 import { Item } from "./item-types"
 import "./ui/item-icon-slot"
 import "./ui/item-popup"
-import "./ui/item-slot"
+import "./ui/equipment-slot"
+import { EquipmentService } from "../equipment/equipment"
 
 export const InventoryService = {
     add(newItem: Item) {
@@ -63,7 +63,7 @@ export function handleItemUse(item: Item) {
 
     switch (itemConfig.type) {
         case "equipment":
-            equipItem(item)
+            EquipmentService.equip(item)
             break
 
         case "consumable":

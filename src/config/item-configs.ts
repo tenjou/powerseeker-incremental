@@ -1,6 +1,6 @@
 export type ItemId = "xp" | "gold" | "carp" | "copper_ore" | "maple_log" | "leather_clothing" | "health_potion" | "axe" | "sword"
 
-export type EquipmentSlot = "body" | "main_hand"
+export type EquipmentSlotType = "main_hand" | "off_hand" | "body" | "accessory"
 
 export type EquipmentType = "armor" | "axe" | "sword"
 
@@ -25,7 +25,7 @@ interface ItemConfigCurrency extends ItemConfigBasic {
 
 export interface ItemConfigEquipment extends ItemConfigBasic {
     type: "equipment"
-    slot: EquipmentSlot
+    slot: EquipmentSlotType
     equipmentType: EquipmentType
     level: number
     stats: ItemStatType[]
