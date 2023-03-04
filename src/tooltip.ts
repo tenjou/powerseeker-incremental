@@ -89,7 +89,10 @@ export function handeMouseMoveTooltip(event: MouseEvent) {
     }
 
     if (prevTooltipElement) {
-        prevTooltipElement.setAttribute("style", `left: ${event.x}px; top: ${event.y}px`)
+        const bounds = prevTooltipElement.getBoundingClientRect()
+        const top = event.y < bounds.height ? bounds.height : event.y
+
+        prevTooltipElement.setAttribute("style", `left: ${event.x}px; top: ${top}px`)
     }
 
     prevHoverElement = element

@@ -3,7 +3,7 @@ import { i18n } from "../../i18n"
 import { ItemIconSlot } from "./item-icon-slot"
 import { LootService } from "./../loot-service"
 import { EquipmentService } from "../../equipment/equipment-service"
-import { InventoryService } from "./../inventory"
+import { InventoryService } from "../inventory-service"
 import { getState } from "../../state"
 import { goTo } from "../../view"
 

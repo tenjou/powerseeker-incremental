@@ -1,12 +1,12 @@
 import { addHp } from "../character/status"
-import { ItemConfigs, ItemEffect, ItemId } from "../config/item-configs"
+import { ItemConfigs, ItemEffect } from "../config/item-configs"
+import { EquipmentService } from "../equipment/equipment-service"
 import { getState } from "../state"
-import { emit } from "./../events"
+import { emit } from "../events"
 import { Item } from "./item-types"
+import "./ui/equipment-slot"
 import "./ui/item-icon-slot"
 import "./ui/item-popup"
-import "./ui/equipment-slot"
-import { EquipmentService } from "../equipment/equipment-service"
 
 export const InventoryService = {
     add(newItem: Item) {
@@ -30,32 +30,39 @@ export const InventoryService = {
         emit("item-added", newItem)
     },
 
+    remove(item: Item, amount: number = 1) {
+        const { inventory } = getState()
+
+        const itemConfig = ItemConfigs[item.id]
+        if (itemConfig.type === "equipment" || item.amount <= amount) {
+            if (item.amount < amount) {
+                console.error(`There are not enough items: ${item.id}, have: ${item.amount}, but need: ${amount}`)
+                return
+            }
+
+            const itemIndex = inventory.findIndex((entry) => entry.uid === item.uid)
+            if (itemIndex === -1) {
+                console.error(`Could not find index for item with id: ${item.id}`)
+                return
+            }
+
+            inventory.splice(itemIndex, 1)
+            emit("item-remove", item)
+            return
+        } else {
+            if (item.amount < amount) {
+                console.error(`There are not enough items: ${item.id}, have: ${item.amount}, but need: ${amount}`)
+                return
+            }
+
+            item.amount -= amount
+            emit("item-updated", item)
+        }
+    },
+
     generateUId() {
         return String(getState().cache.lastItemIndex++)
     },
-}
-
-export function removeItem(item: Item, amount: number = 1) {
-    const { inventory } = getState()
-
-    if (item.amount < amount) {
-        console.error(`There are not enough items: ${item.id}, have: ${item.amount}, but need: ${amount}`)
-        return
-    }
-
-    item.amount -= amount
-    if (item.amount <= 0) {
-        const itemIndex = inventory.findIndex((entry) => entry.uid === item.uid)
-        if (itemIndex === -1) {
-            console.error(`Could not find index for item with id: ${item.id}`)
-            return
-        }
-
-        inventory.splice(itemIndex, 1)
-        emit("item-remove", item)
-    } else {
-        emit("item-updated", item)
-    }
 }
 
 export function handleItemUse(item: Item) {
@@ -68,7 +75,7 @@ export function handleItemUse(item: Item) {
 
         case "consumable":
             resolveItemEffects(itemConfig.effects)
-            removeItem(item)
+            InventoryService.remove(item)
             break
     }
 }

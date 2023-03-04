@@ -2,7 +2,7 @@ import { ItemConfig, ItemConfigs, ItemEffect, ItemId } from "../../config/item-c
 import { HTMLComponent } from "../../dom"
 import { i18n } from "../../i18n"
 import { getState } from "../../state"
-import { handleItemUse } from "../inventory"
+import { handleItemUse } from "../inventory-service"
 import { PopupService } from "./../../popup"
 
 const template = document.createElement("template")

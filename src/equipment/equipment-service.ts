@@ -1,9 +1,8 @@
 import { EquipmentSlotType, ItemConfigs } from "../config/item-configs"
 import { emit } from "../events"
 import { getState } from "../state"
-import { removeItem } from "../inventory/inventory"
 import { Item } from "../inventory/item-types"
-import { InventoryService } from "../inventory/inventory"
+import { InventoryService } from "../inventory/inventory-service"
 import { PlayerService } from "../player/player-service"
 
 export const EquipmentService = {
@@ -25,7 +24,7 @@ export const EquipmentService = {
         emit("equip", itemConfig.slot)
         PlayerService.calculateStats()
 
-        removeItem(item)
+        InventoryService.remove(item)
     },
 
     unequip(slotType: EquipmentSlotType) {
