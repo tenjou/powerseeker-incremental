@@ -6,7 +6,7 @@ import { Item } from "./item-types"
 import "./ui/item-icon-slot"
 import "./ui/item-popup"
 import "./ui/equipment-slot"
-import { EquipmentService } from "../equipment/equipment"
+import { EquipmentService } from "../equipment/equipment-service"
 
 export const InventoryService = {
     add(newItem: Item) {

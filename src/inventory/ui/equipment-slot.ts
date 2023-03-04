@@ -2,9 +2,10 @@ import { EquipmentSlotType } from "../../config/item-configs"
 import { i18n } from "../../i18n"
 import { ItemIconSlot } from "./item-icon-slot"
 import { LootService } from "./../loot-service"
-import { EquipmentService } from "./../../equipment/equipment"
+import { EquipmentService } from "../../equipment/equipment-service"
 import { InventoryService } from "./../inventory"
 import { getState } from "../../state"
+import { goTo } from "../../view"
 
 const template = document.createElement("template")
 template.className = "flex flex-row flex-1 bg-semi-white hover:bg-white border-radius-3 cursor-pointer inactive-children"
@@ -21,12 +22,12 @@ export class EquipmentSlot extends ItemIconSlot {
         super(template)
     }
 
-    update(EquipmentSlot: EquipmentSlotType) {
+    update(equipmentSlot: EquipmentSlotType) {
         const { equipment } = getState()
 
         const nameElement = this.getElement("#name")
 
-        const item = equipment[EquipmentSlot]
+        const item = equipment[equipmentSlot]
         this.updateByItem(item)
 
         if (item) {
@@ -36,15 +37,17 @@ export class EquipmentSlot extends ItemIconSlot {
             this.setAttrib("tooltip", item.id)
         } else {
             nameElement.className = "color-gray"
-            nameElement.innerText = i18n(EquipmentSlot)
+            nameElement.innerText = i18n(equipmentSlot)
 
-            this.setAttrib("tooltip", EquipmentSlot)
+            this.setAttrib("tooltip", equipmentSlot)
         }
 
         this.onclick = () => {
-            const item = LootService.generateItem("leather_clothing", 1, 0)
-            InventoryService.add(item)
-            EquipmentService.equip(item)
+            console.log(`equipment/${equipmentSlot}`)
+            goTo(`equipment/${equipmentSlot}`)
+            // const item = LootService.generateItem("leather_clothing", 1, 0)
+            // InventoryService.add(item)
+            // EquipmentService.equip(item)
             // EquipmentService.unequip("body")
         }
     }

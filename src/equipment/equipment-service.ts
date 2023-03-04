@@ -3,8 +3,8 @@ import { emit } from "../events"
 import { getState } from "../state"
 import { removeItem } from "../inventory/inventory"
 import { Item } from "../inventory/item-types"
-import { InventoryService } from "./../inventory/inventory"
-import { PlayerService } from "./../player/player-service"
+import { InventoryService } from "../inventory/inventory"
+import { PlayerService } from "../player/player-service"
 
 export const EquipmentService = {
     equip(item: Item) {

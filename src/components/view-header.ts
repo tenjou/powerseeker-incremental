@@ -3,8 +3,11 @@ import { i18n } from "../i18n"
 
 const template = document.createElement("template")
 template.className = "block pb-1 mb-3 border-bottom font-3 color-dark bold"
+template.innerHTML = html`
+    <span id="category"></span>
+`
 
-class Header extends HTMLComponent {
+export class ViewHeader extends HTMLComponent {
     constructor() {
         super(template)
     }
@@ -12,11 +15,11 @@ class Header extends HTMLComponent {
     connectedCallback() {
         super.connectedCallback()
 
-        const title = this.getAttribute("title")
-        if (title) {
-            this.innerText = i18n(title)
+        const category = this.getAttribute("category")
+        if (category) {
+            this.setText("#category", i18n(category))
         }
     }
 }
 
-customElements.define("x-header", Header)
+customElements.define("view-header", ViewHeader)

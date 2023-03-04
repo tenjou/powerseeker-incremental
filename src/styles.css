@@ -749,6 +749,9 @@ tooltip b {
 .font-8 {
     font-size: 2em;
 }
+.font-10 {
+    font-size: 3.5em;
+}
 
 .popup {
     display: flex;
