@@ -5,7 +5,7 @@ const template = document.createElement("template")
 template.className = "block pb-1 mb-3 border-bottom font-3 color-dark bold"
 template.innerHTML = html`
     <span id="category"></span>
-    <i class="fa-solid fa-angle-right ml-1 mr-1"></i>
+    <i class="fa-solid fa-angle-right ml-1 mr-1 font-2"></i>
     <span id="subcategory"></span>
 `
 

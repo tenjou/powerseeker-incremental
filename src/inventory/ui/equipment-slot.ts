@@ -43,13 +43,13 @@ export class EquipmentSlot extends ItemIconSlot {
         }
 
         this.onclick = () => {
-            console.log(`equipment/${equipmentSlot}`)
             goTo(`equipment/${equipmentSlot}`)
-            // const item = LootService.generateItem("leather_clothing", 1, 0)
-            // InventoryService.add(item)
-            // EquipmentService.equip(item)
-            // EquipmentService.unequip("body")
         }
+    }
+
+    updateAsNone() {
+        const nameElement = this.getElement("#name")
+        nameElement.innerText = i18n("none")
     }
 }
 

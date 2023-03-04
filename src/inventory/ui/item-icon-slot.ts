@@ -6,7 +6,7 @@ const template = document.createElement("template")
 template.className = "hover-outline inactive-children"
 template.innerHTML = html`
     <div id="icon" class="icon-slot">
-        <img />
+        <img class="hide" />
         <div id="xp" class="flex flex-1 align-center justify-center height-100 font-8 bold text-shadow-5 color-white hidden">XP</div>
         <div id="value"></div>
     </div>
@@ -75,6 +75,10 @@ export class ItemIconSlot extends HTMLComponent {
         }
 
         this.getElement("#value").setAttribute("class", itemConfig.type === "equipment" ? "color-gold" : "color-white")
+    }
+
+    updateAsEmpty() {
+        this.setAttribute("tooltip", "none")
     }
 }
 

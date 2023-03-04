@@ -49,6 +49,11 @@ function createEmptyProfile() {
     // equipAbility("heal")
     // equipAbility("berserk")
     // equipAbility("poison")
+
+    InventoryService.add(LootService.generateItem("leather_clothing", 1, 0))
+    InventoryService.add(LootService.generateItem("leather_clothing", 1, 0))
+    InventoryService.add(LootService.generateItem("leather_clothing", 1, 0))
+    InventoryService.add(LootService.generateItem("axe", 1, 0))
 }
 
 function load() {

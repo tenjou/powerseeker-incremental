@@ -1,14 +1,14 @@
 import { EquipmentSlotType, ItemConfigs } from "../../config/item-configs"
-import { i18n } from "../../i18n"
-import { goTo } from "../../view"
-import { getElement, getElementById, removeAllChildren, setText } from "../../dom"
+import { getElement, getElementById, removeAllChildren } from "../../dom"
 import { subscribe, unsubscribe } from "../../events"
-import { openItemPopup, sortInventory } from "../../inventory/ui/inventory-view"
+import { sortInventory } from "../../inventory/ui/inventory-view"
+import { ItemIconSlot } from "../../inventory/ui/item-icon-slot"
 import { getState } from "../../state"
+import { goTo } from "../../view"
 import { EquipmentService } from "../equipment-service"
 import { ViewHeaderSub } from "./../../components/view-header-sub"
 
-export function loadEquipmentView(segments: string[]) {
+export const loadEquipmentView = (segments: string[]) => {
     const { inventory } = getState()
 
     const equipmentSlot = segments.pop() as EquipmentSlotType
@@ -19,48 +19,46 @@ export function loadEquipmentView(segments: string[]) {
 
     getElement<ViewHeaderSub>("#equipment-header").update({ category: "equipment", subcategory: equipmentSlot })
 
-    // const items = inventory.filter((entry) => {
-    //     const itemConfig = ItemConfigs[entry.id]
-    //     if (itemConfig.type !== "equipment") {
-    //         return false
-    //     }
+    const items = inventory.filter((entry) => {
+        const itemConfig = ItemConfigs[entry.id]
+        if (itemConfig.type !== "equipment") {
+            return false
+        }
 
-    //     return itemConfig.slot === equipmentSlot
-    // })
+        return itemConfig.slot === equipmentSlot
+    })
 
-    // sortInventory(items)
+    sortInventory(items)
 
-    // const parent = getElementById("equipment-container")
+    const parent = getElementById("equipment-container")
 
-    // const itemSlot = document.createElement("item-slot")
-    // itemSlot.onclick = () => {
-    //     EquipmentService.unequip(equipmentSlot as EquipmentSlotType)
-    //     goBack()
-    // }
-    // parent.appendChild(itemSlot)
+    const emptyItemSlot = new ItemIconSlot()
+    emptyItemSlot.updateAsEmpty()
+    emptyItemSlot.onclick = () => {
+        EquipmentService.unequip(equipmentSlot)
+        goBack()
+    }
+    parent.appendChild(emptyItemSlot)
 
-    // for (const item of items) {
-    //     const itemSlot = document.createElement("item-slot")
-    //     itemSlot.id = `item-${item.uid}`
-    //     itemSlot.setAttribute("uid", String(item.uid))
-    //     itemSlot.setAttribute("item-id", item.id)
-    //     itemSlot.onclick = (event: MouseEvent) => {
-    //         openItemPopup(event, goBack)
-    //     }
-    //     parent.appendChild(itemSlot)
-    // }
-
-    // setText("equipment-category", i18n(equipmentSlot))
+    for (const item of items) {
+        const itemSlot = new ItemIconSlot()
+        itemSlot.updateByItem(item)
+        itemSlot.onclick = (event: MouseEvent) => {
+            EquipmentService.equip(item)
+            goBack()
+        }
+        parent.appendChild(itemSlot)
+    }
 
     subscribe("close", goBack)
     getElementById("close-equipment").onclick = goBack
 }
 
-export function unloadEquipmentView() {
+export const unloadEquipmentView = () => {
     unsubscribe("close", goBack)
     removeAllChildren("equipment-container")
 }
 
-function goBack() {
+const goBack = () => {
     goTo("/character")
 }

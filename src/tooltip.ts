@@ -56,6 +56,12 @@ export function handeMouseMoveTooltip(event: MouseEvent) {
             case "ITEM-SLOT":
             case "ITEM-ICON-SLOT":
             case "XP-ICON-SLOT": {
+                if (tooltip) {
+                    prevTooltipElement = tooltipElement
+                    prevTooltipElement.innerHTML = i18n(tooltip || "")
+                    break
+                }
+
                 prevTooltipElement = itemTooltipElement
 
                 const itemId = element.getAttribute("item-id") as ItemId | null
@@ -73,13 +79,8 @@ export function handeMouseMoveTooltip(event: MouseEvent) {
             }
 
             default: {
-                const tooltip = element.getAttribute("tooltip")
-                if (!tooltip) {
-                    return
-                }
-
                 prevTooltipElement = tooltipElement
-                prevTooltipElement.innerHTML = i18n(element.getAttribute("tooltip") || "")
+                prevTooltipElement.innerHTML = i18n(tooltip || "")
                 break
             }
         }
