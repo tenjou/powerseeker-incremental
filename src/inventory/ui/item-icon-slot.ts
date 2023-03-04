@@ -26,6 +26,7 @@ export class ItemIconSlot extends HTMLComponent {
         if (!item) {
             imgElement.classList.add("hide")
             icon.className = `icon-slot`
+            this.setText("#value", "")
             this.removeAttribute("item-id")
             this.item = null
             return
