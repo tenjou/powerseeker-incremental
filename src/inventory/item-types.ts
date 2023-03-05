@@ -14,9 +14,3 @@ export interface Item {
     rarity: number
     stats: ItemStat[]
 }
-
-export enum ItemSlotType {
-    Inventory = "inventory",
-    Equipment = "equipment",
-    BattleResult = "battle-result",
-}

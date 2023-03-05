@@ -49,15 +49,15 @@ export const InventoryService = {
             inventory.splice(itemIndex, 1)
             emit("item-remove", item)
             return
-        } else {
-            if (item.amount < amount) {
-                console.error(`There are not enough items: ${item.id}, have: ${item.amount}, but need: ${amount}`)
-                return
-            }
-
-            item.amount -= amount
-            emit("item-updated", item)
         }
+
+        if (item.amount < amount) {
+            console.error(`There are not enough items: ${item.id}, have: ${item.amount}, but need: ${amount}`)
+            return
+        }
+
+        item.amount -= amount
+        emit("item-updated", item)
     },
 
     generateUId() {

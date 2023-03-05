@@ -441,7 +441,8 @@ item-tooltip {
     position: absolute;
     top: 300px;
     left: 200px;
-    max-width: 200px;
+    max-width: 210px;
+    min-width: 210px;
     padding: 4px 7px 5px;
     border-radius: 3px;
     color: #ddd;
@@ -451,6 +452,10 @@ item-tooltip {
     transform: translate(0, -100%);
     opacity: 0;
     transition: opacity 0.15s ease-out;
+}
+tooltip-container tooltip {
+    min-width: initial;
+    max-width: 200px;
 }
 tooltip b {
     color: #fff;

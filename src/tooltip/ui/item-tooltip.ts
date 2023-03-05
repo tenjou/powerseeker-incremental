@@ -9,7 +9,7 @@ const template = document.createElement("template")
 template.innerHTML = html`
     <div class="flex bold">
         <span id="name"></span>
-        <span class="flex-1"></span>
+        <span class="flex-1 mr-3"></span>
         <span id="rarity"></span>
     </div>
 
@@ -59,7 +59,7 @@ export class ItemTooltip extends HTMLComponent {
         }
     }
 
-    updateByItemId(itemId: ItemId, amount: number) {
+    updateByItemId(itemId: ItemId) {
         const itemConfig = ItemConfigs[itemId]
 
         let description = i18n(`${itemConfig.id}_description`)

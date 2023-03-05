@@ -6,6 +6,7 @@ import { EquipmentService } from "../../equipment/equipment-service"
 import { InventoryService } from "../inventory-service"
 import { getState } from "../../state"
 import { goTo } from "../../view"
+import { setTooltip } from "./../../tooltip"
 
 const template = document.createElement("template")
 template.className = "flex flex-row flex-1 bg-semi-white hover:bg-white border-radius-3 cursor-pointer inactive-children"
@@ -28,18 +29,17 @@ export class EquipmentSlot extends ItemIconSlot {
         const nameElement = this.getElement("#name")
 
         const item = equipment[equipmentSlot]
+
         this.updateByItem(item)
 
         if (item) {
             nameElement.className = "color-black bold"
             nameElement.innerText = i18n(item.id)
-
-            this.setAttrib("tooltip", item.id)
+            setTooltip(this, ":item")
         } else {
             nameElement.className = "color-gray"
             nameElement.innerText = i18n(equipmentSlot)
-
-            this.setAttrib("tooltip", equipmentSlot)
+            setTooltip(this, equipmentSlot)
         }
 
         this.onclick = () => {

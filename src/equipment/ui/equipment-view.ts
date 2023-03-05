@@ -7,6 +7,7 @@ import { getState } from "../../state"
 import { goTo } from "../../view"
 import { EquipmentService } from "../equipment-service"
 import { ViewHeaderSub } from "./../../components/view-header-sub"
+import { setTooltip } from "./../../tooltip"
 
 export const loadEquipmentView = (segments: string[]) => {
     const { inventory } = getState()
@@ -33,21 +34,22 @@ export const loadEquipmentView = (segments: string[]) => {
     const parent = getElementById("equipment-container")
 
     const emptyItemSlot = new ItemIconSlot()
-    emptyItemSlot.updateAsEmpty()
     emptyItemSlot.onclick = () => {
         EquipmentService.unequip(equipmentSlot)
         goBack()
     }
     parent.appendChild(emptyItemSlot)
+    setTooltip(emptyItemSlot, "none")
 
     for (const item of items) {
         const itemSlot = new ItemIconSlot()
         itemSlot.updateByItem(item)
-        itemSlot.onclick = (event: MouseEvent) => {
+        itemSlot.onclick = () => {
             EquipmentService.equip(item)
             goBack()
         }
         parent.appendChild(itemSlot)
+        setTooltip(itemSlot, ":item")
     }
 
     subscribe("close", goBack)

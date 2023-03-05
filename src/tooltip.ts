@@ -1,11 +1,7 @@
-import { ItemId } from "./config/item-configs"
 import { i18n } from "./i18n"
-import { Item, ItemSlotType } from "./inventory/item-types"
-import { getState } from "./state"
+import { ItemIconSlot } from "./inventory/ui/item-icon-slot"
 import "./tooltip/ui/item-tooltip"
 import { ItemTooltip } from "./tooltip/ui/item-tooltip"
-
-const validTags: string[] = ["ITEM-ICON-SLOT", "XP-ICON-SLOT", "ABILITY-SLOT", "STATS-ROW"]
 
 let tooltipElement: HTMLElement
 let itemTooltipElement: ItemTooltip
@@ -36,13 +32,11 @@ export function handeMouseMoveTooltip(event: MouseEvent) {
     event.stopPropagation()
 
     const element = event.target as HTMLElement
-    let tooltip
 
     if (prevHoverElement !== element) {
-        tooltip = element.getAttribute("tooltip")
+        const tooltip = element.getAttribute("tooltip")
 
-        const haveTooltip = tooltip || validTags.includes(element.tagName)
-        if (!haveTooltip) {
+        if (!tooltip) {
             prevHoverElement = null
 
             if (prevTooltipElement) {
@@ -52,77 +46,37 @@ export function handeMouseMoveTooltip(event: MouseEvent) {
             return
         }
 
-        switch (element.tagName) {
-            case "ITEM-SLOT":
-            case "ITEM-ICON-SLOT":
-            case "XP-ICON-SLOT": {
-                if (tooltip) {
-                    prevTooltipElement = tooltipElement
-                    prevTooltipElement.innerHTML = i18n(tooltip || "")
-                    break
-                }
+        prevTooltipElement = itemTooltipElement
 
-                prevTooltipElement = itemTooltipElement
-
-                const itemId = element.getAttribute("item-id") as ItemId | null
-                if (itemId) {
-                    const amount = Number(element.getAttribute("amount"))
-                    showItemTooltipByItemId(itemId, amount)
-                } else {
-                    const itemUId = element.getAttribute("uid")
-                    const itemSlotType = element.getAttribute("slot-type") as ItemSlotType | null
-                    if (itemUId && itemSlotType) {
-                        showItemTooltipByUId(itemUId, itemSlotType)
-                    }
-                }
+        switch (tooltip) {
+            case ":item": {
+                const itemSlot = element as ItemIconSlot
+                itemTooltipElement.updateByItem(itemSlot.item)
                 break
             }
 
-            default: {
+            default:
                 prevTooltipElement = tooltipElement
                 prevTooltipElement.innerHTML = i18n(tooltip || "")
                 break
-            }
         }
 
         prevTooltipElement.classList.add("show")
     }
 
     if (prevTooltipElement) {
+        const parentWidth = prevTooltipElement.parentElement.clientWidth
         const bounds = prevTooltipElement.getBoundingClientRect()
+
+        const left = event.x + bounds.width > parentWidth ? parentWidth - bounds.width : event.x
         const top = event.y < bounds.height ? bounds.height : event.y
 
-        prevTooltipElement.setAttribute("style", `left: ${event.x}px; top: ${top}px`)
+        prevTooltipElement.setAttribute("style", `left: ${left}px; top: ${top}px`)
     }
 
     prevHoverElement = element
 }
 
-function showItemTooltipByUId(itemUId: string, slotType: ItemSlotType) {
-    let buffer: Item[]
-
-    switch (slotType) {
-        case ItemSlotType.Inventory:
-            buffer = getState().inventory
-            break
-        case ItemSlotType.BattleResult:
-            buffer = getState().battleResult?.loot || []
-            break
-
-        default:
-            console.error(`Unknown slot type ${slotType}`)
-            return
-    }
-
-    const item = buffer.find((item) => item.uid === itemUId)
-    if (!item) {
-        console.error(`Could not find item with uid ${itemUId}`)
-        return
-    }
-
-    itemTooltipElement.updateByItem(item)
-}
-
-function showItemTooltipByItemId(itemId: ItemId, amount: number) {
-    itemTooltipElement.updateByItemId(itemId, amount)
+export const setTooltip = (element: HTMLElement, tooltip: string) => {
+    element.setAttribute("tooltip", tooltip)
 }

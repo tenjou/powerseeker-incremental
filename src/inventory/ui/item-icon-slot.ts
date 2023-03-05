@@ -27,7 +27,6 @@ export class ItemIconSlot extends HTMLComponent {
             imgElement.classList.add("hide")
             icon.className = `icon-slot`
             this.setText("#value", "")
-            this.removeAttribute("item-id")
             this.item = null
             return
         }
@@ -42,7 +41,6 @@ export class ItemIconSlot extends HTMLComponent {
         }
 
         icon.className = `icon-slot rarity-${item.rarity}`
-        this.setAttrib("item-id", item.id)
         this.item = item
 
         if (itemConfig.type === "equipment") {
@@ -57,7 +55,6 @@ export class ItemIconSlot extends HTMLComponent {
     updateByItemId(itemId: ItemId, min: number, max: number = min) {
         const itemConfig = ItemConfigs[itemId]
 
-        this.setAttrib("item-id", itemId)
         this.item = null
 
         const imgElement = this.getElement("img")
@@ -76,10 +73,6 @@ export class ItemIconSlot extends HTMLComponent {
         }
 
         this.getElement("#value").setAttribute("class", itemConfig.type === "equipment" ? "color-gold" : "color-white")
-    }
-
-    updateAsEmpty() {
-        this.setAttribute("tooltip", "none")
     }
 }
 
