@@ -403,6 +403,12 @@ const I18nValues = {
     shield_description: {
         en: "A shield is a defensive item that can be equipped in the off-hand slot.",
     },
+    block: {
+        en: "Block",
+    },
+    block_description: {
+        en: "Block is a measure of how likely a character is to block an enemy's physical attacks.",
+    },
 } satisfies Record<string, LocalEntry>
 
 export const i18n = (key: string | null) => {

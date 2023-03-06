@@ -18,6 +18,7 @@ template.innerHTML = html`
     <div class="highlight-row">
         <stats-row id="attribute-accuracy"></stats-row>
         <stats-row id="attribute-evasion"></stats-row>
+        <stats-row id="attribute-block"></stats-row>
         <stats-row id="attribute-critical"></stats-row>
         <stats-row id="attribute-speed"></stats-row>
     </div>
@@ -37,6 +38,7 @@ export class CharacterAttributes extends HTMLComponent {
         this.getElement<StatsRow>("#attribute-mana-regen").update("mana_regen", battler.stats.regenMana, "mana_regen_description")
         this.getElement<StatsRow>("#attribute-accuracy").update("accuracy", battler.stats.accuracy, "accuracy_description")
         this.getElement<StatsRow>("#attribute-evasion").update("evasion", battler.stats.evasion, "evasion_description")
+        this.getElement<StatsRow>("#attribute-block").update("block", battler.stats.block, "block_description")
         this.getElement<StatsRow>("#attribute-critical").update("critical", battler.stats.critical, "critical_description")
         this.getElement<StatsRow>("#attribute-speed").update("speed", battler.stats.speed, "speed_description")
     }

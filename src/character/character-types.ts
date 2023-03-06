@@ -5,6 +5,7 @@ export interface CharacterStats {
     regenMana: number
     accuracy: number
     evasion: number
+    block: number
     critical: number
     speed: number
     firePower: number

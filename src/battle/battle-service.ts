@@ -433,7 +433,10 @@ function nextAction() {
                     const criticalChance = caster.stats.critical - target.stats.critical
                     if (roll(criticalChance)) {
                         flags |= BattleActionFlag.Critical
-                        powerModifier *= 1.25 | 0
+                        powerModifier = 1.25
+                    } else if (roll(target.stats.block)) {
+                        flags |= BattleActionFlag.Block
+                        powerModifier = 0.8
                     } else if (abilityConfig.flags & SkillFlag.Missable) {
                         const hitChance = 100 + caster.stats.accuracy - target.stats.evasion
                         if (!roll(hitChance)) {
@@ -781,6 +784,7 @@ const createMonsterBattler = (monsterId: MonsterId): Battler => {
             accuracy: 0,
             critical: 0,
             evasion: 0,
+            block: 0,
             speed: monsterConfig.speed,
             regenMana: 1,
             regenHealth: 1,

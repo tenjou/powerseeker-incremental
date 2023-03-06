@@ -77,6 +77,7 @@ export enum BattleActionFlag {
     Critical = 1,
     Miss = 2,
     Energy = 4,
+    Block = 8,
 }
 
 export interface BattleLogBasic {

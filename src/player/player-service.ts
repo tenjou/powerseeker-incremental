@@ -2,7 +2,6 @@ import { AspectService } from "../aspects/aspect-service"
 import { LevelConfig } from "../config/level-config"
 import { emit } from "../events"
 import { getState } from "../state"
-import { addCurrency } from "./../currencies/currencies"
 
 export const PlayerService = {
     calculateStats() {
@@ -17,9 +16,10 @@ export const PlayerService = {
             regenMana: 0,
             accuracy: aspect.level,
             evasion: aspect.level,
+            block: 100,
             critical: 1,
             speed: 100,
-            firePower: aspect.level + 300,
+            firePower: aspect.level,
             waterPower: aspect.level,
             earthPower: aspect.level,
             airPower: aspect.level,

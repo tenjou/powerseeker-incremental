@@ -54,6 +54,7 @@ export function createEmptyStats(): CharacterStats {
         accuracy: 1,
         critical: 1,
         evasion: 1,
+        block: 0,
         speed: 100,
         regenMana: 0,
         regenHealth: 0,
