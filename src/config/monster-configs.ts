@@ -25,7 +25,7 @@ interface MonsterConfig {
     airResistance: number
     xp: number
     gold: number
-    abilities: Record<SkillId, Skill>
+    abilities: Partial<Record<SkillId, Skill>>
     ai: AIOption[]
     loot: {
         id: ItemId

@@ -13,10 +13,7 @@ export class XpIconSlot extends HTMLComponent {
         super(template)
     }
 
-    updateByItemId(value: number) {
-        const itemId: ItemId = "xp"
-
-        this.setAttrib("item-id", itemId)
+    update(value: number) {
         this.setText("#value", value)
     }
 }

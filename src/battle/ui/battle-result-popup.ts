@@ -1,9 +1,10 @@
 import { HTMLComponent } from "../../dom"
 import { i18n } from "../../i18n"
-import { ItemSlotType } from "../../inventory/item-types"
 import { ItemIconSlot } from "../../inventory/ui/item-icon-slot"
+import { XpIconSlot } from "../../inventory/ui/xp-icon-slot"
 import { getState } from "../../state"
 import { PopupService } from "./../../popup"
+import { setTooltip } from "./../../tooltip"
 
 const template = document.createElement("template")
 template.setAttribute("class", "popup")
@@ -56,27 +57,27 @@ export class BattleResultPopup extends HTMLComponent {
             })
 
             if (battleResult.xp > 0) {
-                const xpSlot = new ItemIconSlot()
-                xpSlot.setAttrib("item-id", "xp")
-                xpSlot.setAttrib("amount", battleResult.xp)
-                xpSlot.updateByItemId("xp", battleResult.xp)
+                const xpSlot = new XpIconSlot()
+                xpSlot.update(battleResult.xp)
                 lootContainer.appendChild(xpSlot)
+
+                setTooltip(xpSlot, "xp")
             }
 
             if (battleResult.gold > 0) {
                 const goldSlot = new ItemIconSlot()
-                goldSlot.setAttrib("item-id", "gold")
-                goldSlot.setAttrib("amount", battleResult.gold)
                 goldSlot.updateByItemId("gold", battleResult.gold)
                 lootContainer.appendChild(goldSlot)
+
+                setTooltip(goldSlot, ":item-id")
             }
 
             for (const item of battleResult.loot) {
                 const itemSlot = new ItemIconSlot()
-                itemSlot.setAttrib("uid", item.uid)
-                itemSlot.setAttrib("slot-type", ItemSlotType.BattleResult)
                 itemSlot.updateByItem(item)
                 lootContainer.appendChild(itemSlot)
+
+                setTooltip(itemSlot, ":item")
             }
         }
     }

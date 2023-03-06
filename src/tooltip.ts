@@ -1,3 +1,4 @@
+import { ItemId } from "./config/item-configs"
 import { i18n } from "./i18n"
 import { ItemIconSlot } from "./inventory/ui/item-icon-slot"
 import "./tooltip/ui/item-tooltip"
@@ -52,6 +53,12 @@ export function handeMouseMoveTooltip(event: MouseEvent) {
             case ":item": {
                 const itemSlot = element as ItemIconSlot
                 itemTooltipElement.updateByItem(itemSlot.item)
+                break
+            }
+
+            case ":item-id": {
+                const itemId = element.getAttribute("item-id") as ItemId
+                itemTooltipElement.updateByItemId(itemId)
                 break
             }
 

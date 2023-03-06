@@ -1,13 +1,14 @@
 import { EquipmentSlotType, ItemConfigs } from "../config/item-configs"
 import { emit } from "../events"
-import { getState } from "../state"
-import { Item } from "../inventory/item-types"
 import { InventoryService } from "../inventory/inventory-service"
+import { Item } from "../inventory/item-types"
 import { PlayerService } from "../player/player-service"
+import { getState } from "../state"
+import { LoadoutService } from "./../loadout/loadout-service"
 
 export const EquipmentService = {
     equip(item: Item) {
-        const { equipment } = getState()
+        const { equipment, loadout } = getState()
 
         const itemConfig = ItemConfigs[item.id]
         if (itemConfig.type !== "equipment") {
@@ -21,14 +22,19 @@ export const EquipmentService = {
         }
 
         equipment[itemConfig.slot] = item
-        emit("equip", itemConfig.slot)
-        PlayerService.calculateStats()
 
+        if (itemConfig.slot === "main_hand") {
+            LoadoutService.equipBasicAttack(itemConfig.equipmentType)
+        }
+
+        PlayerService.calculateStats()
         InventoryService.remove(item)
+
+        emit("equip", itemConfig.slot)
     },
 
     unequip(slotType: EquipmentSlotType) {
-        const { equipment } = getState()
+        const { equipment, loadout } = getState()
 
         const item = equipment[slotType]
         if (!item) {
@@ -36,9 +42,14 @@ export const EquipmentService = {
         }
 
         equipment[slotType] = null
-        emit("unequip", slotType)
-        PlayerService.calculateStats()
 
+        if (slotType === "main_hand") {
+            loadout.attack = null
+        }
+
+        PlayerService.calculateStats()
         InventoryService.add(item)
+
+        emit("unequip", slotType)
     },
 }

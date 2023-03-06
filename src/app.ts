@@ -24,7 +24,6 @@ import { emit, subscribe } from "./events"
 import { i18n } from "./i18n"
 import { InventoryService } from "./inventory/inventory-service"
 import { LootService } from "./inventory/loot-service"
-import { equipAbility } from "./loadout/loadout"
 import { PlayerService } from "./player/player-service"
 import { PopupService } from "./popup"
 import { getState, loadState } from "./state"
@@ -44,7 +43,6 @@ function createEmptyProfile() {
     WorldService.addLocation("copper_mine")
     WorldService.addLocation("test_boss")
 
-    equipAbility("fire_attack")
     // equipAbility("bash")
     // equipAbility("heal")
     // equipAbility("berserk")
@@ -54,6 +52,7 @@ function createEmptyProfile() {
     InventoryService.add(LootService.generateItem("leather_clothing", 1, 0))
     InventoryService.add(LootService.generateItem("leather_clothing", 1, 0))
     InventoryService.add(LootService.generateItem("axe", 1, 0))
+    InventoryService.add(LootService.generateItem("sword", 1, 0))
 }
 
 function load() {

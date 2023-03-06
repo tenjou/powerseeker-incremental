@@ -7,7 +7,6 @@ template.className = "hover-outline inactive-children"
 template.innerHTML = html`
     <div id="icon" class="icon-slot">
         <img class="hide" />
-        <div id="xp" class="flex flex-1 align-center justify-center height-100 font-8 bold text-shadow-5 color-white hidden">XP</div>
         <div id="value"></div>
     </div>
 `
@@ -27,6 +26,7 @@ export class ItemIconSlot extends HTMLComponent {
             imgElement.classList.add("hide")
             icon.className = `icon-slot`
             this.setText("#value", "")
+            this.removeAttribute("item-id")
             this.item = null
             return
         }
@@ -50,6 +50,8 @@ export class ItemIconSlot extends HTMLComponent {
             this.setText("#value", item.amount)
             this.getElement("#value").setAttribute("class", "color-white")
         }
+
+        this.setAttribute("item-id", item.id)
     }
 
     updateByItemId(itemId: ItemId, min: number, max: number = min) {
@@ -59,12 +61,9 @@ export class ItemIconSlot extends HTMLComponent {
 
         const imgElement = this.getElement("img")
         imgElement.setAttribute("src", `/assets/icon/${itemConfig.type}/${itemId}.png`)
-        this.toggleClass("img", "hidden", itemId === "xp")
-        this.toggleClass("#xp", "hidden", itemId !== "xp")
+        imgElement.classList.remove("hide")
 
-        if (itemId === "xp") {
-            this.classList.add(`rarity-xp`)
-        }
+        this.setAttribute("item-id", itemId)
 
         if (min === max) {
             this.setText("#value", min)

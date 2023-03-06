@@ -8,6 +8,7 @@ import { i18n } from "./../../i18n"
 import { XpIconSlot } from "./../../inventory/ui/xp-icon-slot"
 import { WorldService } from "./../world-service"
 import { LocationStatus } from "./location-status"
+import { setTooltip } from "./../../tooltip"
 
 const template = document.createElement("template")
 template.innerHTML = html`
@@ -91,6 +92,8 @@ export class LocationPopup extends HTMLComponent {
                 const itemIcon = new ItemIconSlot()
                 itemIcon.updateByItemId(reward.itemId, reward.min, reward.max)
                 rewardsElement.appendChild(itemIcon)
+
+                setTooltip(itemIcon, ":item-id")
             }
 
             this.currLocationId = locationId

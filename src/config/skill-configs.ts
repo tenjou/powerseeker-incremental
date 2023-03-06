@@ -1,7 +1,7 @@
 import { SkillEffect, ElementType } from "../skills/skills-types"
 
 // export type AbilityId = "attack" | "bash" | "heal" | "magnum_break" | "sword_mastery" | "axe_mastery" | "berserk" | "poison"
-export type SkillId = "fire_attack"
+export type SkillId = "fire_attack" | "water_attack" | "earth_attack" | "air_attack"
 
 export type AbilityType = "instant" | "passive"
 
@@ -49,6 +49,57 @@ export const SkillConfigs: Record<SkillId, SkillConfig> = {
                 type: "health",
                 power: -1,
                 stat: "firePower",
+            },
+        ],
+    },
+    water_attack: {
+        id: "water_attack",
+        type: "instant",
+        element: "water",
+        energy: 0,
+        cooldown: 0,
+        duration: 0,
+        durationEffects: [],
+        flags: SkillFlag.Offensive | SkillFlag.Missable,
+        effects: [
+            {
+                type: "health",
+                power: -1,
+                stat: "waterPower",
+            },
+        ],
+    },
+    earth_attack: {
+        id: "earth_attack",
+        type: "instant",
+        element: "earth",
+        energy: 0,
+        cooldown: 0,
+        duration: 0,
+        durationEffects: [],
+        flags: SkillFlag.Offensive | SkillFlag.Missable,
+        effects: [
+            {
+                type: "health",
+                power: -1,
+                stat: "earthPower",
+            },
+        ],
+    },
+    air_attack: {
+        id: "air_attack",
+        type: "instant",
+        element: "air",
+        energy: 0,
+        cooldown: 0,
+        duration: 0,
+        durationEffects: [],
+        flags: SkillFlag.Offensive | SkillFlag.Missable,
+        effects: [
+            {
+                type: "health",
+                power: -1,
+                stat: "airPower",
             },
         ],
     },

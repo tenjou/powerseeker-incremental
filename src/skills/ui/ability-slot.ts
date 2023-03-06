@@ -85,7 +85,7 @@ export class AbilitySlotElement extends HTMLComponent {
         const slotId = this.getAttribute("slot-id")
         const hideRank = this.haveAttribute("hide-rank")
 
-        const slottedAbility = slotId !== null ? loadout.abilities[Number(slotId)] : null
+        const slottedAbility = slotId !== null ? loadout.skills[Number(slotId)] : null
         const abilityId = slottedAbility?.id || (this.getAttribute("ability-id") as SkillId | null)
         const ability = abilityId ? abilities[abilityId] : null
 

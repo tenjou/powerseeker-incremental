@@ -25,7 +25,6 @@ import {
 } from "./battle-types"
 import { getActionSpeed, getPower } from "./battle-utils"
 import { addAnimationsFromLogs, addRegenAnimations, updateBattleAnimation } from "./ui/battle-animation"
-import "./ui/battle-result"
 import "./ui/battle-result-popup"
 import { updateBattlerEffects } from "./ui/battler-item"
 import { canUseSkill, getEnergyNeeded } from "../skills/skills-utils"
@@ -57,6 +56,14 @@ export const BattleService = {
         })
 
         emit("battle-start", battle)
+    },
+
+    canTargetTeamA(abilityCfg: InstantSkillConfig, isTeamA: boolean) {
+        if (abilityCfg.flags & SkillFlag.Offensive) {
+            return !isTeamA
+        }
+
+        return isTeamA
     },
 }
 
@@ -113,7 +120,7 @@ const endBattle = (battle: Battle) => {
         battleResult: generateBattleResult(battle),
     })
 
-    for (const ability of loadout.abilities) {
+    for (const ability of loadout.skills) {
         if (ability) {
             ability.cooldown = 0
         }
@@ -217,7 +224,7 @@ export function useSelectedAbility(targetId: BattlerId) {
 function executeAutoBattle() {
     const { loadout, battle } = getState()
 
-    const firstAbility = loadout.abilities[0]
+    const firstAbility = loadout.skills[0]
     const team = battle.isTeamA ? battle.teamB : battle.teamA
     const targetId = randomItem(team)
 

@@ -35,9 +35,10 @@ interface State {
     equipment: Record<EquipmentSlotType, Item | null>
     battler: Battler
     inventory: Item[]
-    skills: Record<SkillId, Skill>
+    skills: Partial<Record<SkillId, Skill>>
     loadout: {
-        abilities: (LoadoutSkill | null)[]
+        attack: SkillId
+        skills: (LoadoutSkill | null)[]
         items: (ItemId | null)[]
     }
     areas: Partial<Record<AreaId, AreaState>>
@@ -102,7 +103,6 @@ let state: State = {
     battle: createBattle(),
     battleResult: null,
     skills: {
-        fire_attack: { id: "fire_attack", rank: 1 },
         // bash: { id: "bash", rank: 1 },
         // heal: { id: "heal", rank: 1 },
         // magnum_break: { id: "magnum_break", rank: 1 },
@@ -112,7 +112,8 @@ let state: State = {
         // poison: { id: "poison", rank: 1 },
     },
     loadout: {
-        abilities: [],
+        attack: "fire_attack",
+        skills: [],
         items: [null],
     },
     areas: {},
