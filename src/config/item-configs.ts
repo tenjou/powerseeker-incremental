@@ -1,8 +1,8 @@
-export type ItemId = "xp" | "gold" | "carp" | "copper_ore" | "maple_log" | "leather_clothing" | "health_potion" | "axe" | "sword"
+export type ItemId = "xp" | "gold" | "carp" | "copper_ore" | "maple_log" | "leather_clothing" | "health_potion" | "axe" | "sword" | "shield"
 
 export type EquipmentSlotType = "main_hand" | "off_hand" | "body" | "accessory"
 
-export type EquipmentType = "armor" | "axe" | "sword"
+export type EquipmentType = "armor" | "axe" | "sword" | "shield"
 
 export type EffectType = "restore_hp"
 
@@ -25,7 +25,6 @@ interface ItemConfigCurrency extends ItemConfigBasic {
 
 export interface ItemConfigEquipment extends ItemConfigBasic {
     type: "equipment"
-    slot: EquipmentSlotType
     equipmentType: EquipmentType
     level: number
     stats: ItemStatType[]
@@ -64,7 +63,6 @@ export const ItemConfigs: Record<ItemId, ItemConfig> = {
     leather_clothing: {
         id: "leather_clothing",
         type: "equipment",
-        slot: "body",
         equipmentType: "armor",
         level: 1,
         stats: ["defense", "accuracy"],
@@ -82,7 +80,6 @@ export const ItemConfigs: Record<ItemId, ItemConfig> = {
     axe: {
         id: "axe",
         type: "equipment",
-        slot: "main_hand",
         equipmentType: "axe",
         level: 1,
         stats: ["attack"],
@@ -90,8 +87,14 @@ export const ItemConfigs: Record<ItemId, ItemConfig> = {
     sword: {
         id: "sword",
         type: "equipment",
-        slot: "main_hand",
         equipmentType: "sword",
+        level: 1,
+        stats: ["attack"],
+    },
+    shield: {
+        id: "shield",
+        type: "equipment",
+        equipmentType: "shield",
         level: 1,
         stats: ["attack"],
     },

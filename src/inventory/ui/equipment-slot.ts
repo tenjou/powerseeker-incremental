@@ -18,7 +18,7 @@ template.innerHTML = html`
     <div class="flex flex-column px-1 justify-center"><div id="name"></div></div>
 `
 
-export class EquipmentSlot extends ItemIconSlot {
+export class EquipmentSlotElement extends ItemIconSlot {
     constructor() {
         super(template)
     }
@@ -53,4 +53,4 @@ export class EquipmentSlot extends ItemIconSlot {
     }
 }
 
-customElements.define("equipment-slot", EquipmentSlot)
+customElements.define("equipment-slot", EquipmentSlotElement)

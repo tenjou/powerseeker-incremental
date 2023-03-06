@@ -5,10 +5,11 @@ import { Item } from "../inventory/item-types"
 import { PlayerService } from "../player/player-service"
 import { getState } from "../state"
 import { LoadoutService } from "./../loadout/loadout-service"
+import { EquipmentSlot } from "./equipment-types"
 
 export const EquipmentService = {
     equip(item: Item) {
-        const { equipment, loadout } = getState()
+        const { equipment } = getState()
 
         const itemConfig = ItemConfigs[item.id]
         if (itemConfig.type !== "equipment") {
@@ -16,21 +17,22 @@ export const EquipmentService = {
             return
         }
 
-        const prevItem = equipment[itemConfig.slot]
+        const equipmentSlot = EquipmentSlot[itemConfig.equipmentType]
+        const prevItem = equipment[equipmentSlot]
         if (prevItem) {
-            EquipmentService.unequip(itemConfig.slot)
+            EquipmentService.unequip(equipmentSlot)
         }
 
-        equipment[itemConfig.slot] = item
+        equipment[equipmentSlot] = item
 
-        if (itemConfig.slot === "main_hand") {
+        if (equipmentSlot === "main_hand") {
             LoadoutService.equipBasicAttack(itemConfig.equipmentType)
         }
 
         PlayerService.calculateStats()
         InventoryService.remove(item)
 
-        emit("equip", itemConfig.slot)
+        emit("equip", equipmentSlot)
     },
 
     unequip(slotType: EquipmentSlotType) {

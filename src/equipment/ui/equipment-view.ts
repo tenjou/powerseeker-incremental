@@ -6,6 +6,7 @@ import { ItemIconSlot } from "../../inventory/ui/item-icon-slot"
 import { getState } from "../../state"
 import { goTo } from "../../view"
 import { EquipmentService } from "../equipment-service"
+import { EquipmentSlot } from "../equipment-types"
 import { ViewHeaderSub } from "./../../components/view-header-sub"
 import { setTooltip } from "./../../tooltip"
 
@@ -26,7 +27,7 @@ export const loadEquipmentView = (segments: string[]) => {
             return false
         }
 
-        return itemConfig.slot === equipmentSlot
+        return EquipmentSlot[itemConfig.equipmentType] === equipmentSlot
     })
 
     sortInventory(items)

@@ -397,6 +397,12 @@ const I18nValues = {
     sp_description: {
         en: "<b>Skill Points</b> are used to unlock new skills.",
     },
+    shield: {
+        en: "Shield",
+    },
+    shield_description: {
+        en: "A shield is a defensive item that can be equipped in the off-hand slot.",
+    },
 } satisfies Record<string, LocalEntry>
 
 export const i18n = (key: string | null) => {

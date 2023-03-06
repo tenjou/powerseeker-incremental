@@ -53,6 +53,8 @@ function createEmptyProfile() {
     InventoryService.add(LootService.generateItem("leather_clothing", 1, 0))
     InventoryService.add(LootService.generateItem("axe", 1, 0))
     InventoryService.add(LootService.generateItem("sword", 1, 0))
+    InventoryService.add(LootService.generateItem("shield", 1, 0))
+    InventoryService.add(LootService.generateItem("shield", 1, 0))
 }
 
 function load() {

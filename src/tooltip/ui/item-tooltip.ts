@@ -1,9 +1,11 @@
 import { ItemConfigEquipment, ItemConfigResource, ItemConfigs, ItemId } from "../../config/item-configs"
 import { HTMLComponent } from "../../dom"
+import { EquipmentSlot } from "../../equipment/equipment-types"
 import { Item } from "../../inventory/item-types"
 import { getRarityText } from "../../inventory/item-utils"
 import { getSkillEffectColor } from "../../skills/skills-utils"
 import { i18n } from "./../../i18n"
+import { EquipmentSlotElement } from "./../../inventory/ui/equipment-slot"
 
 const template = document.createElement("template")
 template.innerHTML = html`
@@ -90,7 +92,7 @@ export class ItemTooltip extends HTMLComponent {
     updateEquipment(item: Item, itemConfig: ItemConfigEquipment) {
         this.setText("#name", i18n(itemConfig.id))
         this.setText("#rarity", getRarityText(item.rarity))
-        this.setText("#equipment-slot", i18n(itemConfig.slot))
+        this.setText("#equipment-slot", i18n(EquipmentSlot[itemConfig.equipmentType]))
         this.setText("#equipment-type", i18n(itemConfig.equipmentType))
         this.setText("#power", `${i18n("power")} ${item.power}`)
         this.setText("#level", `${i18n("level")} ${item.level}`)

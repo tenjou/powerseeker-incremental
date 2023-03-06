@@ -1,7 +1,7 @@
 import { HTMLComponent } from "../../dom"
 import { i18n } from "../../i18n"
 import { getState } from "../../state"
-import { EquipmentSlot } from "../../inventory/ui/equipment-slot"
+import { EquipmentSlotElement } from "../../inventory/ui/equipment-slot"
 import { subscribe } from "../../events"
 
 const template = document.createElement("template")
@@ -34,10 +34,10 @@ export class CharacterEquipment extends HTMLComponent {
     update() {
         const { battler } = getState()
 
-        this.getElement<EquipmentSlot>("#main-hand").update("main_hand")
-        this.getElement<EquipmentSlot>("#off-hand").update("off_hand")
-        this.getElement<EquipmentSlot>("#body").update("body")
-        this.getElement<EquipmentSlot>("#accessory").update("accessory")
+        this.getElement<EquipmentSlotElement>("#main-hand").update("main_hand")
+        this.getElement<EquipmentSlotElement>("#off-hand").update("off_hand")
+        this.getElement<EquipmentSlotElement>("#body").update("body")
+        this.getElement<EquipmentSlotElement>("#accessory").update("accessory")
     }
 }
 

@@ -14,6 +14,7 @@ const EquipmentBasicSkill: Record<EquipmentType, SkillId> = {
     axe: "fire_attack",
     sword: "earth_attack",
     armor: "fire_attack",
+    shield: "fire_attack",
 }
 
 export const LoadoutService = {
