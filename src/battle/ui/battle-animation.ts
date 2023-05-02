@@ -6,6 +6,7 @@ import {
     addBattlerEnergy,
     addBattlerHealth,
     addBattlerScrollingText,
+    addBattlerStatusText,
     findBattlerElement,
     removeBattlerEffect,
     removeBattlerEffectAll,
@@ -58,6 +59,10 @@ interface AnimationEffectRemove extends BattleAnimationBasic {
     effectId: number
 }
 
+interface AnimationStatus extends BattleAnimationBasic {
+    type: "status"
+}
+
 interface AnimationEffectRemoveAll extends BattleAnimationBasic {
     type: "effect-remove-all"
 }
@@ -70,6 +75,7 @@ export type Animation =
     | AnimationEffectAdd
     | AnimationEffectRemove
     | AnimationEffectRemoveAll
+    | AnimationStatus
 
 function activateAnimation(animation: Animation) {
     switch (animation.type) {
@@ -97,10 +103,14 @@ function activateAnimation(animation: Animation) {
             removeBattlerEffectAll(animation.battlerId)
             break
 
+        case "status":
+            addBattlerStatusText(animation.battlerId, "blocked")
+            break
+
         case "scrolling-text": {
             const icon = animation.abilityId ? `/assets/icon/ability/${animation.abilityId}.png` : null
 
-            let color
+            let color: string
             if (animation.flags & BattleActionFlag.Energy) {
                 color = animation.value >= 0 ? "#03a9f4" : "#9c27b0"
             } else {
@@ -118,6 +128,7 @@ function activateAnimation(animation: Animation) {
             }
 
             addBattlerScrollingText(animation.battlerId, hideText ? "" : text, color, icon)
+
             if (animation.flags & BattleActionFlag.Energy) {
                 addBattlerEnergy(animation.battlerId, animation.value)
             } else {
@@ -157,7 +168,6 @@ export function updateBattleAnimation(tCurrent: number) {
             activateAnimation(animation)
         }
     }
-
     if (animationsActive.length > 0) {
         const animation = animationsActive[animationsActive.length - 1]
         if (animation.tEnd <= tCurrent) {
@@ -212,10 +222,17 @@ export function addAnimationsFromLogs(tCurrent: number, battlerLogs: BattleBattl
                         type: "scrolling-text",
                         battlerId: target.battlerId,
                         abilityId: null,
-                        tStart: tEffectStart,
+                        tStart: tEffectStart + 100,
                         tEnd: tEffectStart + attackAnimationLength,
                         flags: log.flags,
                         value: log.power,
+                    })
+
+                    animations.push({
+                        type: "status",
+                        battlerId: target.battlerId,
+                        tStart: tEffectStart,
+                        tEnd: tEffectStart + attackAnimationLength,
                     })
 
                     tEffectStart += attackAnimationLength

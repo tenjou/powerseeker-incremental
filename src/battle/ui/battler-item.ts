@@ -10,6 +10,7 @@ import { useSelectedAbility } from "../battle-service"
 import { Battler } from "../battle-types"
 import "./battler-effect"
 import { BattlerEffect } from "./battler-effect"
+import { ScrollingStatusText } from "../../components/scrolling-status-text"
 
 export function updateBattler(battler: Battler) {
     const element = document.getElementById(`battler:${battler.id}`) as BattlerItem
@@ -54,6 +55,11 @@ export function toggleBattlerInactive(battlerId: BattlerId, inactive: boolean) {
 export function addBattlerScrollingText(battlerId: BattlerId, text: string, color: string, icon: string | null) {
     const element = findBattlerElement(battlerId)
     element.addScrollingText(text, color, icon)
+}
+
+export const addBattlerStatusText = (battlerId: BattlerId, text: string) => {
+    const element = findBattlerElement(battlerId)
+    element.addStatusText(text)
 }
 
 export function addBattlerHealth(battlerId: BattlerId, value: number) {
@@ -148,6 +154,12 @@ class BattlerItem extends HTMLComponent {
         this.appendChild(scrollingText)
     }
 
+    addStatusText(text: string) {
+        const scrollingText = new ScrollingStatusText()
+        scrollingText.setup(text)
+        this.appendChild(scrollingText)
+    }
+
     update(battlerId: BattlerId, abilityId?: SkillId) {
         const { battle } = getState()
 
@@ -227,7 +239,8 @@ template.innerHTML = html`
         }
         .hide {
             display: none !important;
-        }
+        }import { ScrollingStatusText } from './../../components/scrolling-status-text';
+
 
         .frame {
             display: flex;
